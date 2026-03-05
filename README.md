@@ -25,6 +25,15 @@ Uma ferramenta de produtividade jurídica de código aberto, desenvolvida para s
 - **HTML5 / CSS3:** Interface responsiva e limpa.
 - **Manifest v3:** Seguindo os padrões mais recentes de segurança e desempenho para extensões.
 
+## ⚖️ Abrangência e Funcionamento
+
+Esta extensão consome os dados do **Barramento de Serviços do Poder Judiciário (CNJ)**. Diferente de buscadores que realizam *web scraping* em diários locais, este projeto acessa a fonte primária unificada.
+
+- **Tribunais Estaduais (TJs):** Inclui o **TJSP** (tanto sistemas e-SAJ quanto Eproc) e demais tribunais estaduais integrados ao portal de comunicações processuais.
+- **Tribunais Federais (TRFs):** Cobertura completa do **TRF3** e outros tribunais federais que utilizam o sistema de transmissão de dados ao DJEN.
+- **Justiça do Trabalho (TRTs):** Captura publicações de tribunais trabalhistas que já migraram suas intimações para a base nacional.
+- **Unificação Nacional:** O objetivo é a cobertura de 100% dos juízos do Brasil, conforme as resoluções de modernização do CNJ para o Diário de Justiça Eletrônico Nacional.
+
 ## 📝 Licença
 
 Este projeto está sob a licença MIT. Sinta-se à vontade para utilizar, modificar e contribuir.
