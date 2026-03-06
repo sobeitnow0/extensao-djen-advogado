@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tempDiv.innerHTML = htmlBruto;
         let texto = (tempDiv.textContent || tempDiv.innerText || "").replace(/\s\s+/g, ' ').trim();
         
-        // Sugestão 1: Negrito em palavras críticas
         const termosCriticos = /prazo|liminar|tutela|procedente|improcedente|extinto|multa|penhora/gi;
         return texto.replace(termosCriticos, "**$&**");
     }
@@ -44,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return num;
     }
 
-    // Sugestão 2: Filtro Rápido
     filtroRapido.addEventListener('input', () => {
         const termo = filtroRapido.value.toLowerCase();
         const filtrados = resultadosGlobais.filter(i => {
@@ -88,12 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (resultadosGlobais.length === 0) {
                 divResultados.innerHTML = "<p>Nenhuma intimação encontrada.</p>";
-                chrome.action.setBadgeText({ text: "" }); // Limpa badge
+                chrome.action.setBadgeText({ text: "" }); 
             } else {
-                // Sugestão 3: Badge no ícone
+                // Ativa o Badge com a quantidade de resultados
                 chrome.action.setBadgeText({ text: resultadosGlobais.length.toString() });
                 chrome.action.setBadgeBackgroundColor({ color: "#3584e4" });
-                
+
                 btnCopiar.style.display = 'block';
                 containerFiltro.style.display = 'block';
                 renderizarResultados(resultadosGlobais);
@@ -116,7 +114,16 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.clipboard.writeText(txtFinal).then(() => {
             const label = btnCopiar.innerText;
             btnCopiar.innerText = "✓ Copiado!";
+            
+            // CASO 1: Limpa o badge ao clicar em copiar
+            chrome.action.setBadgeText({ text: "" });
+            
             setTimeout(() => { btnCopiar.innerText = label; }, 2000);
         });
     });
+});
+
+// CASO 2: Limpa o badge se a extensão for fechada
+window.addEventListener('pagehide', () => {
+    chrome.action.setBadgeText({ text: "" });
 });
