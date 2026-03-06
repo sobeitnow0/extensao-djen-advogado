@@ -2,7 +2,9 @@
  * Buscador DJEN - Extensão de Navegador
  * Autor: Amilcar Moreira (@sobeitnow0)
  * OAB/SP: 349.457
+ * Descrição: Extração higienizada de intimações da API nacional do CNJ.
  */
+
 document.addEventListener('DOMContentLoaded', () => {
     const inputOabNum = document.getElementById('oabNum');
     const inputOabUf = document.getElementById('oabUf');
@@ -14,14 +16,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let resultadosGlobais = [];
 
-    // Carregar OAB salva ou usar padrão
+    // Carregar preferências salvas
     inputOabNum.value = localStorage.getItem('djen_oab_num') || "349457";
     inputOabUf.value = localStorage.getItem('djen_oab_uf') || "SP";
 
-    // Data de hoje como padrão
+    // Data local hoje
     const dataLocal = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0];
     inputInicio.value = dataLocal;
     inputFim.value = dataLocal;
+
+    function higienizarTexto(htmlBruto) {
+        if (!htmlBruto) return "";
+        let tempDiv = document.createElement("div");
+        tempDiv.innerHTML = htmlBruto;
+        return tempDiv.textContent || tempDiv.innerText || "";
+    }
+
+    function extrairProcesso(item, textoLimpo) {
+        let num = item.numeroprocesso || item.numero_processo || item.numeroProcesso;
+        if (!num || num === "undefined") {
+            const match = textoLimpo.match(/\d{7}-\d{2}\.\d{4}\.\d{1,2}\.\d{2}\.\d{4}/);
+            num = match ? match[0] : "Não identificado";
+        }
+        return num;
+    }
 
     btnBuscar.addEventListener('click', async () => {
         const num = inputOabNum.value.trim();
@@ -34,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('djen_oab_num', num);
         localStorage.setItem('djen_oab_uf', uf);
         
-        divResultados.innerHTML = "<p>⏳ Buscando...</p>";
+        divResultados.innerHTML = "<p>⏳ Consultando...</p>";
         btnCopiar.style.display = 'none';
 
         try {
@@ -48,20 +66,33 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 resultadosGlobais = items;
                 btnCopiar.style.display = 'block';
-                divResultados.innerHTML = items.map(i => `
-                    <div class="intimacao">
-                        <strong>${i.siglaTribunal}</strong> - ${i.numeroprocesso}<br>
-                        <div class="teor">${i.texto || i.teor}</div>
-                    </div>
-                `).join('');
+                divResultados.innerHTML = items.map(i => {
+                    const textoLimpo = higienizarTexto(i.texto || i.teor);
+                    const proc = extrairProcesso(i, textoLimpo);
+                    return `
+                        <div class="intimacao">
+                            <strong>${i.siglaTribunal}</strong> - ${proc}<br>
+                            <div class="teor">${textoLimpo}</div>
+                        </div>
+                    `;
+                }).join('');
             }
         } catch (e) {
-            divResultados.innerHTML = "<p style='color:red;'>Erro na conexão.</p>";
+            divResultados.innerHTML = "<p style='color:red;'>Erro na conexão com o servidor.</p>";
         }
     });
 
     btnCopiar.addEventListener('click', () => {
-        const txt = resultadosGlobais.map(i => `Processo: ${i.numeroprocesso}\nTexto: ${i.texto || i.teor}`).join('\n\n');
-        navigator.clipboard.writeText(txt).then(() => alert("Conteúdo copiado com sucesso!"));
+        const txt = resultadosGlobais.map(i => {
+            const textoLimpo = higienizarTexto(i.texto || i.teor).trim();
+            const proc = extrairProcesso(i, textoLimpo);
+            return `Processo: ${proc}\nTribunal: ${i.siglaTribunal}\nTexto: ${textoLimpo}`;
+        }).join('\n\n');
+
+        navigator.clipboard.writeText(txt).then(() => {
+            const labelOriginal = btnCopiar.innerText;
+            btnCopiar.innerText = "✓ Copiado com sucesso!";
+            setTimeout(() => { btnCopiar.innerText = labelOriginal; }, 2000);
+        });
     });
 });
