@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Buscador DJEN",
+  "version": "1.0",
+  "author": "Amilcar Moreira (sobeitnow0)",
+  "description": "Busca rápida de intimações no DJEN via API.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Buscar Intimações"
+  },
+  "host_permissions": [
+    "https://comunicaapi.pje.jus.br/*"
+  ]
+}
