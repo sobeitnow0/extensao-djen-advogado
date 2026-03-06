@@ -3,47 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        body { width: 450px; padding: 15px; font-family: sans-serif; background: #fff; color: #333; margin: 0; }
-        h3 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
-        .linha-busca { display: flex; gap: 10px; margin-bottom: 12px; }
-        .coluna { display: flex; flex-direction: column; flex: 3; }
-        .coluna-curta { display: flex; flex-direction: column; width: 70px; }
-        label { font-size: 11px; color: #666; margin-bottom: 4px; font-weight: bold; }
-        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
+        /* Design focado em legibilidade e produtividade */
+        body { 
+            width: 450px; 
+            padding: 15px; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #ffffff; 
+            color: #333; 
+            margin: 0; 
+        }
+        h3 { 
+            margin-top: 0; 
+            color: #2c3e50; 
+            border-bottom: 2px solid #3584e4; 
+            padding-bottom: 8px; 
+            margin-bottom: 15px; 
+            font-size: 18px;
+        }
+        .linha-busca { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 12px; 
+        }
+        .coluna { 
+            display: flex; 
+            flex-direction: column; 
+            flex: 3; 
+        }
+        .coluna-curta { 
+            display: flex; 
+            flex-direction: column; 
+            width: 80px; 
+        }
+        label { 
+            font-size: 11px; 
+            color: #666; 
+            margin-bottom: 4px; 
+            font-weight: bold; 
+            text-transform: uppercase;
+        }
+        input { 
+            padding: 8px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            font-size: 13px; 
+            outline: none;
+        }
+        input:focus { border-color: #3584e4; }
         input[type="text"] { text-transform: uppercase; }
-        button { padding: 10px; background: #3584e4; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 15px; }
-        button:hover { background: #1c71d8; }
-        #resultados { max-height: 350px; overflow-y: auto; font-size: 13px; }
-        .intimacao { background: #f8f9fa; border-left: 4px solid #3584e4; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; }
-        .teor { font-family: monospace; white-space: pre-wrap; margin-top: 5px; background: white; padding: 8px; border: 1px solid #eee; max-height: 150px; overflow-y: auto; }
-        .btn-copiar { background: #2da15f; margin-top: 10px; display: none; }
+
+        /* Botões */
+        .btn-principal { 
+            padding: 10px; 
+            background: #3584e4; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            width: 100%; 
+            transition: background 0.2s; 
+            font-size: 14px;
+        }
+        .btn-principal:hover { background: #1c71d8; }
+        
+        .btn-copiar { 
+            padding: 10px; 
+            background: #2da15f; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            width: 100%; 
+            margin-top: 10px; 
+            display: none; 
+            transition: background 0.2s; 
+        }
+        .btn-copiar:hover { background: #24884f; }
+
+        /* Container de Filtro Rápido */
+        #containerFiltro {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            border: 1px dashed #ccc;
+        }
+
+        /* Área de Resultados */
+        #resultados { 
+            max-height: 350px; 
+            overflow-y: auto; 
+            font-size: 13px; 
+            margin-top: 15px; 
+        }
+        .intimacao { 
+            background: #f8f9fa; 
+            border-left: 4px solid #3584e4; 
+            padding: 12px; 
+            margin-bottom: 12px; 
+            border-top: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            border-radius: 0 4px 4px 0; 
+        }
+        .teor { 
+            font-family: 'Courier New', Courier, monospace; 
+            white-space: pre-wrap; 
+            margin-top: 8px; 
+            background: #fff; 
+            padding: 10px; 
+            border: 1px solid #eee; 
+            max-height: 120px; 
+            overflow-y: auto; 
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        /* Destaque para termos críticos */
+        b, strong { color: #2c3e50; }
     </style>
 </head>
 <body>
-    <h3>⚖️ DJEN - Consulta de Intimações</h3>
+    <h3>⚖️ DJEN - Buscador Nacional</h3>
+    
     <div class="linha-busca">
         <div class="coluna">
-            <label>Número da OAB:</label>
-            <input type="number" id="oabNum" value="349457">
+            <label>OAB (Apenas números):</label>
+            <input type="number" id="oabNum" placeholder="349457">
         </div>
         <div class="coluna-curta">
             <label>UF:</label>
-            <input type="text" id="oabUf" value="SP" maxlength="2">
+            <input type="text" id="oabUf" placeholder="SP" maxlength="2">
         </div>
     </div>
+
     <div class="linha-busca">
         <div class="coluna">
-            <label>Início:</label>
+            <label>Data Inicial:</label>
             <input type="date" id="dataInicio">
         </div>
         <div class="coluna">
-            <label>Fim:</label>
+            <label>Data Final:</label>
             <input type="date" id="dataFim">
         </div>
     </div>
-    <button id="btnBuscar">Buscar na API</button>
+    
+    <button id="btnBuscar" class="btn-principal">Consultar Intimações</button>
+    
+    <div id="containerFiltro" style="display:none;">
+        <label>🔍 Filtrar nos resultados encontrados:</label>
+        <input type="text" id="filtroRapido" placeholder="Busque por processo ou palavra-chave..." style="width: 100%; box-sizing: border-box; margin-top:5px;">
+    </div>
+
+    <button id="btnCopiarTodos" class="btn-copiar">Copiar para o Outlining (Texto Limpo)</button>
+    
     <div id="resultados"></div>
-    <button id="btnCopiarTodos" class="btn-copiar">Copiar Resultados</button>
+
     <script src="popup.js"></script>
 </body>
 </html>
