@@ -29,6 +29,8 @@ Esta extensão consome os dados do **Barramento de Serviços do Poder Judiciári
 4. Clique em **"Carregar sem compactação"** e selecione a pasta do projeto.
 
 ### Para Mozilla Firefox
+1. https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/
+   ou 
 1. Faça o clone deste repositório ou baixe o arquivo ZIP.
 2. Dentro da pasta do projeto, apague o arquivo `manifest.json` (que é o padrão do Chrome).
 3. Renomeie o arquivo `manifest-firefox.json` para `manifest.json`.
