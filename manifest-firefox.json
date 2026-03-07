@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "Buscador DJEN - Advogado",
+  "version": "1.1.0",
+  "description": "Consulta intimações no DJEN via API, com filtro dinâmico e exportação estruturada (outlining) para gestão de conhecimento jurídico.",
+  "author": "Amilcar Moreira",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "djen@sobeitnow0.github.io",
+      "strict_min_version": "109.0"
+    }
+  },
+  "permissions": [
+    "storage",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "https://comunicaapi.pje.jus.br/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Buscador DJEN",
+    "default_icon": {
+      "16": "djen-16.png",
+      "48": "djen-48.png",
+      "64": "djen-64.png",
+      "128": "djen-128.png"
+    }
+  },
+  "icons": {
+    "16": "djen-16.png",
+    "48": "djen-48.png",
+    "64": "djen-64.png",
+    "128": "djen-128.png"
+  }
+}
