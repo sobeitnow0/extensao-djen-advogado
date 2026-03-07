@@ -36,11 +36,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     aplicarDataRapida(0);
 
-    // Eventos de Data
-    document.getElementById('btnHoje')?.addEventListener('click', () => aplicarDataRapida(0));
-    document.getElementById('btn5Dias')?.addEventListener('click', () => aplicarDataRapida(5));
-    document.getElementById('btn15Dias')?.addEventListener('click', () => aplicarDataRapida(15));
-    document.getElementById('btnMes')?.addEventListener('click', () => aplicarDataRapida(30));
+  // Eventos de Data (Agora com Busca Dinâmica)
+    function dispararBuscaPorAtalho(dias) {
+        aplicarDataRapida(dias); // 1. Preenche as datas
+        btnBuscar.click();       // 2. Dispara a busca automaticamente
+    }
+
+    document.getElementById('btnHoje')?.addEventListener('click', () => dispararBuscaPorAtalho(0));
+    document.getElementById('btn5Dias')?.addEventListener('click', () => dispararBuscaPorAtalho(5));
+    document.getElementById('btn15Dias')?.addEventListener('click', () => dispararBuscaPorAtalho(15));
+    document.getElementById('btnMes')?.addEventListener('click', () => dispararBuscaPorAtalho(30));
 
     // Sanitização Segura Exigida pelo Firefox (Substitui innerHTML por DOMParser)
     function higienizarEFormatador(htmlBruto) {
