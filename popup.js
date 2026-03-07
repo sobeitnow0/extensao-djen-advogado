@@ -3,7 +3,9 @@
  * Autor: Amilcar Moreira (@sobeitnow0)
  */
 
-if (chrome.action) chrome.action.setBadgeText({ text: "" });
+if (typeof chrome !== "undefined" && chrome.action) {
+    chrome.action.setBadgeText({ text: "" });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     const inputOabNum = document.getElementById('oabNum');
@@ -19,36 +21,39 @@ document.addEventListener('DOMContentLoaded', () => {
     let resultadosGlobais = [];
     let resultadosExibidos = [];
 
+    // Carregamento de Preferências
     inputOabNum.value = localStorage.getItem('djen_oab_num') || "";
     inputOabUf.value = localStorage.getItem('djen_oab_uf') || "";
     
-    // --- FUNÇÃO DE DATAS RÁPIDAS ---
+    // Funções de Data
     function aplicarDataRapida(diasRetroativos) {
         const hoje = new Date();
         const inicio = new Date();
         inicio.setDate(hoje.getDate() - diasRetroativos);
-        
-        // sv-SE formata estritamente como YYYY-MM-DD mantendo o timezone local
-        inputInicio.value = inicio.toLocaleDateString('sv-SE');
-        inputFim.value = hoje.toLocaleDateString('sv-SE');
+        inputInicio.value = inicio.toISOString().split('T')[0];
+        inputFim.value = hoje.toISOString().split('T')[0];
     }
 
-    // Inicializa com a data de hoje
     aplicarDataRapida(0);
 
-    // Eventos dos links de data
-    document.getElementById('btnHoje').addEventListener('click', () => aplicarDataRapida(0));
-    document.getElementById('btn5Dias').addEventListener('click', () => aplicarDataRapida(5));
-    document.getElementById('btn15Dias').addEventListener('click', () => aplicarDataRapida(15));
-    document.getElementById('btnMes').addEventListener('click', () => aplicarDataRapida(30));
+    // Eventos de Data
+    document.getElementById('btnHoje')?.addEventListener('click', () => aplicarDataRapida(0));
+    document.getElementById('btn5Dias')?.addEventListener('click', () => aplicarDataRapida(5));
+    document.getElementById('btn15Dias')?.addEventListener('click', () => aplicarDataRapida(15));
+    document.getElementById('btnMes')?.addEventListener('click', () => aplicarDataRapida(30));
 
+    // Sanitização Segura Exigida pelo Firefox (Substitui innerHTML por DOMParser)
     function higienizarEFormatador(htmlBruto) {
         if (!htmlBruto) return "";
-        let tempDiv = document.createElement("div");
-        tempDiv.innerHTML = htmlBruto;
-        let texto = (tempDiv.textContent || tempDiv.innerText || "").replace(/\s\s+/g, ' ').trim();
-        const termosCriticos = /prazo|liminar|tutela|procedente|improcedente|extinto|multa|penhora/gi;
-        return texto.replace(termosCriticos, "**$&**");
+        try {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlBruto, 'text/html');
+            const texto = (doc.body.textContent || "").replace(/\s\s+/g, ' ').trim();
+            const termosCriticos = /prazo|liminar|tutela|procedente|improcedente|extinto|multa|penhora/gi;
+            return texto.replace(termosCriticos, "**$&**");
+        } catch (e) {
+            return htmlBruto.replace(/<[^>]*>?/gm, '').trim();
+        }
     }
 
     function extrairProcesso(item, textoLimpo) {
@@ -60,18 +65,39 @@ document.addEventListener('DOMContentLoaded', () => {
         return num;
     }
 
+    // Renderização Segura com createElement (Sem innerHTML)
     function renderizarResultados(items) {
+        divResultados.textContent = ""; 
+
         if (items.length === 0) {
-            divResultados.innerHTML = "<p>Nenhum resultado corresponde ao filtro.</p>";
+            const p = document.createElement("p");
+            p.textContent = "Nenhum resultado corresponde ao filtro.";
+            divResultados.appendChild(p);
             return;
         }
-        divResultados.innerHTML = items.map(i => {
+
+        items.forEach(i => {
             const textoLimpo = higienizarEFormatador(i.texto || i.teor);
             const proc = extrairProcesso(i, textoLimpo);
-            return `<div class="intimacao"><strong>${i.siglaTribunal || 'TJ'}</strong> - ${proc}<br><div class="teor">${textoLimpo}</div></div>`;
-        }).join('');
+            const sigla = i.siglaTribunal || 'TJ';
+
+            const divIntimacao = document.createElement("div");
+            divIntimacao.className = "intimacao";
+            
+            const strong = document.createElement("strong");
+            strong.textContent = `${sigla} - ${proc}`;
+            
+            const divTeor = document.createElement("div");
+            divTeor.className = "teor";
+            divTeor.textContent = textoLimpo; 
+
+            divIntimacao.appendChild(strong);
+            divIntimacao.appendChild(divTeor);
+            divResultados.appendChild(divIntimacao);
+        });
     }
 
+    // Filtro Dinâmico
     filtroRapido.addEventListener('input', () => {
         const termo = filtroRapido.value.toLowerCase();
         resultadosExibidos = resultadosGlobais.filter(i => {
@@ -80,41 +106,35 @@ document.addEventListener('DOMContentLoaded', () => {
             return texto.includes(termo) || proc.includes(termo);
         });
         
-        if (chrome.action) {
+        if (typeof chrome !== "undefined" && chrome.action) {
             const qtd = resultadosExibidos.length;
-            chrome.action.setBadgeText({ text: qtd > 0 ? qtd.toString() : "0" });
+            chrome.action.setBadgeText({ text: qtd > 0 ? qtd.toString() : "" });
         }
-
         renderizarResultados(resultadosExibidos);
     });
 
+    // Busca na API
     btnBuscar.addEventListener('click', async () => {
         const num = inputOabNum.value.trim();
         const uf = inputOabUf.value.trim().toUpperCase();
-        const d1 = inputInicio.value;
-        const d2 = inputFim.value;
 
         if (!num || !uf) {
-            divResultados.innerHTML = "<p style='color:#d35400;'>⚠️ Preencha a OAB e a UF.</p>";
+            divResultados.textContent = "⚠️ Preencha a OAB e a UF.";
             return;
         }
 
-        if (num && uf) {
-            localStorage.setItem('djen_oab_num', num);
-            localStorage.setItem('djen_oab_uf', uf);
-        }
+        localStorage.setItem('djen_oab_num', num);
+        localStorage.setItem('djen_oab_uf', uf);
         
-        // PREVENÇÃO DE DUPLO CLIQUE (UX de Carregamento)
         btnBuscar.disabled = true;
-        btnBuscar.innerText = "⏳ Consultando...";
-        divResultados.innerHTML = "<p>Processando dados do CNJ...</p>";
-        
+        btnBuscar.textContent = "⏳ Consultando...";
+        divResultados.textContent = "Processando dados do CNJ...";
         btnCopiar.style.display = 'none';
         containerFiltro.style.display = 'none';
         filtroRapido.value = "";
 
         try {
-            const url = `https://comunicaapi.pje.jus.br/api/v1/comunicacao?numeroOab=${num}&ufOab=${uf}&dataDisponibilizacaoInicio=${d1}&dataDisponibilizacaoFim=${d2}`;
+            const url = `https://comunicaapi.pje.jus.br/api/v1/comunicacao?numeroOab=${num}&ufOab=${uf}&dataDisponibilizacaoInicio=${inputInicio.value}&dataDisponibilizacaoFim=${inputFim.value}`;
             const resp = await fetch(url);
             const dados = await resp.json();
             
@@ -122,28 +142,28 @@ document.addEventListener('DOMContentLoaded', () => {
             resultadosExibidos = [...resultadosGlobais];
             
             if (resultadosGlobais.length === 0) {
-                divResultados.innerHTML = "<p>Nenhuma intimação encontrada no período.</p>";
-                chrome.action.setBadgeText({ text: "" }); 
+                divResultados.textContent = "Nenhuma intimação encontrada no período.";
+                if (typeof chrome !== "undefined" && chrome.action) chrome.action.setBadgeText({ text: "" }); 
             } else {
-                chrome.action.setBadgeText({ text: resultadosGlobais.length.toString() });
-                chrome.action.setBadgeBackgroundColor({ color: "#3584e4" });
-
+                if (typeof chrome !== "undefined" && chrome.action) {
+                    chrome.action.setBadgeText({ text: resultadosGlobais.length.toString() });
+                    chrome.action.setBadgeBackgroundColor({ color: "#3584e4" });
+                }
                 btnCopiar.style.display = 'block';
                 containerFiltro.style.display = 'block';
                 renderizarResultados(resultadosExibidos);
             }
         } catch (e) {
-            divResultados.innerHTML = "<p style='color:#f38ba8;'>Erro de conexão com o CNJ.</p>";
+            divResultados.textContent = "❌ Erro de conexão com o servidor do CNJ.";
         } finally {
-            // DEVOLVE O ESTADO DO BOTÃO DE BUSCA
             btnBuscar.disabled = false;
-            btnBuscar.innerText = "Consultar Intimações";
+            btnBuscar.textContent = "Consultar Intimações";
         }
     });
 
+    // Exportação para Outlining
     btnCopiar.addEventListener('click', () => {
         if (resultadosExibidos.length === 0) return;
-
         const dataPesquisa = new Date().toLocaleDateString('pt-BR');
         const txtFinal = resultadosExibidos.map((i) => {
             const textoLimpo = higienizarEFormatador(i.texto || i.teor);
@@ -154,20 +174,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('\n\n');
 
         navigator.clipboard.writeText(txtFinal).then(() => {
-            const label = btnCopiar.innerText;
-            btnCopiar.innerText = "✓ Lista Copiada!";
-            chrome.action.setBadgeText({ text: "" }); 
-            setTimeout(() => { btnCopiar.innerText = label; }, 2000);
+            const label = btnCopiar.textContent;
+            btnCopiar.textContent = "✓ Lista Copiada!";
+            if (typeof chrome !== "undefined" && chrome.action) chrome.action.setBadgeText({ text: "" }); 
+            setTimeout(() => { btnCopiar.textContent = label; }, 2000);
         });
     });
 });
 
 window.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') {
+    if (document.visibilityState === 'hidden' && typeof chrome !== "undefined" && chrome.action) {
         chrome.action.setBadgeText({ text: "" });
     }
-});
-
-window.addEventListener('unload', () => {
-    chrome.action.setBadgeText({ text: "" });
 });
