@@ -38,8 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Eventos dos links de data
     document.getElementById('btnHoje').addEventListener('click', () => aplicarDataRapida(0));
-    document.getElementById('btn3Dias').addEventListener('click', () => aplicarDataRapida(3));
-    document.getElementById('btnSemana').addEventListener('click', () => aplicarDataRapida(7));
+    document.getElementById('btn5Dias').addEventListener('click', () => aplicarDataRapida(5));
+    document.getElementById('btn15Dias').addEventListener('click', () => aplicarDataRapida(15));
+    document.getElementById('btnMes').addEventListener('click', () => aplicarDataRapida(30));
 
     function higienizarEFormatador(htmlBruto) {
         if (!htmlBruto) return "";
