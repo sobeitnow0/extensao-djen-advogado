@@ -3,39 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        /* Variáveis de Tema (Light) */
+        /* Variáveis de Tema (Light/Dark) */
         :root {
-            --bg-body: #ffffff;
-            --text-main: #333333;
-            --color-h3: #2c3e50;
-            --color-label: #666666;
-            --bg-input: #ffffff;
-            --border-input: #cccccc;
-            --bg-filtro: #f1f1f1;
-            --border-filtro: #cccccc;
-            --bg-intimacao: #f8f9fa;
-            --bg-teor: #ffffff;
-            --border-teor: #eeeeee;
-            --color-destaque: #2c3e50;
-            --link-rapido: #3584e4;
+            --bg-body: #ffffff; --text-main: #333333; --color-h3: #2c3e50; --color-label: #666666;
+            --bg-input: #ffffff; --border-input: #cccccc; --bg-filtro: #f1f1f1; --border-filtro: #cccccc;
+            --bg-intimacao: #f8f9fa; --bg-teor: #ffffff; --border-teor: #eeeeee; --color-destaque: #2c3e50; --link-rapido: #3584e4;
         }
-
-        /* Variáveis de Tema (Dark) */
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg-body: #1e1e1e;
-                --text-main: #e0e0e0;
-                --color-h3: #6cb6ff;
-                --color-label: #aaaaaa;
-                --bg-input: #2d2d2d;
-                --border-input: #444444;
-                --bg-filtro: #252525;
-                --border-filtro: #444444;
-                --bg-intimacao: #252525;
-                --bg-teor: #1e1e1e;
-                --border-teor: #333333;
-                --color-destaque: #6cb6ff;
-                --link-rapido: #6cb6ff;
+                --bg-body: #1e1e1e; --text-main: #e0e0e0; --color-h3: #6cb6ff; --color-label: #aaaaaa;
+                --bg-input: #2d2d2d; --border-input: #444444; --bg-filtro: #252525; --border-filtro: #444444;
+                --bg-intimacao: #252525; --bg-teor: #1e1e1e; --border-teor: #333333; --color-destaque: #6cb6ff; --link-rapido: #6cb6ff;
             }
         }
 
@@ -49,7 +27,6 @@
         input:focus { border-color: #3584e4; }
         input[type="text"] { text-transform: uppercase; }
 
-        /* Atalhos de Datas */
         .datas-rapidas { font-size: 11px; margin-bottom: 4px; display: flex; gap: 8px; }
         .datas-rapidas a { color: var(--link-rapido); cursor: pointer; text-decoration: none; font-weight: bold; transition: opacity 0.2s; }
         .datas-rapidas a:hover { opacity: 0.7; text-decoration: underline; }
@@ -63,10 +40,8 @@
 
         #containerFiltro { background: var(--bg-filtro); padding: 10px; border-radius: 4px; margin-top: 10px; border: 1px dashed var(--border-filtro); }
         #resultados { max-height: 350px; overflow-y: auto; font-size: 13px; margin-top: 15px; }
-        
         .intimacao { background: var(--bg-intimacao); border-left: 4px solid #3584e4; padding: 12px; margin-bottom: 12px; border-top: 1px solid var(--border-teor); border-right: 1px solid var(--border-teor); border-bottom: 1px solid var(--border-teor); border-radius: 0 4px 4px 0; }
         .teor { font-family: 'Courier New', Courier, monospace; white-space: pre-wrap; margin-top: 8px; background: var(--bg-teor); padding: 10px; border: 1px solid var(--border-teor); max-height: 120px; overflow-y: auto; font-size: 12px; line-height: 1.4; color: var(--text-main); }
-        
         b, strong { color: var(--color-destaque); }
     </style>
 </head>
@@ -86,8 +61,9 @@
 
     <div class="datas-rapidas">
         <a id="btnHoje">[Hoje]</a>
-        <a id="btn3Dias">[Últimos 3 dias]</a>
-        <a id="btnSemana">[Última semana]</a>
+        <a id="btn5Dias">[5 dias]</a>
+        <a id="btn15Dias">[15 dias]</a>
+        <a id="btnMes">[Último mês]</a>
     </div>
 
     <div class="linha-busca">
@@ -109,7 +85,6 @@
     </div>
 
     <button id="btnCopiarTodos" class="btn-copiar">Copiar Resultados para Outlining</button>
-    
     <div id="resultados"></div>
 
     <script src="popup.js"></script>
