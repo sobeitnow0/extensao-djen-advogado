@@ -1,10 +1,8 @@
 /**
  * Buscador DJEN - Extensão de Navegador
  * Autor: Amilcar Moreira (@sobeitnow0)
- * OAB/SP: 349.457
  */
 
-// Limpa o badge por segurança assim que a extensão é aberta
 if (chrome.action) chrome.action.setBadgeText({ text: "" });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,11 +19,27 @@ document.addEventListener('DOMContentLoaded', () => {
     let resultadosGlobais = [];
     let resultadosExibidos = [];
 
-    inputOabNum.value = localStorage.getItem('djen_oab_num') || "OAB numero";
-    inputOabUf.value = localStorage.getItem('djen_oab_uf') |SP| "";
-    const hoje = new Date().toLocaleDateString('sv-SE');
-    inputInicio.value = hoje;
-    inputFim.value = hoje;
+    inputOabNum.value = localStorage.getItem('djen_oab_num') || "";
+    inputOabUf.value = localStorage.getItem('djen_oab_uf') || "";
+    
+    // --- FUNÇÃO DE DATAS RÁPIDAS ---
+    function aplicarDataRapida(diasRetroativos) {
+        const hoje = new Date();
+        const inicio = new Date();
+        inicio.setDate(hoje.getDate() - diasRetroativos);
+        
+        // sv-SE formata estritamente como YYYY-MM-DD mantendo o timezone local
+        inputInicio.value = inicio.toLocaleDateString('sv-SE');
+        inputFim.value = hoje.toLocaleDateString('sv-SE');
+    }
+
+    // Inicializa com a data de hoje
+    aplicarDataRapida(0);
+
+    // Eventos dos links de data
+    document.getElementById('btnHoje').addEventListener('click', () => aplicarDataRapida(0));
+    document.getElementById('btn3Dias').addEventListener('click', () => aplicarDataRapida(3));
+    document.getElementById('btnSemana').addEventListener('click', () => aplicarDataRapida(7));
 
     function higienizarEFormatador(htmlBruto) {
         if (!htmlBruto) return "";
@@ -57,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
     }
 
-    // --- FILTRO DINÂMICO COM ATUALIZAÇÃO DE BADGE ---
     filtroRapido.addEventListener('input', () => {
         const termo = filtroRapido.value.toLowerCase();
         resultadosExibidos = resultadosGlobais.filter(i => {
@@ -66,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return texto.includes(termo) || proc.includes(termo);
         });
         
-        // Atualiza o número no ícone da extensão em tempo real
         if (chrome.action) {
             const qtd = resultadosExibidos.length;
             chrome.action.setBadgeText({ text: qtd > 0 ? qtd.toString() : "0" });
@@ -75,17 +87,27 @@ document.addEventListener('DOMContentLoaded', () => {
         renderizarResultados(resultadosExibidos);
     });
 
-    // --- BUSCA NA API ---
     btnBuscar.addEventListener('click', async () => {
         const num = inputOabNum.value.trim();
         const uf = inputOabUf.value.trim().toUpperCase();
         const d1 = inputInicio.value;
         const d2 = inputFim.value;
 
-        localStorage.setItem('djen_oab_num', num);
-        localStorage.setItem('djen_oab_uf', uf);
+        if (!num || !uf) {
+            divResultados.innerHTML = "<p style='color:#d35400;'>⚠️ Preencha a OAB e a UF.</p>";
+            return;
+        }
+
+        if (num && uf) {
+            localStorage.setItem('djen_oab_num', num);
+            localStorage.setItem('djen_oab_uf', uf);
+        }
         
-        divResultados.innerHTML = "<p>⏳ Consultando API do CNJ...</p>";
+        // PREVENÇÃO DE DUPLO CLIQUE (UX de Carregamento)
+        btnBuscar.disabled = true;
+        btnBuscar.innerText = "⏳ Consultando...";
+        divResultados.innerHTML = "<p>Processando dados do CNJ...</p>";
+        
         btnCopiar.style.display = 'none';
         containerFiltro.style.display = 'none';
         filtroRapido.value = "";
@@ -99,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resultadosExibidos = [...resultadosGlobais];
             
             if (resultadosGlobais.length === 0) {
-                divResultados.innerHTML = "<p>Nenhuma intimação encontrada.</p>";
+                divResultados.innerHTML = "<p>Nenhuma intimação encontrada no período.</p>";
                 chrome.action.setBadgeText({ text: "" }); 
             } else {
                 chrome.action.setBadgeText({ text: resultadosGlobais.length.toString() });
@@ -110,11 +132,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderizarResultados(resultadosExibidos);
             }
         } catch (e) {
-            divResultados.innerHTML = "<p style='color:red;'>Erro na conexão.</p>";
+            divResultados.innerHTML = "<p style='color:#f38ba8;'>Erro de conexão com o CNJ.</p>";
+        } finally {
+            // DEVOLVE O ESTADO DO BOTÃO DE BUSCA
+            btnBuscar.disabled = false;
+            btnBuscar.innerText = "Consultar Intimações";
         }
     });
 
-    // --- CÓPIA DOS RESULTADOS FILTRADOS ---
     btnCopiar.addEventListener('click', () => {
         if (resultadosExibidos.length === 0) return;
 
@@ -130,13 +155,12 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.clipboard.writeText(txtFinal).then(() => {
             const label = btnCopiar.innerText;
             btnCopiar.innerText = "✓ Lista Copiada!";
-            chrome.action.setBadgeText({ text: "" }); // Zera o badge ao copiar
+            chrome.action.setBadgeText({ text: "" }); 
             setTimeout(() => { btnCopiar.innerText = label; }, 2000);
         });
     });
 });
 
-// --- LIMPEZA DO BADGE AO FECHAR O POPUP ---
 window.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') {
         chrome.action.setBadgeText({ text: "" });
