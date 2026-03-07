@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let resultadosGlobais = [];
     let resultadosExibidos = [];
 
-    inputOabNum.value = localStorage.getItem('djen_oab_num') || "349457";
-    inputOabUf.value = localStorage.getItem('djen_oab_uf') || "SP";
+    inputOabNum.value = localStorage.getItem('djen_oab_num') || "OAB numero";
+    inputOabUf.value = localStorage.getItem('djen_oab_uf') |SP| "";
     const hoje = new Date().toLocaleDateString('sv-SE');
     inputInicio.value = hoje;
     inputFim.value = hoje;
