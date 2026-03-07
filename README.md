@@ -1,43 +1,47 @@
-# ⚖️ Buscador DJEN - Extensão de Navegador
+# ⚖️ Buscador DJEN - Extensão para Advogados
 
-Uma ferramenta de produtividade jurídica de código aberto, desenvolvida para simplificar a rotina de controle de prazos. Esta extensão permite consultar o **Diário de Justiça Eletrônico Nacional (DJEN)** diretamente pela API oficial do CNJ, consolidando intimações de diversos tribunais (como TJSP e TRF3) em uma única interface minimalista.
+Uma extensão de navegador leve e poderosa (Manifest V3) projetada para otimizar a rotina jurídica. Ela consulta o **Diário de Justiça Eletrônico Nacional (DJEN)** diretamente via API pública do Conselho Nacional de Justiça (CNJ), extraindo, higienizando e formatando as intimações para fácil integração com sistemas de anotações e gestão de conhecimento (PKM).
 
-## ✨ Funcionalidades
+## ✨ Funcionalidades Principais
 
-- **Consulta via API:** Acesso direto ao endpoint do CNJ, garantindo velocidade e ignorando instabilidades de interfaces web.
-- **Filtro por Período:** Seleção nativa de data inicial e final via calendário.
-- **OAB Editável com Persistência:** Permite pesquisar qualquer OAB/UF e memoriza o último número utilizado para agilizar consultas futuras.
-- **Otimizado para Logseq/PKM:** Botão dedicado para copiar todos os resultados formatados, facilitando a colagem em ferramentas de gestão de conhecimento (Personal Knowledge Management).
-- **Foco em Privacidade:** A extensão não possui servidores intermediários; a comunicação ocorre exclusivamente entre o seu navegador e o servidor público do CNJ.
+- **Consulta Direta via API:** Conexão nativa com a base de dados do CNJ, eliminando a necessidade de *web scraping* lento ou resolução de captchas.
+- **Exportação Estruturada (Outlining):** Copia os resultados em formato de listas aninhadas (blocos), ideal para organização no Logseq, Obsidian ou Notion.
+- **Higienização e Destaque:** Remove automaticamente tags HTML residuais e destaca em negrito palavras críticas como **Prazo**, **Liminar**, **Tutela**, **Penhora** e **Multa**.
+- **Filtro Dinâmico Inteligente:** Filtre as intimações na própria interface. O ícone da extensão (badge) atualiza em tempo real mostrando a quantidade de resultados visíveis.
+- **Atalhos de Período e Prevenção de Spam:** Botões rápidos para consultar `[Hoje]`, `[Últimos 3 dias]` e `[Última semana]`, além de trava anti-duplo clique durante as requisições.
+- **Dark Mode Nativo:** A interface se adapta automaticamente ao tema escuro ou claro do seu sistema operacional.
+
+## 🏛️ Abrangência e Funcionamento
+
+Esta extensão consome os dados do **Barramento de Serviços do Poder Judiciário (CNJ)**. O sistema captura qualquer publicação centralizada pelo CNJ, abrangendo:
+
+- **Tribunais Estaduais (TJs):** Inclui o **TJSP** (sistemas e-SAJ e Eproc) e demais tribunais estaduais integrados.
+- **Tribunais Federais (TRFs):** Cobertura do **TRF3** e outros tribunais federais.
+- **Justiça do Trabalho (TRTs):** Captura de publicações trabalhistas migradas para a base nacional.
 
 ## 🚀 Como Instalar (Modo Desenvolvedor)
 
-1. Faça o **Download** ou clone este repositório `sobeitnow0/extensao-djen-advogado`.
-2. No seu navegador (Chrome, Brave, Edge ou Opera), acesse a página de extensões: `chrome://extensions/`.
-3. Ative o **Modo do Desenvolvedor** (Developer mode) no canto superior direito.
-4. Clique no botão **Carregar sem compactação** (Load unpacked).
-5. Selecione a pasta onde você salvou os arquivos deste projeto.
-6. Fixe a extensão na sua barra de ferramentas para acesso rápido.
+### Para Google Chrome, Brave e Edge
+1. Faça o clone deste repositório ou baixe o arquivo ZIP:
+   `git clone https://github.com/sobeitnow0/extensao-djen-advogado.git`
+2. No seu navegador, acesse a página de extensões (ex: `chrome://extensions/`).
+3. Ative o **"Modo do desenvolvedor"** (canto superior direito).
+4. Clique em **"Carregar sem compactação"** e selecione a pasta do projeto.
 
-## 🛠️ Tecnologias
+### Para Mozilla Firefox
+1. Faça o clone deste repositório ou baixe o arquivo ZIP.
+2. Dentro da pasta do projeto, apague o arquivo `manifest.json` (que é o padrão do Chrome).
+3. Renomeie o arquivo `manifest-firefox.json` para `manifest.json`.
+4. Abra o Firefox e acesse a página de depuração: `about:debugging`
+5. No menu lateral, clique em **"Este Firefox"**.
+6. Clique em **"Carregar um complemento temporário..."** e selecione o novo arquivo `manifest.json`.
 
-- **JavaScript (ES6+):** Consumo de API assíncrona.
-- **HTML5 / CSS3:** Interface responsiva e limpa.
-- **Manifest v3:** Seguindo os padrões mais recentes de segurança e desempenho para extensões.
+## 📋 Formato de Exportação (Outlining)
 
-## ⚖️ Abrangência e Funcionamento
+Ao clicar no botão "Copiar Resultados para Outlining", as intimações filtradas são enviadas para a sua área de transferência formatadas em blocos aninhados (bullet points) prontos para colar. A estrutura obedece a seguinte hierarquia:
 
-Esta extensão consome os dados do **Barramento de Serviços do Poder Judiciário (CNJ)**. Diferente de buscadores que realizam *web scraping* em diários locais, este projeto acessa a fonte primária unificada.
-
-- **Tribunais Estaduais (TJs):** Inclui o **TJSP** (tanto sistemas e-SAJ quanto Eproc) e demais tribunais estaduais integrados ao portal de comunicações processuais.
-- **Tribunais Federais (TRFs):** Cobertura completa do **TRF3** e outros tribunais federais que utilizam o sistema de transmissão de dados ao DJEN.
-- **Justiça do Trabalho (TRTs):** Captura publicações de tribunais trabalhistas que já migraram suas intimações para a base nacional.
-- **Unificação Nacional:** O objetivo é a cobertura de 100% dos juízos do Brasil, conforme as resoluções de modernização do CNJ para o Diário de Justiça Eletrônico Nacional.
-
-## 📝 Licença
-
-Este projeto está sob a licença MIT. Sinta-se à vontade para utilizar, modificar e contribuir.
+* **Bloco Principal (Pai):** Contém os metadados essenciais na mesma linha (Número do Processo formatado, Sigla do Tribunal, Data da pesquisa e o cabeçalho/identificação da publicação).
+  * **Bloco Recuado (Filho):** Contém o teor completo da intimação higienizado, com o espaçamento corrigido e os termos processuais críticos (como prazos) automaticamente destacados em negrito.
 
 ---
 **Autor:** Amilcar Moreira ([@sobeitnow0](https://github.com/sobeitnow0))
-*Advogado (OAB/SP 349.457)*
