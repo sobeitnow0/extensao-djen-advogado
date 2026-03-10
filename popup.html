@@ -2,90 +2,196 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <title>Buscador DJEN</title>
     <style>
-        /* Variáveis de Tema (Light/Dark) */
+        /* Cores Nativas e Limpas (Sem azuis pesados no fundo) */
         :root {
-            --bg-body: #ffffff; --text-main: #333333; --color-h3: #2c3e50; --color-label: #666666;
-            --bg-input: #ffffff; --border-input: #cccccc; --bg-filtro: #f1f1f1; --border-filtro: #cccccc;
-            --bg-intimacao: #f8f9fa; --bg-teor: #ffffff; --border-teor: #eeeeee; --color-destaque: #2c3e50; --link-rapido: #3584e4;
+            --bg-body: #f9f9fb;
+            --bg-panel: #ffffff;
+            --text-main: #202124;
+            --text-muted: #5f6368;
+            --border-light: #dadce0;
+            
+            --primary: #1a73e8; /* Azul limpo estilo Google */
+            --primary-hover: #1557b0;
+            --btn-secondary: #f1f3f4;
+            --btn-secondary-hover: #e8eaed;
+            --btn-secondary-text: #202124;
+            
+            --success: #1e8e3e;
+            --success-hover: #188038;
+            
+            --alert-bg: #fef7e0;
+            --alert-text: #b06000;
+            --alert-border: #fbbc04;
+            
+            --badge-bg: #e8f0fe;
+            --badge-text: #1a73e8;
         }
+
+        /* Dark Mode Neutro (Cinza escuro, não azulado) */
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg-body: #1e1e1e; --text-main: #e0e0e0; --color-h3: #6cb6ff; --color-label: #aaaaaa;
-                --bg-input: #2d2d2d; --border-input: #444444; --bg-filtro: #252525; --border-filtro: #444444;
-                --bg-intimacao: #252525; --bg-teor: #1e1e1e; --border-teor: #333333; --color-destaque: #6cb6ff; --link-rapido: #6cb6ff;
+                --bg-body: #202124;
+                --bg-panel: #292a2d;
+                --text-main: #e8eaed;
+                --text-muted: #9aa0a6;
+                --border-light: #5f6368;
+                
+                --primary: #8ab4f8; 
+                --primary-hover: #aecbfa;
+                --btn-secondary: #3c4043;
+                --btn-secondary-hover: #5f6368;
+                --btn-secondary-text: #e8eaed;
+                
+                --success: #81c995;
+                --success-hover: #a8dab5;
+                
+                --alert-bg: #4d3800;
+                --alert-text: #fde293;
+                --alert-border: #664d00;
+                
+                --badge-bg: #3c4043;
+                --badge-text: #8ab4f8;
             }
         }
 
-        body { width: 450px; padding: 15px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; }
-        h3 { margin-top: 0; color: var(--color-h3); border-bottom: 2px solid #3584e4; padding-bottom: 8px; margin-bottom: 15px; font-size: 18px; }
-        .linha-busca { display: flex; gap: 10px; margin-bottom: 12px; }
-        .coluna { display: flex; flex-direction: column; flex: 3; }
-        .coluna-curta { display: flex; flex-direction: column; width: 80px; }
-        label { font-size: 11px; color: var(--color-label); margin-bottom: 4px; font-weight: bold; text-transform: uppercase; }
-        input { padding: 8px; border: 1px solid var(--border-input); background: var(--bg-input); color: var(--text-main); border-radius: 4px; font-size: 13px; outline: none; color-scheme: light dark; }
-        input:focus { border-color: #3584e4; }
-        input[type="text"] { text-transform: uppercase; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            width: 420px;
+            margin: 0;
+            padding: 16px;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+        }
 
-        .datas-rapidas { font-size: 11px; margin-bottom: 4px; display: flex; gap: 8px; }
-        .datas-rapidas a { color: var(--link-rapido); cursor: pointer; text-decoration: none; font-weight: bold; transition: opacity 0.2s; }
-        .datas-rapidas a:hover { opacity: 0.7; text-decoration: underline; }
+        h2 {
+            margin: 0 0 16px 0;
+            font-size: 16px;
+            color: var(--primary);
+            text-align: center;
+        }
 
-        .btn-principal { padding: 10px; background: #3584e4; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; transition: all 0.2s; font-size: 14px; }
-        .btn-principal:hover:not(:disabled) { background: #1c71d8; }
-        .btn-principal:disabled { opacity: 0.7; cursor: not-allowed; }
+        .form-row { display: flex; gap: 8px; margin-bottom: 12px; }
+
+        input, select {
+            width: 100%; padding: 8px 12px; background-color: var(--bg-panel); color: var(--text-main);
+            border: 1px solid var(--border-light); border-radius: 4px; font-size: 13px; outline: none; box-sizing: border-box;
+        }
+        input:focus, select:focus { border-color: var(--primary); }
+
+        .btn-group { display: flex; gap: 6px; margin-bottom: 16px; }
+        .btn-group button {
+            flex: 1; padding: 6px; font-size: 12px; background-color: var(--bg-panel); color: var(--text-main);
+            border: 1px solid var(--border-light); border-radius: 4px; cursor: pointer;
+        }
+        .btn-group button:hover { background-color: var(--btn-secondary); }
+
+        .btn-main {
+            width: 100%; padding: 10px; background-color: var(--primary); color: #fff; border: none;
+            border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; margin-bottom: 12px;
+        }
+        .btn-main:hover { background-color: var(--primary-hover); }
+        .btn-main:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* Botões de Ação Secundários */
+        #actionContainer, #containerFiltro { display: none; gap: 8px; margin-bottom: 12px; }
+        #containerFiltro { flex-direction: column; gap: 8px; }
+
+        .btn-secondary {
+            flex: 1; padding: 8px; border: none; border-radius: 4px; font-size: 13px; font-weight: bold;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        #btnCopiarTodos { background-color: var(--success); color: #111; } /* Texto escuro no botão verde para contraste */
+        #btnCopiarTodos:hover { background-color: var(--success-hover); }
+        #btnDownloadTxt { background-color: var(--btn-secondary); color: var(--btn-secondary-text); border: 1px solid var(--border-light); }
+        #btnDownloadTxt:hover { background-color: var(--btn-secondary-hover); }
+
+        /* Contador de Ocorrências (Agora só aparece quando tem dado!) */
+        #contadorOcorrencias {
+            display: none; /* Apenas 'none'. Sem conflitos! */
+            background-color: var(--alert-bg); color: var(--alert-text); border: 1px solid var(--alert-border);
+            padding: 8px 12px; border-radius: 4px; font-size: 13px; font-weight: bold; margin-bottom: 12px;
+            align-items: center; gap: 8px;
+        }
+
+        #resultados { display: flex; flex-direction: column; gap: 10px; max-height: 350px; overflow-y: auto; }
+
+        /* Cards mais sutis */
+        .intimacao-card {
+            background-color: var(--bg-panel); border: 1px solid var(--border-light);
+            border-radius: 6px; padding: 12px;
+        }
         
-        .btn-copiar { padding: 10px; background: #2da15f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; display: none; transition: background 0.2s; }
-        .btn-copiar:hover { background: #24884f; }
+        .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+        
+        .badge { padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+        .badge-tribunal { background-color: var(--badge-bg); color: var(--badge-text); }
+        .badge-prazo { background-color: var(--alert-bg); color: var(--alert-text); border: 1px solid var(--alert-border); }
+        
+        .proc-numero { font-size: 13px; font-weight: bold; }
+        .data-disp { font-size: 12px; color: var(--text-muted); margin-left: auto; }
 
-        #containerFiltro { background: var(--bg-filtro); padding: 10px; border-radius: 4px; margin-top: 10px; border: 1px dashed var(--border-filtro); }
-        #resultados { max-height: 350px; overflow-y: auto; font-size: 13px; margin-top: 15px; }
-        .intimacao { background: var(--bg-intimacao); border-left: 4px solid #3584e4; padding: 12px; margin-bottom: 12px; border-top: 1px solid var(--border-teor); border-right: 1px solid var(--border-teor); border-bottom: 1px solid var(--border-teor); border-radius: 0 4px 4px 0; }
-        .teor { font-family: 'Courier New', Courier, monospace; white-space: pre-wrap; margin-top: 8px; background: var(--bg-teor); padding: 10px; border: 1px solid var(--border-teor); max-height: 120px; overflow-y: auto; font-size: 12px; line-height: 1.4; color: var(--text-main); }
-        b, strong { color: var(--color-destaque); }
+        .teor { font-size: 13px; line-height: 1.5; white-space: pre-wrap; color: var(--text-main); }
+
+        .disclaimer { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 16px; border-top: 1px solid var(--border-light); padding-top: 8px; }
+
+        .loader-container { display: none; padding: 20px; text-align: center; color: var(--text-muted); font-size: 13px; }
+        .spinner { width: 20px; height: 20px; border: 3px solid var(--border-light); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 10px auto; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 10px; }
     </style>
 </head>
 <body>
-    <h3>⚖️ DJEN - Buscador Nacional</h3>
-    
-    <div class="linha-busca">
-        <div class="coluna">
-            <label>OAB (Apenas números):</label>
-            <input type="number" id="oabNum" placeholder="Ex: 123456">
-        </div>
-        <div class="coluna-curta">
-            <label>UF:</label>
-            <input type="text" id="oabUf" placeholder="UF" maxlength="2">
-        </div>
+
+    <h2>Buscador DJEN</h2>
+
+    <div class="form-row">
+        <input type="text" id="oabNum" placeholder="Nº OAB (Ex: 123456)" autocomplete="off">
+        <input type="text" id="oabUf" placeholder="UF (Ex: SP)" maxlength="2" autocomplete="off" style="width: 80px;">
     </div>
 
-    <div class="datas-rapidas">
-        <a id="btnHoje">[Hoje]</a>
-        <a id="btn5Dias">[5 dias]</a>
-        <a id="btn15Dias">[15 dias]</a>
-        <a id="btnMes">[Último mês]</a>
+    <div class="form-row">
+        <input type="date" id="dataInicio" title="Data Inicial">
+        <input type="date" id="dataFim" title="Data Final">
     </div>
 
-    <div class="linha-busca">
-        <div class="coluna">
-            <label>Data Inicial:</label>
-            <input type="date" id="dataInicio">
-        </div>
-        <div class="coluna">
-            <label>Data Final:</label>
-            <input type="date" id="dataFim">
-        </div>
-    </div>
-    
-    <button id="btnBuscar" class="btn-principal">Consultar Intimações</button>
-    
-    <div id="containerFiltro" style="display:none;">
-        <label>🔍 Filtrar nos resultados (Busca Dinâmica):</label>
-        <input type="text" id="filtroRapido" placeholder="Digite para filtrar instantaneamente..." style="width: 100%; box-sizing: border-box; margin-top:5px; text-transform: none;">
+    <div class="btn-group">
+        <button id="btnHoje">Hoje</button>
+        <button id="btn5Dias">5 Dias</button>
+        <button id="btn15Dias">15 Dias</button>
+        <button id="btnMes">1 Mês</button>
     </div>
 
-    <button id="btnCopiarTodos" class="btn-copiar">Copiar Resultados para Outlining</button>
+    <button id="btnBuscar" class="btn-main">Consultar Intimações</button>
+
+    <div id="actionContainer">
+        <button id="btnCopiarTodos" class="btn-secondary">📋 Copiar Resultados</button>
+        <button id="btnDownloadTxt" class="btn-secondary">💾 Baixar em .txt</button>
+    </div>
+
+    <div id="containerFiltro">
+        <select id="filtroTribunal">
+            <option value="">🏛️ Todos os Tribunais</option>
+        </select>
+        <input type="text" id="filtroRapido" placeholder="🔍 Filtrar por palavra-chave...">
+    </div>
+
+    <div id="contadorOcorrencias"></div>
+
+    <div id="loader" class="loader-container">
+        <div class="spinner"></div>
+        Extraindo dados do CNJ...
+    </div>
+
     <div id="resultados"></div>
+
+    <div class="disclaimer">
+        ⚠️ Resultados informativos. Confirme prazos no sistema oficial.
+    </div>
 
     <script src="popup.js"></script>
 </body>
