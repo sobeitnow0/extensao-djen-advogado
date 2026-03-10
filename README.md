@@ -29,9 +29,7 @@ Para utilizar a versão mais recente direto do código-fonte:
 4. Clique em **"Carregar sem compactação"** e selecione a pasta com os arquivos (`manifest.json` e cia).
 
 **No Firefox:**
-1. Acesse `about:debugging#/runtime/this-firefox`.
-2. Clique em **"Carregar um complemento temporário..."**.
-3. Selecione o arquivo `manifest-firefox.json` (ou gere o ZIP via terminal e faça o upload).
+1. https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/
 
 ---
 *Ferramenta Open-Source desenvolvida para otimizar a rotina de triagem na advocacia.*
