@@ -1,49 +1,37 @@
-# ⚖️ Buscador DJEN - Extensão para Advogados
+# ⚖️ Buscador DJEN - Extensão para Navegador
 
-Uma extensão de navegador leve e poderosa (Manifest V3) projetada para otimizar a rotina jurídica. Ela consulta o **Diário de Justiça Eletrônico Nacional (DJEN)** diretamente via API pública do Conselho Nacional de Justiça (CNJ), extraindo, higienizando e formatando as intimações para fácil integração com sistemas de anotações e gestão de conhecimento (PKM).
+Uma ferramenta de jurimetria e acompanhamento processual focada em agilidade, segurança e design utilitário. Desenvolvida para consultar o Diário de Justiça Eletrônico Nacional (DJEN) diretamente do navegador, sem intermediários.
 
-## ✨ Funcionalidades Principais
+## 🚀 Novidades da Versão 1.3.0
 
-- **Consulta Direta via API:** Conexão nativa com a base de dados do CNJ, eliminando a necessidade de *web scraping* lento ou resolução de captchas.
-- **Exportação Estruturada (Outlining):** Copia os resultados em formato de listas aninhadas (blocos), ideal para organização no Logseq, Obsidian ou Notion.
-- **Higienização e Destaque:** Remove automaticamente tags HTML residuais e destaca em negrito palavras críticas como **Prazo**, **Liminar**, **Tutela**, **Penhora** e **Multa**.
-- **Filtro Dinâmico Inteligente:** Filtre as intimações na própria interface. O ícone da extensão (badge) atualiza em tempo real mostrando a quantidade de resultados visíveis.
-- **Atalhos de Período e Prevenção de Spam:** Botões rápidos para consultar `[Hoje]`, `[Últimos 3 dias]` e `[Última semana]`, além de trava anti-duplo clique durante as requisições.
-- **Dark Mode Nativo:** A interface se adapta automaticamente ao tema escuro ou claro do seu sistema operacional.
+A extensão foi completamente redesenhada para oferecer a experiência de um software jurídico de alto padrão, focando em velocidade de leitura e triagem visual:
 
-## 🏛️ Abrangência e Funcionamento
+* **Design System Renovado:** Interface em formato de cards flutuantes, separação visual clara e tipografia otimizada para leituras longas.
+* **Badges Visuais e Contador de Prazos:** A ferramenta agora faz uma varredura inteligente nos resultados. Identifica intimações que contêm a palavra "prazo", emite um alerta global (⚠️) e destaca o card do processo para atenção imediata.
+* **Filtros Dinâmicos:** Novo menu suspenso (dropdown) gerado em tempo real que permite isolar e ler intimações de apenas um Tribunal específico (ex: apenas STJ ou TJSP).
+* **Exportação Otimizada (.txt):** Além da cópia rápida para a área de transferência, um novo botão gera um arquivo de texto local estruturado e limpo, pronto para ser importado em sistemas de *outlining* ou gestão de casos, contendo a data oficial de disponibilização em destaque.
 
-Esta extensão consome os dados do **Barramento de Serviços do Poder Judiciário (CNJ)**. O sistema captura qualquer publicação centralizada pelo CNJ, abrangendo:
+## 🛠️ Principais Funcionalidades
 
-- **Tribunais Estaduais (TJs):** Inclui o **TJSP** (sistemas e-SAJ e Eproc) e demais tribunais estaduais integrados.
-- **Tribunais Federais (TRFs):** Cobertura do **TRF3** e outros tribunais federais.
-- **Justiça do Trabalho (TRTs):** Captura de publicações trabalhistas migradas para a base nacional.
+* **Consulta em 1 Clique:** Atalhos dinâmicos (Hoje, 5 dias, 15 dias e 1 Mês) que preenchem as datas e executam a busca instantaneamente.
+* **Dark Mode Nativo:** Interface que se adapta automaticamente ao tema do sistema operacional do usuário.
+* **Privacidade e Segurança:** Funciona localmente. Não coleta telemetria, não exige cadastro e utiliza sanitização rigorosa de dados (DOMParser) para evitar injeções de código. Comunicação feita exclusivamente com a API oficial do CNJ.
+* **Suporte Universal:** Código compatível e aprovado para rodar nativamente tanto em motores Chromium (Google Chrome, Edge, Brave) quanto na engine Gecko (Mozilla Firefox).
 
-## 🚀 Como Instalar (Modo Desenvolvedor)
+## 📦 Como Instalar (Versões de Desenvolvimento)
 
-### Para Google Chrome, Brave e Edge
-1. Faça o clone deste repositório ou baixe o arquivo ZIP:
-   `git clone https://github.com/sobeitnow0/extensao-djen-advogado.git`
-2. No seu navegador, acesse a página de extensões (ex: `chrome://extensions/`).
-3. Ative o **"Modo do desenvolvedor"** (canto superior direito).
-4. Clique em **"Carregar sem compactação"** e selecione a pasta do projeto.
+Para utilizar a versão mais recente direto do código-fonte:
 
-### Para Mozilla Firefox
-1. https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/
-   ou 
-1. Faça o clone deste repositório ou baixe o arquivo ZIP.
-2. Dentro da pasta do projeto, apague o arquivo `manifest.json` (que é o padrão do Chrome).
-3. Renomeie o arquivo `manifest-firefox.json` para `manifest.json`.
-4. Abra o Firefox e acesse a página de depuração: `about:debugging`
-5. No menu lateral, clique em **"Este Firefox"**.
-6. Clique em **"Carregar um complemento temporário..."** e selecione o novo arquivo `manifest.json`.
+**No Chrome / Edge / Brave:**
+1. Baixe os arquivos do repositório.
+2. Acesse `chrome://extensions/` no seu navegador.
+3. Ative o **Modo do desenvolvedor** no canto superior direito.
+4. Clique em **"Carregar sem compactação"** e selecione a pasta com os arquivos (`manifest.json` e cia).
 
-## 📋 Formato de Exportação (Outlining)
-
-Ao clicar no botão "Copiar Resultados para Outlining", as intimações filtradas são enviadas para a sua área de transferência formatadas em blocos aninhados (bullet points) prontos para colar. A estrutura obedece a seguinte hierarquia:
-
-* **Bloco Principal (Pai):** Contém os metadados essenciais na mesma linha (Número do Processo formatado, Sigla do Tribunal, Data da pesquisa e o cabeçalho/identificação da publicação).
-  * **Bloco Recuado (Filho):** Contém o teor completo da intimação higienizado, com o espaçamento corrigido e os termos processuais críticos (como prazos) automaticamente destacados em negrito.
+**No Firefox:**
+1. Acesse `about:debugging#/runtime/this-firefox`.
+2. Clique em **"Carregar um complemento temporário..."**.
+3. Selecione o arquivo `manifest-firefox.json` (ou gere o ZIP via terminal e faça o upload).
 
 ---
-**Autor:** Amilcar Moreira ([@sobeitnow0](https://github.com/sobeitnow0))
+*Ferramenta Open-Source desenvolvida para otimizar a rotina de triagem na advocacia.*
