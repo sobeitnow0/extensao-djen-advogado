@@ -1,25 +1,33 @@
-# ⚖️ Buscador DJEN - Extensão para Navegador
+⚖️ Buscador DJEN (v3.3.0)
+Uma extensão de navegador minimalista, segura e independente para consulta rápida de intimações no Diário da Justiça Eletrônico Nacional (DJEN) via API pública do CNJ. Projetada com a estética Adwaita (GNOME Style) para garantir uma leitura limpa, livre de distrações e altamente focada na produtividade jurídica.
 
-Uma ferramenta de jurimetria e acompanhamento processual focada em agilidade, segurança e design utilitário. Desenvolvida para consultar o Diário de Justiça Eletrônico Nacional (DJEN) diretamente do navegador, sem intermediários.
+🚀 O que há de novo na Versão 3.3.0?
+A extensão passou por uma grande reestruturação para incluir uma ferramenta indispensável para a advocacia: Cálculo de Prazos Processuais automatizado e 100% Offline.
 
-🚀 Atualização v1.9.0 - Filtros Personalizados e Nova Interface
-Nesta versão, o Buscador DJEN ganha ferramentas avançadas de produtividade e controle total para a sua triagem de prazos.
+🧠 Motor Forense Offline: Abandonamos a dependência de APIs de terceiros para buscar feriados. A extensão agora possui um motor astronômico embutido que calcula automaticamente a Páscoa e todos os feriados móveis (Carnaval, Quarta de Cinzas, Quinta de Endoenças, Sexta-Feira Santa e Corpus Christi), além dos feriados fixos da Lei 5.010/66.
 
-O que há de novo:
+📅 Regras Estritas do CPC e CPP:
 
-Dicionário Personalizado (⚙️): Você decide o que é prazo. Cadastre seus próprios termos de alerta e a extensão filtrará apenas eles.
+CPC (Dias Úteis): Pula finais de semana, feriados nacionais/forenses e aplica automaticamente a suspensão de prazos do Recesso Forense (20/12 a 20/01).
 
-Leitura Limpa (Acordeão): A lista agora é compacta. Clique no cartão do processo apenas quando quiser ler a íntegra do despacho.
+CPP (Dias Corridos): Contagem ininterrupta, mas ajusta automaticamente o início e o vencimento caso caiam em dias não úteis.
 
-Controle de "Lido": Cartões clicados ou copiados ficam levemente "apagados" para você saber exatamente onde parou.
+🛡️ Alerta de Confirmação: Ao calcular um prazo, um resumo das datas (Publicação, Início e Vencimento) é exibido para sua conferência. Você pode inserir suspensões locais (ex: feriados municipais ou instabilidade no PJe) manualmente.
 
-Máscara CNJ: Números de processo agora são formatados automaticamente com o padrão oficial.
+📋 Exportação Inteligente: Os prazos confirmados são atrelados à respectiva intimação. Ao exportar em .txt ou clicar no novo botão "Copiar" (Individual ou Global), o resumo do cálculo é anexado perfeitamente formatado ao final do texto da publicação.
 
-Cópia Individual (📋): Copie o resumo estruturado de apenas uma intimação específica direto para a área de transferência.
 
-Marca-Texto Inteligente: As palavras do seu dicionário ganham destaque amarelo automático no meio do texto.
+✨ Funcionalidades Principais
+Busca Direta: Consulta via OAB e UF diretamente na API do PJe/CNJ.
 
-Preenchimento Rápido: Novo botão nas configurações para carregar uma lista de termos jurídicos mais comuns com um clique.
+Leitura Limpa (Limpeza Editorial): Remove marcações HTML desnecessárias, corrige espaçamentos excessivos, padroniza termos (ex: "artigo" para "art.", "parágrafo" para "§") e aplica formatação natural (Capitalized words).
+
+Filtros Dinâmicos: Filtre rapidamente os resultados recebidos por texto, número do processo ou Tribunal.
+
+Design Adwaita: Interface moderna, suporte automático a Tema Claro/Escuro (Dark Mode) do sistema operativo e foco na legibilidade (Zero innerHTML inseguro na renderização de resultados).
+
+Ações em Massa: Expanda ou recolha todas as intimações, exporte a lista completa para um arquivo .txt ou copie tudo para a área de transferência com um clique.
+
 
 ## 📦 Como Instalar (Versões de Desenvolvimento)
 
