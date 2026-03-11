@@ -1,507 +1,399 @@
 /**
- * Buscador DJEN - Extensão de Navegador v1.9.0
- * Funcionalidade de Caixa de Entrada (Lido/Não Lido) e Ajuda Embutida
+ * Buscador DJEN v3.3.0
+ * Botão de Cópia Individual + Unificação da Exportação
  */
 
-if (typeof chrome !== "undefined" && chrome.action) {
-    chrome.action.setBadgeText({ text: "" });
+function obterFeriadosForenses(ano) {
+    const format = (data) => data.toISOString().split('T')[0];
+    const addDias = (data, dias) => {
+        const nd = new Date(data);
+        nd.setDate(nd.getDate() + dias);
+        return nd;
+    };
+
+    const a = ano % 19, b = Math.floor(ano / 100), c = ano % 100;
+    const d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
+    const g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+    const i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7;
+    const m = Math.floor((a + 11 * h + 22 * l) / 451);
+    const mes = Math.floor((h + l - 7 * m + 114) / 31);
+    const dia = ((h + l - 7 * m + 114) % 31) + 1;
+    
+    const pascoa = new Date(ano, mes - 1, dia, 12, 0, 0);
+
+    const feriados = [
+        `${ano}-01-01`, `${ano}-04-21`, `${ano}-05-01`, `${ano}-08-11`, 
+        `${ano}-09-07`, `${ano}-10-12`, `${ano}-11-01`, `${ano}-11-02`, 
+        `${ano}-11-15`, `${ano}-12-08`, `${ano}-12-25`,
+        format(addDias(pascoa, -47)), format(addDias(pascoa, -46)), 
+        format(addDias(pascoa, -3)),  format(addDias(pascoa, -2)),  
+        format(addDias(pascoa, 60))
+    ];
+
+    return feriados;
+}
+
+function isRecessoForense(dataObj) {
+    const m = dataObj.getMonth();
+    const d = dataObj.getDate();
+    if (m === 11 && d >= 20) return true; 
+    if (m === 0 && d <= 20) return true;  
+    return false;
+}
+
+function calcularProcessual(dataDispStr, dias, tipoContagem, suspensoesExtras) {
+    const dataObj = new Date(dataDispStr + 'T12:00:00');
+    const ano = dataObj.getFullYear();
+    const listaFeriados = [...obterFeriadosForenses(ano), ...obterFeriadosForenses(ano + 1)];
+
+    function isDiaUtil(d) {
+        const diaSemana = d.getDay();
+        if (diaSemana === 0 || diaSemana === 6) return false;
+        
+        const anoStr = d.getFullYear();
+        const mesStr = String(d.getMonth() + 1).padStart(2, '0');
+        const diaStr = String(d.getDate()).padStart(2, '0');
+        if (listaFeriados.includes(`${anoStr}-${mesStr}-${diaStr}`)) return false;
+        
+        return true;
+    }
+
+    let data = new Date(dataDispStr + 'T12:00:00'); 
+    
+    data.setDate(data.getDate() + 1);
+    while (!isDiaUtil(data) || (tipoContagem === 'cpc' && isRecessoForense(data))) { 
+        data.setDate(data.getDate() + 1); 
+    }
+    const strPub = data.toLocaleDateString('pt-BR');
+    
+    data.setDate(data.getDate() + 1);
+    while (!isDiaUtil(data) || (tipoContagem === 'cpc' && isRecessoForense(data))) { 
+        data.setDate(data.getDate() + 1); 
+    }
+    const strInicio = data.toLocaleDateString('pt-BR');
+    
+    let diasAdicionados = 1;
+    
+    while (diasAdicionados < dias) {
+        data.setDate(data.getDate() + 1);
+        if (tipoContagem === 'cpc') {
+            if (isDiaUtil(data) && !isRecessoForense(data)) diasAdicionados++;
+        } else if (tipoContagem === 'cpp') {
+            diasAdicionados++;
+        }
+    }
+    
+    if (suspensoesExtras > 0) {
+        let compensados = 0;
+        while(compensados < suspensoesExtras) {
+            data.setDate(data.getDate() + 1);
+            if (tipoContagem === 'cpc') {
+                if (isDiaUtil(data) && !isRecessoForense(data)) compensados++;
+            } else {
+                compensados++;
+            }
+        }
+    }
+    
+    while (!isDiaUtil(data) || (tipoContagem === 'cpc' && isRecessoForense(data))) { 
+        data.setDate(data.getDate() + 1); 
+    }
+    
+    return { pub: strPub, inicio: strInicio, fatal: data.toLocaleDateString('pt-BR') };
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const inputOabNum = document.getElementById('oabNum');
-    const inputOabUf = document.getElementById('oabUf');
-    const inputInicio = document.getElementById('dataInicio');
-    const inputFim = document.getElementById('dataFim');
-    const btnBuscar = document.getElementById('btnBuscar');
-    const divResultados = document.getElementById('resultados');
-    const btnCopiar = document.getElementById('btnCopiarTodos');
-    const btnDownload = document.getElementById('btnDownloadTxt');
-    const actionContainer = document.getElementById('actionContainer');
-    const filtroRapido = document.getElementById('filtroRapido');
-    const filtroTribunal = document.getElementById('filtroTribunal');
-    const containerFiltro = document.getElementById('containerFiltro');
-    const loader = document.getElementById('loader');
-    const contador = document.getElementById('contadorOcorrencias');
-    const btnToggleDicionario = document.getElementById('btnToggleDicionario');
-    const btnExpandirTodos = document.getElementById('btnExpandirTodos');
+    const ids = ['oabNum', 'oabUf', 'dataInicio', 'dataFim', 'btnBuscar', 'resultados', 'btnCopiarTodos', 'btnDownloadTxt', 'filtroRapido', 'filtroTribunal', 'containerFiltro', 'skeletonLoader', 'btnExpandirTodos', 'btnExportarMenu', 'dropdownExportar', 'contadorResultados'];
+    const el = {}; ids.forEach(id => el[id] = document.getElementById(id));
 
-    // Configurações e Ajuda
-    const btnAbrirConfig = document.getElementById('btnAbrirConfig');
-    const btnFecharConfig = document.getElementById('btnFecharConfig');
-    const btnSalvarConfig = document.getElementById('btnSalvarConfig');
-    const btnCarregarPadrao = document.getElementById('btnCarregarPadrao');
-    const painelConfig = document.getElementById('painelConfig');
-    const txtTermosCustom = document.getElementById('txtTermosCustom');
-    const areaBusca = document.getElementById('areaBusca');
+    let resultadosGlobais = [], resultadosExibidos = [], todosExpandidos = false;
 
-    let resultadosGlobais = [];
-    let resultadosExibidos = [];
-    let filtroDicionarioAtivo = false;
-    let todosExpandidos = false;
+    el.oabNum.value = localStorage.getItem('djen_oab_num') || "";
+    el.oabUf.value = localStorage.getItem('djen_oab_uf') || "";
 
-    let termosAtivos = [];
-    let regexTermosCriticos = null;
+    const setDate = (d) => {
+        const h = new Date(); const s = new Date(); s.setDate(h.getDate() - d);
+        el.dataInicio.value = s.toISOString().split('T')[0];
+        el.dataFim.value = h.toISOString().split('T')[0];
+    };
+    setDate(0);
 
-    function compilarDicionario() {
-        const customString = localStorage.getItem('djen_termos_custom') || "";
-        txtTermosCustom.value = customString;
+    document.getElementById('btnHoje').onclick = () => { setDate(0); el.btnBuscar.click(); };
+    document.getElementById('btn5Dias').onclick = () => { setDate(5); el.btnBuscar.click(); };
+    document.getElementById('btnMes').onclick = () => { setDate(30); el.btnBuscar.click(); };
 
-        termosAtivos = customString.split(',')
-            .map(t => t.trim().toLowerCase())
-            .filter(t => t.length > 0);
+    el.btnExportarMenu.onclick = (e) => { e.stopPropagation(); el.dropdownExportar.classList.toggle('show'); };
+    window.onclick = () => el.dropdownExportar.classList.remove('show');
 
-        termosAtivos = [...new Set(termosAtivos)];
-
-        if (termosAtivos.length > 0) {
-            const termosEscapados = termosAtivos.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-            regexTermosCriticos = new RegExp(`(${termosEscapados.join('|')})`, 'gi');
-        } else {
-            regexTermosCriticos = null;
-        }
+    function cleanText(html) {
+        if (!html) return "";
+        let t = new DOMParser().parseFromString(html, 'text/html').body.textContent || html.replace(/<[^>]*>?/gm, '');
+        t = t.toLowerCase();
+        t = t.replace(/(^\s*\w|[.!?]\n*\s*\w)/g, c => c.toUpperCase());
+        t = t.replace(/^[>»"']\s*/gm, '').replace(/fls?\.\s*\d+/gi, '');
+        t = t.replace(/\bartigo\b/gi, 'art.').replace(/\bpar[aá]grafo\b/gi, '§');
+        return t.replace(/[ \t]{2,}/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
     }
 
-    compilarDicionario(); 
+    function formatCNJ(n) {
+        if(!n) return "0000000-00.0000.0.00.0000";
+        let digits = String(n).replace(/\D/g, '');
+        return digits.length === 20 ? digits.replace(/^(\d{7})(\d{2})(\d{4})(\d{1})(\d{2})(\d{4})$/, "$1-$2.$3.$4.$5.$6") : n;
+    }
 
-    btnAbrirConfig.addEventListener('click', () => {
-        painelConfig.style.display = 'block';
-        areaBusca.style.display = 'none';
-    });
-
-    btnFecharConfig.addEventListener('click', () => {
-        painelConfig.style.display = 'none';
-        areaBusca.style.display = 'block';
-    });
-
-    // Novo recurso: Preencher dicionário com Starter Pack
-    btnCarregarPadrao.addEventListener('click', () => {
-        const termosSugeridos = "prazo, apresentar, manifestar, junte, juntar, comprovar, contestar, contrarrazões, audiência, sob pena de, liminar, tutela, procedente, improcedente, extinto, multa, penhora";
-        if (txtTermosCustom.value.trim() === "") {
-            txtTermosCustom.value = termosSugeridos;
-        } else {
-            txtTermosCustom.value += ", " + termosSugeridos;
+    function getProcessNumber(item, text) {
+        let p = item.numeroProcesso || item.numero_processo || item.numeroprocesso || item.numero;
+        if (!p || p === "undefined") {
+            const match = text.match(/\d{7}-?\d{2}\.?\d{4}\.?\d\.?\d{2}\.?\d{4}/);
+            p = match ? match[0] : "Processo s/ número";
         }
-    });
+        return p;
+    }
 
-    btnSalvarConfig.addEventListener('click', () => {
-        const novosTermos = txtTermosCustom.value;
-        localStorage.setItem('djen_termos_custom', novosTermos);
-        compilarDicionario(); 
+    // FUNÇÃO PARTILHADA PARA GERAR O TEXTO FINAL (USADA NO CARTÃO E NA EXPORTAÇÃO GLOBAL)
+    function gerarTextoExportacao(i) {
+        let txtBase = `* Processo: ${formatCNJ(getProcessNumber(i, cleanText(i.texto||i.teor)))} | ${i.siglaTribunal}\n  * Texto: ${cleanText(i.texto || i.teor)}`;
         
-        btnSalvarConfig.textContent = "✓ Salvo!";
-        setTimeout(() => {
-            btnSalvarConfig.textContent = "Salvar Dicionário";
-            painelConfig.style.display = 'none';
-            areaBusca.style.display = 'block';
-            
-            if (resultadosGlobais.length > 0) {
-                aplicarFiltros();
-            }
-        }, 1000);
-    });
-
-    inputOabNum.value = localStorage.getItem('djen_oab_num') || "";
-    inputOabUf.value = localStorage.getItem('djen_oab_uf') || "";
-    
-    function aplicarDataRapida(diasRetroativos) {
-        const hoje = new Date();
-        const inicio = new Date();
-        inicio.setDate(hoje.getDate() - diasRetroativos);
-        inputInicio.value = inicio.toISOString().split('T')[0];
-        inputFim.value = hoje.toISOString().split('T')[0];
-    }
-
-    aplicarDataRapida(0);
-
-    document.getElementById('btnHoje')?.addEventListener('click', () => { aplicarDataRapida(0); btnBuscar.click(); });
-    document.getElementById('btn5Dias')?.addEventListener('click', () => { aplicarDataRapida(5); btnBuscar.click(); });
-    document.getElementById('btn15Dias')?.addEventListener('click', () => { aplicarDataRapida(15); btnBuscar.click(); });
-    document.getElementById('btnMes')?.addEventListener('click', () => { aplicarDataRapida(30); btnBuscar.click(); });
-
-    function limparHTMLBruto(htmlBruto) {
-        if (!htmlBruto) return "";
-        try {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(htmlBruto, 'text/html');
-            return (doc.body.textContent || "").replace(/\s\s+/g, ' ').trim();
-        } catch (e) {
-            return htmlBruto.replace(/<[^>]*>?/gm, '').trim();
+        if (i.prazoCalculado) {
+            txtBase += `\n\n  --- CONTROLE DE PRAZO ---\n  * Regra: ${i.prazoCalculado.dias} dias em ${i.prazoCalculado.tipo}`;
+            if (i.prazoCalculado.susp > 0) txtBase += ` (+${i.prazoCalculado.susp} dias suspensos)`;
+            txtBase += `\n  * Publicação: ${i.prazoCalculado.pub}\n  * Início: ${i.prazoCalculado.inicio}\n  * DATA FATAL: ${i.prazoCalculado.fatal}`;
         }
+        return txtBase;
     }
 
-    function verificaSeTemDicionario(textoLower) {
-        if (termosAtivos.length === 0) return false;
-        return termosAtivos.some(termo => textoLower.includes(termo));
-    }
-
-    function formatarCNJ(numStr) {
-        let n = numStr.replace(/\D/g, ''); 
-        if (n.length === 20) {
-            return n.replace(/^(\d{7})(\d{2})(\d{4})(\d{1})(\d{2})(\d{4})$/, "$1-$2.$3.$4.$5.$6");
-        }
-        return numStr; 
-    }
-
-    function formatarParaExportacao(textoLimpo, proc, sigla, dataDisp) {
-        const temAcao = verificaSeTemDicionario(textoLimpo.toLowerCase());
-        const procExibicao = temAcao ? `⚠️ ${proc}` : proc;
-        
-        let textoDestacado = textoLimpo;
-        if (regexTermosCriticos) {
-            textoDestacado = textoLimpo.replace(regexTermosCriticos, "**$&**");
-        }
-        const blocos = textoDestacado.split('\n').map(b => b.trim()).filter(b => b.length > 0);
-
-        return `* Processo: ${procExibicao} | Tribunal: ${sigla} | **Disp: ${dataDisp}** (⚠️ Confirme no sistema)\n  * Texto: ${blocos[0] || ""}\n  * ${blocos.slice(1).join(' ')}`;
-    }
-
-    function extrairProcesso(item, textoLimpo) {
-        let num = item.numeroprocesso || item.numero_processo || item.numeroProcesso;
-        if (!num || num === "undefined") {
-            const match = textoLimpo.match(/\d{7}-\d{2}\.\d{4}\.\d{1,2}\.\d{2}\.\d{4}/);
-            num = match ? match[0] : "0000000-00.0000.0.00.0000";
-        }
-        return num;
-    }
-
-    function popularTribunais(items) {
-        const tribunais = [...new Set(items.map(i => i.siglaTribunal || 'TJ'))].sort();
-        filtroTribunal.textContent = ''; 
-        const optTodos = document.createElement('option');
-        optTodos.value = "";
-        optTodos.textContent = "🏛️ Todos os Tribunais";
-        filtroTribunal.appendChild(optTodos);
-
-        tribunais.forEach(t => {
-            const opt = document.createElement('option');
-            opt.value = t;
-            opt.textContent = t;
-            filtroTribunal.appendChild(opt);
-        });
-    }
-
-    btnToggleDicionario.addEventListener('click', () => {
-        if (termosAtivos.length === 0) {
-            alert("⚠️ Seu dicionário está vazio. Clique na engrenagem no topo para adicionar os termos que deseja filtrar.");
-            return;
-        }
-        filtroDicionarioAtivo = !filtroDicionarioAtivo;
-        btnToggleDicionario.classList.toggle('ativo', filtroDicionarioAtivo);
-        aplicarFiltros();
-    });
-
-    btnExpandirTodos.addEventListener('click', () => {
+    el.btnExpandirTodos.onclick = () => {
         todosExpandidos = !todosExpandidos;
-        btnExpandirTodos.textContent = todosExpandidos ? "🔼 Recolher Todos" : "🔽 Expandir Todos";
-        const cards = document.querySelectorAll('.intimacao-card');
-        cards.forEach(card => {
-            if (todosExpandidos) {
-                card.classList.add('aberto');
-                card.classList.add('lido'); // Marca todos como lidos ao expandir
-            } else {
-                card.classList.remove('aberto');
-            }
+        el.btnExpandirTodos.textContent = todosExpandidos ? "Recolher" : "Expandir Tudo";
+        document.querySelectorAll('.intimacao-card').forEach(c => {
+            if (todosExpandidos) { c.classList.add('aberto', 'lido'); } else { c.classList.remove('aberto'); }
         });
-    });
+    };
 
-    function aplicarFiltros() {
-        const termo = filtroRapido.value.toLowerCase();
-        const tribunalSelecionado = filtroTribunal.value;
-
+    function applyFilters() {
+        const term = el.filtroRapido.value.toLowerCase().trim();
+        const trib = el.filtroTribunal.value;
         resultadosExibidos = resultadosGlobais.filter(i => {
-            const texto = limparHTMLBruto(i.texto || i.teor);
-            const proc = extrairProcesso(i, texto).toLowerCase();
-            const sigla = i.siglaTribunal || 'TJ';
-            const textoLower = texto.toLowerCase();
-
-            const procFormatado = formatarCNJ(proc).toLowerCase();
-
-            const matchTexto = textoLower.includes(termo) || proc.includes(termo) || procFormatado.includes(termo);
-            const matchTribunal = tribunalSelecionado === "" || sigla === tribunalSelecionado;
-            const matchDicionario = !filtroDicionarioAtivo || verificaSeTemDicionario(textoLower);
-
-            return matchTexto && matchTribunal && matchDicionario;
+            const txt = cleanText(i.texto || i.teor).toLowerCase();
+            const rawProc = String(getProcessNumber(i, txt)).toLowerCase();
+            const cnj = formatCNJ(rawProc).toLowerCase();
+            return (term === "" || txt.includes(term) || rawProc.includes(term) || cnj.includes(term)) && (trib === "" || i.siglaTribunal === trib);
         });
-        
-        if (typeof chrome !== "undefined" && chrome.action) {
-            const qtd = resultadosExibidos.length;
-            chrome.action.setBadgeText({ text: qtd > 0 ? qtd.toString() : "" });
-        }
-        renderizarResultados(resultadosExibidos);
-        
-        if (todosExpandidos) {
-            document.querySelectorAll('.intimacao-card').forEach(c => {
-                c.classList.add('aberto');
-                c.classList.add('lido');
-            });
-        }
+        el.contadorResultados.textContent = resultadosExibidos.length === 1 ? "1 intimação" : `${resultadosExibidos.length} intimações`;
+        render(resultadosExibidos, term);
     }
 
-    filtroRapido.addEventListener('input', aplicarFiltros);
-    filtroTribunal.addEventListener('change', aplicarFiltros);
+    el.filtroRapido.oninput = applyFilters;
+    el.filtroTribunal.onchange = applyFilters;
 
-    function aplicarMarcaTexto(container, texto) {
-        container.textContent = ""; 
-        
-        if (!regexTermosCriticos) {
-            container.appendChild(document.createTextNode(texto));
-            return;
-        }
-
-        let ultimoIndice = 0;
-        let match;
-        
-        regexTermosCriticos.lastIndex = 0; 
-        
-        while ((match = regexTermosCriticos.exec(texto)) !== null) {
-            if (match.index > ultimoIndice) {
-                container.appendChild(document.createTextNode(texto.substring(ultimoIndice, match.index)));
+    function safeHighlight(container, text, term) {
+        container.textContent = "";
+        if (!term) { container.textContent = text; return; }
+        const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        const parts = text.split(regex);
+        parts.forEach(part => {
+            if (part.toLowerCase() === term.toLowerCase()) {
+                const mark = document.createElement('mark');
+                mark.className = 'highlight-term'; mark.textContent = part;
+                container.appendChild(mark);
+            } else {
+                container.appendChild(document.createTextNode(part));
             }
-            const mark = document.createElement("mark");
-            mark.className = "highlight-term";
-            mark.textContent = match[0];
-            container.appendChild(mark);
-            
-            ultimoIndice = regexTermosCriticos.lastIndex;
-        }
-        
-        if (ultimoIndice < texto.length) {
-            container.appendChild(document.createTextNode(texto.substring(ultimoIndice)));
-        }
+        });
     }
 
-    function renderizarResultados(items) {
-        divResultados.textContent = ""; 
-        let qtdOcorrencias = 0; 
+    function render(items, term) {
+        el.resultados.textContent = ""; 
+        const hojeLocal = new Date().toLocaleDateString('pt-BR');
 
-        if (items.length === 0) {
-            const p = document.createElement("p");
-            p.style.textAlign = "center";
-            p.style.padding = "20px";
-            p.style.color = "var(--text-muted)";
-            p.textContent = filtroDicionarioAtivo ? "Nenhum termo do seu dicionário foi encontrado nesta seleção." : "Nenhuma intimação para exibir.";
-            divResultados.appendChild(p);
-            contador.style.display = 'none';
+        if (!items.length) {
+            const emptyDiv = document.createElement("div");
+            emptyDiv.className = "empty-state";
+            const title = document.createElement("div");
+            title.className = "empty-state-title";
+            title.style.padding = "20px"; title.style.textAlign = "center";
+            title.textContent = "Nada encontrado";
+            emptyDiv.append(title); el.resultados.appendChild(emptyDiv);
             return;
         }
 
         items.forEach(i => {
-            const textoLimpo = limparHTMLBruto(i.texto || i.teor);
-            const procCru = extrairProcesso(i, textoLimpo);
-            const procFormatado = formatarCNJ(procCru); 
-            const sigla = i.siglaTribunal || 'TJ';
-
-            const temAlerta = verificaSeTemDicionario(textoLimpo.toLowerCase());
-            if (temAlerta) qtdOcorrencias++;
-
-            const dataBruta = i.data_disponibilizacao || i.dataDisponibilizacao || "";
-            let dataDisp = "";
-            if (dataBruta) {
-                const d = new Date(dataBruta);
-                if (!isNaN(d)) dataDisp = d.toLocaleDateString('pt-BR');
-            }
-
-            const divCard = document.createElement("div");
-            divCard.className = "intimacao-card";
+            const txt = cleanText(i.texto || i.teor);
+            const proc = formatCNJ(getProcessNumber(i, txt));
+            const dataProc = new Date(i.data_disponibilizacao + 'T12:00:00').toLocaleDateString('pt-BR');
             
-            const divCabecalho = document.createElement("div");
-            divCabecalho.className = "card-header";
-            divCabecalho.title = "Clique para ler a intimação";
+            const card = document.createElement("div");
+            card.className = "intimacao-card";
+            if (dataProc === hojeLocal) card.classList.add('hoje');
 
-            const spanTribunal = document.createElement("span");
-            spanTribunal.className = "badge badge-tribunal";
-            spanTribunal.textContent = sigla;
-            divCabecalho.appendChild(spanTribunal);
+            const header = document.createElement("div");
+            header.className = "card-header";
 
-            const spanProc = document.createElement("span");
-            spanProc.className = "proc-numero";
-            spanProc.textContent = procFormatado; 
-            divCabecalho.appendChild(spanProc);
+            const bTrib = document.createElement("span"); bTrib.className = "badge badge-tribunal"; bTrib.textContent = i.siglaTribunal || 'TJ';
+            const sProc = document.createElement("span"); sProc.className = "proc-numero"; sProc.textContent = proc;
+            const sData = document.createElement("span"); sData.className = "data-disp"; sData.textContent = dataProc;
+            const sSeta = document.createElement("span"); sSeta.className = "icone-seta"; sSeta.textContent = "🔽";
 
-            const spanData = document.createElement("span");
-            spanData.className = "data-disp";
-            spanData.textContent = dataDisp ? `Disp: ${dataDisp}` : "";
-            divCabecalho.appendChild(spanData);
+            header.append(bTrib, sProc, sData, sSeta);
 
-            const divAcoes = document.createElement("div");
-            divAcoes.className = "acoes-card";
+            const teorContainer = document.createElement("div");
+            teorContainer.className = "teor-container";
 
-            if (temAlerta) {
-                const iconeAlerta = document.createElement("span");
-                iconeAlerta.className = "icone-alerta";
-                iconeAlerta.textContent = "⚠️"; 
-                iconeAlerta.title = "Atenção: Termo do seu dicionário encontrado";
-                divAcoes.appendChild(iconeAlerta);
-            }
+            const teorTexto = document.createElement("div");
+            teorTexto.className = "teor-texto";
+            safeHighlight(teorTexto, txt, term);
 
-            const btnCopiaUnica = document.createElement("button");
-            btnCopiaUnica.className = "btn-copia-individual";
-            btnCopiaUnica.textContent = "📋";
-            btnCopiaUnica.title = "Copiar intimação";
+            const acoesDiv = document.createElement("div");
+            acoesDiv.className = "card-acoes";
+
+            // DIV PARA ALINHAR OS BOTÕES LADO A LADO
+            const botoesAcaoDiv = document.createElement("div");
+            botoesAcaoDiv.className = "botoes-acao";
+
+            const btnCalc = document.createElement("button");
+            btnCalc.className = "btn-acao-lista btn-abrir-calc";
+            btnCalc.textContent = "⏱️ Calcular Prazo";
+
+            // NOVO BOTÃO DE CÓPIA INDIVIDUAL
+            const btnCopiarInd = document.createElement("button");
+            btnCopiarInd.className = "btn-acao-lista";
+            btnCopiarInd.textContent = "📋 Copiar";
             
-            btnCopiaUnica.addEventListener('click', (e) => {
+            btnCopiarInd.onclick = (e) => {
+                e.stopPropagation();
+                const textoFinal = gerarTextoExportacao(i);
+                navigator.clipboard.writeText(textoFinal);
+                
+                btnCopiarInd.textContent = "✅ Copiado!";
+                btnCopiarInd.style.color = "var(--primary)";
+                
+                setTimeout(() => {
+                    btnCopiarInd.textContent = "📋 Copiar";
+                    btnCopiarInd.style.color = "";
+                }, 1500);
+            };
+
+            botoesAcaoDiv.append(btnCalc, btnCopiarInd);
+
+            const calcPanel = document.createElement("div");
+            calcPanel.className = "calculadora-prazo";
+            
+            calcPanel.innerHTML = `
+                <div class="calc-row">
+                    <input type="number" class="calc-dias" placeholder="Prazo" title="Dias do prazo" min="1" style="width: 60px;">
+                    <select class="calc-tipo" style="width: 140px; font-size: 11px; padding: 8px;">
+                        <option value="cpc">CPC (Dias Úteis)</option>
+                        <option value="cpp">CPP (Corridos)</option>
+                    </select>
+                    <input type="number" class="calc-susp" placeholder="Feriado Local" title="Dias extras" min="0" style="flex:1;">
+                </div>
+                <div class="calc-row" style="justify-content: space-between; margin-top: 10px; align-items: flex-end;">
+                     <div class="resultado-prazo" style="text-align: left;"></div>
+                     <button class="btn-acao-lista btn-exec" style="background-color: var(--primary); color: white;">Calcular</button>
+                </div>
+            `;
+
+            btnCalc.onclick = (e) => {
                 e.stopPropagation(); 
-                
-                // Marca o processo como LIDO visualmente
-                divCard.classList.add('lido');
-                
-                const textoFinal = formatarParaExportacao(textoLimpo, procFormatado, sigla, dataDisp);
-                navigator.clipboard.writeText(textoFinal).then(() => {
-                    btnCopiaUnica.textContent = "✅";
-                    setTimeout(() => { btnCopiaUnica.textContent = "📋"; }, 1500);
-                });
-            });
-            divAcoes.appendChild(btnCopiaUnica);
+                calcPanel.classList.toggle('ativa');
+            };
 
-            const seta = document.createElement("span");
-            seta.className = "icone-seta";
-            seta.textContent = "🔽";
-            divAcoes.appendChild(seta);
-
-            divCabecalho.appendChild(divAcoes); 
-
-            divCabecalho.addEventListener('click', () => {
-                divCard.classList.toggle('aberto');
-                // Marca o processo como LIDO visualmente ao expandir
-                divCard.classList.add('lido');
-            });
+            const btnExec = calcPanel.querySelector('.btn-exec');
+            const resDiv = calcPanel.querySelector('.resultado-prazo');
             
-            const divTeorCompleto = document.createElement("div");
-            divTeorCompleto.className = "teor";
-            aplicarMarcaTexto(divTeorCompleto, textoLimpo); 
+            btnExec.onclick = (e) => {
+                e.stopPropagation();
+                const dias = parseInt(calcPanel.querySelector('.calc-dias').value);
+                const tipo = calcPanel.querySelector('.calc-tipo').value;
+                const susp = parseInt(calcPanel.querySelector('.calc-susp').value) || 0; 
+                
+                if (!dias) return;
 
-            divCard.appendChild(divCabecalho);
-            divCard.appendChild(divTeorCompleto);
-            divResultados.appendChild(divCard);
+                const resultado = calcularProcessual(i.data_disponibilizacao, dias, tipo, susp);
+                
+                const msgConfirmacao = `RESUMO DO CÁLCULO:\n\n` +
+                                       `• Publicação: ${resultado.pub}\n` +
+                                       `• Início do Prazo: ${resultado.inicio}\n` +
+                                       `• DATA FATAL: ${resultado.fatal}\n\n` +
+                                       `⚠️ ATENÇÃO: Verifique se houve feriados locais ou suspensão do expediente neste período e ajuste no campo "Feriado Local" se necessário.\n\n` +
+                                       `Deseja confirmar e atrelar este prazo à intimação?`;
+
+                if (!confirm(msgConfirmacao)) return; 
+                
+                i.prazoCalculado = {
+                    dias: dias,
+                    tipo: tipo === 'cpc' ? 'CPC (Úteis)' : 'CPP (Corridos)',
+                    susp: susp,
+                    pub: resultado.pub,
+                    inicio: resultado.inicio,
+                    fatal: resultado.fatal
+                };
+                
+                resDiv.innerHTML = `
+                    <div class="resultado-aux">Publicou: ${resultado.pub} | Inicia: ${resultado.inicio}</div>
+                    <div style="font-size: 14px; margin-top: 4px;">Data Fatal: <b style="color: #26a269;">${resultado.fatal}</b></div>
+                `;
+            };
+
+            acoesDiv.append(botoesAcaoDiv, calcPanel);
+            teorContainer.append(teorTexto, acoesDiv);
+
+            header.onclick = () => { 
+                card.classList.toggle('aberto'); 
+                card.classList.add('lido'); 
+            };
+            
+            card.append(header, teorContainer);
+            el.resultados.appendChild(card);
         });
-
-        if (qtdOcorrencias > 0) {
-            contador.textContent = ""; 
-            const iconNode = document.createTextNode("⚠️ ");
-            const spanText = document.createElement("span");
-            const strongNode = document.createElement("strong");
-            strongNode.textContent = `${qtdOcorrencias} processos`;
-            spanText.append("Contêm termos do seu dicionário (", strongNode, ").");
-            contador.append(iconNode, spanText);
-            contador.style.display = 'flex';
-        } else {
-            contador.style.display = 'none';
-        }
     }
 
-    btnBuscar.addEventListener('click', async () => {
-        const num = inputOabNum.value.trim();
-        const uf = inputOabUf.value.trim().toUpperCase();
-
-        if (!num || !uf) {
-            alert("⚠️ Preencha o Número da OAB e a UF antes de consultar.");
-            return;
-        }
-
-        localStorage.setItem('djen_oab_num', num);
-        localStorage.setItem('djen_oab_uf', uf);
+    el.btnBuscar.onclick = async () => {
+        const n = el.oabNum.value.trim(); const u = el.oabUf.value.trim().toUpperCase();
+        if (!n || !u) return alert("Preencha OAB e UF");
+        localStorage.setItem('djen_oab_num', n); localStorage.setItem('djen_oab_uf', u);
+        el.btnBuscar.disabled = true; el.skeletonLoader.style.display = 'block'; 
+        el.resultados.textContent = ""; el.containerFiltro.style.display = 'none';
         
-        btnBuscar.disabled = true;
-        btnBuscar.textContent = "⏳ Consultando API...";
-        divResultados.textContent = ""; 
-        loader.style.display = 'block'; 
-        actionContainer.style.display = 'none';
-        containerFiltro.style.display = 'none';
-        contador.style.display = 'none';
-        
-        filtroRapido.value = "";
-        filtroTribunal.value = "";
-        filtroDicionarioAtivo = false;
-        btnToggleDicionario.classList.remove('ativo');
-        todosExpandidos = false;
-        btnExpandirTodos.textContent = "🔽 Expandir Todos";
-
         try {
-            const url = `https://comunicaapi.pje.jus.br/api/v1/comunicacao?numeroOab=${num}&ufOab=${uf}&dataDisponibilizacaoInicio=${inputInicio.value}&dataDisponibilizacaoFim=${inputFim.value}`;
-            const resp = await fetch(url);
-            const dados = await resp.json();
-            
-            resultadosGlobais = dados.items || [];
-            resultadosExibidos = [...resultadosGlobais];
-            
-            if (resultadosGlobais.length === 0) {
-                renderizarResultados([]); 
-                if (typeof chrome !== "undefined" && chrome.action) chrome.action.setBadgeText({ text: "" }); 
-            } else {
-                if (typeof chrome !== "undefined" && chrome.action) {
-                    chrome.action.setBadgeText({ text: resultadosGlobais.length.toString() });
-                    chrome.action.setBadgeBackgroundColor({ color: "#0f172a" });
-                }
-                popularTribunais(resultadosGlobais); 
-                actionContainer.style.display = 'flex'; 
-                containerFiltro.style.display = 'flex'; 
-                renderizarResultados(resultadosExibidos);
-            }
-        } catch (e) {
-            divResultados.textContent = "❌ Erro de conexão com o servidor do CNJ.";
-        } finally {
-            loader.style.display = 'none';
-            btnBuscar.disabled = false;
-            btnBuscar.textContent = "Consultar Intimações";
+            const r = await fetch(`https://comunicaapi.pje.jus.br/api/v1/comunicacao?numeroOab=${n}&ufOab=${u}&dataDisponibilizacaoInicio=${el.dataInicio.value}&dataDisponibilizacaoFim=${el.dataFim.value}`);
+            const d = await r.json(); resultadosGlobais = d.items || [];
+            const tribs = [...new Set(resultadosGlobais.map(i => i.siglaTribunal))].sort();
+            el.filtroTribunal.textContent = "";
+            const optDefault = document.createElement("option");
+            optDefault.value = ""; optDefault.textContent = "Tribunal";
+            el.filtroTribunal.appendChild(optDefault);
+            tribs.forEach(t => {
+                const opt = document.createElement("option");
+                opt.value = t; opt.textContent = t;
+                el.filtroTribunal.appendChild(opt);
+            });
+            el.containerFiltro.style.display = 'flex'; applyFilters();
+        } catch (e) { 
+            el.resultados.textContent = "Erro de conexão com o servidor do CNJ."; 
+        } finally { 
+            el.btnBuscar.disabled = false; el.skeletonLoader.style.display = 'none'; 
         }
-    });
+    };
 
-    function gerarTextoExportacaoCompleto() {
-        if (resultadosExibidos.length === 0) return "";
-        return resultadosExibidos.map((i) => {
-            const textoLimpo = limparHTMLBruto(i.texto || i.teor);
-            const procCru = extrairProcesso(i, textoLimpo);
-            const procFormatado = formatarCNJ(procCru); 
-            const sigla = i.siglaTribunal || 'TJ';
-            
-            const dataBruta = i.data_disponibilizacao || i.dataDisponibilizacao || "";
-            let dataDisp = "Não informada";
-            if (dataBruta) {
-                const d = new Date(dataBruta);
-                if (!isNaN(d)) dataDisp = d.toLocaleDateString('pt-BR');
-            }
-            
-            return formatarParaExportacao(textoLimpo, procFormatado, sigla, dataDisp);
-        }).join('\n\n');
-    }
+    const getExportTxt = () => resultadosExibidos.map(i => gerarTextoExportacao(i)).join('\n\n================================================\n\n');
 
-    btnCopiar.addEventListener('click', () => {
-        const txtFinal = gerarTextoExportacaoCompleto();
-        if (!txtFinal) return;
+    el.btnCopiarTodos.onclick = () => {
+        navigator.clipboard.writeText(getExportTxt());
+        document.querySelectorAll('.intimacao-card').forEach(c => c.classList.add('lido'));
+        const labelOriginal = el.btnExportarMenu.textContent;
+        el.btnExportarMenu.textContent = "✅ Copiado!";
+        el.btnExportarMenu.style.color = "#3584e4";
+        setTimeout(() => {
+            el.btnExportarMenu.textContent = labelOriginal;
+            el.btnExportarMenu.style.color = "";
+            el.dropdownExportar.classList.remove('show');
+        }, 1200);
+    };
 
-        navigator.clipboard.writeText(txtFinal).then(() => {
-            const label = btnCopiar.textContent;
-            btnCopiar.textContent = "✓ Lista Inteira Copiada!";
-            
-            // Marca toda a lista visível como lida ao clicar no botão global
-            document.querySelectorAll('.intimacao-card').forEach(c => c.classList.add('lido'));
-
-            setTimeout(() => { btnCopiar.textContent = label; }, 2000);
-        });
-    });
-
-    btnDownload.addEventListener('click', () => {
-        const txtFinal = gerarTextoExportacaoCompleto();
-        if (!txtFinal) return;
-
-        const blob = new Blob([txtFinal], { type: 'text/plain;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        
-        const num = inputOabNum.value.trim();
-        const uf = inputOabUf.value.trim().toUpperCase();
-        const dataHoje = new Date().toISOString().split('T')[0];
-        
-        a.href = url;
-        a.download = `Intimacoes_OAB_${num}_${uf}_${dataHoje}.txt`; 
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    });
-}); 
-
-window.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden' && typeof chrome !== "undefined" && chrome.action) {
-        chrome.action.setBadgeText({ text: "" });
-    }
+    el.btnDownloadTxt.onclick = () => {
+        const blob = new Blob([getExportTxt()], {type:'text/plain;charset=utf-8'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Djen_${el.oabNum.value}.txt`; a.click();
+        el.dropdownExportar.classList.remove('show');
+    };
 });
