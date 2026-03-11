@@ -1,6 +1,7 @@
 /**
- * Buscador DJEN - Extensão de Navegador v1.3.0
- 
+ * Buscador DJEN - Extensão de Navegador v1.9.0
+ * Funcionalidade de Caixa de Entrada (Lido/Não Lido) e Ajuda Embutida
+ */
 
 if (typeof chrome !== "undefined" && chrome.action) {
     chrome.action.setBadgeText({ text: "" });
@@ -21,9 +22,82 @@ document.addEventListener('DOMContentLoaded', () => {
     const containerFiltro = document.getElementById('containerFiltro');
     const loader = document.getElementById('loader');
     const contador = document.getElementById('contadorOcorrencias');
+    const btnToggleDicionario = document.getElementById('btnToggleDicionario');
+    const btnExpandirTodos = document.getElementById('btnExpandirTodos');
+
+    // Configurações e Ajuda
+    const btnAbrirConfig = document.getElementById('btnAbrirConfig');
+    const btnFecharConfig = document.getElementById('btnFecharConfig');
+    const btnSalvarConfig = document.getElementById('btnSalvarConfig');
+    const btnCarregarPadrao = document.getElementById('btnCarregarPadrao');
+    const painelConfig = document.getElementById('painelConfig');
+    const txtTermosCustom = document.getElementById('txtTermosCustom');
+    const areaBusca = document.getElementById('areaBusca');
 
     let resultadosGlobais = [];
     let resultadosExibidos = [];
+    let filtroDicionarioAtivo = false;
+    let todosExpandidos = false;
+
+    let termosAtivos = [];
+    let regexTermosCriticos = null;
+
+    function compilarDicionario() {
+        const customString = localStorage.getItem('djen_termos_custom') || "";
+        txtTermosCustom.value = customString;
+
+        termosAtivos = customString.split(',')
+            .map(t => t.trim().toLowerCase())
+            .filter(t => t.length > 0);
+
+        termosAtivos = [...new Set(termosAtivos)];
+
+        if (termosAtivos.length > 0) {
+            const termosEscapados = termosAtivos.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+            regexTermosCriticos = new RegExp(`(${termosEscapados.join('|')})`, 'gi');
+        } else {
+            regexTermosCriticos = null;
+        }
+    }
+
+    compilarDicionario(); 
+
+    btnAbrirConfig.addEventListener('click', () => {
+        painelConfig.style.display = 'block';
+        areaBusca.style.display = 'none';
+    });
+
+    btnFecharConfig.addEventListener('click', () => {
+        painelConfig.style.display = 'none';
+        areaBusca.style.display = 'block';
+    });
+
+    // Novo recurso: Preencher dicionário com Starter Pack
+    btnCarregarPadrao.addEventListener('click', () => {
+        const termosSugeridos = "prazo, apresentar, manifestar, junte, juntar, comprovar, contestar, contrarrazões, audiência, sob pena de, liminar, tutela, procedente, improcedente, extinto, multa, penhora";
+        if (txtTermosCustom.value.trim() === "") {
+            txtTermosCustom.value = termosSugeridos;
+        } else {
+            txtTermosCustom.value += ", " + termosSugeridos;
+        }
+    });
+
+    btnSalvarConfig.addEventListener('click', () => {
+        const novosTermos = txtTermosCustom.value;
+        localStorage.setItem('djen_termos_custom', novosTermos);
+        compilarDicionario(); 
+        
+        btnSalvarConfig.textContent = "✓ Salvo!";
+        setTimeout(() => {
+            btnSalvarConfig.textContent = "Salvar Dicionário";
+            painelConfig.style.display = 'none';
+            areaBusca.style.display = 'block';
+            
+            if (resultadosGlobais.length > 0) {
+                aplicarFiltros();
+            }
+        }, 1000);
+    });
 
     inputOabNum.value = localStorage.getItem('djen_oab_num') || "";
     inputOabUf.value = localStorage.getItem('djen_oab_uf') || "";
@@ -38,27 +112,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     aplicarDataRapida(0);
 
-    function dispararBuscaPorAtalho(dias) {
-        aplicarDataRapida(dias);
-        btnBuscar.click();
-    }
+    document.getElementById('btnHoje')?.addEventListener('click', () => { aplicarDataRapida(0); btnBuscar.click(); });
+    document.getElementById('btn5Dias')?.addEventListener('click', () => { aplicarDataRapida(5); btnBuscar.click(); });
+    document.getElementById('btn15Dias')?.addEventListener('click', () => { aplicarDataRapida(15); btnBuscar.click(); });
+    document.getElementById('btnMes')?.addEventListener('click', () => { aplicarDataRapida(30); btnBuscar.click(); });
 
-    document.getElementById('btnHoje')?.addEventListener('click', () => dispararBuscaPorAtalho(0));
-    document.getElementById('btn5Dias')?.addEventListener('click', () => dispararBuscaPorAtalho(5));
-    document.getElementById('btn15Dias')?.addEventListener('click', () => dispararBuscaPorAtalho(15));
-    document.getElementById('btnMes')?.addEventListener('click', () => dispararBuscaPorAtalho(30));
-
-    function higienizarEFormatador(htmlBruto) {
+    function limparHTMLBruto(htmlBruto) {
         if (!htmlBruto) return "";
         try {
             const parser = new DOMParser();
             const doc = parser.parseFromString(htmlBruto, 'text/html');
-            const texto = (doc.body.textContent || "").replace(/\s\s+/g, ' ').trim();
-            const termosCriticos = /prazo|liminar|tutela|procedente|improcedente|extinto|multa|penhora/gi;
-            return texto.replace(termosCriticos, "**$&**");
+            return (doc.body.textContent || "").replace(/\s\s+/g, ' ').trim();
         } catch (e) {
             return htmlBruto.replace(/<[^>]*>?/gm, '').trim();
         }
+    }
+
+    function verificaSeTemDicionario(textoLower) {
+        if (termosAtivos.length === 0) return false;
+        return termosAtivos.some(termo => textoLower.includes(termo));
+    }
+
+    function formatarCNJ(numStr) {
+        let n = numStr.replace(/\D/g, ''); 
+        if (n.length === 20) {
+            return n.replace(/^(\d{7})(\d{2})(\d{4})(\d{1})(\d{2})(\d{4})$/, "$1-$2.$3.$4.$5.$6");
+        }
+        return numStr; 
+    }
+
+    function formatarParaExportacao(textoLimpo, proc, sigla, dataDisp) {
+        const temAcao = verificaSeTemDicionario(textoLimpo.toLowerCase());
+        const procExibicao = temAcao ? `⚠️ ${proc}` : proc;
+        
+        let textoDestacado = textoLimpo;
+        if (regexTermosCriticos) {
+            textoDestacado = textoLimpo.replace(regexTermosCriticos, "**$&**");
+        }
+        const blocos = textoDestacado.split('\n').map(b => b.trim()).filter(b => b.length > 0);
+
+        return `* Processo: ${procExibicao} | Tribunal: ${sigla} | **Disp: ${dataDisp}** (⚠️ Confirme no sistema)\n  * Texto: ${blocos[0] || ""}\n  * ${blocos.slice(1).join(' ')}`;
     }
 
     function extrairProcesso(item, textoLimpo) {
@@ -72,7 +165,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function popularTribunais(items) {
         const tribunais = [...new Set(items.map(i => i.siglaTribunal || 'TJ'))].sort();
-        filtroTribunal.innerHTML = '<option value="">🏛️ Todos os Tribunais</option>';
+        filtroTribunal.textContent = ''; 
+        const optTodos = document.createElement('option');
+        optTodos.value = "";
+        optTodos.textContent = "🏛️ Todos os Tribunais";
+        filtroTribunal.appendChild(optTodos);
+
         tribunais.forEach(t => {
             const opt = document.createElement('option');
             opt.value = t;
@@ -81,19 +179,47 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    btnToggleDicionario.addEventListener('click', () => {
+        if (termosAtivos.length === 0) {
+            alert("⚠️ Seu dicionário está vazio. Clique na engrenagem no topo para adicionar os termos que deseja filtrar.");
+            return;
+        }
+        filtroDicionarioAtivo = !filtroDicionarioAtivo;
+        btnToggleDicionario.classList.toggle('ativo', filtroDicionarioAtivo);
+        aplicarFiltros();
+    });
+
+    btnExpandirTodos.addEventListener('click', () => {
+        todosExpandidos = !todosExpandidos;
+        btnExpandirTodos.textContent = todosExpandidos ? "🔼 Recolher Todos" : "🔽 Expandir Todos";
+        const cards = document.querySelectorAll('.intimacao-card');
+        cards.forEach(card => {
+            if (todosExpandidos) {
+                card.classList.add('aberto');
+                card.classList.add('lido'); // Marca todos como lidos ao expandir
+            } else {
+                card.classList.remove('aberto');
+            }
+        });
+    });
+
     function aplicarFiltros() {
         const termo = filtroRapido.value.toLowerCase();
         const tribunalSelecionado = filtroTribunal.value;
 
         resultadosExibidos = resultadosGlobais.filter(i => {
-            const texto = (i.texto || i.teor || "").toLowerCase();
-            const proc = extrairProcesso(i, "").toLowerCase();
+            const texto = limparHTMLBruto(i.texto || i.teor);
+            const proc = extrairProcesso(i, texto).toLowerCase();
             const sigla = i.siglaTribunal || 'TJ';
+            const textoLower = texto.toLowerCase();
 
-            const matchTexto = texto.includes(termo) || proc.includes(termo);
+            const procFormatado = formatarCNJ(proc).toLowerCase();
+
+            const matchTexto = textoLower.includes(termo) || proc.includes(termo) || procFormatado.includes(termo);
             const matchTribunal = tribunalSelecionado === "" || sigla === tribunalSelecionado;
+            const matchDicionario = !filtroDicionarioAtivo || verificaSeTemDicionario(textoLower);
 
-            return matchTexto && matchTribunal;
+            return matchTexto && matchTribunal && matchDicionario;
         });
         
         if (typeof chrome !== "undefined" && chrome.action) {
@@ -101,33 +227,71 @@ document.addEventListener('DOMContentLoaded', () => {
             chrome.action.setBadgeText({ text: qtd > 0 ? qtd.toString() : "" });
         }
         renderizarResultados(resultadosExibidos);
+        
+        if (todosExpandidos) {
+            document.querySelectorAll('.intimacao-card').forEach(c => {
+                c.classList.add('aberto');
+                c.classList.add('lido');
+            });
+        }
     }
 
     filtroRapido.addEventListener('input', aplicarFiltros);
     filtroTribunal.addEventListener('change', aplicarFiltros);
 
+    function aplicarMarcaTexto(container, texto) {
+        container.textContent = ""; 
+        
+        if (!regexTermosCriticos) {
+            container.appendChild(document.createTextNode(texto));
+            return;
+        }
+
+        let ultimoIndice = 0;
+        let match;
+        
+        regexTermosCriticos.lastIndex = 0; 
+        
+        while ((match = regexTermosCriticos.exec(texto)) !== null) {
+            if (match.index > ultimoIndice) {
+                container.appendChild(document.createTextNode(texto.substring(ultimoIndice, match.index)));
+            }
+            const mark = document.createElement("mark");
+            mark.className = "highlight-term";
+            mark.textContent = match[0];
+            container.appendChild(mark);
+            
+            ultimoIndice = regexTermosCriticos.lastIndex;
+        }
+        
+        if (ultimoIndice < texto.length) {
+            container.appendChild(document.createTextNode(texto.substring(ultimoIndice)));
+        }
+    }
+
     function renderizarResultados(items) {
         divResultados.textContent = ""; 
-        let qtdPrazos = 0; 
+        let qtdOcorrencias = 0; 
 
         if (items.length === 0) {
             const p = document.createElement("p");
             p.style.textAlign = "center";
             p.style.padding = "20px";
             p.style.color = "var(--text-muted)";
-            p.textContent = "Nenhuma intimação para exibir.";
+            p.textContent = filtroDicionarioAtivo ? "Nenhum termo do seu dicionário foi encontrado nesta seleção." : "Nenhuma intimação para exibir.";
             divResultados.appendChild(p);
             contador.style.display = 'none';
             return;
         }
 
         items.forEach(i => {
-            const textoLimpo = higienizarEFormatador(i.texto || i.teor);
-            const proc = extrairProcesso(i, textoLimpo);
+            const textoLimpo = limparHTMLBruto(i.texto || i.teor);
+            const procCru = extrairProcesso(i, textoLimpo);
+            const procFormatado = formatarCNJ(procCru); 
             const sigla = i.siglaTribunal || 'TJ';
 
-            const temPrazo = textoLimpo.toLowerCase().includes("prazo");
-            if (temPrazo) qtdPrazos++;
+            const temAlerta = verificaSeTemDicionario(textoLimpo.toLowerCase());
+            if (temAlerta) qtdOcorrencias++;
 
             const dataBruta = i.data_disponibilizacao || i.dataDisponibilizacao || "";
             let dataDisp = "";
@@ -136,52 +300,88 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!isNaN(d)) dataDisp = d.toLocaleDateString('pt-BR');
             }
 
-            // Construção do Novo Card Premium
             const divCard = document.createElement("div");
             divCard.className = "intimacao-card";
             
             const divCabecalho = document.createElement("div");
             divCabecalho.className = "card-header";
+            divCabecalho.title = "Clique para ler a intimação";
 
-            // Etiqueta (Badge) do Tribunal
             const spanTribunal = document.createElement("span");
             spanTribunal.className = "badge badge-tribunal";
             spanTribunal.textContent = sigla;
             divCabecalho.appendChild(spanTribunal);
 
-            // Etiqueta (Badge) de Prazo (Se houver)
-            if (temPrazo) {
-                const spanPrazo = document.createElement("span");
-                spanPrazo.className = "badge badge-prazo";
-                spanPrazo.innerHTML = "⚠️ Prazo";
-                divCabecalho.appendChild(spanPrazo);
-            }
-
-            // Número do Processo Monospace
             const spanProc = document.createElement("span");
             spanProc.className = "proc-numero";
-            spanProc.textContent = proc;
+            spanProc.textContent = procFormatado; 
             divCabecalho.appendChild(spanProc);
 
-            // Data alinhada à direita
             const spanData = document.createElement("span");
             spanData.className = "data-disp";
             spanData.textContent = dataDisp ? `Disp: ${dataDisp}` : "";
             divCabecalho.appendChild(spanData);
+
+            const divAcoes = document.createElement("div");
+            divAcoes.className = "acoes-card";
+
+            if (temAlerta) {
+                const iconeAlerta = document.createElement("span");
+                iconeAlerta.className = "icone-alerta";
+                iconeAlerta.textContent = "⚠️"; 
+                iconeAlerta.title = "Atenção: Termo do seu dicionário encontrado";
+                divAcoes.appendChild(iconeAlerta);
+            }
+
+            const btnCopiaUnica = document.createElement("button");
+            btnCopiaUnica.className = "btn-copia-individual";
+            btnCopiaUnica.textContent = "📋";
+            btnCopiaUnica.title = "Copiar intimação";
             
-            // Corpo de Texto
-            const divTeor = document.createElement("div");
-            divTeor.className = "teor";
-            divTeor.textContent = textoLimpo; 
+            btnCopiaUnica.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                
+                // Marca o processo como LIDO visualmente
+                divCard.classList.add('lido');
+                
+                const textoFinal = formatarParaExportacao(textoLimpo, procFormatado, sigla, dataDisp);
+                navigator.clipboard.writeText(textoFinal).then(() => {
+                    btnCopiaUnica.textContent = "✅";
+                    setTimeout(() => { btnCopiaUnica.textContent = "📋"; }, 1500);
+                });
+            });
+            divAcoes.appendChild(btnCopiaUnica);
+
+            const seta = document.createElement("span");
+            seta.className = "icone-seta";
+            seta.textContent = "🔽";
+            divAcoes.appendChild(seta);
+
+            divCabecalho.appendChild(divAcoes); 
+
+            divCabecalho.addEventListener('click', () => {
+                divCard.classList.toggle('aberto');
+                // Marca o processo como LIDO visualmente ao expandir
+                divCard.classList.add('lido');
+            });
+            
+            const divTeorCompleto = document.createElement("div");
+            divTeorCompleto.className = "teor";
+            aplicarMarcaTexto(divTeorCompleto, textoLimpo); 
 
             divCard.appendChild(divCabecalho);
-            divCard.appendChild(divTeor);
+            divCard.appendChild(divTeorCompleto);
             divResultados.appendChild(divCard);
         });
 
-        // Atualiza a barra de alerta geral
-        if (qtdPrazos > 0) {
-            contador.innerHTML = `<span>⚠️</span> <span>Existem <strong>${qtdPrazos} prazos</strong> mapeados na lista abaixo.</span>`;
+        if (qtdOcorrencias > 0) {
+            contador.textContent = ""; 
+            const iconNode = document.createTextNode("⚠️ ");
+            const spanText = document.createElement("span");
+            const strongNode = document.createElement("strong");
+            strongNode.textContent = `${qtdOcorrencias} processos`;
+            spanText.append("Contêm termos do seu dicionário (", strongNode, ").");
+            contador.append(iconNode, spanText);
             contador.style.display = 'flex';
         } else {
             contador.style.display = 'none';
@@ -207,8 +407,13 @@ document.addEventListener('DOMContentLoaded', () => {
         actionContainer.style.display = 'none';
         containerFiltro.style.display = 'none';
         contador.style.display = 'none';
+        
         filtroRapido.value = "";
         filtroTribunal.value = "";
+        filtroDicionarioAtivo = false;
+        btnToggleDicionario.classList.remove('ativo');
+        todosExpandidos = false;
+        btnExpandirTodos.textContent = "🔽 Expandir Todos";
 
         try {
             const url = `https://comunicaapi.pje.jus.br/api/v1/comunicacao?numeroOab=${num}&ufOab=${uf}&dataDisponibilizacaoInicio=${inputInicio.value}&dataDisponibilizacaoFim=${inputFim.value}`;
@@ -240,12 +445,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    function gerarTextoExportacao() {
+    function gerarTextoExportacaoCompleto() {
         if (resultadosExibidos.length === 0) return "";
         return resultadosExibidos.map((i) => {
-            const textoLimpo = higienizarEFormatador(i.texto || i.teor);
-            const proc = extrairProcesso(i, textoLimpo);
-            const temPrazo = textoLimpo.toLowerCase().includes("prazo");
+            const textoLimpo = limparHTMLBruto(i.texto || i.teor);
+            const procCru = extrairProcesso(i, textoLimpo);
+            const procFormatado = formatarCNJ(procCru); 
+            const sigla = i.siglaTribunal || 'TJ';
             
             const dataBruta = i.data_disponibilizacao || i.dataDisponibilizacao || "";
             let dataDisp = "Não informada";
@@ -254,28 +460,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!isNaN(d)) dataDisp = d.toLocaleDateString('pt-BR');
             }
             
-            const blocos = textoLimpo.split('\n').map(b => b.trim()).filter(b => b.length > 0);
-            
-            // Mantém a lógica de embutir o ⚠️ no arquivo TXT/Área de Transferência
-            const procExibicao = temPrazo ? `⚠️ ${proc}` : proc;
-
-            return `* Processo: ${procExibicao} | Tribunal: ${i.siglaTribunal} | **Disp: ${dataDisp}** (⚠️ Confirme no sistema)\n  * Texto: ${blocos[0] || ""}\n  * ${blocos.slice(1).join(' ')}`;
+            return formatarParaExportacao(textoLimpo, procFormatado, sigla, dataDisp);
         }).join('\n\n');
     }
 
     btnCopiar.addEventListener('click', () => {
-        const txtFinal = gerarTextoExportacao();
+        const txtFinal = gerarTextoExportacaoCompleto();
         if (!txtFinal) return;
 
         navigator.clipboard.writeText(txtFinal).then(() => {
             const label = btnCopiar.textContent;
-            btnCopiar.textContent = "✓ Copiado!";
+            btnCopiar.textContent = "✓ Lista Inteira Copiada!";
+            
+            // Marca toda a lista visível como lida ao clicar no botão global
+            document.querySelectorAll('.intimacao-card').forEach(c => c.classList.add('lido'));
+
             setTimeout(() => { btnCopiar.textContent = label; }, 2000);
         });
     });
 
     btnDownload.addEventListener('click', () => {
-        const txtFinal = gerarTextoExportacao();
+        const txtFinal = gerarTextoExportacaoCompleto();
         if (!txtFinal) return;
 
         const blob = new Blob([txtFinal], { type: 'text/plain;charset=utf-8' });
@@ -293,7 +498,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     });
-
 }); 
 
 window.addEventListener('visibilitychange', () => {

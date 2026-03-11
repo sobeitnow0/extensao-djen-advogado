@@ -1,20 +1,13 @@
 {
   "manifest_version": 3,
   "name": "Buscador DJEN",
-  "version": "1.3.0",
-  "description": "Consulta rápida de intimações no DJEN. Interface premium, filtros por tribunal, contagem de prazos e exportação estruturada.",
+  "version": "1.9.0",
+  "description": "Consulta rápida de intimações no DJEN. Controle total com dicionário personalizado, formatação CNJ e exportação estruturada.",
   "author": "Amilcar Moreira",
   "browser_specific_settings": {
     "gecko": {
       "id": "djen@sobeitnow0.github.io",
-      "strict_min_version": "142.0",
-      "data_collection_permissions": {
-        "is_authorized": false,
-        "required": ["none"]
-      }
-    },
-    "gecko_android": {
-      "strict_min_version": "142.0"
+      "strict_min_version": "115.0"
     }
   },
   "permissions": [
