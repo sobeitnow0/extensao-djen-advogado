@@ -1,6 +1,6 @@
 /**
- * Buscador DJEN v3.3.0
- * Botão de Cópia Individual + Unificação da Exportação
+ * Buscador DJEN v3.5.1
+ * Motor Forense + Cache + Exportação + Semaforização Ajustada (5/4/1)
  */
 
 function obterFeriadosForenses(ano) {
@@ -102,11 +102,36 @@ function calcularProcessual(dataDispStr, dias, tipoContagem, suspensoesExtras) {
     return { pub: strPub, inicio: strInicio, fatal: data.toLocaleDateString('pt-BR') };
 }
 
+// Analisa a urgência do prazo para colorir o botão (Nova Regra: 5 / 4 a 2 / 1 a 0)
+function obterCorSemaforo(dataFatalStr) {
+    const partes = dataFatalStr.split('/');
+    if (partes.length !== 3) return "var(--primary)"; 
+    
+    const dataFatal = new Date(partes[2], partes[1] - 1, partes[0], 12, 0, 0);
+    const hoje = new Date();
+    hoje.setHours(12, 0, 0, 0);
+    
+    const diffTempo = dataFatal.getTime() - hoje.getTime();
+    const diffDias = Math.ceil(diffTempo / (1000 * 3600 * 24));
+    
+    if (diffDias <= 1) return "#e01b24"; // Vermelho: Urgente (Vence hoje, atrasado ou falta 1 dia)
+    if (diffDias <= 4) return "#ff7800"; // Laranja: Atenção (Faltam 2, 3 ou 4 dias)
+    return "#26a269";                    // Verde: Seguro (Faltam 5 dias ou mais)
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const ids = ['oabNum', 'oabUf', 'dataInicio', 'dataFim', 'btnBuscar', 'resultados', 'btnCopiarTodos', 'btnDownloadTxt', 'filtroRapido', 'filtroTribunal', 'containerFiltro', 'skeletonLoader', 'btnExpandirTodos', 'btnExportarMenu', 'dropdownExportar', 'contadorResultados'];
     const el = {}; ids.forEach(id => el[id] = document.getElementById(id));
 
     let resultadosGlobais = [], resultadosExibidos = [], todosExpandidos = false;
+
+    // INICIALIZA O CACHE DE PRAZOS
+    let prazosSalvos = {};
+    try {
+        prazosSalvos = JSON.parse(localStorage.getItem('djen_prazos_salvos')) || {};
+    } catch (e) {
+        prazosSalvos = {};
+    }
 
     el.oabNum.value = localStorage.getItem('djen_oab_num') || "";
     el.oabUf.value = localStorage.getItem('djen_oab_uf') || "";
@@ -150,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return p;
     }
 
-    // FUNÇÃO PARTILHADA PARA GERAR O TEXTO FINAL (USADA NO CARTÃO E NA EXPORTAÇÃO GLOBAL)
     function gerarTextoExportacao(i) {
         let txtBase = `* Processo: ${formatCNJ(getProcessNumber(i, cleanText(i.texto||i.teor)))} | ${i.siglaTribunal}\n  * Texto: ${cleanText(i.texto || i.teor)}`;
         
@@ -222,6 +246,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const proc = formatCNJ(getProcessNumber(i, txt));
             const dataProc = new Date(i.data_disponibilizacao + 'T12:00:00').toLocaleDateString('pt-BR');
             
+            // CHAVE ÚNICA PARA O CACHE
+            const itemKey = (i.id || (proc + '_' + i.data_disponibilizacao)).toString().replace(/\s/g, '');
+            
+            // RECUPERA DO CACHE SE EXISTIR
+            if (prazosSalvos[itemKey]) {
+                i.prazoCalculado = prazosSalvos[itemKey];
+            }
+
             const card = document.createElement("div");
             card.className = "intimacao-card";
             if (dataProc === hojeLocal) card.classList.add('hoje');
@@ -246,15 +278,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const acoesDiv = document.createElement("div");
             acoesDiv.className = "card-acoes";
 
-            // DIV PARA ALINHAR OS BOTÕES LADO A LADO
             const botoesAcaoDiv = document.createElement("div");
             botoesAcaoDiv.className = "botoes-acao";
 
             const btnCalc = document.createElement("button");
             btnCalc.className = "btn-acao-lista btn-abrir-calc";
-            btnCalc.textContent = "⏱️ Calcular Prazo";
+            
+            // SEMAFORIZAÇÃO NO BOTÃO SE O PRAZO JÁ ESTIVER NO CACHE
+            if (i.prazoCalculado) {
+                const corAlerta = obterCorSemaforo(i.prazoCalculado.fatal);
+                btnCalc.innerHTML = `⏱️ Fatal: <b style="color:${corAlerta}">${i.prazoCalculado.fatal}</b>`;
+            } else {
+                btnCalc.textContent = "⏱️ Calcular Prazo";
+            }
 
-            // NOVO BOTÃO DE CÓPIA INDIVIDUAL
             const btnCopiarInd = document.createElement("button");
             btnCopiarInd.className = "btn-acao-lista";
             btnCopiarInd.textContent = "📋 Copiar";
@@ -278,20 +315,36 @@ document.addEventListener('DOMContentLoaded', () => {
             const calcPanel = document.createElement("div");
             calcPanel.className = "calculadora-prazo";
             
+            // PREENCHE A CALCULADORA COM OS DADOS DO CACHE
+            const dCached = i.prazoCalculado ? i.prazoCalculado.dias : '';
+            const tCached = i.prazoCalculado ? (i.prazoCalculado.tipo.includes('CPC') ? 'cpc' : 'cpp') : 'cpc';
+            const sCached = (i.prazoCalculado && i.prazoCalculado.susp > 0) ? i.prazoCalculado.susp : '';
+
             calcPanel.innerHTML = `
                 <div class="calc-row">
-                    <input type="number" class="calc-dias" placeholder="Prazo" title="Dias do prazo" min="1" style="width: 60px;">
+                    <input type="number" class="calc-dias" placeholder="Prazo" title="Dias do prazo" value="${dCached}" min="1" style="width: 60px;">
                     <select class="calc-tipo" style="width: 140px; font-size: 11px; padding: 8px;">
-                        <option value="cpc">CPC (Dias Úteis)</option>
-                        <option value="cpp">CPP (Corridos)</option>
+                        <option value="cpc" ${tCached === 'cpc' ? 'selected' : ''}>CPC (Dias Úteis)</option>
+                        <option value="cpp" ${tCached === 'cpp' ? 'selected' : ''}>CPP (Corridos)</option>
                     </select>
-                    <input type="number" class="calc-susp" placeholder="Feriado Local" title="Dias extras" min="0" style="flex:1;">
+                    <input type="number" class="calc-susp" placeholder="Feriado Local" title="Dias extras" value="${sCached}" min="0" style="flex:1;">
                 </div>
                 <div class="calc-row" style="justify-content: space-between; margin-top: 10px; align-items: flex-end;">
                      <div class="resultado-prazo" style="text-align: left;"></div>
-                     <button class="btn-acao-lista btn-exec" style="background-color: var(--primary); color: white;">Calcular</button>
+                     <button class="btn-acao-lista btn-exec" style="background-color: var(--primary); color: white;">Salvar</button>
                 </div>
             `;
+
+            const resDiv = calcPanel.querySelector('.resultado-prazo');
+
+            // MOSTRA O RESULTADO SALVO COM CORES NO PAINEL
+            if (i.prazoCalculado) {
+                const corAlerta = obterCorSemaforo(i.prazoCalculado.fatal);
+                resDiv.innerHTML = `
+                    <div class="resultado-aux">Publicou: ${i.prazoCalculado.pub} | Inicia: ${i.prazoCalculado.inicio}</div>
+                    <div style="font-size: 14px; margin-top: 4px;">Data Fatal: <b style="color: ${corAlerta};">${i.prazoCalculado.fatal}</b></div>
+                `;
+            }
 
             btnCalc.onclick = (e) => {
                 e.stopPropagation(); 
@@ -299,7 +352,6 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             const btnExec = calcPanel.querySelector('.btn-exec');
-            const resDiv = calcPanel.querySelector('.resultado-prazo');
             
             btnExec.onclick = (e) => {
                 e.stopPropagation();
@@ -315,11 +367,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                        `• Publicação: ${resultado.pub}\n` +
                                        `• Início do Prazo: ${resultado.inicio}\n` +
                                        `• DATA FATAL: ${resultado.fatal}\n\n` +
-                                       `⚠️ ATENÇÃO: Verifique se houve feriados locais ou suspensão do expediente neste período e ajuste no campo "Feriado Local" se necessário.\n\n` +
                                        `Deseja confirmar e atrelar este prazo à intimação?`;
 
                 if (!confirm(msgConfirmacao)) return; 
                 
+                // ATUALIZA O OBJETO
                 i.prazoCalculado = {
                     dias: dias,
                     tipo: tipo === 'cpc' ? 'CPC (Úteis)' : 'CPP (Corridos)',
@@ -328,11 +380,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     inicio: resultado.inicio,
                     fatal: resultado.fatal
                 };
+
+                // SALVA NO CACHE DO NAVEGADOR
+                prazosSalvos[itemKey] = i.prazoCalculado;
+                localStorage.setItem('djen_prazos_salvos', JSON.stringify(prazosSalvos));
+                
+                // ATUALIZA A INTERFACE COM A COR CORRETA
+                const corAlerta = obterCorSemaforo(resultado.fatal);
+                btnCalc.innerHTML = `⏱️ Fatal: <b style="color:${corAlerta}">${resultado.fatal}</b>`;
                 
                 resDiv.innerHTML = `
                     <div class="resultado-aux">Publicou: ${resultado.pub} | Inicia: ${resultado.inicio}</div>
-                    <div style="font-size: 14px; margin-top: 4px;">Data Fatal: <b style="color: #26a269;">${resultado.fatal}</b></div>
+                    <div style="font-size: 14px; margin-top: 4px;">Data Fatal: <b style="color: ${corAlerta};">${resultado.fatal}</b></div>
                 `;
+
+                // Recolhe o painel suavemente após salvar
+                setTimeout(() => calcPanel.classList.remove('ativa'), 400);
             };
 
             acoesDiv.append(botoesAcaoDiv, calcPanel);
