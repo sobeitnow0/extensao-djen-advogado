@@ -2,21 +2,24 @@
 
 Uma ferramenta de jurimetria e acompanhamento processual focada em agilidade, segurança e design utilitário. Desenvolvida para consultar o Diário de Justiça Eletrônico Nacional (DJEN) diretamente do navegador, sem intermediários.
 
-## 🚀 Novidades da Versão 1.3.0
+🚀 Atualização v1.9.0 - Filtros Personalizados e Nova Interface
+Nesta versão, o Buscador DJEN ganha ferramentas avançadas de produtividade e controle total para a sua triagem de prazos.
 
-A extensão foi completamente redesenhada para oferecer a experiência de um software jurídico de alto padrão, focando em velocidade de leitura e triagem visual:
+O que há de novo:
 
-* **Design System Renovado:** Interface em formato de cards flutuantes, separação visual clara e tipografia otimizada para leituras longas.
-* **Badges Visuais e Contador de Prazos:** A ferramenta agora faz uma varredura inteligente nos resultados. Identifica intimações que contêm a palavra "prazo", emite um alerta global (⚠️) e destaca o card do processo para atenção imediata.
-* **Filtros Dinâmicos:** Novo menu suspenso (dropdown) gerado em tempo real que permite isolar e ler intimações de apenas um Tribunal específico (ex: apenas STJ ou TJSP).
-* **Exportação Otimizada (.txt):** Além da cópia rápida para a área de transferência, um novo botão gera um arquivo de texto local estruturado e limpo, pronto para ser importado em sistemas de *outlining* ou gestão de casos, contendo a data oficial de disponibilização em destaque.
+Dicionário Personalizado (⚙️): Você decide o que é prazo. Cadastre seus próprios termos de alerta e a extensão filtrará apenas eles.
 
-## 🛠️ Principais Funcionalidades
+Leitura Limpa (Acordeão): A lista agora é compacta. Clique no cartão do processo apenas quando quiser ler a íntegra do despacho.
 
-* **Consulta em 1 Clique:** Atalhos dinâmicos (Hoje, 5 dias, 15 dias e 1 Mês) que preenchem as datas e executam a busca instantaneamente.
-* **Dark Mode Nativo:** Interface que se adapta automaticamente ao tema do sistema operacional do usuário.
-* **Privacidade e Segurança:** Funciona localmente. Não coleta telemetria, não exige cadastro e utiliza sanitização rigorosa de dados (DOMParser) para evitar injeções de código. Comunicação feita exclusivamente com a API oficial do CNJ.
-* **Suporte Universal:** Código compatível e aprovado para rodar nativamente tanto em motores Chromium (Google Chrome, Edge, Brave) quanto na engine Gecko (Mozilla Firefox).
+Controle de "Lido": Cartões clicados ou copiados ficam levemente "apagados" para você saber exatamente onde parou.
+
+Máscara CNJ: Números de processo agora são formatados automaticamente com o padrão oficial.
+
+Cópia Individual (📋): Copie o resumo estruturado de apenas uma intimação específica direto para a área de transferência.
+
+Marca-Texto Inteligente: As palavras do seu dicionário ganham destaque amarelo automático no meio do texto.
+
+Preenchimento Rápido: Novo botão nas configurações para carregar uma lista de termos jurídicos mais comuns com um clique.
 
 ## 📦 Como Instalar (Versões de Desenvolvimento)
 
