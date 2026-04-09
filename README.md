@@ -1,46 +1,44 @@
-⚖️ Buscador DJEN (v3.3.0)
-Uma extensão de navegador minimalista, segura e independente para consulta rápida de intimações no Diário da Justiça Eletrônico Nacional (DJEN) via API pública do CNJ. Projetada com a estética Adwaita (GNOME Style) para garantir uma leitura limpa, livre de distrações e altamente focada na produtividade jurídica.
+⚖️ Buscador DJEN: Gestão de Prazos Judiciais e Intimações
+Pare de perder tempo caçando publicações e calculando prazos na mão. Transforme seu navegador no seu assistente jurídico pessoal.
 
-🚀 O que há de novo na Versão 3.3.0?
-A extensão passou por uma grande reestruturação para incluir uma ferramenta indispensável para a advocacia: Cálculo de Prazos Processuais automatizado e 100% Offline.
+O Buscador DJEN é a extensão definitiva para a advocacia moderna. Desenvolvido para simplificar a rotina jurídica, ele permite buscar intimações do Diário de Justiça Eletrônico Nacional (DJEN) diretamente pela sua OAB e gerenciar todo o seu fluxo de trabalho em um painel lateral limpo, rápido e 100% seguro.
 
-🧠 Motor Forense Offline: Abandonamos a dependência de APIs de terceiros para buscar feriados. A extensão agora possui um motor astronômico embutido que calcula automaticamente a Páscoa e todos os feriados móveis (Carnaval, Quarta de Cinzas, Quinta de Endoenças, Sexta-Feira Santa e Corpus Christi), além dos feriados fixos da Lei 5.010/66.
+Feito de advogado para advogado, o Buscador DJEN unifica pesquisa, cálculo de prazos e gestão de tarefas em um único lugar.
 
-📅 Regras Estritas do CPC e CPP:
+🚀 Principais Funcionalidades:
+🔍 Busca Inteligente no DJEN
+Consulte publicações de qualquer tribunal integrado ao PJe utilizando apenas o seu número da OAB e UF. Filtre os resultados por tribunal, período ou palavras-chave instantaneamente.
 
-CPC (Dias Úteis): Pula finais de semana, feriados nacionais/forenses e aplica automaticamente a suspensão de prazos do Recesso Forense (20/12 a 20/01).
+📅 Calculadora de Prazos Avançada
+Esqueça a contagem manual! O sistema calcula seus prazos fatais (em dias úteis para o CPC/CLT ou corridos para o CPP), considerando automaticamente:
 
-CPP (Dias Corridos): Contagem ininterrupta, mas ajusta automaticamente o início e o vencimento caso caiam em dias não úteis.
+Feriados Nacionais, Estaduais e Municipais.
 
-🛡️ Alerta de Confirmação: Ao calcular um prazo, um resumo das datas (Publicação, Início e Vencimento) é exibido para sua conferência. Você pode inserir suspensões locais (ex: feriados municipais ou instabilidade no PJe) manualmente.
+Recesso Forense e suspensões dos Tribunais.
 
-📋 Exportação Inteligente: Os prazos confirmados são atrelados à respectiva intimação. Ao exportar em .txt ou clicar no novo botão "Copiar" (Individual ou Global), o resumo do cálculo é anexado perfeitamente formatado ao final do texto da publicação.
+Prorrogações automáticas para o próximo dia útil.
+
+✅ Gestor de Tarefas (TODO) por Processo
+Cada intimação possui sua própria lista de tarefas. Anote o que precisa ser feito (ex: "Pedir documentos ao cliente", "Elaborar Peça"), marque as concluídas e veja a barra de progresso do card avançar. O foco fica sempre no que importa.
+
+🚨 Radar de Urgência & Modo Foco
+A extensão detecta automaticamente palavras sensíveis (como Penhora, Bloqueio, Liminar) e cria etiquetas de alerta. Precisa ler um despacho longo? Ative o Modo Foco para uma leitura limpa, sem distrações, com opções de destacar texto e ajustar o tamanho da fonte.
+
+📤 Integração e Compartilhamento
+
+Google Agenda: Exporte seus prazos calculados direto para sua agenda com 1 clique.
+
+WhatsApp & Telegram: Gere relatórios ou avise seus clientes sobre movimentações processuais com mensagens formatadas e limpas.
+
+🔒 Privacidade e Segurança (100% Offline)
+A confidencialidade dos seus clientes é prioridade. O Buscador DJEN não sincroniza dados na nuvem e não envia seus processos para servidores externos. Toda a sua agenda, anotações e tarefas ficam salvas localmente e criptografadas no seu próprio navegador. O seu "Cofre" é só seu.
+
+🎮 Produtividade Gamificada
+Cumpra prazos, adicione tarefas e faça buscas para ganhar XP. Suba de nível, de Estagiário até Sócio Titular, e acompanhe suas estatísticas de produtividade semanais no seu Painel exclusivo.
+
+💡 Por que instalar?
+Se você trabalha com múltiplos prazos diários e precisa de uma ferramenta rápida, que não trave e que não custe mensalidades absurdas, o Buscador DJEN foi feito para você.
+
+Instale agora e assuma o controle total da sua pauta!
 
 
-✨ Funcionalidades Principais
-Busca Direta: Consulta via OAB e UF diretamente na API do PJe/CNJ.
-
-Leitura Limpa (Limpeza Editorial): Remove marcações HTML desnecessárias, corrige espaçamentos excessivos, padroniza termos (ex: "artigo" para "art.", "parágrafo" para "§") e aplica formatação natural (Capitalized words).
-
-Filtros Dinâmicos: Filtre rapidamente os resultados recebidos por texto, número do processo ou Tribunal.
-
-Design Adwaita: Interface moderna, suporte automático a Tema Claro/Escuro (Dark Mode) do sistema operativo e foco na legibilidade (Zero innerHTML inseguro na renderização de resultados).
-
-Ações em Massa: Expanda ou recolha todas as intimações, exporte a lista completa para um arquivo .txt ou copie tudo para a área de transferência com um clique.
-
-
-## 📦 Como Instalar (Versões de Desenvolvimento)
-
-Para utilizar a versão mais recente direto do código-fonte:
-
-**No Chrome / Edge / Brave:**
-1. Baixe os arquivos do repositório.
-2. Acesse `chrome://extensions/` no seu navegador.
-3. Ative o **Modo do desenvolvedor** no canto superior direito.
-4. Clique em **"Carregar sem compactação"** e selecione a pasta com os arquivos (`manifest.json` e cia).
-
-**No Firefox:**
-1. https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/
-
----
-*Ferramenta Open-Source desenvolvida para otimizar a rotina de triagem na advocacia.*
