@@ -1,16 +1,29 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
-    <meta name="description" content="O fim da leitura manual dos Diários de Justiça. Buscador DJEN automatiza a triagem de publicações e calcula prazos processuais.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Buscador DJEN - Automação e Gestão de Prazos Jurídicos | por Amilcar Moreira</title>
+    <meta name="description" content="O fim da leitura manual dos Diários de Justiça. Buscador DJEN automatiza a triagem de publicações e calcula prazos processuais para a advocacia.">
+    <meta name="author" content="Amilcar Moreira">
+    
+    <meta property="og:type" content="website">
     <meta property="og:title" content="Buscador DJEN - Automação para Advogados">
     <meta property="og:description" content="Automatize a triagem de publicações, audite prazos e organize a sua rotina num painel flutuante no seu navegador.">
     <meta property="og:image" content="djen-128.png"> 
-    <meta property="og:type" content="website">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="djen-128.png">
-    <title>Buscador DJEN - Automação e Gestão de Prazos Jurídicos | por Amilcar Moreira</title>
+    <meta property="og:url" content="https://www.buscadordjen.com.br/">
     
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Buscador DJEN - Automação para Advogados">
+    <meta name="twitter:description" content="Automatize a triagem de publicações, audite prazos e organize a sua rotina num painel flutuante no seu navegador.">
+    <meta name="twitter:image" content="djen-128.png">
+
+    <link rel="icon" type="image/png" href="djen-128.png">
+    <link rel="canonical" href="https://www.buscadordjen.com.br/">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -18,59 +31,46 @@
            DESIGN SYSTEM (Notion Inspired) 
            ========================================================================== */
         :root {
-            /* Tema Claro (Padrão) */
             --bg-page: #ffffff;
             --bg-section: #f6f5f4; 
             --card-bg: #ffffff;
-            
             --text-main: rgba(0, 0, 0, 0.95); 
             --text-muted: #615d59; 
             --text-placeholder: #a39e98;
-            
             --primary: #0075de; 
             --primary-hover: #005bab;
             --primary-text: #ffffff;
             --primary-light: #f2f9ff;
-            
             --border-light: rgba(0, 0, 0, 0.1); 
-            
             --zen-orange: #dd5b00;
             --zen-green: #1aae39;
             --zen-purple: #391c57;
             --zen-red: #d93025;
-
             --radius-btn: 6px;
             --radius-card: 12px;
             --radius-pill: 9999px;
-
             --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.85px, rgba(0,0,0,0.02) 0px 0.8px 2.93px;
             --shadow-hover: rgba(0,0,0,0.08) 0px 8px 24px, rgba(0,0,0,0.04) 0px 4px 8px;
             --shadow-modal: rgba(0,0,0,0.05) 0px 23px 52px, rgba(0,0,0,0.04) 0px 14px 28px;
         }
 
-        /* Tema Escuro */
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-page: #191919;
                 --bg-section: #202020;
                 --card-bg: #252525;
-                
                 --text-main: rgba(255, 255, 255, 0.95);
                 --text-muted: rgba(255, 255, 255, 0.6);
                 --text-placeholder: rgba(255, 255, 255, 0.3);
-                
                 --primary: #52a8ff;
                 --primary-hover: #62aef0;
                 --primary-text: #191919;
                 --primary-light: rgba(82, 168, 255, 0.15);
-                
                 --border-light: rgba(255, 255, 255, 0.1);
-                
                 --zen-orange: #ffa344;
                 --zen-green: #4dabb6;
                 --zen-purple: #b992e6;
                 --zen-red: #ff7369;
-
                 --shadow-card: rgba(0,0,0,0.5) 0px 4px 18px;
                 --shadow-hover: rgba(0,0,0,0.6) 0px 8px 24px;
                 --shadow-modal: rgba(0,0,0,0.8) 0px 23px 52px;
@@ -114,10 +114,7 @@
             display: flex; flex-direction: column; align-items: center; text-align: center; 
             padding: 80px 20px 60px; max-width: 900px; margin: 0 auto; 
         }
-        .hero h1 { 
-            font-size: 64px; font-weight: 800; line-height: 1.05; 
-            margin-bottom: 24px; letter-spacing: -2.125px; 
-        }
+        .hero h1 { font-size: 64px; font-weight: 800; line-height: 1.05; margin-bottom: 24px; letter-spacing: -2.125px; }
         .hero h1 span { color: var(--primary); }
         .hero p { font-size: 20px; color: var(--text-muted); margin-bottom: 40px; max-width: 700px; font-weight: 400; line-height: 1.5; letter-spacing: -0.125px;}
 
@@ -169,15 +166,26 @@
         .feature-card {
             background: var(--card-bg); padding: 32px; border-radius: var(--radius-card); 
             border: 1px solid var(--border-light); box-shadow: var(--shadow-card);
-            transition: 0.2s ease; display: flex; flex-direction: column; position: relative;
-            z-index: 1; /* Base z-index */
+            transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+            display: flex; flex-direction: column; position: relative; z-index: 1;
         }
         .feature-card:hover { 
             box-shadow: var(--shadow-hover); transform: translateY(-2px); border-color: var(--primary);
-            z-index: 50; /* Traz para a frente no hover para o Tooltip não ser cortado */
+            z-index: 50; 
         }
 
-        /* Ícones Nativos */
+        /* Animação de Fade In para o Scroll */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
         .feature-icon {
             font-size: 24px; margin-bottom: 24px; background: var(--bg-section);
             width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; border-radius: 8px;
@@ -192,63 +200,34 @@
         .feature-list li::before { content: '•'; position: absolute; left: 0; top: 0; color: var(--primary); font-weight: bold; font-size: 16px; }
         .feature-list li b { color: var(--text-main); font-weight: 600; }
 
-        /* ================= BOTÃO HOVER "👁️ Ver" CORRIGIDO ================= */
+        /* BOTÃO HOVER "👁️ Ver" */
         .preview-trigger {
-            position: absolute;
-            top: 24px; right: 24px;
-            /* Design exato da imagem de referência */
-            background: rgba(82, 168, 255, 0.08); 
-            border: 1px solid var(--primary);
-            border-radius: var(--radius-pill);
-            padding: 4px 12px;
-            color: var(--primary); 
-            font-size: 13px;
-            font-weight: 500;
+            position: absolute; top: 24px; right: 24px; background: rgba(82, 168, 255, 0.08); 
+            border: 1px solid var(--primary); border-radius: var(--radius-pill); padding: 4px 12px;
+            color: var(--primary); font-size: 13px; font-weight: 500;
             display: flex; justify-content: center; align-items: center; gap: 6px;
             cursor: pointer; transition: all 0.2s ease;
         }
-        
         .preview-trigger:hover { background: var(--primary); color: var(--primary-text); }
 
-        /* Container da Imagem do Tooltip */
         .preview-image-container {
-            position: absolute;
-            top: calc(100% + 12px); 
-            right: 0;
-            width: 320px;
-            background: var(--card-bg);
-            padding: 8px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-light);
-            box-shadow: var(--shadow-modal);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            pointer-events: none;
+            position: absolute; top: calc(100% + 12px); right: 0; width: 320px;
+            background: var(--card-bg); padding: 8px; border-radius: 8px; border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-modal); opacity: 0; visibility: hidden; transform: translateY(-10px);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none;
         }
 
-        /* Setinha do Tooltip */
         .preview-image-container::after {
             content: ''; position: absolute; bottom: 100%; right: 24px;
-            border-width: 8px; border-style: solid;
-            border-color: transparent transparent var(--border-light) transparent;
+            border-width: 8px; border-style: solid; border-color: transparent transparent var(--border-light) transparent;
         }
         .preview-image-container::before {
             content: ''; position: absolute; bottom: 100%; right: 25px;
-            border-width: 7px; border-style: solid;
-            border-color: transparent transparent var(--card-bg) transparent;
-            z-index: 2;
+            border-width: 7px; border-style: solid; border-color: transparent transparent var(--card-bg) transparent; z-index: 2;
         }
 
-        .preview-image-container img {
-            width: 100%; border-radius: var(--radius-sm); display: block; border: 1px solid var(--border-light);
-        }
-
-        /* Ativa a imagem apenas no Hover */
-        .preview-trigger:hover .preview-image-container {
-            opacity: 1; visibility: visible; transform: translateY(0);
-        }
+        .preview-image-container img { width: 100%; border-radius: 6px; display: block; border: 1px solid var(--border-light); }
+        .preview-trigger:hover .preview-image-container { opacity: 1; visibility: visible; transform: translateY(0); }
 
         @media (max-width: 768px) {
             .preview-trigger { display: none; }
@@ -257,7 +236,7 @@
 
         /* ===== FOOTER E CAFÉ ===== */
         footer { 
-            padding: 60px 20px; border-top: 1px solid var(--border-light); background: var(--bg-section);
+            padding: 60px 20px 40px; border-top: 1px solid var(--border-light); background: var(--bg-section);
             display: flex; flex-direction: column; align-items: center;
         }
 
@@ -265,13 +244,12 @@
 
         .premium-banner-footer {
             background: rgba(221, 91, 0, 0.1); border: 1px solid rgba(221, 91, 0, 0.2); 
-            padding: 16px; border-radius: var(--radius-md); color: var(--zen-orange); 
+            padding: 16px; border-radius: 8px; color: var(--zen-orange); 
             font-size: 14px; text-align: center; line-height: 1.5;
         }
 
-        /* Acordeão PIX corrigido */
         .coffee-container {
-            border: 1px solid var(--border-light); border-radius: var(--radius-md); 
+            border: 1px solid var(--border-light); border-radius: 8px; 
             background: var(--card-bg); overflow: hidden; transition: all 0.2s ease;
         }
         
@@ -282,18 +260,12 @@
         }
         .coffee-btn:hover { background: rgba(0,0,0,0.02); }
         @media (prefers-color-scheme: dark) { .coffee-btn:hover { background: rgba(255,255,255,0.02); } }
-        
         .coffee-btn svg.chevron { transition: transform 0.3s ease; }
         .coffee-btn.active svg.chevron { transform: rotate(180deg); }
 
-        .coffee-content {
-            display: none; padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); text-align: center;
-        }
+        .coffee-content { display: none; padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); text-align: center; }
         .coffee-content.show { display: block; }
-        
-        .coffee-content img {
-            width: 160px; height: 160px; margin: 20px auto; border-radius: 8px; background: #fff; padding: 10px; display: block; border: 1px solid var(--border-light);
-        }
+        .coffee-content img { width: 160px; height: 160px; margin: 20px auto; border-radius: 8px; background: #fff; padding: 10px; display: block; border: 1px solid var(--border-light); }
 
         .pix-code-container { display: flex; gap: 8px; margin-top: 16px; }
         .pix-code-container input {
@@ -306,7 +278,15 @@
         }
         .pix-code-container button:hover { background: var(--primary-hover); }
 
-        .footer-copy { text-align: center; color: var(--text-muted); font-size: 14px; margin-top: 20px; }
+        /* Novos Links do Rodapé */
+        .footer-links {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-top: 20px;
+        }
+        .footer-links a {
+            color: var(--text-muted); font-size: 13px; text-decoration: none; transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--primary); text-decoration: underline; }
+        .footer-copy { text-align: center; color: var(--text-placeholder); font-size: 13px; margin-top: 8px; }
 
     </style>
 </head>
@@ -314,11 +294,11 @@
 
     <header>
         <div class="brand">
-            <img src="djen-128.png" alt="Logo DJEN">
+            <img src="djen-128.png" alt="Logo Buscador DJEN">
             Buscador DJEN
             <span class="badge-cortesia-site">CORTESIA</span>
         </div>
-        <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" rel="noopener noreferrer" class="btn-cta">Instalar a Extensão</a>
+        <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" rel="noopener noreferrer" class="btn-cta" aria-label="Instalar a Extensão no Chrome">Instalar a Extensão</a>
     </header>
 
     <section class="hero">
@@ -326,12 +306,12 @@
         <p>A ferramenta projetada para otimizar o tempo de pesquisa em diários de justiça, atuando diretamente nas fontes oficiais e automatizando a sua gestão de prazos.</p>
         
         <div class="hero-buttons">
-            <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" rel="noopener noreferrer" class="btn-browser chrome">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="21.17" y1="8" x2="12" y2="8"></line><line x1="3.95" y1="6.06" x2="8.54" y2="14"></line><line x1="10.88" y1="21.94" x2="15.46" y2="14"></line></svg>
+            <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" rel="noopener noreferrer" class="btn-browser chrome" aria-label="Baixar extensão para Chrome">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="21.17" y1="8" x2="12" y2="8"></line><line x1="3.95" y1="6.06" x2="8.54" y2="14"></line><line x1="10.88" y1="21.94" x2="15.46" y2="14"></line></svg>
                 Disponível para Chrome
             </a>
-            <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" rel="noopener noreferrer" class="btn-browser firefox">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path><path d="M14.5 15.5c-1.5 1.5-3.5 1.5-5 0"></path><path d="M9.5 8.5c1.5-1.5 3.5-1.5 5 0"></path></svg>
+            <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" rel="noopener noreferrer" class="btn-browser firefox" aria-label="Baixar extensão para Firefox">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path><path d="M14.5 15.5c-1.5 1.5-3.5 1.5-5 0"></path><path d="M9.5 8.5c1.5-1.5 3.5-1.5 5 0"></path></svg>
                 Disponível para Firefox
             </a>
         </div>
@@ -341,21 +321,21 @@
         <div class="demo-badge">Test Drive Interativo</div>
         <p style="color: var(--text-muted); margin-bottom: 40px; font-size: 16px;">Explore as abas e clique em <b>Consultar DJEN</b> para ver a extensão em ação.</p>
         
-        <div class="iframe-wrapper">
+        <div class="iframe-wrapper fade-in-section">
             <iframe src="simulador.html" scrolling="no" loading="lazy" title="Simulador Interativo do Buscador DJEN"></iframe>
         </div>
     </section>
 
     <section class="features-container">
-        <div class="features-header">
+        <div class="features-header fade-in-section">
             <h2>Um ecossistema completo para a sua advocacia</h2>
-            <p>Passe o rato sobre o botão <b>"Ver"</b> em cada cartão para visualizar a interface real da ferramenta.</p>
+            <p>Passe o mouse sobre o botão <b>"Ver"</b> em cada cartão para visualizar a interface real da ferramenta.</p>
         </div>
 
         <div class="features">
-            <div class="feature-card">
-                <div class="preview-trigger">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            <div class="feature-card fade-in-section">
+                <div class="preview-trigger" aria-label="Ver demonstração da Busca">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     Ver
                     <div class="preview-image-container">
                         <img src="print-busca.png" alt="Print da Busca" onerror="this.style.display='none'">
@@ -363,7 +343,7 @@
                 </div>
 
                 <div class="feature-icon" style="color: var(--primary);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 </div>
                 <h3>Busca Híbrida e Inteligente</h3>
                 <p>Otimize o tempo de pesquisa atuando diretamente nas fontes oficiais do judiciário.</p>
@@ -374,9 +354,9 @@
                 </ul>
             </div>
 
-            <div class="feature-card">
-                <div class="preview-trigger">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            <div class="feature-card fade-in-section">
+                <div class="preview-trigger" aria-label="Ver demonstração da Calculadora">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     Ver
                     <div class="preview-image-container">
                         <img src="print-calc.png" alt="Print Calculadora" onerror="this.style.display='none'">
@@ -384,7 +364,7 @@
                 </div>
 
                 <div class="feature-icon" style="color: var(--zen-red);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                 </div>
                 <h3>Calculadora de Prazos Automatizada</h3>
                 <p>Esqueça a contagem manual. Um motor avançado para determinar a data fatal dos seus compromissos.</p>
@@ -395,9 +375,9 @@
                 </ul>
             </div>
 
-            <div class="feature-card">
-                <div class="preview-trigger">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            <div class="feature-card fade-in-section">
+                <div class="preview-trigger" aria-label="Ver demonstração do Calendário">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     Ver
                     <div class="preview-image-container">
                         <img src="print-calendario.png" alt="Print Calendário" onerror="this.style.display='none'">
@@ -405,7 +385,7 @@
                 </div>
 
                 <div class="feature-icon" style="color: var(--zen-green);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                 </div>
                 <h3>Gestão de Prazos e Calendário</h3>
                 <p>Um painel completo para gerenciar o que foi encontrado, substituindo planilhas e agendas físicas.</p>
@@ -416,9 +396,9 @@
                 </ul>
             </div>
 
-            <div class="feature-card">
-                <div class="preview-trigger">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            <div class="feature-card fade-in-section">
+                <div class="preview-trigger" aria-label="Ver demonstração do Foco">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     Ver
                     <div class="preview-image-container">
                         <img src="print-foco.png" alt="Print Foco" onerror="this.style.display='none'">
@@ -426,7 +406,7 @@
                 </div>
 
                 <div class="feature-icon" style="color: var(--zen-purple);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
                 </div>
                 <h3>Produtividade, Foco e Organização</h3>
                 <p>Recursos pensados milimetricamente para acabar com o ruído e o cansaço mental da advocacia.</p>
@@ -437,9 +417,9 @@
                 </ul>
             </div>
 
-            <div class="feature-card">
-                <div class="preview-trigger">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            <div class="feature-card fade-in-section">
+                <div class="preview-trigger" aria-label="Ver demonstração da Exportação">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     Ver
                     <div class="preview-image-container">
                         <img src="print-export.png" alt="Print Exportar" onerror="this.style.display='none'">
@@ -447,7 +427,7 @@
                 </div>
 
                 <div class="feature-icon" style="color: var(--zen-orange);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                 </div>
                 <h3>Exportação, Partilha e Segurança</h3>
                 <p>Os seus dados pertencem a si. Mova-os com facilidade e absoluta confidencialidade.</p>
@@ -463,32 +443,38 @@
     <footer>
         <div class="footer-content">
             
-            <div class="premium-banner-footer">
+            <div class="premium-banner-footer fade-in-section">
                 ✨ <b>Premium Liberado:</b> Todas as funções avançadas estão gratuitas por tempo limitado.
             </div>
 
-            <div class="coffee-container">
-                <button class="coffee-btn" id="btnToggleCoffee">
+            <div class="coffee-container fade-in-section">
+                <button class="coffee-btn" id="btnToggleCoffee" aria-expanded="false" aria-controls="contentCoffee">
                     <div style="display:flex; align-items:center; gap:8px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
                         <span>Pague-me um café</span>
                     </div>
-                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </button>
                 
                 <div class="coffee-content" id="contentCoffee">
                     <div style="color: var(--text-muted); font-size: 13px; margin-top: 12px; margin-bottom: 12px;">Se a extensão lhe poupou horas de trabalho, considere apoiar o projeto!</div>
                     
-                    <img src="qrcode-pix.png" alt="QR Code PIX" onerror="this.style.display='none'">
+                    <img src="qrcode-pix.png" alt="QR Code PIX para doação" onerror="this.style.display='none'">
                     
                     <div class="pix-code-container">
-                        <input type="text" id="pixKey" value="50f781e2-9d94-4624-8f08-a9938bb0c4dc" readonly>
-                        <button id="btnCopyPix" onclick="copyPixCode()">Copiar</button>
+                        <input type="text" id="pixKey" value="50f781e2-9d94-4624-8f08-a9938bb0c4dc" readonly aria-label="Chave PIX para copiar">
+                        <button id="btnCopyPix" onclick="copyPixCode()" aria-label="Copiar chave PIX">Copiar</button>
                     </div>
                 </div>
             </div>
 
-            <div class="footer-copy">
+            <div class="footer-links fade-in-section">
+                <a href="#">Termos de Uso</a>
+                <a href="#">Política de Privacidade</a>
+                <a href="mailto:suporte@buscadordjen.com.br">Contato / Suporte</a>
+            </div>
+
+            <div class="footer-copy fade-in-section">
                 &copy; 2026 Buscador DJEN. Construído com foco na produtividade jurídica.
             </div>
             
@@ -502,8 +488,9 @@
 
         btnToggleCoffee.addEventListener('click', (e) => {
             e.preventDefault();
-            btnToggleCoffee.classList.toggle('active');
+            const isActive = btnToggleCoffee.classList.toggle('active');
             contentCoffee.classList.toggle('show');
+            btnToggleCoffee.setAttribute('aria-expanded', isActive);
         });
 
         // Função segura para copiar a chave PIX
@@ -511,18 +498,15 @@
             const pixInput = document.getElementById('pixKey');
             const btnCopy = document.getElementById('btnCopyPix');
             
-            // Seleciona o texto
             pixInput.select();
             pixInput.setSelectionRange(0, 99999);
             
-            // Copia para o clipboard
             navigator.clipboard.writeText(pixInput.value).then(() => {
                 const textOriginal = btnCopy.innerText;
                 btnCopy.innerText = 'Copiado!';
                 btnCopy.style.backgroundColor = 'var(--zen-green)';
                 btnCopy.style.color = '#fff';
                 
-                // Volta ao estado original após 2 segundos
                 setTimeout(() => {
                     btnCopy.innerText = textOriginal;
                     btnCopy.style.backgroundColor = 'var(--primary)';
@@ -532,6 +516,28 @@
                 console.error('Erro ao copiar: ', err);
             });
         }
+
+        // Lógica de Fade-in on Scroll (Animação suave)
+        document.addEventListener("DOMContentLoaded", function() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Para animar apenas uma vez
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-section').forEach(section => {
+                observer.observe(section);
+            });
+        });
     </script>
 </body>
 </html>
