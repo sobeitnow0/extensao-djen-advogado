@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-PT" class="tema-escuro">
+<head>
+    <meta charset="UTF-8">
+    <title>Estúdio DJEN - Versão Interativa Final</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+        :root {
+            --radius-card: 12px; --radius-btn: 4px; --radius-sm: 6px; --radius-md: 8px; --radius-pill: 9999px;
+            --zen-green: #4dabb6; --zen-orange: #ffa344; --zen-red: #ff7369;
+            --shadow-sm: rgba(0,0,0,0.5) 0px 1px 3px;
+            --shadow-card: rgba(0,0,0,0.4) 0px 4px 18px;
+            --shadow-modal: rgba(0,0,0,0.5) 0px 23px 52px;
+        }
+
+        html.tema-escuro {
+            --bg-body: #191919; 
+            --bg-panel: #202020; 
+            --bg-card: #202020; 
+            --bg-hover: #2f2f2f; 
+            
+            --text-main: rgba(255, 255, 255, 0.9); 
+            --text-muted: rgba(255, 255, 255, 0.5); 
+            --text-placeholder: rgba(255, 255, 255, 0.3);
+            
+            --border-light: rgba(255, 255, 255, 0.1); 
+            --border-focus: #52a8ff;
+            
+            --card-inner: #252525; 
+            --input-bg: #191919; 
+            --btn-bg: rgba(255, 255, 255, 0.05); 
+            
+            --primary: #52a8ff; 
+            --primary-hover: #62aef0;
+            --primary-text: #191919;
+            --primary-light: rgba(82, 168, 255, 0.15);
+            
+            --zen-green: #2dd4bf; --zen-green-bg: rgba(45, 212, 191, 0.15);
+            --zen-orange: #ffa344; --zen-orange-bg: rgba(255, 163, 68, 0.15);
+            --zen-red: #ff7369; --zen-red-bg: rgba(255, 115, 105, 0.15);
+            --zen-gray: rgba(255,255,255,0.7); --zen-gray-bg: rgba(255, 255, 255, 0.1);
+            --zen-blue: #52a8ff; --zen-blue-bg: rgba(82, 168, 255, 0.15);
+
+            --stat-hoje-txt: #ffa344;   --stat-hoje-bg: rgba(255, 163, 68, 0.15); --stat-hoje-brd: rgba(255, 163, 68, 0.3);
+            --stat-5dias-txt: #8aa4ff;  --stat-5dias-bg: rgba(33, 49, 131, 0.4);  --stat-5dias-brd: rgba(138, 164, 255, 0.3); 
+            --stat-futuro-txt: #4dabb6; --stat-futuro-bg: rgba(77, 171, 182, 0.15); --stat-futuro-brd: rgba(77, 171, 182, 0.3);
+            --stat-cump-txt: rgba(255,255,255,0.5);   --stat-cump-bg: rgba(255,255,255,0.05);  --stat-cump-brd: rgba(255,255,255,0.1);
+
+            --tag-blue-txt: #52a8ff; --tag-blue-bg: rgba(82, 168, 255, 0.15);
+            --tag-purple-txt: #b992e6; --tag-purple-bg: rgba(185, 146, 230, 0.15);
+            --tag-green-txt: #2dd4bf; --tag-green-bg: rgba(45, 212, 191, 0.15);
+        }
+
+        body { 
+            background-color: #0f0f0f; 
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; margin: 0; overflow: hidden; 
+            font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+        }
+
+        .extension-panel {
+            width: 400px; height: 600px; 
+            background-color: var(--bg-body); color: var(--text-main); 
+            border: 1px solid var(--border-light); border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8); 
+            overflow-y: auto; overflow-x: hidden;
+            box-sizing: border-box; padding: 12px 16px 24px 16px; 
+            position: relative; font-size: 14px; line-height: 1.5;
+        }
+
+        .extension-panel::-webkit-scrollbar { width: 6px; height: 6px; }
+        .extension-panel::-webkit-scrollbar-track { background: transparent; }
+        .extension-panel::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 10px; }
+
+        /* HEADER E ABAS */
+        .top-bar-fixed { 
+            position: sticky; top: -12px; z-index: 998; 
+            background: rgba(25, 25, 25, 0.90); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); 
+            margin: -12px -16px 16px -16px; padding: 12px 16px 0 16px; 
+            border-bottom: 1px solid var(--border-light); 
+        }
+        
+        .app-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .app-brand-wrapper { display: flex; align-items: center; gap: 8px; }
+        .app-logo { width: 24px; height: 24px; border-radius: 4px; object-fit: cover; }
+        .app-title { font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;}
+        .badge-cortesia { font-size: 10px; background: transparent; color: var(--zen-orange); padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid rgba(255, 163, 68, 0.3); }
+        
+        .header-menu-container { position: relative; display: flex; align-items: center; }
+        .btn-header-menu { background: transparent; border: none; color: var(--text-muted); width: 32px; height: 32px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.1s;}
+        .btn-header-menu:hover { background: var(--bg-hover); color: var(--text-main); }
+
+        .view-switcher { display: flex; gap: 16px; border-bottom: 1px solid var(--border-light); padding-bottom: 0;}
+        .view-switcher button { border: none; background: transparent; padding: 8px 4px; font-size: 14px; font-weight: 500; cursor: pointer; color: var(--text-muted); position: relative; margin-bottom: -1px; transition: 0.2s;}
+        .view-switcher button:hover { color: var(--text-main); }
+        .view-switcher button.active { color: var(--text-main); font-weight: 600; }
+        .view-switcher button.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--text-main); }
+
+        .view-content { display: none; }
+        .view-content.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* INPUTS E FORMULÁRIOS */
+        .segmented-control { display: flex; background: transparent; margin-bottom: 16px; gap: 8px; }
+        .segmented-control button { flex: 1; border: 1px solid var(--border-light); background: transparent; padding: 8px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-radius: var(--radius-sm); transition: 0.2s; }
+        .segmented-control button.active { background: var(--bg-hover); color: var(--text-main); }
+
+        .form-row { display: flex; gap: 12px; margin-bottom: 12px; }
+        .input-group { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+        .input-group label { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+        
+        input, select { font-family: inherit; width: 100%; padding: 10px 12px; background-color: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-light); border-radius: var(--radius-btn); font-size: 14px; outline: none; box-sizing: border-box; }
+        input:focus, select:focus { border-color: var(--border-focus); }
+        
+        .btn-group { display: flex; gap: 8px; margin-bottom: 16px; }
+        .btn-group button { flex: 1; padding: 8px; font-size: 13px; font-weight: 500; background: var(--bg-hover); color: var(--text-main); border: none; border-radius: var(--radius-btn); cursor: pointer; transition: 0.2s; }
+        .btn-group button:hover { background: var(--border-light); }
+        
+        .btn-main { width: 100%; padding: 10px 16px; background-color: var(--primary); color: #000000; border: none; border-radius: var(--radius-btn); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.1s; }
+        .btn-main:hover { filter: brightness(1.1); }
+        .btn-secondary { width: 100%; padding: 10px 16px; background: var(--bg-hover); color: var(--text-main); border: 1px solid var(--border-light); border-radius: var(--radius-btn); font-size: 14px; font-weight: 500; cursor: pointer; }
+
+        .search-summary-bar { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid var(--border-light); border-radius: var(--radius-btn); margin-bottom: 16px; font-size: 13px; color: var(--text-main); cursor: pointer; transition: 0.2s;}
+        .search-summary-bar:hover { background: var(--bg-hover); }
+        .filter-row { display: flex; gap: 8px; margin-bottom: 16px; }
+
+        /* CARDS E INTIMAÇÕES */
+        .intimacao-card { background-color: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px; position: relative; transition: 0.2s; }
+        .card-top-info { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; flex-wrap: wrap;}
+        
+        .badge-blue { background: rgba(82, 168, 255, 0.15); color: #52a8ff; padding: 2px 8px; border-radius: 12px; font-weight: 600; }
+        .badge-gray { background: var(--zen-gray-bg); color: var(--text-main); padding: 2px 8px; border-radius: 12px; font-weight: 600; }
+        .badge-orange-caps { background: rgba(255, 163, 68, 0.15); color: var(--zen-orange); padding: 2px 8px; border-radius: 12px; font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;}
+        .badge-green-caps { background: rgba(45, 212, 191, 0.15); color: var(--zen-green); padding: 2px 8px; border-radius: 12px; font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;}
+        
+        .proc-apelido { font-size: 16px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 8px; margin-bottom: 4px; line-height: 1.2;}
+        .proc-numero { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-muted); }
+        .card-arrow { position: absolute; right: 16px; top: 24px; color: var(--text-muted); transition: 0.2s; cursor: pointer; }
+
+        .proc-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 12px; }
+        .tag-pill { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 12px; border: 1px solid transparent; display: inline-flex; align-items: center;}
+        .tag-blue { background: var(--tag-blue-bg); color: var(--tag-blue-txt); }
+        .tag-purple { background: var(--tag-purple-bg); color: var(--tag-purple-txt); }
+        .tag-green { background: var(--tag-green-bg); color: var(--tag-green-txt); }
+
+        .card-details { border-top: 1px solid var(--border-light); padding-top: 16px; margin-top: 16px;}
+        .teor-box { font-family: ui-sans-serif, system-ui; font-size: 13px; line-height: 1.6; color: var(--text-placeholder); margin-bottom: 16px; position: relative; }
+        .teor-box mark { background: transparent; color: var(--text-main); font-weight: 500; }
+        .tarefas-box { border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 16px; }
+
+        /* CALCULADORA */
+        .calculadora-box { border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 16px; margin-top: 16px; background: var(--bg-body); }
+        .calc-header { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+        .calc-result-panel { background: var(--input-bg); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 16px; text-align: center; margin-bottom: 16px; }
+        .calc-result-panel .label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+        .calc-result-panel .data { font-size: 28px; font-weight: 700; color: var(--text-main); font-family: 'JetBrains Mono', monospace; margin-bottom: 8px; }
+        .calc-result-panel .warning { display: inline-flex; align-items: center; gap: 4px; background: rgba(255, 163, 68, 0.1); color: var(--zen-orange); padding: 4px 12px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+        
+        .audit-flow { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-start; margin-top: 12px; padding: 12px; background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-light);}
+        .audit-day { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 40px; height: 48px; border-radius: 4px; font-size: 11px; background: var(--bg-card); border: 1px solid var(--border-light); transition: 0.1s; }
+        .audit-day.is-pulo { opacity: 0.6; color: var(--zen-red); text-decoration: line-through;}
+        .audit-day.is-fatal { background: var(--zen-orange-bg); border-color: transparent; color: var(--zen-orange); }
+        .day-num { font-size: 13px; font-weight: 600; font-family: ui-monospace, monospace;}
+
+        /* ESTATÍSTICAS E ABA PRAZOS */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .stat-box { display: flex; align-items: center; gap: 12px; background: transparent; border: 1px solid var(--border-light); padding: 12px 16px; border-radius: var(--radius-md); cursor: pointer; transition: 0.2s;}
+        .stat-box:hover { background: var(--bg-hover); }
+        .stat-box.active { background: var(--bg-hover); border-color: var(--text-muted); }
+        
+        .stat-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; border-radius: 8px; border: 1px solid; }
+        .stat-texts { display: flex; flex-direction: column; justify-content: center; }
+        .stat-lbl { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+
+        .stat-hoje .stat-icon { background: rgba(255, 163, 68, 0.05); color: var(--zen-orange); border-color: rgba(255, 163, 68, 0.2); }
+        .stat-5dias .stat-icon { background: rgba(82, 168, 255, 0.05); color: #8aa4ff; border-color: rgba(82, 168, 255, 0.2); }
+        .stat-futuros .stat-icon { background: rgba(77, 171, 182, 0.05); color: var(--zen-green); border-color: rgba(77, 171, 182, 0.2); }
+        .stat-cumpridos .stat-icon { background: rgba(255,255,255,0.02); color: var(--text-muted); border-color: var(--border-light); }
+
+        .batch-actions { display: flex; gap: 8px; align-items: center; margin-bottom: 20px; }
+        .batch-actions input { flex: 1; margin: 0; padding: 10px 12px; font-size: 13px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: var(--input-bg); color: var(--text-main); outline: none;}
+        .btn-square { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid var(--border-light); border-radius: var(--radius-sm); color: var(--text-muted); cursor: pointer; transition: 0.2s;}
+        .btn-square:hover { background: var(--bg-hover); color: var(--text-main); }
+
+        /* CALENDÁRIO */
+        .calendar-wrapper { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 16px; margin-bottom: 16px; }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .calendar-header h2 { font-size: 15px; font-weight: 600; margin: 0; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+        .cal-day-name { font-size: 11px; font-weight: 600; color: var(--text-placeholder); text-transform: uppercase; padding-bottom: 8px; }
+        .cal-cell { position: relative; height: 40px; display: flex; flex-direction: column; align-items: center; padding-top: 6px; font-size: 13px; font-weight: 500; border-radius: var(--radius-btn); cursor: pointer; border: 1px solid transparent; }
+        .cal-cell:hover { background: var(--bg-hover); }
+        .cal-cell.is-selected { background: var(--bg-hover); border-color: var(--border-light); }
+        .cal-cell.is-muted { color: var(--text-placeholder); opacity: 0.5;}
+        
+        .cal-dots { display: flex; gap: 3px; justify-content: center; margin-top: 4px; }
+        .cal-dot { width: 4px; height: 4px; border-radius: 50%; }
+        .cal-dot.orange { background: var(--zen-orange); }
+        .cal-dot.red { background: var(--zen-red); }
+
+        .agenda-dia-title { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;}
+        .agenda-item { background: transparent; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 8px; font-size: 13px; display: flex; gap: 8px; }
+        .agenda-item.h-red { border-left: 3px solid var(--zen-red); }
+        .agenda-item.h-orange { border-left: 3px solid var(--zen-orange); }
+
+    </style>
+</head>
+<body>
+
+<div class="extension-panel">
+
+    <div class="top-bar-fixed">
+        <div class="app-header">
+            <div class="app-brand-wrapper">
+                <img src="djen-128.png" alt="Logo" class="app-logo" onerror="this.style.display='none'">
+                <h1 class="app-title">Buscador DJEN <span class="badge-cortesia">CORTESIA</span></h1>
+            </div>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-muted); cursor:pointer;"><circle cx="12" cy="12" r="1.5"></circle><circle cx="12" cy="5" r="1.5"></circle><circle cx="12" cy="19" r="1.5"></circle></svg>
+        </div>
+
+        <div class="view-switcher" id="tabs">
+            <button class="active" data-target="viewBusca">Buscar</button>
+            <button data-target="viewPrazos">Prazos</button>
+            <button data-target="viewCalendario">Calendário</button>
+        </div>
+    </div>
+
+    <div id="viewBusca" class="view-content active">
+        
+        <div id="areaFormulario">
+            <div class="segmented-control">
+                <button class="active">Por OAB</button>
+                <button>Por Processo</button>
+            </div>
+            <div class="form-row">
+                <div class="input-group" style="flex: 3;"><label>N.º da OAB</label><input type="text" value="123456"></div>
+                <div class="input-group" style="flex: 1;"><label>UF</label><input type="text" value="UF"></div>
+            </div>
+            <div class="form-row">
+                <div class="input-group"><label>De</label><input type="text" value="09/04/2026"></div>
+                <div class="input-group"><label>Até</label><input type="text" value="09/04/2026"></div>
+            </div>
+            <div class="btn-group">
+                <button>Ontem</button>
+                <button>7 Dias</button>
+                <button>15 Dias</button>
+            </div>
+            <button id="btnEfetuarBusca" class="btn-main">Consultar DJEN</button>
+
+            <div style="text-align: center; margin-top: 30px; color: var(--text-placeholder);">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <div style="font-weight: 600; color: var(--text-main); margin-top: 12px; font-size: 15px;">Pronto para procurar</div>
+            </div>
+            <div style="border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 16px; margin-top: 16px; margin-bottom: 16px;">
+                <ol style="padding-left: 20px; color: var(--text-muted); font-size: 13px; margin: 0; line-height: 2;">
+                    <li><b style="color:var(--text-main);">1.</b> Insira a OAB ou Processo.</li>
+                    <li><b style="color:var(--text-main);">2.</b> A extensão tria os diários.</li>
+                    <li><b style="color:var(--text-main);">3.</b> Calcule o prazo e envie p/ agenda!</li>
+                </ol>
+            </div>
+            <div style="background: rgba(255, 163, 68, 0.1); border: 1px solid rgba(255, 163, 68, 0.2); padding: 12px; border-radius: var(--radius-md); color: var(--zen-orange); font-size: 13px; text-align: center;">
+                ✨ <b>Premium Liberado:</b> Todas as funções avançadas estão gratuitas por tempo limitado.
+            </div>
+        </div>
+
+        <div id="estadoLoading" style="display: none; text-align: center; margin-top: 40px;">
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">A triar diários e a auditar prazos...</div>
+            <div style="width: 100%; height: 4px; background: var(--bg-hover); border-radius: 4px; overflow: hidden; border: 1px solid var(--border-light);">
+                <div id="barraLoading" style="height: 100%; width: 0%; background: var(--primary); transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+            </div>
+        </div>
+
+        <div id="estadoResultados" style="display: none;">
+            
+            <div class="search-summary-bar">
+                <div style="display:flex; align-items:center;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    OAB 123456 UF | Hoje
+                </div>
+                <div style="color: var(--text-muted); cursor:pointer;">Editar</div>
+            </div>
+            
+            <div class="filter-row">
+                <select style="flex: 1;"><option>Tribunal</option></select>
+                <input type="text" placeholder="Filtrar processos..." style="flex: 2; border: 1px solid var(--border-light); border-radius: var(--radius-sm); outline: none; color: var(--text-main);">
+            </div>
+
+            <div style="font-size: 11px; text-align: right; color: var(--text-muted); margin-bottom: 4px;">4 publicações triadas</div>
+            <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px;">4 RESULTADOS</div>
+
+            <div class="intimacao-card" id="cardProcesso">
+                <svg class="card-arrow" id="iconeSeta" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+
+                <div class="card-top-info" id="cardHeaderClick" style="cursor: pointer;">
+                    <span class="badge-blue">OAB 123456</span>
+                    <span class="badge-gray">TJ-EX</span>
+                    <span>• 09/04/2026</span>
+                </div>
+                
+                <div class="proc-apelido">📄 Empresa Exemplo S.A. vs Consumidor Fictício</div>
+                <div class="proc-numero">0000000-00.0000.0.00.0000</div>
+
+                <div class="card-details" id="areaExpandida" style="display: none;">
+                    
+                    <div class="teor-box">
+                        <svg style="position: absolute; right:0; top:0; background: var(--bg-hover); padding: 4px; border-radius: 4px;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                        Pelo presente expediente, fica a parte autora <mark>INTIMADA</mark> para apresentar a sua defesa e se manifestar sobre os documentos juntados, no <mark>prazo legal de 15 (quinze) dias úteis</mark>, sob pena de revelia e confissão quanto à matéria de facto. Int.
+                    </div>
+
+                    <input type="text" placeholder="Notas do caso (use # para tags)..." style="background:transparent; border:none; border-left:2px solid var(--border-light); font-style:italic; padding:4px 8px; border-radius:0; box-shadow:none; margin-bottom:16px; width: 100%; color: var(--text-muted); outline: none;">
+
+                    <div class="tarefas-box">
+                        <div class="tarefas-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> Tarefas do Prazo</div>
+                        <div style="color: var(--text-muted); font-size: 13px;">+ Adicionar nova tarefa (Pressione Enter)</div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 16px; color: var(--text-muted); margin-bottom: 8px;">
+                        <svg id="btnAbrirCalculadora" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor: pointer; transition: 0.2s;"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                    </div>
+
+                    <div class="calculadora-box" id="areaCalculadora" style="display: none;">
+                        <div class="calc-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line></svg>
+                            Contagem
+                        </div>
+
+                        <div id="calcInputs" style="display: block;">
+                            <div class="form-row" style="margin-bottom: 8px;">
+                                <div class="input-group" style="flex: 1;"><label>UF</label><input type="text" value="UF"></div>
+                                <div class="input-group" style="flex: 3;"><label>Município</label><input type="text" value="Capital"></div>
+                            </div>
+                            <div class="form-row" style="margin-bottom: 8px;">
+                                <div class="input-group" style="flex: 2;"><label>Matéria</label><input type="text" value="Cível (Úteis)"></div>
+                                <div class="input-group" style="flex: 1;"><label>Dias</label><input type="text" value="15" style="text-align: center;"></div>
+                            </div>
+                            <div class="form-row" style="margin-bottom: 16px;">
+                                <div class="input-group"><label>Início</label><input type="text" value="09/04/2026"></div>
+                            </div>
+
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn-secondary" style="flex: 1;">Cancelar</button>
+                                <button id="btnEfetuarCalculo" class="btn-main" style="flex: 2;">Calcular</button>
+                            </div>
+                        </div>
+
+                        <div id="calcResultado" style="display: none;">
+                            <div class="calc-result-panel" style="display: block;">
+                                <div class="label">Fatal</div>
+                                <div class="data">05/05/2026</div>
+                                <div class="warning">⚠️ 10 DIAS NÃO ÚTEIS</div>
+                            </div>
+                            
+                            <div class="calc-preview audit-flow" style="display: flex; margin-bottom: 16px;">
+                                <div class="audit-day"><span class="day-num">1</span><span>Qui</span></div>
+                                <div class="audit-day"><span class="day-num">2</span><span>Sex</span></div>
+                                <div class="audit-day is-pulo" title="Fim de Semana"><span class="day-num">--</span><span>Sáb</span></div>
+                                <div class="audit-day is-pulo" title="Fim de Semana"><span class="day-num">--</span><span>Dom</span></div>
+                                <div class="audit-day is-pulo" title="Feriado"><span class="day-num">--</span><span>Seg</span></div>
+                                <div class="audit-day"><span class="day-num">3</span><span>Ter</span></div>
+                                <div class="audit-day" style="background:transparent; border:none;"><span class="day-num">...</span></div>
+                                <div class="audit-day is-fatal"><span class="day-num">15</span><span>Seg</span></div>
+                            </div>
+
+                            <div style="display: flex; gap: 8px; align-items: stretch;">
+                                <button id="btnEditarCalc" class="btn-secondary" style="flex: 1;">Editar</button>
+                                <button class="btn-main" style="flex: 2;">Registar Prazo</button>
+                                <button class="btn-secondary" style="width: 40px; padding: 0; display:flex; justify-content:center; align-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="intimacao-card">
+                <div class="card-top-info">
+                    <span class="badge-blue">OAB 123456</span>
+                    <span class="badge-gray">TRT-EX</span>
+                    <span>• 08/04/2026</span>
+                    <div class="card-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                </div>
+                <div class="proc-apelido">📄 Ação Trabalhista - Autor Fictício</div>
+                <div class="proc-numero">1111111-11.1111.1.11.1111</div>
+            </div>
+
+            <div class="intimacao-card">
+                <div class="card-top-info">
+                    <span class="badge-blue">OAB 123456</span>
+                    <span class="badge-gray">TJ-EX</span>
+                    <span>• 06/04/2026</span>
+                    <div class="card-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                </div>
+                <div class="proc-apelido">📄 Condomínio Exemplo vs Inquilino</div>
+                <div class="proc-numero">2222222-22.2222.2.22.2222</div>
+            </div>
+
+            <div class="intimacao-card">
+                <div class="card-top-info">
+                    <span class="badge-blue">OAB 123456</span>
+                    <span class="badge-gray">TRF-EX</span>
+                    <span>• 04/04/2026</span>
+                    <div class="card-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                </div>
+                <div class="proc-apelido">📄 Município Genérico vs Comércio Local</div>
+                <div class="proc-numero">3333333-33.3333.3.33.3333</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="viewPrazos" class="view-content">
+        
+        <div class="stats-grid">
+            <div class="stat-box stat-hoje">
+                <div class="stat-icon">00</div>
+                <div class="stat-texts"><span class="stat-lbl">Hoje</span></div>
+            </div>
+            <div class="stat-box stat-5dias">
+                <div class="stat-icon">02</div>
+                <div class="stat-texts"><span class="stat-lbl">5 Dias</span></div>
+            </div>
+            <div class="stat-box stat-futuros">
+                <div class="stat-icon">02</div>
+                <div class="stat-texts"><span class="stat-lbl">+5 Dias</span></div>
+            </div>
+            <div class="stat-box stat-cumpridos">
+                <div class="stat-icon">04</div>
+                <div class="stat-texts"><span class="stat-lbl">Cumpridos</span></div>
+            </div>
+        </div>
+
+        <div class="batch-actions">
+            <input type="text" placeholder="Filtrar processos...">
+            <button class="btn-square"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+            <button class="btn-square"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></button>
+            <button class="btn-square"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg></button>
+            <button class="btn-square"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg></button>
+        </div>
+        
+        <div class="intimacao-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span class="badge-orange-caps">Faltam 4 dias (13/04/2026)</span>
+                        <span class="badge-gray" style="font-size: 10px;">TJ-EX</span>
+                        <span style="color: var(--text-muted); font-size: 12px;">•</span>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">01/04/2026</div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div class="proc-apelido" style="margin: 0; font-size: 15px;">Larissa Fictícia</div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted);"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="proc-tags">
+                <span class="tag-pill tag-blue">#PENHORA</span>
+                <span class="tag-pill tag-purple">Impugnação</span>
+                <span class="tag-pill tag-green">executada</span>
+            </div>
+        </div>
+
+        <div class="intimacao-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span class="badge-orange-caps">Faltam 5 dias (14/04/2026)</span>
+                        <span class="badge-gray" style="font-size: 10px;">TJ-EX</span>
+                        <span style="color: var(--text-muted); font-size: 12px;">•</span>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">2026-03-27</div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div class="proc-apelido" style="margin: 0; font-size: 15px;">Lucas X Empresa Exemplo</div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted);"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="proc-tags">
+                <span class="tag-pill tag-blue">agravo</span>
+            </div>
+        </div>
+
+        <div class="intimacao-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span class="badge-green-caps">Faltam 7 dias (16/04/2026)</span>
+                        <span class="badge-gray" style="font-size: 10px;">TJ-EX</span>
+                        <span style="color: var(--text-muted); font-size: 12px;">•</span>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">2026-03-31</div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div class="proc-apelido" style="margin: 0; font-size: 15px;">Roseane Teste</div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted);"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="proc-tags">
+                <span class="tag-pill tag-blue">aguardar</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="viewCalendario" class="view-content">
+        <div class="calendar-wrapper">
+            <div class="calendar-header">
+                <button class="btn-square"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                <h2>Maio 2026</h2>
+                <button class="btn-square"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+            </div>
+            
+            <div class="calendar-grid">
+                <div class="cal-day-name">Dom</div><div class="cal-day-name">Seg</div><div class="cal-day-name">Ter</div><div class="cal-day-name">Qua</div><div class="cal-day-name">Qui</div><div class="cal-day-name">Sex</div><div class="cal-day-name">Sáb</div>
+                <script>
+                    for(let i=1; i<=31; i++) {
+                        let cls = "cal-cell";
+                        let dot = "";
+                        if(i===4) {
+                            cls += " is-selected";
+                            dot = '<div class="cal-dots"><div class="cal-dot orange"></div><div class="cal-dot red"></div></div>';
+                        } else if (i===7 || i===12 || i===15 || i===22) {
+                            dot = '<div class="cal-dots"><div class="cal-dot orange"></div></div>';
+                        }
+                        document.write(`<div class="${cls}">${i}${dot}</div>`);
+                    }
+                </script>
+            </div>
+        </div>
+
+        <div>
+            <div class="agenda-dia-title">PRAZOS DO DIA</div>
+            <div class="agenda-item h-red">
+                <b style="color: var(--zen-red);">[Hoje]</b> Larissa Fictícia
+            </div>
+            <div class="agenda-item h-orange">
+                <b style="color: var(--zen-orange);">[Fatal]</b> Empresa Exemplo S.A. vs Consumidor
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // 1. TABS SEGURAS
+    const tabs = document.querySelectorAll('#tabs button');
+    const views = document.querySelectorAll('.view-content');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            views.forEach(v => v.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById(tab.getAttribute('data-target')).classList.add('active');
+        });
+    });
+
+    // 2. SIMULAÇÃO DA PESQUISA (Passo 1 e 2)
+    const btnConsultar = document.getElementById('btnEfetuarBusca');
+    const areaFormulario = document.getElementById('areaFormulario');
+    const estadoLoading = document.getElementById('estadoLoading');
+    const estadoResultados = document.getElementById('estadoResultados');
+
+    btnConsultar.addEventListener('click', () => {
+        areaFormulario.style.display = 'none';
+        estadoLoading.style.display = 'block';
+        
+        setTimeout(() => { document.getElementById('barraLoading').style.width = '100%'; }, 50);
+
+        setTimeout(() => {
+            estadoLoading.style.display = 'none';
+            estadoResultados.style.display = 'block';
+        }, 1200);
+    });
+
+    // 3. EXPANSÃO DO CARD (Passo 3)
+    const cardHeader = document.getElementById('cardHeaderClick');
+    const areaExpandida = document.getElementById('areaExpandida');
+    const iconeSeta = document.getElementById('iconeSeta');
+    const cardProcesso = document.getElementById('cardProcesso');
+
+    cardHeader.addEventListener('click', () => {
+        const isExpanded = areaExpandida.style.display === 'block';
+        if(!isExpanded) {
+            areaExpandida.style.display = 'block';
+            iconeSeta.style.transform = 'rotate(-180deg)';
+            cardProcesso.style.boxShadow = 'var(--shadow-modal)';
+            cardProcesso.style.borderColor = 'var(--border-focus)';
+            cardProcesso.scrollIntoView({behavior: "smooth", block: "start"});
+        } else {
+            areaExpandida.style.display = 'none';
+            iconeSeta.style.transform = 'rotate(0deg)';
+            cardProcesso.style.boxShadow = 'var(--shadow-card)';
+            cardProcesso.style.borderColor = 'var(--border-light)';
+        }
+    });
+
+    // 4. ABRIR CALCULADORA (Passo 4)
+    const btnAbrirCalculadora = document.getElementById('btnAbrirCalculadora');
+    const areaCalculadora = document.getElementById('areaCalculadora');
+    const calcInputs = document.getElementById('calcInputs');
+    const calcResultado = document.getElementById('calcResultado');
+    const btnEfetuarCalculo = document.getElementById('btnEfetuarCalculo');
+    const btnEditarCalc = document.getElementById('btnEditarCalc');
+
+    btnAbrirCalculadora.addEventListener('click', () => {
+        areaCalculadora.style.display = 'block';
+        calcInputs.style.display = 'block';
+        calcResultado.style.display = 'none';
+        btnAbrirCalculadora.style.color = 'var(--primary)';
+        areaCalculadora.scrollIntoView({behavior: "smooth", block: "nearest"});
+    });
+
+    // 5. EFETUAR CÁLCULO (Passo 5)
+    btnEfetuarCalculo.addEventListener('click', () => {
+        calcInputs.style.display = 'none';
+        calcResultado.style.display = 'block';
+    });
+
+    btnEditarCalc.addEventListener('click', () => {
+        calcResultado.style.display = 'none';
+        calcInputs.style.display = 'block';
+    });
+</script>
+
+</body>
+</html>
