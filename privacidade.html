@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade | Buscador DJEN</title>
+    <link rel="icon" type="image/png" href="djen-128.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Mesmas variáveis de cores da página principal para manter a identidade */
+        :root {
+            --bg-page: #ffffff;
+            --bg-section: #f6f5f4; 
+            --card-bg: #ffffff;
+            --text-main: rgba(0, 0, 0, 0.95); 
+            --text-muted: #615d59; 
+            --primary: #0075de; 
+            --border-light: rgba(0, 0, 0, 0.1); 
+            --radius-btn: 6px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-page: #191919;
+                --bg-section: #202020;
+                --card-bg: #252525;
+                --text-main: rgba(255, 255, 255, 0.95);
+                --text-muted: rgba(255, 255, 255, 0.6);
+                --primary: #52a8ff;
+                --border-light: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-page); color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        header {
+            padding: 16px 5%; border-bottom: 1px solid var(--border-light);
+            background: var(--bg-page); position: sticky; top: 0; z-index: 100;
+        }
+
+        .back-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--primary); }
+
+        .legal-container {
+            max-width: 800px; margin: 60px auto 100px; padding: 0 20px;
+        }
+
+        h1 { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+        .last-update { color: var(--text-muted); font-size: 14px; margin-bottom: 48px; display: block; }
+        
+        h2 { font-size: 20px; font-weight: 700; margin-top: 40px; margin-bottom: 16px; color: var(--text-main); }
+        p, li { font-size: 16px; color: var(--text-muted); margin-bottom: 16px; }
+        
+        ul { padding-left: 24px; margin-bottom: 24px; }
+        li::marker { color: var(--primary); }
+        strong { color: var(--text-main); }
+
+        .highlight-box {
+            background: var(--bg-section); border: 1px solid var(--border-light);
+            padding: 24px; border-radius: 8px; margin: 32px 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="back-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            Voltar para a página inicial
+        </a>
+    </header>
+
+    <main class="legal-container">
+        <h1>Política de Privacidade</h1>
+        <span class="last-update">Última atualização: Abril de 2026</span>
+
+        <p>A extensão <strong>"Buscador DJEN"</strong> foi desenvolvida com o compromisso absoluto de respeitar a privacidade e a segurança da informação dos seus usuários, em total alinhamento com os princípios da Lei Geral de Proteção de Dados (LGPD). Esta política descreve como os dados são tratados.</p>
+
+        <div class="highlight-box">
+            <h2>1. Coleta e Uso de Dados</h2>
+            <p>O desenvolvedor desta extensão <strong>não coleta, não armazena em servidores externos, não rastreia e não tem acesso</strong> a nenhum dado pessoal, histórico de navegação, número de OAB ou conteúdo de processos pesquisados pelos usuários.</p>
+        </div>
+
+        <h2>2. Armazenamento Local</h2>
+        <p>Todas as informações fornecidas na extensão (como Número da OAB, UF, configurações de notificações e a agenda de prazos salvos) são armazenadas estritamente de forma local no próprio dispositivo do usuário, utilizando a API nativa <code>chrome.storage.local</code> do navegador.</p>
+
+        <h2>3. Comunicação com APIs de Terceiros</h2>
+        <p>Para o seu funcionamento, a extensão comunica-se de forma direta e criptografada (via HTTPS) apenas com:</p>
+        <ul>
+            <li><strong>API Pública do CNJ (comunicaapi.pje.jus.br):</strong> Para realizar a busca das intimações utilizando os parâmetros informados pelo usuário.</li>
+            <li><strong>Repositório Público (raw.githubusercontent.com):</strong> Apenas para consultar a base de dados em formato JSON contendo os feriados nacionais e municipais, de forma a garantir o cálculo correto dos prazos processuais.</li>
+        </ul>
+        <p>A extensão atua apenas como uma ponte direta entre o computador do usuário e estas bases públicas.</p>
+
+        <h2>4. Compartilhamento de Dados</h2>
+        <p>Como nenhum dado é coletado pelo desenvolvedor, nenhuma informação do usuário é vendida, alugada ou compartilhada com terceiros sob qualquer circunstância.</p>
+
+        <h2>5. Contato</h2>
+        <p>Em caso de dúvidas sobre esta Política de Privacidade ou sobre o funcionamento da extensão, entre em contato através do e-mail: <a href="mailto:adv.amilcarmoreira@gmail.com" style="color: var(--primary);">adv.amilcarmoreira@gmail.com</a>.</p>
+    </main>
+
+</body>
+</html>
