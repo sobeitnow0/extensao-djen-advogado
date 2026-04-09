@@ -8,13 +8,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* ==========================================================================
+           DESIGN SYSTEM (Notion Inspired) 
+           ========================================================================== */
         :root {
             --bg-page: #0f0f0f;
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
+            
             --primary: #52a8ff;
-            --primary-hover: #3b82f6;
+            --primary-hover: #62aef0;
             --primary-light: rgba(82, 168, 255, 0.15);
+            
             --card-bg: #1a1a1a;
             --border-light: rgba(255, 255, 255, 0.1);
             --zen-orange: #ffa344;
@@ -110,11 +115,17 @@
         .feature-card {
             background: var(--card-bg); padding: 32px; border-radius: 16px; border: 1px solid var(--border-light);
             transition: 0.2s ease; display: flex; flex-direction: column; position: relative;
+            /* z-index ajustado para evitar que o hover do botão "Ver" fique escondido */
+            z-index: 1; 
         }
-        .feature-card:hover { border-color: rgba(82, 168, 255, 0.4); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
+        .feature-card:hover { 
+            border-color: rgba(82, 168, 255, 0.4); 
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); 
+            z-index: 50; /* Ao passar o rato, o cartão vem para a frente */
+        }
 
         .feature-icon {
-            font-size: 24px; margin-bottom: 20px; background: rgba(255,255,255,0.05);
+            margin-bottom: 20px; background: rgba(255,255,255,0.05);
             width: 54px; height: 54px; display: flex; justify-content: center; align-items: center; border-radius: 12px;
         }
         
@@ -132,17 +143,17 @@
         .feature-list li::before { content: '•'; position: absolute; left: 0; top: 0; color: var(--primary); font-weight: bold; font-size: 16px; }
         .feature-list li b { color: #e5e7eb; font-weight: 600; }
 
-        /* PREVIEW TOOLTIP ("👁️ Ver") */
+        /* ================= PREVIEW TOOLTIP ("👁️ Ver" Ajustado) ================= */
         .preview-trigger {
             position: absolute;
             top: 24px; right: 24px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-light);
+            background: #1a1a1a;
+            border: 1px solid var(--primary);
             border-radius: 20px;
-            padding: 6px 12px;
-            color: var(--text-muted);
-            font-size: 12px;
-            font-weight: 600;
+            padding: 4px 12px;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 500;
             display: flex; justify-content: center; align-items: center; gap: 6px;
             cursor: pointer; transition: all 0.2s ease;
             z-index: 10;
@@ -150,8 +161,6 @@
         
         .preview-trigger:hover {
             background: var(--primary-light);
-            color: var(--primary);
-            border-color: var(--primary);
         }
 
         .preview-image-container {
@@ -169,14 +178,16 @@
             transform: translateY(10px);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
+            z-index: 100; /* Garante que fica acima do card vizinho */
         }
 
         .preview-image-container::after { content: ''; position: absolute; top: 100%; right: 26px; border-width: 8px; border-style: solid; border-color: var(--border-light) transparent transparent transparent; }
         .preview-image-container::before { content: ''; position: absolute; top: 100%; right: 27px; border-width: 7px; border-style: solid; border-color: #202020 transparent transparent transparent; z-index: 2; }
         .preview-image-container img { width: 100%; border-radius: 8px; display: block; border: 1px solid rgba(0,0,0,0.5); }
+        
         .preview-trigger:hover .preview-image-container { opacity: 1; visibility: visible; transform: translateY(0); }
 
-        /* ===== FOOTER ===== */
+        /* ===== FOOTER COM PAGUE-ME UM CAFÉ ===== */
         footer { 
             padding: 60px 20px; 
             border-top: 1px solid var(--border-light); 
@@ -205,26 +216,80 @@
             line-height: 1.5;
         }
 
+        /* Acordeão do PIX */
+        .coffee-container {
+            border: 1px solid var(--border-light); 
+            border-radius: var(--radius-md); 
+            background: var(--card-bg);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        
         .coffee-btn {
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
-            border: 1px solid var(--border-light); 
-            border-radius: var(--radius-md); 
             padding: 16px 20px; 
             color: var(--text-main); 
             font-size: 15px; 
             font-weight: 500;
-            text-decoration: none;
-            background: var(--card-bg);
-            transition: all 0.2s ease;
+            background: transparent;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.2s ease;
         }
         
-        .coffee-btn:hover {
-            background: rgba(255,255,255,0.05);
-            border-color: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
+        .coffee-btn:hover { background: rgba(255,255,255,0.02); }
+        .coffee-btn svg.chevron { transition: transform 0.3s ease; }
+        .coffee-btn.active svg.chevron { transform: rotate(180deg); }
+
+        .coffee-content {
+            display: none;
+            padding: 0 20px 20px 20px;
+            border-top: 1px solid var(--border-light);
+            text-align: center;
         }
+        
+        .coffee-content img {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            border-radius: 8px;
+            background: #fff;
+            padding: 10px;
+            display: block;
+        }
+
+        .pix-code-container {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .pix-code-container input {
+            flex: 1;
+            padding: 10px;
+            background: var(--bg-page);
+            border: 1px solid var(--border-light);
+            color: var(--text-muted);
+            border-radius: var(--radius-btn);
+            font-size: 13px;
+            outline: none;
+        }
+
+        .pix-code-container button {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 0 16px;
+            border-radius: var(--radius-btn);
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .pix-code-container button:hover { background: var(--primary-hover); }
 
         .footer-copy {
             text-align: center;
@@ -268,8 +333,8 @@
     </section>
 
     <section class="demo-section">
-        <div class="demo-badge">Test Drive Interativo</div>
-        <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 15px;">Explore as abas e clique em <b>Consultar DJEN</b> abaixo para ver a extensão em ação.</p>
+        <div style="margin-top: 40px;" class="demo-badge">Test Drive Interativo</div>
+        <p style="color: var(--text-muted); margin-bottom: 40px; font-size: 16px;">Explore as abas e clique em <b>Consultar DJEN</b> para ver a extensão em ação.</p>
         
         <div class="iframe-wrapper">
             <iframe src="simulador.html" scrolling="no" title="Simulador Interativo do Buscador DJEN"></iframe>
@@ -279,19 +344,22 @@
     <section class="features-container">
         <div class="features-header">
             <h2>Um ecossistema completo para a sua advocacia</h2>
-            <p>Passe o rato sobre o botão <b>"👁️ Ver"</b> em cada cartão para visualizar a interface real da ferramenta.</p>
+            <p>Passe o rato sobre o botão <b>"Ver"</b> em cada cartão para visualizar a interface real da ferramenta.</p>
         </div>
 
         <div class="features">
             <div class="feature-card">
                 <div class="preview-trigger">
-                    👁️ Ver
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    Ver
                     <div class="preview-image-container">
                         <img src="print-busca.png" alt="Print da Busca" onerror="this.style.display='none'">
                     </div>
                 </div>
 
-                <div class="feature-icon ic-blue">🔍</div>
+                <div class="feature-icon ic-blue">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
                 <h3>Busca Híbrida e Inteligente</h3>
                 <p>Otimize o tempo de pesquisa atuando diretamente nas fontes oficiais do judiciário.</p>
                 <ul class="feature-list">
@@ -303,13 +371,16 @@
 
             <div class="feature-card">
                 <div class="preview-trigger">
-                    👁️ Ver
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    Ver
                     <div class="preview-image-container">
                         <img src="print-calc.png" alt="Print Calculadora" onerror="this.style.display='none'">
                     </div>
                 </div>
 
-                <div class="feature-icon ic-red">🧮</div>
+                <div class="feature-icon ic-red">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line></svg>
+                </div>
                 <h3>Calculadora de Prazos Automatizada</h3>
                 <p>Esqueça a contagem manual. Um motor avançado para determinar a data fatal dos seus compromissos.</p>
                 <ul class="feature-list">
@@ -321,13 +392,16 @@
 
             <div class="feature-card">
                 <div class="preview-trigger">
-                    👁️ Ver
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    Ver
                     <div class="preview-image-container">
                         <img src="print-calendario.png" alt="Print Calendário" onerror="this.style.display='none'">
                     </div>
                 </div>
 
-                <div class="feature-icon ic-green">📅</div>
+                <div class="feature-icon ic-green">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </div>
                 <h3>Gestão de Prazos e Calendário</h3>
                 <p>Um painel completo para gerenciar o que foi encontrado, substituindo planilhas e agendas físicas.</p>
                 <ul class="feature-list">
@@ -339,13 +413,16 @@
 
             <div class="feature-card">
                 <div class="preview-trigger">
-                    👁️ Ver
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    Ver
                     <div class="preview-image-container">
                         <img src="print-foco.png" alt="Print Foco" onerror="this.style.display='none'">
                     </div>
                 </div>
 
-                <div class="feature-icon ic-purple">🎯</div>
+                <div class="feature-icon ic-purple">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                </div>
                 <h3>Produtividade, Foco e Organização</h3>
                 <p>Recursos pensados milimetricamente para acabar com o ruído e o cansaço mental da advocacia.</p>
                 <ul class="feature-list">
@@ -357,19 +434,22 @@
 
             <div class="feature-card">
                 <div class="preview-trigger">
-                    👁️ Ver
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    Ver
                     <div class="preview-image-container">
                         <img src="print-export.png" alt="Print Exportar" onerror="this.style.display='none'">
                     </div>
                 </div>
 
-                <div class="feature-icon ic-orange">🔗</div>
+                <div class="feature-icon ic-orange">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                </div>
                 <h3>Exportação, Partilha e Segurança</h3>
                 <p>Os seus dados pertencem a si. Mova-os com facilidade e absoluta confidencialidade.</p>
                 <ul class="feature-list">
                     <li><b>Integração Google Agenda:</b> Exporte o prazo calculado com um clique, já com o texto anexado.</li>
                     <li><b>Partilha Formatada:</b> Envie resumos elegantes de prazos para WhatsApp, Telegram ou E-mail.</li>
-                    <li><b>Armazenamento 100% Local:</b> Prazos e anotações são salvos apenas no seu navegador, longe de servidores externos.</li>
+                    <li><b>Armazenamento 100% Local:</b> Prazos e anotações são salvos apenas no seu navegador. Nenhuma nuvem externa acessa os seus dados.</li>
                 </ul>
             </div>
         </div>
@@ -382,10 +462,25 @@
                 ✨ <b>Premium Liberado:</b> Todas as funções avançadas estão gratuitas por tempo limitado.
             </div>
 
-            <a href="#" target="_blank" rel="noopener noreferrer" class="coffee-btn">
-                <span>☕ Pague-me um café</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </a>
+            <div class="coffee-container">
+                <button class="coffee-btn" id="btnToggleCoffee">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                        <span>Pague-me um café</span>
+                    </div>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                
+                <div class="coffee-content" id="contentCoffee">
+                    <div style="color: var(--text-muted); font-size: 13px; margin-top: 12px;">Se a extensão o ajudou a poupar tempo, considere apoiar o desenvolvimento contínuo!</div>
+                    <img src="qrcode-pix.png" alt="QR Code PIX" onerror="this.style.display='none'">
+                    
+                    <div class="pix-code-container">
+                        <input type="text" id="pixKey" value="chave-pix-aleatoria-exemplo@gmail.com" readonly>
+                        <button id="btnCopyPix" onclick="copyPixCode()">Copiar</button>
+                    </div>
+                </div>
+            </div>
 
             <div class="footer-copy">
                 &copy; 2026 Buscador DJEN. O assistente definitivo para a advocacia moderna.
@@ -394,5 +489,39 @@
         </div>
     </footer>
 
+    <script>
+        // Lógica do painel expansível "Pague-me um café"
+        const btnToggleCoffee = document.getElementById('btnToggleCoffee');
+        const contentCoffee = document.getElementById('contentCoffee');
+
+        btnToggleCoffee.addEventListener('click', () => {
+            btnToggleCoffee.classList.toggle('active');
+            if (contentCoffee.style.display === 'block') {
+                contentCoffee.style.display = 'none';
+            } else {
+                contentCoffee.style.display = 'block';
+            }
+        });
+
+        // Função para copiar a chave PIX
+        function copyPixCode() {
+            const pixInput = document.getElementById('pixKey');
+            const btnCopy = document.getElementById('btnCopyPix');
+            
+            pixInput.select();
+            pixInput.setSelectionRange(0, 99999); // Para dispositivos móveis
+            
+            navigator.clipboard.writeText(pixInput.value).then(() => {
+                const textOriginal = btnCopy.innerText;
+                btnCopy.innerText = 'Copiado!';
+                btnCopy.style.backgroundColor = 'var(--zen-green)';
+                
+                setTimeout(() => {
+                    btnCopy.innerText = textOriginal;
+                    btnCopy.style.backgroundColor = 'var(--primary)';
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
