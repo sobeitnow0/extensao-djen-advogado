@@ -8,91 +8,160 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* ==========================================================================
+           DESIGN SYSTEM (Inspirado no Notion) - Variáveis
+           ========================================================================== */
         :root {
-            --bg-page: #0f0f0f;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --primary: #52a8ff;
-            --primary-hover: #3b82f6;
-            --primary-light: rgba(82, 168, 255, 0.15);
-            --card-bg: #1a1a1a;
-            --border-light: rgba(255, 255, 255, 0.1);
-            --zen-orange: #ffa344;
+            /* Tema Claro (Padrão) - Neutros Quentes */
+            --bg-page: #ffffff;
+            --bg-section: #f6f5f4; /* Branco quente para alternância */
+            --card-bg: #ffffff;
             
-            --radius-btn: 8px;
-            --radius-md: 12px;
-            --shadow-modal: 0 25px 50px -12px rgba(0,0,0,1), 0 0 0 1px rgba(255,255,255,0.05);
+            --text-main: rgba(0, 0, 0, 0.95); /* Quase preto para conforto de leitura */
+            --text-muted: #615d59; /* Cinzento quente */
+            --text-placeholder: #a39e98;
+            
+            --primary: #0075de; /* Azul Notion */
+            --primary-hover: #005bab;
+            --primary-text: #ffffff;
+            --primary-light: #f2f9ff;
+            
+            --border-light: rgba(0, 0, 0, 0.1); /* Borda "sussurro" ultra fina */
+            
+            /* Cores Semânticas */
+            --zen-orange: #dd5b00;
+            --zen-green: #1aae39;
+            --zen-purple: #391c57;
+            --zen-red: #d93025;
+
+            /* Radii */
+            --radius-btn: 4px;
+            --radius-card: 12px;
+            --radius-pill: 9999px;
+
+            /* Sombras Suaves (4 Camadas Notion) */
+            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.85px, rgba(0,0,0,0.02) 0px 0.8px 2.93px, rgba(0,0,0,0.01) 0px 0.175px 1.04px;
+            --shadow-hover: rgba(0,0,0,0.08) 0px 8px 24px, rgba(0,0,0,0.04) 0px 4px 8px;
+            --shadow-modal: rgba(0,0,0,0.05) 0px 23px 52px, rgba(0,0,0,0.04) 0px 14px 28px;
+        }
+
+        /* Tema Escuro (Ativado pela preferência do sistema) */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-page: #191919;
+                --bg-section: #202020;
+                --card-bg: #252525;
+                
+                --text-main: rgba(255, 255, 255, 0.95);
+                --text-muted: rgba(255, 255, 255, 0.6);
+                --text-placeholder: rgba(255, 255, 255, 0.3);
+                
+                --primary: #52a8ff;
+                --primary-hover: #62aef0;
+                --primary-text: #191919;
+                --primary-light: rgba(82, 168, 255, 0.15);
+                
+                --border-light: rgba(255, 255, 255, 0.1);
+                
+                --zen-orange: #ffa344;
+                --zen-green: #4dabb6;
+                --zen-purple: #b992e6;
+                --zen-red: #ff7369;
+
+                --shadow-card: rgba(0,0,0,0.5) 0px 4px 18px;
+                --shadow-hover: rgba(0,0,0,0.6) 0px 8px 24px;
+                --shadow-modal: rgba(0,0,0,0.8) 0px 23px 52px;
+            }
         }
 
         body {
             margin: 0; padding: 0;
             font-family: 'Inter', system-ui, sans-serif;
             background-color: var(--bg-page); color: var(--text-main);
-            -webkit-font-smoothing: antialiased; line-height: 1.6;
+            -webkit-font-smoothing: antialiased; line-height: 1.5;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* ===== CABEÇALHO ===== */
         header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 5%; border-bottom: 1px solid var(--border-light);
-            background: rgba(15, 15, 15, 0.8); backdrop-filter: blur(10px);
-            position: sticky; top: 0; z-index: 100;
+            padding: 16px 5%; border-bottom: 1px solid var(--border-light);
+            background: var(--bg-page); position: sticky; top: 0; z-index: 100;
         }
 
-        .brand { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
-        .brand img { width: 32px; height: 32px; border-radius: 6px; }
+        .brand { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 700; letter-spacing: -0.25px; }
+        .brand img { width: 32px; height: 32px; border-radius: var(--radius-btn); }
         
         .badge-cortesia-site {
-            font-size: 10px; background: rgba(255, 163, 68, 0.15); color: var(--zen-orange);
-            padding: 4px 8px; border-radius: 6px; font-weight: 700; 
-            border: 1px solid rgba(255, 163, 68, 0.3); letter-spacing: 0.5px;
-            margin-left: 8px; vertical-align: middle;
+            font-size: 11px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange);
+            padding: 2px 8px; border-radius: var(--radius-pill); font-weight: 600; 
+            border: 1px solid rgba(221, 91, 0, 0.2); letter-spacing: 0.5px;
         }
+
+        .btn-cta {
+            background-color: var(--primary); color: var(--primary-text);
+            padding: 8px 16px; border-radius: var(--radius-btn); text-decoration: none;
+            font-weight: 600; font-size: 14px; transition: all 0.2s ease;
+            box-shadow: var(--shadow-card);
+        }
+        .btn-cta:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
 
         /* ===== HERO SECTION ===== */
-        .hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 80px 20px 40px; max-width: 800px; margin: 0 auto; }
-        .hero h1 { font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 24px; letter-spacing: -1.5px; }
-        .hero h1 span { color: var(--primary); }
-        .hero p { font-size: 18px; color: var(--text-muted); margin-bottom: 40px; max-width: 650px; }
-
-        /* Botões de Download dos Browsers */
-        .hero-buttons {
-            display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px;
+        .hero { 
+            display: flex; flex-direction: column; align-items: center; text-align: center; 
+            padding: 80px 20px 60px; max-width: 900px; margin: 0 auto; 
         }
+        
+        /* Tipografia de destaque: letter-spacing negativo para impacto */
+        .hero h1 { 
+            font-size: 64px; font-weight: 800; line-height: 1.05; 
+            margin-bottom: 24px; letter-spacing: -2.125px; 
+        }
+        .hero h1 span { color: var(--primary); }
+        .hero p { font-size: 20px; color: var(--text-muted); margin-bottom: 40px; max-width: 700px; font-weight: 400; line-height: 1.5; letter-spacing: -0.125px;}
+
+        /* Botões de Download */
+        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
         
         .btn-browser {
             display: flex; align-items: center; gap: 10px;
-            background-color: var(--text-main); color: #000;
+            background-color: transparent; color: var(--text-main);
             padding: 12px 24px; border-radius: var(--radius-btn); text-decoration: none;
-            font-weight: 600; font-size: 15px; transition: all 0.2s ease;
+            font-weight: 600; font-size: 15px; border: 1px solid var(--border-light);
+            transition: all 0.2s ease;
         }
-        .btn-browser:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -10px rgba(255,255,255,0.3); }
-        
-        .btn-browser.chrome { background-color: #ffffff; color: #1f2937; border: 1px solid #e5e7eb; }
-        .btn-browser.firefox { background-color: #28282b; color: #ffffff; border: 1px solid rgba(255,255,255,0.2); }
+        .btn-browser:hover { background-color: rgba(0,0,0,0.03); border-color: var(--primary); color: var(--primary);}
+        @media (prefers-color-scheme: dark) {
+            .btn-browser:hover { background-color: rgba(255,255,255,0.05); }
+        }
 
         /* ===== SECÇÃO DO SIMULADOR ===== */
-        .demo-section { display: flex; flex-direction: column; align-items: center; padding: 0 20px 80px; }
+        .demo-section { 
+            display: flex; flex-direction: column; align-items: center; 
+            padding: 40px 20px 100px; background-color: var(--bg-section);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+        
         .demo-badge {
-            background: rgba(82, 168, 255, 0.1); color: var(--primary);
-            padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;
-            margin-bottom: 24px; border: 1px solid rgba(82, 168, 255, 0.2);
-            text-transform: uppercase; letter-spacing: 1px;
+            background: var(--primary-light); color: var(--primary);
+            padding: 4px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600;
+            margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.5px;
         }
 
         .iframe-wrapper {
-            position: relative; width: 100%; max-width: 420px; height: 650px;
+            position: relative; width: 100%; max-width: 400px; height: 600px;
             display: flex; justify-content: center; align-items: center;
         }
         .iframe-wrapper iframe {
-            width: 400px; height: 600px; border: none; border-radius: 12px;
-            box-shadow: 0 0 80px rgba(82, 168, 255, 0.15), 0 25px 50px -12px rgba(0,0,0,1);
+            width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: 12px;
+            box-shadow: var(--shadow-modal);
         }
 
         /* ===== SECÇÃO DE FUNCIONALIDADES ===== */
-        .features-container { padding: 80px 5%; border-top: 1px solid var(--border-light); background: #141414; }
-        .features-header { text-align: center; margin-bottom: 56px; }
-        .features-header h2 { font-size: 36px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.5px;}
+        .features-container { padding: 100px 5%; background: var(--bg-page); }
+        .features-header { text-align: center; margin-bottom: 64px; }
+        .features-header h2 { font-size: 40px; font-weight: 800; margin-bottom: 16px; letter-spacing: -1.5px;}
         .features-header p { color: var(--text-muted); font-size: 18px; max-width: 700px; margin: 0 auto; }
 
         .features {
@@ -101,102 +170,98 @@
         }
 
         .feature-card {
-            background: var(--card-bg); padding: 32px; border-radius: 16px; border: 1px solid var(--border-light);
+            background: var(--card-bg); padding: 32px; border-radius: var(--radius-card); 
+            border: 1px solid var(--border-light); box-shadow: var(--shadow-card);
             transition: 0.2s ease; display: flex; flex-direction: column; position: relative;
         }
-        .feature-card:hover { border-color: rgba(82, 168, 255, 0.4); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
+        .feature-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
 
         .feature-icon {
-            font-size: 24px; margin-bottom: 20px; background: rgba(255,255,255,0.05);
-            width: 54px; height: 54px; display: flex; justify-content: center; align-items: center; border-radius: 12px;
+            font-size: 24px; margin-bottom: 24px; background: var(--bg-section);
+            width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; border-radius: 8px;
+            border: 1px solid var(--border-light);
         }
-        
-        .ic-blue { color: #52a8ff; background: rgba(82, 168, 255, 0.1); }
-        .ic-orange { color: #ffa344; background: rgba(255, 163, 68, 0.1); }
-        .ic-green { color: #2dd4bf; background: rgba(45, 212, 191, 0.1); }
-        .ic-purple { color: #b992e6; background: rgba(185, 146, 230, 0.1); }
-        .ic-red { color: #ff7369; background: rgba(255, 115, 105, 0.1); }
 
-        .feature-card h3 { margin: 0 0 16px 0; font-size: 20px; font-weight: 700; color: #fff;}
-        .feature-card p { color: var(--text-muted); margin: 0 0 20px 0; font-size: 15px; line-height: 1.6; }
+        .feature-card h3 { margin: 0 0 12px 0; font-size: 22px; font-weight: 700; letter-spacing: -0.25px;}
+        .feature-card p { color: var(--text-muted); margin: 0 0 24px 0; font-size: 16px; line-height: 1.5; }
 
         .feature-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
-        .feature-list li { position: relative; padding-left: 20px; font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+        .feature-list li { position: relative; padding-left: 20px; font-size: 15px; color: var(--text-muted); line-height: 1.5; }
         .feature-list li::before { content: '•'; position: absolute; left: 0; top: 0; color: var(--primary); font-weight: bold; font-size: 16px; }
-        .feature-list li b { color: #e5e7eb; font-weight: 600; }
+        .feature-list li b { color: var(--text-main); font-weight: 600; }
 
-        /* ================= PREVIEW TOOLTIP (O EFEITO DE "OLHO" CORRIGIDO) ================= */
+        /* ================= BOTÃO HOVER "👁️ Ver" (CORRIGIDO PARA A IMAGEM AB3278) ================= */
         .preview-trigger {
             position: absolute;
             top: 24px; right: 24px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-light);
-            border-radius: 20px;
-            padding: 6px 12px;
-            color: var(--text-muted);
-            font-size: 12px;
-            font-weight: 600;
+            background: #1a1a1a; /* Fundo escuro do botão */
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-pill);
+            padding: 6px 16px;
+            color: #52a8ff; /* Azul do texto e icone */
+            font-size: 13px;
+            font-weight: 500;
             display: flex; justify-content: center; align-items: center; gap: 6px;
             cursor: pointer; transition: all 0.2s ease;
             z-index: 10;
         }
         
+        /* O efeito outline azul ao passar o rato */
         .preview-trigger:hover {
-            background: var(--primary-light);
-            color: var(--primary);
-            border-color: var(--primary);
+            border-color: #52a8ff;
+            background: #202020;
+            box-shadow: 0 0 0 1px rgba(82, 168, 255, 0.3);
         }
 
+        /* Container da Imagem que salta */
         .preview-image-container {
             position: absolute;
-            bottom: calc(100% + 12px);
-            right: -10px;
-            width: 300px;
-            background: #202020;
-            padding: 6px;
+            top: calc(100% + 12px); /* Aparece abaixo do botão */
+            right: 0;
+            width: 320px;
+            background: var(--card-bg);
+            padding: 8px;
             border-radius: var(--radius-md);
             border: 1px solid var(--border-light);
             box-shadow: var(--shadow-modal);
             opacity: 0;
             visibility: hidden;
-            transform: translateY(10px);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(-10px);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
+            z-index: 999;
         }
 
-        /* A setinha (triângulo) em baixo da imagem */
+        /* Seta do Tooltip a apontar para o botão */
         .preview-image-container::after {
-            content: ''; position: absolute; top: 100%; right: 26px;
+            content: ''; position: absolute; bottom: 100%; right: 24px;
             border-width: 8px; border-style: solid;
-            border-color: var(--border-light) transparent transparent transparent;
+            border-color: transparent transparent var(--border-light) transparent;
         }
         .preview-image-container::before {
-            content: ''; position: absolute; top: 100%; right: 27px;
+            content: ''; position: absolute; bottom: 100%; right: 25px;
             border-width: 7px; border-style: solid;
-            border-color: #202020 transparent transparent transparent;
+            border-color: transparent transparent var(--card-bg) transparent;
             z-index: 2;
         }
 
         .preview-image-container img {
-            width: 100%; border-radius: 8px; display: block; border: 1px solid rgba(0,0,0,0.5);
+            width: 100%; border-radius: var(--radius-sm); display: block; border: 1px solid var(--border-light);
         }
 
-        /* Ativa a imagem ao passar o rato no botão Preview */
+        /* Ativa a imagem */
         .preview-trigger:hover .preview-image-container {
             opacity: 1; visibility: visible; transform: translateY(0);
         }
 
         @media (max-width: 768px) {
-            .preview-trigger { display: none; } /* Esconde hover em mobile */
+            .preview-trigger { display: none; }
+            .hero h1 { font-size: 40px; letter-spacing: -1.5px;}
         }
 
         /* ===== FOOTER ===== */
-        footer { text-align: center; padding: 40px 20px; color: var(--text-muted); border-top: 1px solid var(--border-light); font-size: 14px; background: var(--bg-page);}
+        footer { text-align: center; padding: 40px 20px; color: var(--text-muted); border-top: 1px solid var(--border-light); font-size: 14px; background: var(--bg-section);}
 
-        @media (max-width: 600px) {
-            .hero h1 { font-size: 36px; }
-            .iframe-wrapper iframe { width: 100%; transform: scale(0.9); }
-        }
     </style>
 </head>
 <body>
@@ -207,6 +272,7 @@
             Buscador DJEN
             <span class="badge-cortesia-site">CORTESIA</span>
         </div>
+        <a href="#" class="btn-cta">Instalar a Extensão</a>
     </header>
 
     <section class="hero">
@@ -215,19 +281,19 @@
         
         <div class="hero-buttons">
             <a href="#" class="btn-browser chrome">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="21.17" y1="8" x2="12" y2="8"></line><line x1="3.95" y1="6.06" x2="8.54" y2="14"></line><line x1="10.88" y1="21.94" x2="15.46" y2="14"></line></svg>
-                Instalar no Chrome
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="21.17" y1="8" x2="12" y2="8"></line><line x1="3.95" y1="6.06" x2="8.54" y2="14"></line><line x1="10.88" y1="21.94" x2="15.46" y2="14"></line></svg>
+                Disponível para Chrome
             </a>
             <a href="#" class="btn-browser firefox">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path><path d="M14.5 15.5c-1.5 1.5-3.5 1.5-5 0"></path><path d="M9.5 8.5c1.5-1.5 3.5-1.5 5 0"></path></svg>
-                Instalar no Firefox
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path><path d="M14.5 15.5c-1.5 1.5-3.5 1.5-5 0"></path><path d="M9.5 8.5c1.5-1.5 3.5-1.5 5 0"></path></svg>
+                Disponível para Firefox
             </a>
         </div>
     </section>
 
     <section class="demo-section">
-        <div class="demo-badge">Test Drive Interativo</div>
-        <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 15px;">Explore as abas e clique em <b>Consultar DJEN</b> abaixo para ver a extensão em ação.</p>
+        <div style="margin-top: 40px;" class="demo-badge">Test Drive Interativo</div>
+        <p style="color: var(--text-muted); margin-bottom: 40px; font-size: 16px;">Explore as abas e clique em <b>Consultar DJEN</b> para ver a extensão em ação.</p>
         
         <div class="iframe-wrapper">
             <iframe src="simulador.html" scrolling="no" title="Simulador Interativo do Buscador DJEN"></iframe>
@@ -237,7 +303,7 @@
     <section class="features-container">
         <div class="features-header">
             <h2>Um ecossistema completo para a sua advocacia</h2>
-            <p>Passe o rato sobre o botão <b>"👁️ Ver"</b> em cada cartão para visualizar a interface real da ferramenta.</p>
+            <p>Passe o rato sobre o botão <b>👁️ Ver</b> nos cartões para visualizar a ferramenta real.</p>
         </div>
 
         <div class="features">
@@ -249,7 +315,7 @@
                     </div>
                 </div>
 
-                <div class="feature-icon ic-blue">🔍</div>
+                <div class="feature-icon" style="color: var(--primary);">🔍</div>
                 <h3>Busca Híbrida e Inteligente</h3>
                 <p>Otimize o tempo de pesquisa atuando diretamente nas fontes oficiais do judiciário.</p>
                 <ul class="feature-list">
@@ -267,7 +333,7 @@
                     </div>
                 </div>
 
-                <div class="feature-icon ic-red">🧮</div>
+                <div class="feature-icon" style="color: var(--zen-red);">🧮</div>
                 <h3>Calculadora de Prazos Automatizada</h3>
                 <p>Esqueça a contagem manual. Um motor avançado para determinar a data fatal dos seus compromissos.</p>
                 <ul class="feature-list">
@@ -285,7 +351,7 @@
                     </div>
                 </div>
 
-                <div class="feature-icon ic-green">📅</div>
+                <div class="feature-icon" style="color: var(--zen-green);">📅</div>
                 <h3>Gestão de Prazos e Calendário</h3>
                 <p>Um painel completo para gerenciar o que foi encontrado, substituindo planilhas e agendas físicas.</p>
                 <ul class="feature-list">
@@ -303,7 +369,7 @@
                     </div>
                 </div>
 
-                <div class="feature-icon ic-purple">🎯</div>
+                <div class="feature-icon" style="color: var(--zen-purple);">🎯</div>
                 <h3>Produtividade, Foco e Organização</h3>
                 <p>Recursos pensados milimetricamente para acabar com o ruído e o cansaço mental da advocacia.</p>
                 <ul class="feature-list">
@@ -321,7 +387,7 @@
                     </div>
                 </div>
 
-                <div class="feature-icon ic-orange">🔗</div>
+                <div class="feature-icon" style="color: var(--zen-orange);">🔗</div>
                 <h3>Exportação, Partilha e Segurança</h3>
                 <p>Os seus dados pertencem a si. Mova-os com facilidade e absoluta confidencialidade.</p>
                 <ul class="feature-list">
