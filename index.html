@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador DJEN - Os seus prazos num clique</title>
-    <meta name="description" content="Extensão de navegador segura e offline para triagem de publicações e cálculo de prazos no DJEN.">
+    <title>Buscador DJEN - Gestão de Prazos Judiciais e Intimações</title>
+    <meta name="description" content="Extensão de navegador segura e offline para triagem de publicações, cálculo de prazos no DJEN e gestão de tarefas jurídicas.">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
@@ -32,6 +32,47 @@
             --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
         }
 
+        /* --- MODO DARK AUTOMÁTICO --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-pure: #121212;
+                --bg-warm: #1a1a1a;
+                --bg-hover: rgba(255, 255, 255, 0.08);
+                
+                --text-main: rgba(255, 255, 255, 0.95);
+                --text-muted: #9ca3af;
+                --text-light: #6b7280;
+                
+                --border-whisper: rgba(255, 255, 255, 0.15);
+                --primary: #4da3ff;
+                --primary-hover: #80bfff;
+                
+                --zen-orange: #ff9d5c;
+                --zen-orange-bg: #2d1b12;
+                --zen-orange-brd: rgba(255, 157, 92, 0.2);
+                
+                --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+                --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.8);
+                --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.9);
+            }
+
+            .brand div {
+                background: var(--text-main) !important;
+                color: var(--bg-pure) !important;
+            }
+            
+            .browser-header { background: #2a2a2a; }
+            
+            .placeholder-gif {
+                background: linear-gradient(110deg, #2a2a2a 8%, #333333 18%, #2a2a2a 33%);
+                background-size: 200% 100%;
+            }
+
+            header {
+                background-color: rgba(18, 18, 18, 0.85) !important;
+            }
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -45,277 +86,78 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         /* --- TIPOGRAFIA --- */
-        h1, h2, h3 {
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        h1 {
-            font-size: clamp(36px, 5vw, 56px);
-            letter-spacing: -0.04em;
-            line-height: 1.1;
-            margin-bottom: 24px;
-        }
-
-        h2 {
-            font-size: clamp(28px, 4vw, 40px);
-            letter-spacing: -0.03em;
-            line-height: 1.2;
-            margin-bottom: 16px;
-        }
-
-        p.lead {
-            font-size: clamp(16px, 2vw, 20px);
-            color: var(--text-muted);
-            max-width: 680px;
-            margin: 0 auto 40px auto;
-            line-height: 1.5;
-        }
+        h1, h2, h3 { font-weight: 700; color: var(--text-main); }
+        h1 { font-size: clamp(36px, 5vw, 56px); letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 24px; }
+        h2 { font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 16px; }
+        p.lead { font-size: clamp(16px, 2vw, 20px); color: var(--text-muted); max-width: 680px; margin: 0 auto 40px auto; line-height: 1.5; }
 
         /* --- ESTRUTURA E CONTAINERS --- */
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        section { padding: 80px 0; }
+        section.alt { background-color: var(--bg-warm); border-top: 1px solid var(--border-whisper); border-bottom: 1px solid var(--border-whisper); }
 
-        section {
-            padding: 80px 0;
-        }
-
-        section.alt {
-            background-color: var(--bg-warm);
-            border-top: 1px solid var(--border-whisper);
+        /* --- NAVEGAÇÃO FIXA (STICKY) --- */
+        header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 100;
             border-bottom: 1px solid var(--border-whisper);
         }
 
-        /* --- NAVEGAÇÃO --- */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 24px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .brand img {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-        }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; max-width: 1200px; margin: 0 auto; }
+        .brand { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 700; letter-spacing: -0.5px; }
 
         /* --- BOTÕES --- */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-size: 15px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            border: 1px solid transparent;
-        }
-
-        .btn-primary {
-            background-color: var(--text-main);
-            color: var(--bg-pure);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-primary:hover {
-            background-color: #000000;
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            color: var(--text-main);
-            border-color: var(--border-whisper);
-        }
-
-        .btn-outline:hover {
-            background-color: var(--bg-hover);
-        }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 6px; font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.2s ease; cursor: pointer; border: 1px solid transparent; }
+        .btn-primary { background-color: var(--text-main); color: var(--bg-pure); box-shadow: var(--shadow-sm); }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); opacity: 0.9; }
+        .btn-outline { background-color: transparent; color: var(--text-main); border-color: var(--border-whisper); }
+        .btn-outline:hover { background-color: var(--bg-hover); }
 
         /* --- HERO SECTION --- */
-        .hero {
-            text-align: center;
-            padding: 100px 0 60px 0;
-        }
-
-        .micro-badge {
-            display: inline-block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            padding: 6px 12px;
-            border: 1px solid var(--border-whisper);
-            border-radius: 999px;
-            background-color: var(--bg-pure);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .hero-actions {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
+        .hero { text-align: center; padding: 100px 0 60px 0; }
+        .micro-badge { display: inline-block; font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; padding: 6px 12px; border: 1px solid var(--border-whisper); border-radius: 999px; background-color: var(--bg-pure); box-shadow: var(--shadow-sm); }
+        .hero-actions { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
 
         /* --- PROVA VISUAL (MOCKUP) --- */
-        .visual-proof {
-            margin-top: 60px;
-            display: flex;
-            justify-content: center;
-            padding: 0 20px;
-        }
-
-        .browser-mockup {
-            width: 100%;
-            max-width: 900px;
-            background: var(--bg-pure);
-            border: 1px solid var(--border-whisper);
-            border-radius: 12px;
-            box-shadow: var(--shadow-lg);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .browser-header {
-            height: 40px;
-            background: var(--bg-warm);
-            border-bottom: 1px solid var(--border-whisper);
-            display: flex;
-            align-items: center;
-            padding: 0 16px;
-            gap: 8px;
-        }
-
-        .browser-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #e5e5e5;
-        }
+        .visual-proof { margin-top: 60px; display: flex; justify-content: center; padding: 0 20px; }
+        .browser-mockup { width: 100%; max-width: 900px; background: var(--bg-pure); border: 1px solid var(--border-whisper); border-radius: 12px; box-shadow: var(--shadow-lg); overflow: hidden; display: flex; flex-direction: column; }
+        .browser-header { height: 40px; background: var(--bg-warm); border-bottom: 1px solid var(--border-whisper); display: flex; align-items: center; padding: 0 16px; gap: 8px; }
+        .browser-dot { width: 12px; height: 12px; border-radius: 50%; background-color: #e5e5e5; }
         .browser-dot:nth-child(1) { background-color: #ff5f56; }
         .browser-dot:nth-child(2) { background-color: #ffbd2e; }
         .browser-dot:nth-child(3) { background-color: #27c93f; }
-
-        .browser-content {
-            padding: 0;
-            background: var(--bg-warm);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            aspect-ratio: 16 / 9;
-            position: relative;
-        }
-
-        /* Placeholder animado para o GIF */
-        .placeholder-gif {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(110deg, #ecebea 8%, #f5f4f2 18%, #ecebea 33%);
-            background-size: 200% 100%;
-            animation: 1.5s shine linear infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            font-weight: 500;
-        }
+        .browser-content { padding: 0; background: var(--bg-warm); display: flex; justify-content: center; align-items: center; aspect-ratio: 16 / 9; position: relative; }
+        .placeholder-gif { width: 100%; height: 100%; background: linear-gradient(110deg, #ecebea 8%, #f5f4f2 18%, #ecebea 33%); background-size: 200% 100%; animation: 1.5s shine linear infinite; display: flex; align-items: center; justify-content: center; color: var(--text-light); font-weight: 500; }
         @keyframes shine { to { background-position-x: -200%; } }
 
         /* --- GRID DE BENEFÍCIOS E PASSOS --- */
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 32px;
-            margin-top: 48px;
-        }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; margin-top: 48px; }
+        .card { background: var(--bg-pure); border: 1px solid var(--border-whisper); border-radius: 12px; padding: 32px; box-shadow: var(--shadow-sm); text-align: left; transition: transform 0.2s ease; }
+        .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .card-icon { font-size: 32px; margin-bottom: 20px; }
+        .card h3 { font-size: 18px; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .card p { font-size: 15px; color: var(--text-muted); }
 
-        .card {
-            background: var(--bg-pure);
-            border: 1px solid var(--border-whisper);
-            border-radius: 12px;
-            padding: 32px;
-            box-shadow: var(--shadow-sm);
-            text-align: left;
-        }
-
-        .card-icon {
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-
-        .card h3 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
-        }
-
-        .card p {
-            font-size: 15px;
-            color: var(--text-muted);
-        }
+        /* --- FAQ --- */
+        details summary span { transition: transform 0.2s ease; display: inline-block; }
+        details[open] summary span { transform: rotate(45deg); }
 
         /* --- SOFT PAYWALL BANNER --- */
-        .premium-banner {
-            max-width: 700px;
-            margin: 0 auto;
-            background-color: var(--zen-orange-bg);
-            border: 1px solid var(--zen-orange-brd);
-            border-radius: 8px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .premium-banner h4 {
-            color: var(--zen-orange);
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-
-        .premium-banner p {
-            color: var(--text-main);
-            font-size: 15px;
-            opacity: 0.9;
-        }
+        .premium-banner { max-width: 700px; margin: 0 auto; background-color: var(--zen-orange-bg); border: 1px solid var(--zen-orange-brd); border-radius: 8px; padding: 24px; text-align: center; box-shadow: var(--shadow-sm); }
+        .premium-banner h4 { color: var(--zen-orange); font-size: 16px; margin-bottom: 8px; }
+        .premium-banner p { color: var(--text-main); font-size: 15px; opacity: 0.9; }
 
         /* --- FOOTER --- */
-        footer {
-            text-align: center;
-            padding: 40px 24px;
-            color: var(--text-muted);
-            font-size: 14px;
-            border-top: 1px solid var(--border-whisper);
-        }
+        footer { text-align: center; padding: 40px 24px; color: var(--text-muted); font-size: 14px; border-top: 1px solid var(--border-whisper); background: var(--bg-pure); }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             section { padding: 40px 0; }
             .hero { padding: 60px 0 40px 0; }
@@ -326,20 +168,22 @@
 </head>
 <body>
 
-    <nav>
-        <div class="brand">
-            <div style="width:32px; height:32px; background:var(--text-main); color:white; display:flex; align-items:center; justify-content:center; border-radius:6px;">D</div>
-            Buscador DJEN
-        </div>
-        <div>
-            <a href="#instalar" class="btn btn-outline" style="padding: 8px 16px; font-size: 14px;">Obter Extensão</a>
-        </div>
-    </nav>
+    <header>
+        <nav>
+            <div class="brand">
+                <div style="width:32px; height:32px; background:var(--text-main); color:white; display:flex; align-items:center; justify-content:center; border-radius:6px;">D</div>
+                Buscador DJEN
+            </div>
+            <div>
+                <a href="#instalar" class="btn btn-outline" style="padding: 8px 16px; font-size: 14px;">Obter Extensão</a>
+            </div>
+        </nav>
+    </header>
 
     <section class="hero container">
-        <div class="micro-badge">Para quem valoriza o próprio tempo</div>
+        <div class="micro-badge">Gestão de Prazos Judiciais</div>
         <h1>Os seus prazos do DJEN,<br>triados e calculados num clique.</h1>
-        <p class="lead">Uma extensão de navegador segura, 100% offline, que automatiza a busca de publicações, audita feriados e leva o prazo fatal diretamente para a sua agenda.</p>
+        <p class="lead">Pare de perder tempo caçando publicações e calculando prazos na mão. Transforme o seu navegador no seu assistente jurídico pessoal.</p>
         
         <div class="hero-actions" id="instalar">
             <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" rel="noopener" class="btn btn-primary">
@@ -361,8 +205,17 @@
                 </div>
                 <div class="browser-content">
                     <div class="placeholder-gif">Substituir por um GIF da extensão em uso (ex: demo.gif)</div>
-                    </div>
+                </div>
             </div>
+        </div>
+
+        <div style="margin-top: 60px; text-align: center; padding-top: 40px;">
+            <p style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 16px;">
+                Desenhado de Advogados para Advogados
+            </p>
+            <p style="max-width: 600px; margin: 0 auto; font-size: 16px; font-style: italic; color: var(--text-main);">
+                "Criamos a ferramenta que nós mesmos precisávamos usar todos os dias para não perder o sono com prazos fatais."
+            </p>
         </div>
     </section>
 
@@ -375,12 +228,12 @@
                 <div style="text-align: center;">
                     <div style="font-size: 24px; font-weight: 800; color: var(--border-whisper); margin-bottom: 12px; font-family: ui-monospace, monospace;">01</div>
                     <h3 style="font-size: 18px; margin-bottom: 8px;">Pesquise</h3>
-                    <p style="font-size: 15px; color: var(--text-muted);">Insira a sua OAB ou número do Processo. A extensão tria os Diários Oficiais e encontra as intimações.</p>
+                    <p style="font-size: 15px; color: var(--text-muted);">Insira a sua OAB ou número do Processo. A extensão tria os Diários Oficiais e encontra as intimações instantaneamente.</p>
                 </div>
                 <div style="text-align: center;">
                     <div style="font-size: 24px; font-weight: 800; color: var(--border-whisper); margin-bottom: 12px; font-family: ui-monospace, monospace;">02</div>
                     <h3 style="font-size: 18px; margin-bottom: 8px;">Calcule</h3>
-                    <p style="font-size: 15px; color: var(--text-muted);">Defina a matéria. O sistema audita dias úteis e feriados, apresentando a data fatal com precisão.</p>
+                    <p style="font-size: 15px; color: var(--text-muted);">Calcula prazos fatais (dias úteis CPC/CLT ou corridos CPP), auditando feriados, recessos e suspensões automaticamente.</p>
                 </div>
                 <div style="text-align: center;">
                     <div style="font-size: 24px; font-weight: 800; color: var(--border-whisper); margin-bottom: 12px; font-family: ui-monospace, monospace;">03</div>
@@ -392,22 +245,37 @@
     </section>
 
     <section class="container">
-        <h2 style="text-align: center;">A vantagem técnica no seu navegador</h2>
+        <h2 style="text-align: center; margin-bottom: 48px;">Tudo o que precisa num único painel lateral</h2>
         <div class="grid-3">
             <div class="card">
-                <div class="card-icon">🛡️</div>
-                <h3>100% Offline e Privado</h3>
-                <p>Os seus processos são confidenciais. A extensão corre e guarda todos os dados localmente no seu computador. Sem servidores de terceiros, sem risco de fugas.</p>
+                <div class="card-icon">🔒</div>
+                <h3>O Seu Cofre Pessoal</h3>
+                <p>100% Offline e Privado. Não sincronizamos os dados dos seus clientes na nuvem. Tudo fica salvo localmente no seu navegador com total segurança.</p>
             </div>
             <div class="card">
-                <div class="card-icon">⚡</div>
-                <h3>Leveza Absoluta</h3>
-                <p>Abra instantaneamente sobre qualquer separador, sem precisar de fazer login em plataformas complexas. Desenhado para ser invisível até precisar dele.</p>
+                <div class="card-icon">✅</div>
+                <h3>Gestor de Tarefas (TODO)</h3>
+                <p>Cada processo possui a sua própria lista de tarefas. Anote o que precisa de ser feito, marque como concluído e acompanhe a barra de progresso avançar.</p>
             </div>
             <div class="card">
                 <div class="card-icon">🎯</div>
-                <h3>Radar Automático</h3>
-                <p>Configure palavras sensíveis (ex: <i>penhora</i>, <i>liminar</i>). A ferramenta destaca imediatamente o perigo nas intimações, reduzindo a falha humana.</p>
+                <h3>Radar & Modo Foco</h3>
+                <p>Alerta automático para palavras sensíveis (Penhora, Liminar). Precisa ler um despacho longo? Ative o Modo Foco para uma leitura limpa e sem distrações.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📅</div>
+                <h3>Cálculo Implacável</h3>
+                <p>Contagem exata e à prova de erros. O sistema cruza os seus prazos com os feriados nacionais, estaduais, municipais e recessos dos Tribunais.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📤</div>
+                <h3>Exportação Inteligente</h3>
+                <p>Envie prazos calculados diretamente para o seu Google Agenda ou partilhe relatórios de movimentações processuais formatados via WhatsApp ou Telegram.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎮</div>
+                <h3>Produtividade Gamificada</h3>
+                <p>Cumpra prazos, adicione tarefas e ganhe XP. Suba de nível, de Estagiário até Sócio Titular, enquanto acompanha as suas estatísticas semanais.</p>
             </div>
         </div>
     </section>
@@ -422,10 +290,63 @@
         </div>
     </section>
 
+    <section class="container" style="max-width: 800px; padding: 80px 24px;">
+        <h2 style="text-align: center; margin-bottom: 40px;">Perguntas Frequentes</h2>
+        
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+            <details style="background: var(--bg-warm); padding: 16px 20px; border-radius: 8px; border: 1px solid var(--border-whisper); cursor: pointer;">
+                <summary style="font-weight: 600; font-size: 16px; list-style: none; display: flex; justify-content: space-between;">
+                    Os meus processos e clientes estão seguros?
+                    <span style="color: var(--text-muted); font-size: 20px;">+</span>
+                </summary>
+                <p style="margin-top: 12px; font-size: 15px; color: var(--text-muted); line-height: 1.5;">
+                    Absolutamente. A privacidade é o nosso pilar. O Buscador DJEN é 100% offline. Não temos acesso aos seus processos, pesquisas ou carteira de clientes. Todos os dados são guardados e geridos localmente no seu próprio navegador.
+                </p>
+            </details>
+
+            <details style="background: var(--bg-warm); padding: 16px 20px; border-radius: 8px; border: 1px solid var(--border-whisper); cursor: pointer;">
+                <summary style="font-weight: 600; font-size: 16px; list-style: none; display: flex; justify-content: space-between;">
+                    A extensão funciona em quais tribunais?
+                    <span style="color: var(--text-muted); font-size: 20px;">+</span>
+                </summary>
+                <p style="margin-top: 12px; font-size: 15px; color: var(--text-muted); line-height: 1.5;">
+                    O sistema faz a busca diretamente no Diário de Justiça Eletrônico Nacional (DJEN), que integra e unifica as publicações de todos os tribunais ligados ao sistema PJe em todo o país.
+                </p>
+            </details>
+
+            <details style="background: var(--bg-warm); padding: 16px 20px; border-radius: 8px; border: 1px solid var(--border-whisper); cursor: pointer;">
+                <summary style="font-weight: 600; font-size: 16px; list-style: none; display: flex; justify-content: space-between;">
+                    O que acontece após o período de lançamento?
+                    <span style="color: var(--text-muted); font-size: 20px;">+</span>
+                </summary>
+                <p style="margin-top: 12px; font-size: 15px; color: var(--text-muted); line-height: 1.5;">
+                    As funcionalidades de busca básica serão sempre gratuitas. O acesso Premium (que inclui a calculadora avançada e gamificação), atualmente libertado, continuará sem custos durante a fase de testes. Avisaremos com bastante antecedência antes de qualquer alteração de planos.
+                </p>
+            </details>
+        </div>
+    </section>
+
+    <section class="alt" style="text-align: center; padding: 80px 24px;">
+        <div class="container">
+            <h2>Pronto para assumir o controle da sua pauta?</h2>
+            <p class="lead" style="margin-bottom: 32px;">Junte-se aos profissionais que já transformaram a gestão de prazos num processo automático, rápido e livre de stress.</p>
+            <div class="hero-actions">
+                <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" rel="noopener" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="21.17" y1="8" x2="12" y2="8"></line><line x1="3.95" y1="6.06" x2="8.54" y2="14"></line><line x1="10.88" y1="21.94" x2="15.46" y2="14"></line></svg>
+                    Instalar no Chrome
+                </a>
+                <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" rel="noopener" class="btn btn-outline">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path><path d="M12 22a10 10 0 0 0 7.38-16.75"></path><path d="M19.38 5.25a10 10 0 0 0-14.76 0"></path><path d="M4.62 5.25A10 10 0 0 0 12 22"></path><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.11"></path></svg>
+                    Instalar no Firefox
+                </a>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="container">
             <div style="font-weight: 600; color: var(--text-main); margin-bottom: 8px;">Buscador DJEN</div>
-            <p>Concebido para potenciar a rotina jurídica.</p>
+            <p>Concebido para potenciar a rotina jurídica moderna.</p>
             <p style="margin-top: 16px; font-size: 12px;">© 2026 Buscador DJEN. Todos os direitos reservados.</p>
         </div>
     </footer>
