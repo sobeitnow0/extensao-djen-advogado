@@ -41,4 +41,9 @@ Se você trabalha com múltiplos prazos diários e precisa de uma ferramenta rá
 
 Instale agora e assuma o controle total da sua pauta!
 
+Disponível para Chrome : https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab
+           
+Disponível para Firefox: https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/
+            
+
 
