@@ -113,32 +113,38 @@
         .hero p { font-size: 20px; color: var(--text-muted); margin-bottom: 48px; max-width: 800px; font-weight: 600; line-height: 1.40; letter-spacing: -0.125px;}
 
         .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
-        .btn-browser { display: flex; align-items: center; gap: 10px; background-color: var(--bg-section); color: var(--text-main); padding: 8px 16px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--border-light); transition: all 0.2s ease; line-height: 1.33; }
+        .btn-browser { display: flex; align-items: center; justify-content: center; gap: 10px; background-color: var(--bg-section); color: var(--text-main); padding: 8px 16px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--border-light); transition: all 0.2s ease; line-height: 1.33; }
         .btn-browser:hover { transform: scale(1.02); }
         .btn-browser:active { transform: scale(0.98); }
         .btn-browser.primary { background-color: var(--primary); color: var(--primary-text); border: 1px solid transparent; }
         .btn-browser.primary:hover { background-color: var(--primary-hover); }
 
+        /* EFEITO GLOW SUAVE PARA BOTÃO SECUNDÁRIO */
+        @keyframes pulseGlowBtn {
+            0% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0.3); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 117, 222, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0); }
+        }
+        .btn-glow { animation: pulseGlowBtn 2.5s infinite; }
+        .btn-glow:hover { animation: none; }
+
         .trust-badges { display: flex; align-items: center; justify-content: center; gap: 16px; color: var(--text-placeholder); font-size: 14px; font-weight: 500; margin-bottom: 8px; flex-wrap: wrap;}
         .microcopy { color: var(--text-muted); font-size: 12px; font-weight: 400; }
 
-        /* SIMULADOR COM GLOW EFEITO */
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(0, 117, 222, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0); }
-        }
-        .demo-section { display: flex; flex-direction: column; align-items: center; padding: 64px 20px 100px; background-color: var(--bg-section); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); transition: background-color 0.3s; }
+        /* CALCULADORA PROMO SECTION */
+        .calculator-promo { padding: 80px 20px; text-align: center; background: var(--bg-section); border-top: 1px solid var(--border-light); transition: background-color 0.3s; }
+        
+        /* SIMULADOR SECTION */
+        .demo-section { display: flex; flex-direction: column; align-items: center; padding: 80px 20px 100px; background-color: var(--bg-page); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); transition: background-color 0.3s; }
         .demo-badge { background: var(--badge-bg); color: var(--badge-text); padding: 4px 8px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; margin-bottom: 24px; letter-spacing: 0.125px; text-transform: uppercase;}
         .iframe-wrapper { position: relative; width: 100%; max-width: 400px; height: 600px; display: flex; justify-content: center; align-items: center; }
-        .iframe-wrapper iframe { width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: var(--radius-card); box-shadow: var(--shadow-modal); background: var(--bg-page); transition: box-shadow 0.3s; animation: pulseGlow 3s infinite;}
+        .iframe-wrapper iframe { width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: var(--radius-card); box-shadow: var(--shadow-modal); background: var(--bg-page); transition: box-shadow 0.3s;}
 
         /* FUNCIONALIDADES */
-        .features-container { padding: 120px 5% 80px; background: var(--bg-page); transition: background-color 0.3s; }
+        .features-container { padding: 120px 5% 80px; background: var(--bg-section); transition: background-color 0.3s; }
         .features-header { text-align: center; margin-bottom: 80px; }
         .features-header h2 { font-size: 48px; font-weight: 700; margin-bottom: 16px; line-height: 1.00; letter-spacing: -1.5px;}
 
-        /* CORREÇÃO APLICADA: justify-content: center adicionado para alinhar a última linha */
         .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; max-width: 1200px; margin: 0 auto; justify-content: center; }
         .feature-card { background: var(--card-bg); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.3s; display: flex; flex-direction: column; }
         .feature-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
@@ -153,7 +159,6 @@
         .carousel::-webkit-scrollbar { display: none; }
         
         .carousel-item { 
-            /* CORREÇÃO APLICADA: scroll-snap-align alterado para 'start' */
             scroll-snap-align: start; 
             flex: 0 0 auto; 
             width: 85%; 
@@ -170,18 +175,12 @@
 
         /* Desktop: Mostra exatamente 3 cards por vez */
         @media (min-width: 1024px) {
-            .carousel-item {
-                width: calc(33.333% - 16px);
-                max-width: none;
-            }
+            .carousel-item { width: calc(33.333% - 16px); max-width: none; }
         }
 
         /* Tablet: Mostra exatamente 2 cards por vez */
         @media (min-width: 768px) and (max-width: 1023px) {
-            .carousel-item {
-                width: calc(50% - 12px);
-                max-width: none;
-            }
+            .carousel-item { width: calc(50% - 12px); max-width: none; }
         }
 
         .carousel-item:hover { transform: scale(1.02); box-shadow: var(--shadow-hover); }
@@ -189,29 +188,8 @@
         .carousel-caption { padding: 12px; font-size: 14px; text-align: center; color: var(--text-muted); font-weight: 500; border-top: 1px solid var(--border-light); background: var(--bg-section); transition: background-color 0.3s, color 0.3s;}
 
         /* SETAS DO CARROSSEL */
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 48px;
-            height: 48px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-light);
-            border-radius: 50%;
-            box-shadow: var(--shadow-hover);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: all 0.2s ease;
-        }
-        .carousel-btn:hover {
-            background: var(--bg-section);
-            transform: translateY(-50%) scale(1.1);
-        }
-        /* CORREÇÃO APLICADA: alterado de px para porcentagem (2%) */
+        .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 50%; box-shadow: var(--shadow-hover); color: var(--text-main); display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
+        .carousel-btn:hover { background: var(--bg-section); transform: translateY(-50%) scale(1.1); }
         .prev-btn { left: 2%; } 
         .next-btn { right: 2%; } 
         
@@ -265,66 +243,6 @@
         /* Mobile Sticky CTA */
         .mobile-sticky-cta { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-page); border-top: 1px solid var(--border-light); padding: 16px 20px; z-index: 100; box-shadow: 0 -4px 12px rgba(0,0,0,0.05); text-align: center; box-sizing: border-box; transition: background-color 0.3s; }
     </style>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [{
-        "@type": "Question",
-        "name": "A extensão tem acesso aos meus processos em segredo de justiça?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Não. A extensão funciona 100% no seu navegador e não envia nenhuma informação dos seus processos para servidores externos. Todos os seus prazos, anotações e buscas ficam salvos exclusivamente no armazenamento local da sua máquina, garantindo total privacidade e sigilo profissional."
-        }
-      }, {
-        "@type": "Question",
-        "name": "A contagem de prazos considera feriados locais?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "A calculadora de prazos é equipada com os feriados nacionais e recessos forenses federais/estaduais mapeados. Contudo, devido às variações municipais, a ferramenta permite que você audite a linha do tempo e adicione ou remova manualmente dias não úteis (como feriados da sua cidade) com apenas um clique antes de salvar o prazo."
-        }
-      }, {
-        "@type": "Question",
-        "name": "A ferramenta é realmente gratuita?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Sim. Atualmente, todas as funções Premium (incluindo o Radar, Modo Foco e exportação) estão liberadas de forma gratuita por tempo limitado como cortesia. A extensão é mantida de forma independente por meio de contribuições voluntárias."
-        }, {
-        "@type": "Question",
-        "name": "Como pesquisar intimação no DJEN pelo nome ou OAB?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Para consultar intimações públicas de forma rápida, a extensão Buscador DJEN automatiza o acesso ao portal do CNJ. Basta inserir sua OAB e UF para que a ferramenta realize a busca direta de publicações no Diário da Justiça Eletrônico Nacional sem precisar lidar com captchas ou lentidão."
-        }
-      }]
-    }
-    </script>
-    
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Buscador DJEN",
-      "operatingSystem": "Chrome, Firefox, Edge",
-      "applicationCategory": "BrowserApplication",
-      "applicationSubCategory": "LegalTech",
-      "description": "Extensão baseada em jurimetria e Legal Design para automatizar a extração de dados e triagem de publicações do Diário de Justiça Eletrônico Nacional (DJEN). Inclui cálculo algorítmico de prazos processuais e gestão de controladoria jurídica.",
-      "url": "https://www.buscadordjen.com.br/",
-      "author": { "@type": "Person", "name": "Amilcar Moreira" },
-      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "BRL" }
-    }
-    </script>
-
-    <script>
-        const savedTheme = localStorage.getItem('theme');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        } else {
-            document.documentElement.setAttribute('data-theme', 'light');
-        }
-    </script>
 </head>
 <body>
 
@@ -385,18 +303,23 @@
         <div class="microcopy">🔒 Não requer Certificado Digital ou senhas.</div>
     </section>
 
-    <section class="demo-section">
+    <section class="calculator-promo fade-in-section">
+        <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.625px;">Teste o motor do sistema.</h2>
+        <p style="color: var(--text-muted); margin-bottom: 32px; font-size: 16px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+            Utilize nossa ferramenta web real e gratuita para o cálculo algorítmico de prazos processuais.
+        </p>
+        <a href="calculadora.html" class="btn-browser btn-glow" style="margin: 0 auto; width: fit-content; padding: 12px 24px; border-radius: 4px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16.01" y2="14"></line><line x1="12" y1="14" x2="12.01" y2="14"></line><line x1="8" y1="14" x2="8.01" y2="14"></line><line x1="16" y1="10" x2="16.01" y2="10"></line><line x1="12" y1="10" x2="12.01" y2="10"></line><line x1="8" y1="10" x2="8.01" y2="10"></line><line x1="16" y1="18" x2="16.01" y2="18"></line><line x1="12" y1="18" x2="12.01" y2="18"></line><line x1="8" y1="18" x2="8.01" y2="18"></line></svg>
+            Abrir Calculadora de Prazos Online
+        </a>
+    </section>
+
+    <section class="demo-section fade-in-section">
         <div class="demo-badge">Test Drive Interativo</div>
-        <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 16px; text-align: center; max-width: 600px;">
+        <p style="color: var(--text-muted); margin-bottom: 40px; font-size: 16px; text-align: center; max-width: 600px;">
             Explore a interface abaixo para conhecer o design da extensão ou teste o motor do sistema com uma ferramenta real e gratuita.
         </p>
-        
-        <a href="calculadora.html" class="btn-browser" style="margin-bottom: 40px; padding: 12px 24px; border-radius: 4px;">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16.01" y2="14"></line><line x1="12" y1="14" x2="12.01" y2="14"></line><line x1="8" y1="14" x2="8.01" y2="14"></line><line x1="16" y1="10" x2="16.01" y2="10"></line><line x1="12" y1="10" x2="12.01" y2="10"></line><line x1="8" y1="10" x2="8.01" y2="10"></line><line x1="16" y1="18" x2="16.01" y2="18"></line><line x1="12" y1="18" x2="12.01" y2="18"></line><line x1="8" y1="18" x2="8.01" y2="18"></line></svg>
-    Abrir Calculadora de Prazos Online
-</a>
-
-        <div class="iframe-wrapper fade-in-section">
+        <div class="iframe-wrapper">
             <iframe src="simulador.html" width="400" height="600" scrolling="no" loading="lazy" title="Simulador Buscador DJEN"></iframe>
         </div>
     </section>
