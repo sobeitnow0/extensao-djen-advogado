@@ -180,6 +180,37 @@
         .carousel-item img { width: 100%; height: auto; display: block; cursor: zoom-in; object-fit: cover; }
         .carousel-caption { padding: 12px; font-size: 14px; text-align: center; color: var(--text-muted); font-weight: 500; border-top: 1px solid var(--border-light); background: var(--bg-section); transition: background-color 0.3s, color 0.3s;}
 
+        /* SETAS DO CARROSSEL */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 50%;
+            box-shadow: var(--shadow-hover);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s ease;
+        }
+        .carousel-btn:hover {
+            background: var(--bg-section);
+            transform: translateY(-50%) scale(1.1);
+        }
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
+        
+        /* Esconde as setas em telas muito pequenas (celulares), pois lá o toque resolve */
+        @media (max-width: 768px) {
+            .carousel-btn { display: none; }
+        }
+
         /* AUTORIDADE & CTA FINAL */
         .info-container { background: var(--bg-section); padding: 80px 20px; border-top: 1px solid var(--border-light); transition: background-color 0.3s; }
         .authority-box { max-width: 800px; margin: 0 auto; text-align: center; }
@@ -379,47 +410,58 @@
     </section>
 
     <section class="gallery-section fade-in-section">
-        <div class="carousel">
-            <div class="carousel-item">
-                <img src="1.png" alt="Interface de busca" loading="lazy">
-                <div class="carousel-caption">Interface de Busca e Filtros</div>
+        <div class="carousel-wrapper" style="position: relative; max-width: 1400px; margin: 0 auto;">
+            
+            <button class="carousel-btn prev-btn" aria-label="Imagem Anterior">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+
+            <div class="carousel">
+                <div class="carousel-item">
+                    <img src="1.png" alt="Interface de busca" loading="lazy">
+                    <div class="carousel-caption">Interface de Busca e Filtros</div>
+                </div>
+                <div class="carousel-item">
+                    <img src="2.png" alt="Auditoria de prazos" loading="lazy">
+                    <div class="carousel-caption">Auditoria Visual de Dias Úteis</div>
+                </div>
+                <div class="carousel-item">
+                    <img src="3.png" alt="Tarefas" loading="lazy">
+                    <div class="carousel-caption">Gestão de Tarefas por Processo</div>
+                </div>
+                <div class="carousel-item">
+                    <img src="4.png" alt="Interface de cálculos e prazos" loading="lazy">
+                    <div class="carousel-caption">Interface de Cálculos e Prazos</div>
+                </div>
+                <div class="carousel-item">
+                    <img src="5.png" alt="Gestão visual de publicações" loading="lazy">
+                    <div class="carousel-caption">Gestão Visual de Publicações</div>
+                </div>
+                <div class="carousel-item">
+                    <img src="6.png" alt="Calendário mensal de controle de prazos" loading="lazy">
+                    <div class="carousel-caption">Calendário Mensal de Prazos</div>
+                </div>
+                <div class="carousel-item">
+                    <img src="7.png" alt="Menu de configurações e backup local" loading="lazy">
+                    <div class="carousel-caption">Configurações e Backup Local</div>
+                </div>
+                <div class="carousel-item">
+                    <img src="8.png" alt="Configuração do Radar de palavras-chave jurídicas" loading="lazy">
+                    <div class="carousel-caption">Radar de Palavras-chave</div>
+                </div>
+                <div class="carousel-item">
+                    <img src="9.png" alt="Guia rápido e atalhos de teclado da extensão" loading="lazy">
+                    <div class="carousel-caption">Atalhos de Teclado e Guia</div>
+                </div>
+                <div class="carousel-item">
+                    <img src="10.png" alt="Exportação e compartilhamento via WhatsApp e Google" loading="lazy">
+                    <div class="carousel-caption">Exportação para Google e WhatsApp</div>
+                </div>
             </div>
-            <div class="carousel-item">
-                <img src="2.png" alt="Auditoria de prazos" loading="lazy">
-                <div class="carousel-caption">Auditoria Visual de Dias Úteis</div>
-            </div>
-            <div class="carousel-item">
-                <img src="3.png" alt="Tarefas" loading="lazy">
-                <div class="carousel-caption">Gestão de Tarefas por Processo</div>
-            </div>
-            <div class="carousel-item">
-                <img src="4.png" alt="Interface de cálculos e prazos" loading="lazy">
-                <div class="carousel-caption">Interface de Cálculos e Prazos</div>
-            </div>
-            <div class="carousel-item">
-                <img src="5.png" alt="Gestão visual de publicações" loading="lazy">
-                <div class="carousel-caption">Gestão Visual de Publicações</div>
-            </div>
-            <div class="carousel-item">
-                <img src="6.png" alt="Calendário mensal de controle de prazos" loading="lazy">
-                <div class="carousel-caption">Calendário Mensal de Prazos</div>
-            </div>
-            <div class="carousel-item">
-                <img src="7.png" alt="Menu de configurações e backup local" loading="lazy">
-                <div class="carousel-caption">Configurações e Backup Local</div>
-            </div>
-            <div class="carousel-item">
-                <img src="8.png" alt="Configuração do Radar de palavras-chave jurídicas" loading="lazy">
-                <div class="carousel-caption">Radar de Palavras-chave</div>
-            </div>
-            <div class="carousel-item">
-                <img src="9.png" alt="Guia rápido e atalhos de teclado da extensão" loading="lazy">
-                <div class="carousel-caption">Atalhos de Teclado e Guia</div>
-            </div>
-            <div class="carousel-item">
-                <img src="10.png" alt="Exportação e compartilhamento via WhatsApp e Google" loading="lazy">
-                <div class="carousel-caption">Exportação para Google e WhatsApp</div>
-            </div>
+
+            <button class="carousel-btn next-btn" aria-label="Próxima Imagem">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
         </div>
     </section>
 
@@ -552,6 +594,26 @@
             }, 4000);
         }
         function stopAutoPlay() { clearInterval(autoPlayInterval); }
+        // Lógica dos Botões de Navegação do Carrossel
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', () => {
+                const itemWidth = carousel.querySelector('.carousel-item').offsetWidth + 24;
+                carousel.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+                // Reinicia o tempo para não pular sozinho logo após o clique
+                stopAutoPlay();
+                startAutoPlay(); 
+            });
+
+            nextBtn.addEventListener('click', () => {
+                const itemWidth = carousel.querySelector('.carousel-item').offsetWidth + 24;
+                carousel.scrollBy({ left: itemWidth, behavior: 'smooth' });
+                stopAutoPlay();
+                startAutoPlay();
+            });
+        }
         startAutoPlay();
         carousel.addEventListener('mouseenter', stopAutoPlay);
         carousel.addEventListener('mouseleave', startAutoPlay);
