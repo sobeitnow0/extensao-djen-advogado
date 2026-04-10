@@ -3,316 +3,355 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Calculadora de Prazos Processuais (Novo CPC) | Buscador DJEN</title>
-    <meta name="description" content="Calcule prazos processuais em dias úteis ou corridos gratuitamente. Ferramenta essencial para advogados e controladoria jurídica.">
-    <meta name="keywords" content="calculadora de prazos processuais, prazos novo cpc, contagem de prazos, dias úteis cpc, buscador djen, ferramenta advogado">
-    <meta name="author" content="Amilcar Moreira">
-    
+    <title>Calculadora de Prazos Processuais | Buscador DJEN</title>
+    <meta name="description" content="Simulador de prazos processuais com regra de 3 saltos do Novo CPC, recesso forense e auditoria visual da linha do tempo.">
     <link rel="icon" type="image/png" href="djen-128.png">
-    <link rel="canonical" href="https://www.buscadordjen.com.br/calculadora.html">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* DESIGN SYSTEM - NOTION INSPIRATION (Reaproveitado da index) */
+        /* DESIGN SYSTEM - NOTION (Igual a Extensão e Index) */
         :root {
-            --bg-page: #ffffff;
-            --bg-section: #f6f5f4; 
-            --card-bg: #ffffff;
-            --text-main: rgba(0, 0, 0, 0.95); 
-            --text-muted: #615d59; 
-            --primary: #0075de; 
-            --primary-hover: #005bab; 
-            --primary-text: #ffffff;
-            --badge-bg: #f2f9ff;
-            --badge-text: #097fe8;
-            --border-light: rgba(0, 0, 0, 0.1); 
-            --zen-orange: #dd5b00;
-            --zen-green: #1aae39;
-            --radius-btn: 4px; 
-            --radius-card: 12px; 
-            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.8468px;
+            --bg-page: #efeee9; --bg-section: #f6f5f4; --card-bg: #ffffff; --card-inner: #f9f8f6;
+            --text-main: rgba(0, 0, 0, 0.95); --text-muted: #615d59; 
+            --primary: #0056a3; --primary-hover: #004280; --primary-text: #ffffff;
+            --border-light: rgba(0, 0, 0, 0.15); --border-focus: #0056a3;
+            --zen-orange: #a84500; --zen-orange-bg: #fdf3eb;
+            --zen-green: #147a27; --zen-red: #a32c28; --zen-red-bg: #fbe4e4;
+            --radius-btn: 4px; --radius-card: 12px; --radius-md: 8px;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+            --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
         }
 
-        /* DARK THEME */
         [data-theme="dark"] {
-            --bg-page: #191919;
-            --bg-section: #202020;
-            --card-bg: #252525;
-            --text-main: rgba(255, 255, 255, 0.95);
-            --text-muted: rgba(255, 255, 255, 0.6);
-            --primary: #52a8ff;
-            --primary-hover: #62aef0;
-            --primary-text: #191919;
-            --badge-bg: rgba(82, 168, 255, 0.15);
-            --badge-text: #52a8ff;
-            --border-light: rgba(255, 255, 255, 0.1);
-            --zen-orange: #ffa344;
-            --shadow-card: rgba(0,0,0,0.5) 0px 4px 18px;
+            --bg-page: #191919; --card-bg: #202020; --card-inner: #252525;
+            --text-main: rgba(255, 255, 255, 0.9); --text-muted: rgba(255, 255, 255, 0.5);
+            --primary: #52a8ff; --primary-hover: #62aef0; --primary-text: #191919;
+            --border-light: rgba(255, 255, 255, 0.1); --border-focus: #52a8ff;
+            --zen-orange: #ffa344; --zen-orange-bg: rgba(255, 163, 68, 0.15);
+            --zen-green: #4dabb6; --zen-red: #ff7369; --zen-red-bg: rgba(255, 115, 105, 0.15);
         }
 
-        body { 
-            margin: 0; 
-            padding: 0; 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg-page); 
-            color: var(--text-main); 
-            -webkit-font-smoothing: antialiased; 
-            line-height: 1.5; 
-            transition: background-color 0.3s, color 0.3s; 
-        }
-
-        /* HEADER */
-        header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 16px 5%; 
-            border-bottom: 1px solid var(--border-light); 
-            background: var(--bg-page); 
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-        }
-        .brand { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            font-size: 16px; 
-            font-weight: 600; 
-            color: var(--text-main); 
-            text-decoration: none;
-            letter-spacing: -0.25px; 
-        }
-        .brand img { width: 32px; height: 32px; border-radius: var(--radius-btn); }
-        .back-link {
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); line-height: 1.5; transition: 0.3s; }
+        
+        /* HEADER SITE */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--card-bg); }
+        .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; text-decoration: none; color: var(--text-main);}
+        .brand img { width: 32px; border-radius: var(--radius-btn); }
+        .back-link { color: var(--text-muted); font-size: 14px; font-weight: 600; text-decoration: none; transition: 0.2s; }
         .back-link:hover { color: var(--text-main); }
 
-        /* CALCULADORA WRAPPER */
-        .calc-wrapper { max-width: 600px; margin: 60px auto 100px; padding: 0 20px; }
-        .calc-header { text-align: center; margin-bottom: 40px; }
-        .calc-header h1 { font-size: 36px; font-weight: 700; margin-bottom: 16px; line-height: 1.1; letter-spacing: -1px;}
-        .calc-header p { color: var(--text-muted); font-size: 16px; margin: 0; }
+        /* WRAPPER E CARD DA CALCULADORA (Estética Extensão) */
+        .calc-wrapper { max-width: 500px; margin: 40px auto 100px; padding: 0 16px; }
+        .calculadora-prazo { padding: 24px; background-color: var(--card-inner); border-radius: var(--radius-md); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); }
+        .calc-title { font-size: 16px; font-weight: 700; margin-bottom: 24px; color: var(--text-main); display: flex; align-items: center; gap: 8px; letter-spacing: -0.5px;}
 
-        .calc-card { 
-            background: var(--card-bg); 
-            padding: 32px; 
-            border-radius: var(--radius-card); 
-            border: 1px solid var(--border-light); 
-            box-shadow: var(--shadow-card); 
-        }
+        /* INPUTS EXTENSÃO */
+        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        .input-group label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+        input, select { width: 100%; padding: 10px 12px; background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-light); border-radius: var(--radius-btn); font-size: 14px; font-family: inherit; box-sizing: border-box; outline: none; transition: 0.2s;}
+        input:focus, select:focus { border-color: var(--border-focus); box-shadow: 0 0 0 1px var(--border-focus); }
+        select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23787774' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer;}
         
-        .form-group { margin-bottom: 24px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
-        .form-control { 
-            width: 100%; 
-            padding: 12px; 
-            border: 1px solid var(--border-light); 
-            border-radius: var(--radius-btn); 
-            background: var(--bg-section); 
-            color: var(--text-main); 
-            font-size: 16px; 
-            font-family: inherit; 
-            box-sizing: border-box; 
-            outline: none; 
-            transition: border-color 0.2s;
-            color-scheme: light dark;
-        }
-        .form-control:focus { border-color: var(--primary); }
-        
-        .btn-calc { 
-            width: 100%; 
-            background: var(--primary); 
-            color: var(--primary-text); 
-            border: none; 
-            padding: 14px; 
-            font-size: 16px; 
-            font-weight: 600; 
-            border-radius: var(--radius-btn); 
-            cursor: pointer; 
-            transition: background-color 0.2s; 
-            margin-top: 8px; 
-            font-family: inherit;
-        }
-        .btn-calc:hover { background: var(--primary-hover); }
+        .btn-main { width: 100%; padding: 12px 16px; background-color: var(--primary); color: var(--primary-text); border: none; border-radius: var(--radius-btn); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-sm); margin-top: 16px;}
+        .btn-main:hover { background-color: var(--primary-hover); transform: scale(0.99); }
+        .btn-pill { width: 100%; padding: 12px 16px; background-color: transparent; color: var(--text-muted); border: 1px solid var(--border-light); border-radius: var(--radius-btn); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: 16px;}
+        .btn-pill:hover { background-color: rgba(0,0,0,0.05); color: var(--text-main);}
 
-        /* CAIXA DE ALERTA (DISCLAIMER) */
-        .alert-box {
-            background: rgba(221, 91, 0, 0.1); 
-            border: 1px solid rgba(221, 91, 0, 0.2);
-            color: var(--zen-orange);
-            padding: 16px;
-            border-radius: var(--radius-btn);
-            font-size: 13px;
-            font-weight: 500;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            text-align: left;
-            margin-top: 24px;
-            line-height: 1.5;
-        }
-        .alert-box svg {
-            flex-shrink: 0;
-            width: 18px;
-            height: 18px;
-            margin-top: 2px;
-        }
-        [data-theme="dark"] .alert-box {
-            background: rgba(255, 163, 68, 0.1);
-            border-color: rgba(255, 163, 68, 0.2);
-        }
-
-        /* RESULTADO */
-        #resultado-box { 
-            display: none; 
-            margin-top: 32px; 
-            padding-top: 24px; 
-            border-top: 1px solid var(--border-light); 
-            text-align: center; 
-            animation: fadeIn 0.5s; 
-        }
-        #data-final { font-size: 36px; font-weight: 800; color: var(--zen-green); margin: 8px 0; letter-spacing: -1px;}
+        /* RESULTADO & AUDITORIA VISUAL */
+        .calc-result-box { display: none; text-align: center; padding: 20px 16px; background: var(--card-bg); border-radius: var(--radius-sm); margin-top: 16px; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); animation: fadeIn 0.3s;}
+        .resultado-data-fatal { font-size: 32px; font-weight: 800; color: var(--text-main); margin: 4px 0; letter-spacing: -1px; }
         
-        /* A PONTE (CTA) */
-        .cta-bridge { 
-            margin-top: 32px; 
-            background: var(--badge-bg); 
-            border: 1px solid rgba(0, 117, 222, 0.2); 
-            padding: 24px; 
-            border-radius: var(--radius-card); 
-            text-align: center; 
-        }
-        .cta-bridge h3 { margin: 0 0 12px 0; font-size: 18px; color: var(--text-main); font-weight: 700;}
+        /* TIMELINE (Extensão clone) */
+        .audit-flow { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-start; margin-top: 16px; padding: 12px; background: var(--card-inner); border-radius: var(--radius-md); border: 1px solid var(--border-light);}
+        .audit-day { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 44px; height: 52px; border-radius: 4px; font-size: 11px; background: var(--card-bg); border: 1px solid var(--border-light); position: relative; cursor: help;}
+        .audit-day.is-pulo { opacity: 0.6; color: var(--zen-red); }
+        .audit-day.is-fatal { background: var(--zen-orange-bg); border-color: transparent; color: var(--zen-orange); }
+        .day-icon { font-size: 14px; margin-bottom: 2px;}
+        .day-num { font-size: 13px; font-weight: 700; }
+        
+        /* Tooltip Nativo */
+        [data-tooltip]::before { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); padding: 4px 8px; background: var(--text-main); color: var(--card-bg); font-size: 11px; border-radius: 4px; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.2s; z-index: 10;}
+        [data-tooltip]:hover::before { opacity: 1; bottom: calc(100% + 4px); }
+
+        /* PONTE DE CONVERSÃO */
+        .cta-bridge { margin-top: 32px; background: #eef4f9; border: 1px solid rgba(0, 86, 163, 0.2); padding: 24px; border-radius: var(--radius-card); text-align: center; }
+        [data-theme="dark"] .cta-bridge { background: rgba(82, 168, 255, 0.1); border-color: rgba(82, 168, 255, 0.2); }
+        .cta-bridge h3 { margin: 0 0 12px 0; font-size: 16px; color: var(--text-main); font-weight: 700;}
         .cta-bridge p { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;}
-        .btn-bridge { 
-            display: inline-flex; 
-            background: var(--primary); 
-            color: var(--primary-text); 
-            text-decoration: none; 
-            padding: 10px 20px; 
-            border-radius: var(--radius-btn); 
-            font-weight: 600; 
-            font-size: 14px; 
-            transition: background-color 0.2s;
-        }
+        .btn-bridge { display: inline-flex; background: var(--primary); color: #fff; text-decoration: none; padding: 10px 20px; border-radius: var(--radius-btn); font-weight: 600; font-size: 14px; transition: 0.2s;}
         .btn-bridge:hover { background: var(--primary-hover); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        @media (max-width: 768px) {
-            .calc-header h1 { font-size: 28px; }
-            .calc-card { padding: 24px; }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="brand">
-            <img src="djen-128.png" alt="Logo Buscador DJEN">
-            Buscador DJEN
-        </a>
+        <a href="index.html" class="brand"><img src="djen-128.png" alt="Logo"> Buscador DJEN</a>
         <a href="index.html" class="back-link">Voltar ao Início</a>
     </header>
 
     <main class="calc-wrapper">
-        <div class="calc-header">
-            <h1>Calculadora de Prazos</h1>
-            <p>Simule prazos processuais em dias úteis (Art. 219 do CPC).</p>
+        <div style="text-align: center; margin-bottom: 32px;">
+            <h1 style="font-size: 28px; margin: 0 0 8px 0; letter-spacing: -1px;">Auditoria de Prazos</h1>
+            <p style="color: var(--text-muted); margin: 0; font-size: 15px;">Simulador inteligente com regras do Art. 224 do CPC.</p>
         </div>
 
-        <div class="calc-card">
-            <div class="form-group">
-                <label for="data-pub">Data da Publicação / Intimação</label>
-                <input type="date" id="data-pub" class="form-control">
+        <div class="calculadora-prazo">
+            <div class="calc-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line></svg>
+                Configuração do Prazo
             </div>
-
-            <div class="form-group">
-                <label for="prazo-dias">Prazo (em dias)</label>
-                <input type="number" id="prazo-dias" class="form-control" placeholder="Ex: 15" min="1">
-            </div>
-
-            <button class="btn-calc" onclick="calcularPrazo()">Calcular Data Final</button>
-
-            <div class="alert-box">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                    <line x1="12" y1="9" x2="12" y2="13"></line>
-                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                </svg>
-                <div>
-                    <strong>Aviso importante:</strong> Por ser uma versão web simplificada, esta calculadora desconsidera apenas sábados e domingos. <strong>Feriados municipais, estaduais e suspensões forenses não são computados</strong> automaticamente.
+            
+            <div id="calc-inputs">
+                <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                    <div class="input-group" style="flex: 0 0 80px;"><label>UF</label><select id="cUf"><option value="SP" selected>SP</option><option value="RJ">RJ</option><option value="MG">MG</option><option value="PR">PR</option><option value="RS">RS</option><option value="SC">SC</option></select></div>
+                    <div class="input-group" style="flex: 1;"><label>Município (IBGE)</label><input type="text" id="cMun" placeholder="Digite para buscar..." autocomplete="off"></div>
                 </div>
+
+                <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                    <div class="input-group" style="flex: 1;"><label>Matéria da Contagem</label><select id="cMat"><option value="cpc">Cível (Dias Úteis)</option><option value="cpp">Criminal (Corridos)</option></select></div>
+                    <div class="input-group" style="flex: 0 0 80px;"><label>Dias</label><input type="number" id="cDias" min="1" value="15" style="text-align:center;"></div>
+                </div>
+
+                <div class="input-group" style="margin-bottom: 8px;">
+                    <label>Data da Disponibilização no Diário</label>
+                    <input type="date" id="cData">
+                </div>
+
+                <button class="btn-main" id="btn-exec">Calcular Prazo Fatal</button>
             </div>
 
-            <div id="resultado-box">
-                <span style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Prazo Final</span>
-                <div id="data-final">--</div>
-                <span style="font-size: 13px; color: var(--text-muted);">*Cálculo em dias úteis a partir do primeiro dia útil subsequente.</span>
+            <div class="calc-result-box" id="calc-result">
+                <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Prazo Fatal</div>
+                <div class="resultado-data-fatal" id="lblDataFatal">--/--/----</div>
+                <div id="containerAlertas" style="display:flex; gap:6px; justify-content:center; margin-bottom: 16px;"></div>
+                
+                <div style="text-align: left; font-size: 12px; font-weight: 600; color: var(--text-main); margin-bottom: 8px;">Auditoria da Linha do Tempo:</div>
+                <div class="calc-preview audit-flow" id="previewContainer"></div>
+                
+                <button class="btn-pill" id="btn-voltar-calc">Nova Simulação</button>
             </div>
+        </div>
+
+        <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted); text-align: center; line-height: 1.5;">
+            *Esta versão web calcula Feriados Nacionais fixos, móveis e o Recesso Forense (20/dez a 20/jan). Feriados municipais específicos ou suspensões de expediente exclusivas de tribunais não são computados nesta versão lite.
         </div>
 
         <div class="cta-bridge">
-            <h3>Calculando prazos na mão?</h3>
-            <p>A extensão do Buscador DJEN extrai os dados, cruza com os feriados forenses e audita o prazo processual automaticamente direto no painel do eproc e do PJe.</p>
+            <h3>Calculando prazos manualmente?</h3>
+            <p>O <b>Buscador DJEN</b> faz essa contagem visual automaticamente dentro do eproc e do PJe, cruzando os dados da intimação com os feriados locais do seu tribunal.</p>
             <a href="index.html" class="btn-bridge">Conheça a Automação Gratuita</a>
         </div>
     </main>
 
     <script>
-        // Lógica de Dias Úteis (CPC - Pula Sábados e Domingos)
-        function calcularPrazo() {
-            const dataInput = document.getElementById('data-pub').value;
-            let dias = parseInt(document.getElementById('prazo-dias').value);
+        // CONFIGURAÇÕES INICIAIS
+        document.getElementById('cData').value = new Date().toISOString().split('T')[0];
+        
+        // RECUPERA TEMA PARA MATCH COM SITE
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
 
-            if (!dataInput || isNaN(dias) || dias <= 0) {
-                alert("Por favor, insira uma data válida e a quantidade de dias.");
+        // --- LÓGICA DE DADOS (Extraída da Extensão) ---
+        let feriadosExtras = {}; 
+        const cacheMunicipios = {};
+
+        // 1. Carrega Feriados Nacionais Móveis/Fixos da API open source
+        async function atualizarFeriadosNacionais() { 
+            try { 
+                const r = await fetch("https://raw.githubusercontent.com/alexandrehtrb/FeriadosDoBrasil/main/feriados.json"); 
+                const dadosBrutos = await r.json(); 
+                const dicionarioRapido = {}; 
+                dadosBrutos.forEach(feriado => { 
+                    const data = feriado.data; 
+                    if (!feriado.uf && !feriado.municipio) {
+                        if (!dicionarioRapido["BR"]) dicionarioRapido["BR"] = []; 
+                        dicionarioRapido["BR"].push(data); 
+                    }
+                }); 
+                feriadosExtras = dicionarioRapido; 
+            } catch(e) { console.log("Usando cálculo matemático de Páscoa sem API externa."); } 
+        }
+        atualizarFeriadosNacionais();
+
+        // 2. Carrega Cidades do IBGE para autocomplete
+        async function carregarMunicipios(uf) { 
+            const datalistId = 'dl_municipios';
+            if (!document.getElementById(datalistId)) { 
+                const dl = document.createElement('datalist'); 
+                dl.id = datalistId; document.body.appendChild(dl); 
+            } 
+            const datalist = document.getElementById(datalistId); 
+            document.getElementById('cMun').setAttribute('list', datalistId);
+
+            if (!cacheMunicipios[uf]) { 
+                try { 
+                    const r = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`); 
+                    const dados = await r.json(); 
+                    cacheMunicipios[uf] = dados.map(m => m.nome); 
+                    datalist.innerHTML = ""; 
+                    cacheMunicipios[uf].forEach(nome => { 
+                        const opt = document.createElement('option'); opt.value = nome; datalist.appendChild(opt); 
+                    }); 
+                } catch (e) {} 
+            } else {
+                datalist.innerHTML = "";
+                cacheMunicipios[uf].forEach(nome => { 
+                    const opt = document.createElement('option'); opt.value = nome; datalist.appendChild(opt); 
+                }); 
+            } 
+        }
+        document.getElementById('cUf').addEventListener('change', (e) => {
+            document.getElementById('cMun').value = "";
+            carregarMunicipios(e.target.value);
+        });
+        carregarMunicipios("SP");
+
+        // --- MOTOR JURÍDICO: O CÁLCULO DE DIAS ---
+
+        function isRecessoForense(dataObj) { 
+            const m = dataObj.getMonth(); const d = dataObj.getDate(); 
+            return (m === 11 && d >= 20) || (m === 0 && d <= 20); 
+        }
+
+        function checarMotivoFeriado(dStr, dataObj) {
+            const ds = dataObj.getDay(); 
+            if (ds === 0 || ds === 6) return "Fim de Semana"; 
+            if (isRecessoForense(dataObj)) return "Recesso Forense"; 
+            
+            // Lógica Matemática de Feriados (Páscoa, Corpus Christi, Carnaval)
+            const ano = dataObj.getFullYear(); const format = (data) => data.toISOString().split('T')[0]; const addDias = (data, dias) => { const nd = new Date(data); nd.setDate(nd.getDate() + dias); return nd; }; 
+            const a = ano % 19, b = Math.floor(ano / 100), c = ano % 100; const d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25); const g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30; const i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7; const m = Math.floor((a + 11 * h + 22 * l) / 451); const mes = Math.floor((h + l - 7 * m + 114) / 31); const dia = ((h + l - 7 * m + 114) % 31) + 1; const pascoa = new Date(ano, mes - 1, dia, 12, 0, 0); 
+            
+            const nacionaisFixos = [`${ano}-01-01`, `${ano}-04-21`, `${ano}-05-01`, `${ano}-09-07`, `${ano}-10-12`, `${ano}-11-02`, `${ano}-11-15`, `${ano}-11-20`, `${ano}-12-25`]; 
+            const moveis = [format(addDias(pascoa, -47)), format(addDias(pascoa, -46)), format(addDias(pascoa, -3)), format(addDias(pascoa, -2)), format(addDias(pascoa, 60))];
+            
+            if (nacionaisFixos.includes(dStr) || moveis.includes(dStr) || (feriadosExtras["BR"] && feriadosExtras["BR"].includes(dStr))) return "Feriado Nacional"; 
+            if ([`${ano}-08-11`, `${ano}-11-01`, `${ano}-12-08`].includes(dStr)) return "Feriado Forense Genérico"; 
+            return "Dia Útil"; 
+        }
+
+        function gerarMatrizContagem(dataDispStr, diasPrazo, tipoContagem) {
+            const dataObj = new Date(dataDispStr + 'T12:00:00'); let timeline = []; let data = new Date(dataDispStr + 'T12:00:00'); let qtdFeriados = 0; let prorrogado = false;
+            const getDStr = (dObj) => `${dObj.getFullYear()}-${String(dObj.getMonth() + 1).padStart(2, '0')}-${String(dObj.getDate()).padStart(2, '0')}`;
+            
+            function isDiaUtil(dObj) { 
+                const ds = dObj.getDay(); if (ds === 0 || ds === 6) return false; 
+                if (isRecessoForense(dObj) && tipoContagem === 'cpc') return false; 
+                return checarMotivoFeriado(getDStr(dObj), dObj) === "Dia Útil"; 
+            }
+
+            // 1. Salto: Disponibilização
+            timeline.push({ data: new Date(data.getTime()).toISOString(), desc: "Disponibilizado no Diário", tipo: "info", numero: "Disp." });
+            
+            // 2. Salto: Publicação Efetiva (1º dia útil seguinte)
+            data.setDate(data.getDate() + 1); 
+            while (!isDiaUtil(data)) { 
+                timeline.push({ data: new Date(data.getTime()).toISOString(), desc: checarMotivoFeriado(getDStr(data), data), tipo: "pulo", numero: "-" }); 
+                qtdFeriados++; data.setDate(data.getDate() + 1); 
+            } 
+            timeline.push({ data: new Date(data.getTime()).toISOString(), desc: "Publicação Efetiva", tipo: "info", numero: "Pub." });
+            
+            // 3. Salto: Início do Prazo (1º dia útil após publicação)
+            data.setDate(data.getDate() + 1); 
+            while (!isDiaUtil(data)) { 
+                timeline.push({ data: new Date(data.getTime()).toISOString(), desc: checarMotivoFeriado(getDStr(data), data), tipo: "pulo", numero: "-" }); 
+                qtdFeriados++; data.setDate(data.getDate() + 1); 
+            }
+            
+            let diasContados = 1; let cursor = new Date(data.getTime());
+            timeline.push({ data: new Date(cursor.getTime()).toISOString(), desc: "Início da Contagem", tipo: diasContados === diasPrazo ? "fatal" : "util", numero: `Dia ${String(diasContados).padStart(2,'0')}` });
+            
+            // Contagem do miolo do prazo
+            while (diasContados < diasPrazo) { 
+                cursor.setDate(cursor.getDate() + 1); 
+                let ehUtil = tipoContagem === 'cpp' ? true : isDiaUtil(cursor); 
+                
+                if (ehUtil) { 
+                    diasContados++; 
+                    timeline.push({ data: new Date(cursor.getTime()).toISOString(), desc: "Dia da Contagem", tipo: diasContados === diasPrazo ? "fatal" : "util", numero: `Dia ${String(diasContados).padStart(2,'0')}` }); 
+                } else { 
+                    timeline.push({ data: new Date(cursor.getTime()).toISOString(), desc: checarMotivoFeriado(getDStr(cursor), cursor), tipo: "pulo", numero: "-" }); 
+                    if(tipoContagem !== 'cpp') qtdFeriados++; 
+                } 
+            }
+
+            // Regra de Prorrogação (se o prazo fatal cair em dia não útil)
+            while (!isDiaUtil(cursor)) { 
+                let lastEntry = timeline[timeline.length - 1]; 
+                if (lastEntry && lastEntry.tipo === "fatal") { lastEntry.tipo = "pulo"; lastEntry.desc = "FDS/Feriado (Prorrogado)"; } 
+                else { timeline.push({ data: new Date(cursor.getTime()).toISOString(), desc: checarMotivoFeriado(getDStr(cursor), cursor) + " (Prorrogação)", tipo: "pulo", numero: "-" }); } 
+                
+                prorrogado = true; qtdFeriados++; cursor.setDate(cursor.getDate() + 1); 
+                
+                if (isDiaUtil(cursor)) { timeline.push({ data: new Date(cursor.getTime()).toISOString(), desc: "Prazo Fatal Prorrogado", tipo: "fatal", numero: `Dia ${String(diasPrazo).padStart(2,'0')}` }); } 
+            }
+            
+            return { fatal: cursor.toLocaleDateString('pt-BR'), timeline: timeline, feriados: qtdFeriados, prorrogado: prorrogado };
+        }
+
+        // --- RENDERIZAÇÃO DA TELA ---
+        document.getElementById('btn-exec').addEventListener('click', () => {
+            const dataDisp = document.getElementById('cData').value;
+            const dias = parseInt(document.getElementById('cDias').value);
+            const materia = document.getElementById('cMat').value;
+
+            if (!dataDisp || isNaN(dias) || dias < 1) {
+                alert("Preencha a data e a quantidade de dias validamente.");
                 return;
             }
 
-            // Define a data ao meio-dia para evitar bug de fuso horário
-            let dataAtual = new Date(dataInput + 'T12:00:00'); 
-            
-            // O prazo só começa a contar no primeiro dia ÚTIL seguinte.
-            // O while abaixo faz a contagem adicionando dias e subtraindo do contador
-            // apenas quando o dia cair de segunda a sexta.
-            
-            while (dias > 0) {
-                dataAtual.setDate(dataAtual.getDate() + 1);
+            // Executa o motor
+            const lastResult = gerarMatrizContagem(dataDisp, dias, materia);
+
+            // Preenche UI - Data
+            document.getElementById('lblDataFatal').textContent = lastResult.fatal;
+
+            // Preenche UI - Alertas (Badges idênticas da extensão)
+            const boxAlertas = document.getElementById('containerAlertas');
+            boxAlertas.innerHTML = "";
+            if(lastResult.feriados > 0) { 
+                boxAlertas.innerHTML += `<span style="background: rgba(168, 69, 0, 0.1); color: var(--zen-orange); padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800;">⚠️ ${lastResult.feriados} DIAS DESVIADOS</span>`; 
+            } 
+            if(lastResult.prorrogado) { 
+                boxAlertas.innerHTML += `<span style="background: rgba(163, 44, 40, 0.1); color: var(--zen-red); padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800;">🚨 PRORROGADO P/ DIA ÚTIL</span>`; 
+            } 
+
+            // Preenche UI - Auditoria Visual
+            const containerAuditoria = document.getElementById('previewContainer');
+            containerAuditoria.innerHTML = ""; 
+            lastResult.timeline.forEach(t => { 
+                const dia = document.createElement('div'); 
+                dia.className = `audit-day is-${t.tipo}`; 
                 
-                // Pula Sábado (6) e Domingo (0)
-                if (dataAtual.getDay() !== 0 && dataAtual.getDay() !== 6) {
-                    dias--;
-                }
-            }
+                let icone = "🗓️"; 
+                if (t.desc.includes("Nacional")) icone = "🇧🇷"; 
+                else if (t.desc.includes("Forense") || t.desc.includes("Recesso")) icone = "🏛️"; 
+                else if (t.tipo === "fatal") icone = "🚨"; 
+                else if (t.numero === "Disp.") icone = "📥"; 
+                else if (t.numero === "Pub.") icone = "📄"; 
+                
+                const dataCurta = t.data.split('T')[0].split('-').reverse().slice(0,2).join('/'); 
+                dia.innerHTML = `<span class="day-icon">${icone}</span><span class="day-num">${t.numero.replace('Dia ', '')}</span><span style="font-size:9px; opacity:0.6;">${dataCurta}</span>`; 
+                dia.setAttribute('data-tooltip', t.desc); 
+                containerAuditoria.appendChild(dia); 
+            });
 
-            // Formatar para o padrão brasileiro (DD/MM/AAAA)
-            const diaFinal = String(dataAtual.getDate()).padStart(2, '0');
-            const mesFinal = String(dataAtual.getMonth() + 1).padStart(2, '0');
-            const anoFinal = dataAtual.getFullYear();
+            // Swap das Divs
+            document.getElementById('calc-inputs').style.display = 'none';
+            document.getElementById('calc-result').style.display = 'block';
+        });
 
-            // Mostra o resultado na tela
-            document.getElementById('data-final').innerText = `${diaFinal}/${mesFinal}/${anoFinal}`;
-            document.getElementById('resultado-box').style.display = 'block';
-        }
-
-        // Puxa o tema do localStorage para manter a consistência com a index principal
-        const savedTheme = localStorage.getItem('theme');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
+        document.getElementById('btn-voltar-calc').addEventListener('click', () => {
+            document.getElementById('calc-result').style.display = 'none';
+            document.getElementById('calc-inputs').style.display = 'block';
+        });
     </script>
-
 </body>
 </html>
