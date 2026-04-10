@@ -24,78 +24,81 @@
     <style>
         /* DESIGN SYSTEM - NOTION INSPIRATION */
         :root {
-            /* Cores e Fundos */
             --bg-page: #ffffff;
-            --bg-section: #f6f5f4; /* Warm White */
+            --bg-section: #f6f5f4; 
             --card-bg: #ffffff;
-            
-            /* Textos */
-            --text-main: rgba(0, 0, 0, 0.95); /* Notion Black */
-            --text-muted: #615d59; /* Warm Gray 500 */
-            --text-placeholder: #a39e98; /* Warm Gray 300 */
-            
-            /* Acentos */
-            --primary: #0075de; /* Notion Blue */
-            --primary-hover: #005bab; /* Active Blue */
+            --text-main: rgba(0, 0, 0, 0.95); 
+            --text-muted: #615d59; 
+            --text-placeholder: #a39e98;
+            --primary: #0075de; 
+            --primary-hover: #005bab; 
             --primary-text: #ffffff;
-            
-            /* Semânticas e Badges */
             --badge-bg: #f2f9ff;
             --badge-text: #097fe8;
-            --border-light: rgba(0, 0, 0, 0.1); /* Whisper Border */
-            
-            /* Decorativas */
+            --border-light: rgba(0, 0, 0, 0.1); 
             --zen-orange: #dd5b00;
             --zen-green: #1aae39;
             --zen-purple: #391c57;
             --zen-red: #d93025;
             --zen-blue: #0075de;
             --zen-gold: #f5a623;
-            
-            /* Radios */
-            --radius-btn: 4px; /* Micro */
-            --radius-card: 12px; /* Comfortable */
-            --radius-pill: 9999px; /* Full Pill */
-            
-            /* Sombras (Multicamadas) */
-            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.84688px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04062px;
+            --radius-btn: 4px; 
+            --radius-card: 12px; 
+            --radius-pill: 9999px; 
+            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.8468px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04px;
             --shadow-hover: rgba(0,0,0,0.06) 0px 8px 24px, rgba(0,0,0,0.04) 0px 4px 12px;
             --shadow-modal: rgba(0,0,0,0.01) 0px 1px 3px, rgba(0,0,0,0.02) 0px 3px 7px, rgba(0,0,0,0.02) 0px 7px 15px, rgba(0,0,0,0.04) 0px 14px 28px, rgba(0,0,0,0.05) 0px 23px 52px;
         }
 
-        /* Mantendo Dark Mode adaptado para a suavidade do Notion */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-page: #191919;
-                --bg-section: #202020;
-                --card-bg: #252525;
-                --text-main: rgba(255, 255, 255, 0.95);
-                --text-muted: rgba(255, 255, 255, 0.6);
-                --text-placeholder: rgba(255, 255, 255, 0.3);
-                --primary: #52a8ff;
-                --primary-hover: #62aef0;
-                --primary-text: #191919;
-                --badge-bg: rgba(82, 168, 255, 0.15);
-                --badge-text: #52a8ff;
-                --border-light: rgba(255, 255, 255, 0.1);
-                --zen-orange: #ffa344;
-                --zen-green: #4dabb6;
-                --zen-purple: #b992e6;
-                --zen-red: #ff7369;
-                --zen-gold: #ffd04f;
-                --shadow-card: rgba(0,0,0,0.5) 0px 4px 18px;
-                --shadow-hover: rgba(0,0,0,0.6) 0px 8px 24px;
-                --shadow-modal: rgba(0,0,0,0.8) 0px 23px 52px;
-            }
+        /* DARK THEME VARIABLES */
+        [data-theme="dark"] {
+            --bg-page: #191919;
+            --bg-section: #202020;
+            --card-bg: #252525;
+            --text-main: rgba(255, 255, 255, 0.95);
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --text-placeholder: rgba(255, 255, 255, 0.3);
+            --primary: #52a8ff;
+            --primary-hover: #62aef0;
+            --primary-text: #191919;
+            --badge-bg: rgba(82, 168, 255, 0.15);
+            --badge-text: #52a8ff;
+            --border-light: rgba(255, 255, 255, 0.1);
+            --zen-orange: #ffa344;
+            --zen-green: #4dabb6;
+            --zen-purple: #b992e6;
+            --zen-red: #ff7369;
+            --zen-gold: #ffd04f;
+            --shadow-card: rgba(0,0,0,0.5) 0px 4px 18px;
+            --shadow-hover: rgba(0,0,0,0.6) 0px 8px 24px;
+            --shadow-modal: rgba(0,0,0,0.8) 0px 23px 52px;
         }
 
-        /* TIPOGRAFIA E BASE */
-        body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; font-feature-settings: "lnum" 1, "locl" 1; }
+        /* SCROLLBAR CUSTOMIZADA MINIMALISTA */
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-page); }
+        ::-webkit-scrollbar-thumb { background: rgba(163, 158, 152, 0.3); border-radius: 10px; border: 2px solid var(--bg-page); }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(163, 158, 152, 0.6); }
 
-        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-page); position: sticky; top: 0; z-index: 100; }
+        /* BARRA DE PROGRESSO DE LEITURA */
+        .progress-container { width: 100%; height: 2px; background: transparent; position: fixed; top: 0; left: 0; z-index: 1000; }
+        .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.1s ease-out; }
+
+        /* TIPOGRAFIA E BASE */
+        body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; font-feature-settings: "lnum" 1, "locl" 1; transition: background-color 0.3s, color 0.3s; }
+
+        /* HEADER E TOGGLE DE TEMA */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-page); position: sticky; top: 0; z-index: 100; transition: background-color 0.3s, border-color 0.3s; }
         .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; letter-spacing: -0.25px; }
         .brand img { width: 32px; height: 32px; border-radius: var(--radius-btn); }
         .badge-cortesia-site { font-size: 12px; background: var(--badge-bg); color: var(--badge-text); padding: 4px 8px; border-radius: var(--radius-pill); font-weight: 600; letter-spacing: 0.125px; }
+        
+        .header-actions { display: flex; align-items: center; gap: 16px; }
+        .theme-toggle { background: transparent; border: 1px solid var(--border-light); color: var(--text-muted); width: 32px; height: 32px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; }
+        .theme-toggle:hover { background: var(--bg-section); color: var(--text-main); }
+        .theme-toggle svg { width: 16px; height: 16px; }
+        [data-theme="dark"] .sun-icon { display: none; }
+        [data-theme="light"] .moon-icon { display: none; }
 
         /* HERO */
         .hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 100px 20px 80px; max-width: 900px; margin: 0 auto; }
@@ -114,49 +117,49 @@
         .microcopy { color: var(--text-muted); font-size: 12px; font-weight: 400; }
 
         /* SIMULADOR */
-        .demo-section { display: flex; flex-direction: column; align-items: center; padding: 64px 20px 100px; background-color: var(--bg-section); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+        .demo-section { display: flex; flex-direction: column; align-items: center; padding: 64px 20px 100px; background-color: var(--bg-section); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); transition: background-color 0.3s; }
         .demo-badge { background: var(--badge-bg); color: var(--badge-text); padding: 4px 8px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; margin-bottom: 24px; letter-spacing: 0.125px; text-transform: uppercase;}
         .iframe-wrapper { position: relative; width: 100%; max-width: 400px; height: 600px; display: flex; justify-content: center; align-items: center; }
-        .iframe-wrapper iframe { width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: var(--radius-card); box-shadow: var(--shadow-modal); background: var(--bg-page);}
+        .iframe-wrapper iframe { width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: var(--radius-card); box-shadow: var(--shadow-modal); background: var(--bg-page); transition: box-shadow 0.3s; }
 
         /* FUNCIONALIDADES */
-        .features-container { padding: 120px 5% 80px; background: var(--bg-page); }
+        .features-container { padding: 120px 5% 80px; background: var(--bg-page); transition: background-color 0.3s; }
         .features-header { text-align: center; margin-bottom: 80px; }
         .features-header h2 { font-size: 48px; font-weight: 700; margin-bottom: 16px; line-height: 1.00; letter-spacing: -1.5px;}
 
         .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; max-width: 1200px; margin: 0 auto; }
-        .feature-card { background: var(--card-bg); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); transition: box-shadow 0.2s ease, transform 0.2s ease; display: flex; flex-direction: column; }
+        .feature-card { background: var(--card-bg); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.3s; display: flex; flex-direction: column; }
         .feature-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
         .feature-icon { font-size: 24px; margin-bottom: 24px; width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; border-radius: var(--radius-btn); }
         .feature-card h3 { margin: 0 0 12px 0; font-size: 22px; font-weight: 700; letter-spacing: -0.25px; line-height: 1.27;}
-        .feature-card p { color: var(--text-muted); margin: 0; font-size: 16px; font-weight: 400; line-height: 1.5; }
+        .feature-card p { color: var(--text-muted); margin: 0; font-size: 16px; font-weight: 400; line-height: 1.5; transition: color 0.3s; }
 
         /* CARROSSEL */
-        .gallery-section { padding: 0 0 120px 0; background: var(--bg-page); width: 100%; overflow: hidden; }
+        .gallery-section { padding: 0 0 120px 0; background: var(--bg-page); width: 100%; overflow: hidden; transition: background-color 0.3s; }
         .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 24px; padding: 20px 5%; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
-        .carousel::-webkit-scrollbar { display: none; }
         .carousel { -ms-overflow-style: none; scrollbar-width: none; }
-        .carousel-item { scroll-snap-align: center; flex: 0 0 auto; width: 85%; max-width: 350px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); background: var(--card-bg); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .carousel::-webkit-scrollbar { display: none; }
+        .carousel-item { scroll-snap-align: center; flex: 0 0 auto; width: 85%; max-width: 350px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); background: var(--card-bg); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s; }
         .carousel-item:hover { transform: scale(1.02); box-shadow: var(--shadow-hover); }
         .carousel-item img { width: 100%; height: auto; display: block; cursor: zoom-in; }
-        .carousel-caption { padding: 12px; font-size: 14px; text-align: center; color: var(--text-muted); font-weight: 500; border-top: 1px solid var(--border-light); background: var(--bg-section);}
+        .carousel-caption { padding: 12px; font-size: 14px; text-align: center; color: var(--text-muted); font-weight: 500; border-top: 1px solid var(--border-light); background: var(--bg-section); transition: background-color 0.3s, color 0.3s;}
 
         /* AUTORIDADE & CTA FINAL */
-        .info-container { background: var(--bg-section); padding: 80px 20px; border-top: 1px solid var(--border-light); }
+        .info-container { background: var(--bg-section); padding: 80px 20px; border-top: 1px solid var(--border-light); transition: background-color 0.3s; }
         .authority-box { max-width: 800px; margin: 0 auto; text-align: center; }
         .authority-box h3 { font-size: 26px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.625px; line-height: 1.23;}
-        .authority-box p { color: var(--text-muted); font-size: 16px; line-height: 1.5; margin-bottom: 0;}
+        .authority-box p { color: var(--text-muted); font-size: 16px; line-height: 1.5; margin-bottom: 0; transition: color 0.3s;}
 
-        .bottom-cta { text-align: center; padding: 100px 20px; background: var(--bg-page); border-top: 1px solid var(--border-light);}
+        .bottom-cta { text-align: center; padding: 100px 20px; background: var(--bg-page); border-top: 1px solid var(--border-light); transition: background-color 0.3s;}
         .bottom-cta h2 { font-size: 40px; font-weight: 700; margin-bottom: 16px; line-height: 1.5;}
-        .bottom-cta p { color: var(--text-muted); font-size: 16px; font-weight: 500; margin-bottom: 32px;}
+        .bottom-cta p { color: var(--text-muted); font-size: 16px; font-weight: 500; margin-bottom: 32px; transition: color 0.3s;}
 
         /* FOOTER & CAFÉ */
-        footer { padding: 64px 20px; border-top: 1px solid var(--border-light); background: var(--bg-page); display: flex; flex-direction: column; align-items: center; }
+        footer { padding: 64px 20px; border-top: 1px solid var(--border-light); background: var(--bg-page); display: flex; flex-direction: column; align-items: center; transition: background-color 0.3s; }
         .footer-content { max-width: 500px; width: 100%; display: flex; flex-direction: column; gap: 24px; }
         
-        .coffee-container { border: 1px solid var(--border-light); border-radius: var(--radius-card); background: var(--card-bg); overflow: hidden; }
-        .coffee-btn { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; color: var(--text-main); font-size: 15px; font-weight: 600; background: transparent; border: none; width: 100%; cursor: pointer; transition: background 0.2s ease; }
+        .coffee-container { border: 1px solid var(--border-light); border-radius: var(--radius-card); background: var(--card-bg); overflow: hidden; transition: background-color 0.3s; }
+        .coffee-btn { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; color: var(--text-main); font-size: 15px; font-weight: 600; background: transparent; border: none; width: 100%; cursor: pointer; transition: background 0.2s ease, color 0.3s; }
         .coffee-btn:hover { background: var(--bg-section); }
         .coffee-btn svg.chevron { transition: transform 0.3s ease; }
         .coffee-btn.active svg.chevron { transform: rotate(180deg); }
@@ -164,7 +167,7 @@
         .coffee-content.show { display: block; }
         .coffee-content img { width: 160px; height: 160px; margin: 16px auto; border-radius: 8px; display: block; border: 1px solid var(--border-light); }
         .pix-code-container { display: flex; gap: 8px; }
-        .pix-code-container input { flex: 1; padding: 8px; background: var(--bg-section); border: 1px solid var(--border-light); color: var(--text-muted); border-radius: var(--radius-btn); font-size: 14px; outline: none; }
+        .pix-code-container input { flex: 1; padding: 8px; background: var(--bg-section); border: 1px solid var(--border-light); color: var(--text-muted); border-radius: var(--radius-btn); font-size: 14px; outline: none; transition: background-color 0.3s, color 0.3s; }
         .pix-code-container button { background: var(--bg-section); color: var(--text-main); border: 1px solid var(--border-light); padding: 0 16px; border-radius: var(--radius-btn); font-weight: 600; cursor: pointer; transition: 0.2s; }
         .pix-code-container button:hover { background: var(--border-light); }
         
@@ -177,17 +180,74 @@
         .fade-in-section.is-visible { opacity: 1; transform: none; }
 
         /* Mobile Sticky CTA */
-        .mobile-sticky-cta { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-page); border-top: 1px solid var(--border-light); padding: 16px 20px; z-index: 100; box-shadow: 0 -4px 12px rgba(0,0,0,0.05); text-align: center; box-sizing: border-box; }
+        .mobile-sticky-cta { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-page); border-top: 1px solid var(--border-light); padding: 16px 20px; z-index: 100; box-shadow: 0 -4px 12px rgba(0,0,0,0.05); text-align: center; box-sizing: border-box; transition: background-color 0.3s; }
         
         @media (max-width: 768px) { 
             .hero h1 { font-size: 40px; letter-spacing: -1.5px;} 
             .features-header h2 { font-size: 32px;}
             .mobile-sticky-cta { display: block; }
-            body { padding-bottom: 80px; } /* Espaço para o menu fixo */
+            body { padding-bottom: 80px; } 
         }
     </style>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "A extensão tem acesso aos meus processos em segredo de justiça?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. A extensão funciona 100% no seu navegador e não envia nenhuma informação dos seus processos para servidores externos. Todos os seus prazos, anotações e buscas ficam salvos exclusivamente no armazenamento local da sua máquina, garantindo total privacidade e sigilo profissional."
+        }
+      }, {
+        "@type": "Question",
+        "name": "A contagem de prazos considera feriados locais?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A calculadora de prazos é equipada com os feriados nacionais e recessos forenses federais/estaduais mapeados. Contudo, devido às variações municipais, a ferramenta permite que você audite a linha do tempo e adicione ou remova manualmente dias não úteis (como feriados da sua cidade) com apenas um clique antes de salvar o prazo."
+        }
+      }, {
+        "@type": "Question",
+        "name": "A ferramenta é realmente gratuita?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim. Atualmente, todas as funções Premium (incluindo o Radar, Modo Foco e exportação) estão liberadas de forma gratuita por tempo limitado como cortesia. A extensão é mantida de forma independente por meio de contribuições voluntárias."
+        }
+      }]
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Buscador DJEN",
+      "operatingSystem": "Chrome, Firefox, Edge",
+      "applicationCategory": "BrowserApplication",
+      "description": "Extensão para automatizar a triagem de publicações do Diário de Justiça Eletrônico Nacional (DJEN) e calcular prazos processuais para advogados.",
+      "url": "https://www.buscadordjen.com.br/",
+      "author": { "@type": "Person", "name": "Amilcar Moreira" },
+      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "BRL" }
+    }
+    </script>
+
+    <script>
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    </script>
 </head>
 <body>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
 
     <header>
         <div class="brand">
@@ -195,9 +255,16 @@
             Buscador DJEN
             <span class="badge-cortesia-site">BETA</span>
         </div>
-        <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 500; color: var(--text-muted); text-decoration: none;">
-            por Amilcar Moreira
-        </a>
+        
+        <div class="header-actions">
+            <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 500; color: var(--text-muted); text-decoration: none;">
+                por Amilcar Moreira
+            </a>
+            <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
+                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+        </div>
     </header>
 
     <section class="hero">
@@ -240,7 +307,7 @@
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--primary);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                 <h3>Busca Inteligente</h3>
-                <p>Apenas sua OAB e UF. Resultados instantâneos de qualquer tribunal PJe, com filtros aplicados em tempo real.</p>
+                <p>Apenas sua OAB e UF. Resultados instantâneos, sem captchas intermináveis ou lentidão do PJe.</p>
             </div>
 
             <div class="feature-card fade-in-section">
@@ -341,7 +408,24 @@
     </div>
 
     <script>
-        // 1. Café / Pix
+        // 1. Lógica do Dark Mode Manual
+        const themeToggleBtn = document.getElementById('themeToggle');
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // 2. Barra de Progresso de Leitura
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+        });
+
+        // 3. Café / Pix
         const btnToggleCoffee = document.getElementById('btnToggleCoffee');
         const contentCoffee = document.getElementById('contentCoffee');
         btnToggleCoffee.addEventListener('click', (e) => {
@@ -361,7 +445,7 @@
             });
         }
 
-        // 2. Animação de Entrada (Fade In)
+        // 4. Animação de Entrada (Fade In)
         document.addEventListener("DOMContentLoaded", function() {
             const observer = new IntersectionObserver((entries, obs) => {
                 entries.forEach(entry => {
@@ -373,7 +457,7 @@
             }, { threshold: 0.15 });
             document.querySelectorAll('.fade-in-section').forEach(sec => observer.observe(sec));
             
-            // 3. Detecção de Navegador UI/UX
+            // 5. Detecção de Navegador UI/UX
             const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
             const isChrome = !!window.chrome;
             
@@ -388,7 +472,7 @@
             }
         });
 
-        // 4. Carrossel e Modal
+        // 6. Carrossel e Modal
         const carousel = document.querySelector('.carousel');
         let autoPlayInterval;
         function startAutoPlay() {
