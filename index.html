@@ -125,7 +125,22 @@
         .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 24px; padding: 20px 5%; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
         .carousel::-webkit-scrollbar { display: none; }
         .carousel { -ms-overflow-style: none; scrollbar-width: none; }
-        .carousel-item { scroll-snap-align: center; flex: 0 0 auto; width: 85%; max-width: 350px; border-radius: 12px; border: 1px solid var(--border-light); box-shadow: var(--shadow-card); background: var(--card-bg); overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        
+        .carousel-item { 
+            scroll-snap-align: center; flex: 0 0 auto; width: 85%; max-width: 350px; 
+            border-radius: 12px; border: 1px solid var(--border-light); box-shadow: var(--shadow-card); 
+            background: var(--card-bg); overflow: hidden; display: flex; justify-content: center; 
+            align-items: center; 
+            /* Transição para o efeito Hover */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer;
+        }
+
+        /* Efeito Zoom ao passar o mouse */
+        .carousel-item:hover {
+            transform: scale(1.03);
+            box-shadow: var(--shadow-hover);
+        }
+
         .carousel-item img { width: 100%; height: auto; display: block; }
 
         /* AUTORIDADE, FAQ & BOTTOM CTA */
@@ -191,7 +206,7 @@
     <header>
         <div class="brand">
             <img src="djen-128.png" alt="Logo Buscador DJEN">
-            Buscador DJEN - Prazos e Intimações Judiciais
+            Buscador DJEN
             <span class="badge-cortesia-site">CORTESIA</span>
         </div>
         <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 500; color: var(--text-muted); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">
@@ -333,8 +348,8 @@
 
     <section class="info-container fade-in-section">
         <div class="authority-box">
-            <h3>Feito de colega para colega.</h3>
-            <p>Sou o Amilcar, advogado militante em Santos/SP, e desenvolvi o Buscador DJEN para resolver um problema real da nossa rotina: a perda de tempo e a insegurança na leitura manual de publicações. A ferramenta foi pensada exclusivamente com a cabeça de quem peticiona e cumpre prazos todos os dias na advocacia.</p>
+            <h3>Da prática diária para o seu navegador.</h3>
+            <p>Sou Amilcar Moreira, especialista em Direito Digital e Propriedade Intelectual, com certificação em <i>CopyrightX</i> pela Harvard Law School e membro das Comissões de Propriedade Intelectual e de Mídia, Entretenimento e Cultura da OAB/SP. Criei o Buscador DJEN porque, atuando no contencioso, estava exausto de perder horas produtivas na leitura de Diários de Justiça. Desenvolvi cada funcionalidade da ferramenta pensando na pressão real dos prazos fatais. É uma extensão 100% independente, feita de colega para colega, para garantir que você assuma o controle definitivo da sua pauta.</p>
         </div>
 
         <div class="faq-section">
@@ -413,6 +428,7 @@
     </footer>
 
     <script>
+        // Lógica do botão de café
         const btnToggleCoffee = document.getElementById('btnToggleCoffee');
         const contentCoffee = document.getElementById('contentCoffee');
 
@@ -423,6 +439,7 @@
             btnToggleCoffee.setAttribute('aria-expanded', isActive);
         });
 
+        // Copiar chave Pix
         function copyPixCode() {
             const pixInput = document.getElementById('pixKey');
             const btnCopy = document.getElementById('btnCopyPix');
@@ -446,6 +463,7 @@
             });
         }
 
+        // Animação de entrada (Fade In)
         document.addEventListener("DOMContentLoaded", function() {
             const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
             const observer = new IntersectionObserver((entries, observer) => {
@@ -461,6 +479,34 @@
                 observer.observe(section);
             });
         });
+
+        // Lógica do Carrossel Automático
+        const carousel = document.querySelector('.carousel');
+        let autoPlayInterval;
+
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(() => {
+                // Margem de erro de 10px para celular
+                if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 10) {
+                    carousel.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    // Rola o tamanho aproximado de um item (350px + gap)
+                    carousel.scrollBy({ left: 374, behavior: 'smooth' }); 
+                }
+            }, 3000);
+        }
+
+        function stopAutoPlay() {
+            clearInterval(autoPlayInterval);
+        }
+
+        startAutoPlay();
+
+        // Pausa a animação em interações
+        carousel.addEventListener('mouseenter', stopAutoPlay);
+        carousel.addEventListener('mouseleave', startAutoPlay);
+        carousel.addEventListener('touchstart', stopAutoPlay, {passive: true});
+        carousel.addEventListener('touchend', startAutoPlay);
     </script>
 </body>
 </html>
