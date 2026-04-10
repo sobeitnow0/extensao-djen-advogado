@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Calculadora de Prazos Processuais (Novo CPC) | Buscador DJEN</title>
+    <meta name="description" content="Calcule prazos processuais em dias úteis ou corridos gratuitamente. Ferramenta essencial para advogados e controladoria jurídica.">
+    <meta name="keywords" content="calculadora de prazos processuais, prazos novo cpc, contagem de prazos, dias úteis cpc, buscador djen, ferramenta advogado">
+    <meta name="author" content="Amilcar Moreira">
+    
+    <link rel="icon" type="image/png" href="djen-128.png">
+    <link rel="canonical" href="https://www.buscadordjen.com.br/calculadora.html">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* DESIGN SYSTEM - NOTION INSPIRATION (Reaproveitado da index) */
+        :root {
+            --bg-page: #ffffff;
+            --bg-section: #f6f5f4; 
+            --card-bg: #ffffff;
+            --text-main: rgba(0, 0, 0, 0.95); 
+            --text-muted: #615d59; 
+            --primary: #0075de; 
+            --primary-hover: #005bab; 
+            --primary-text: #ffffff;
+            --badge-bg: #f2f9ff;
+            --badge-text: #097fe8;
+            --border-light: rgba(0, 0, 0, 0.1); 
+            --zen-orange: #dd5b00;
+            --zen-green: #1aae39;
+            --radius-btn: 4px; 
+            --radius-card: 12px; 
+            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.8468px;
+        }
+
+        /* DARK THEME */
+        [data-theme="dark"] {
+            --bg-page: #191919;
+            --bg-section: #202020;
+            --card-bg: #252525;
+            --text-main: rgba(255, 255, 255, 0.95);
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --primary: #52a8ff;
+            --primary-hover: #62aef0;
+            --primary-text: #191919;
+            --badge-bg: rgba(82, 168, 255, 0.15);
+            --badge-text: #52a8ff;
+            --border-light: rgba(255, 255, 255, 0.1);
+            --zen-orange: #ffa344;
+            --shadow-card: rgba(0,0,0,0.5) 0px 4px 18px;
+        }
+
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-page); 
+            color: var(--text-main); 
+            -webkit-font-smoothing: antialiased; 
+            line-height: 1.5; 
+            transition: background-color 0.3s, color 0.3s; 
+        }
+
+        /* HEADER */
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 16px 5%; 
+            border-bottom: 1px solid var(--border-light); 
+            background: var(--bg-page); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+        }
+        .brand { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            font-size: 16px; 
+            font-weight: 600; 
+            color: var(--text-main); 
+            text-decoration: none;
+            letter-spacing: -0.25px; 
+        }
+        .brand img { width: 32px; height: 32px; border-radius: var(--radius-btn); }
+        .back-link {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--text-main); }
+
+        /* CALCULADORA WRAPPER */
+        .calc-wrapper { max-width: 600px; margin: 60px auto 100px; padding: 0 20px; }
+        .calc-header { text-align: center; margin-bottom: 40px; }
+        .calc-header h1 { font-size: 36px; font-weight: 700; margin-bottom: 16px; line-height: 1.1; letter-spacing: -1px;}
+        .calc-header p { color: var(--text-muted); font-size: 16px; margin: 0; }
+
+        .calc-card { 
+            background: var(--card-bg); 
+            padding: 32px; 
+            border-radius: var(--radius-card); 
+            border: 1px solid var(--border-light); 
+            box-shadow: var(--shadow-card); 
+        }
+        
+        .form-group { margin-bottom: 24px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
+        .form-control { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid var(--border-light); 
+            border-radius: var(--radius-btn); 
+            background: var(--bg-section); 
+            color: var(--text-main); 
+            font-size: 16px; 
+            font-family: inherit; 
+            box-sizing: border-box; 
+            outline: none; 
+            transition: border-color 0.2s;
+            color-scheme: light dark;
+        }
+        .form-control:focus { border-color: var(--primary); }
+        
+        .btn-calc { 
+            width: 100%; 
+            background: var(--primary); 
+            color: var(--primary-text); 
+            border: none; 
+            padding: 14px; 
+            font-size: 16px; 
+            font-weight: 600; 
+            border-radius: var(--radius-btn); 
+            cursor: pointer; 
+            transition: background-color 0.2s; 
+            margin-top: 8px; 
+            font-family: inherit;
+        }
+        .btn-calc:hover { background: var(--primary-hover); }
+
+        /* CAIXA DE ALERTA (DISCLAIMER) */
+        .alert-box {
+            background: rgba(221, 91, 0, 0.1); 
+            border: 1px solid rgba(221, 91, 0, 0.2);
+            color: var(--zen-orange);
+            padding: 16px;
+            border-radius: var(--radius-btn);
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            text-align: left;
+            margin-top: 24px;
+            line-height: 1.5;
+        }
+        .alert-box svg {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+        }
+        [data-theme="dark"] .alert-box {
+            background: rgba(255, 163, 68, 0.1);
+            border-color: rgba(255, 163, 68, 0.2);
+        }
+
+        /* RESULTADO */
+        #resultado-box { 
+            display: none; 
+            margin-top: 32px; 
+            padding-top: 24px; 
+            border-top: 1px solid var(--border-light); 
+            text-align: center; 
+            animation: fadeIn 0.5s; 
+        }
+        #data-final { font-size: 36px; font-weight: 800; color: var(--zen-green); margin: 8px 0; letter-spacing: -1px;}
+        
+        /* A PONTE (CTA) */
+        .cta-bridge { 
+            margin-top: 32px; 
+            background: var(--badge-bg); 
+            border: 1px solid rgba(0, 117, 222, 0.2); 
+            padding: 24px; 
+            border-radius: var(--radius-card); 
+            text-align: center; 
+        }
+        .cta-bridge h3 { margin: 0 0 12px 0; font-size: 18px; color: var(--text-main); font-weight: 700;}
+        .cta-bridge p { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;}
+        .btn-bridge { 
+            display: inline-flex; 
+            background: var(--primary); 
+            color: var(--primary-text); 
+            text-decoration: none; 
+            padding: 10px 20px; 
+            border-radius: var(--radius-btn); 
+            font-weight: 600; 
+            font-size: 14px; 
+            transition: background-color 0.2s;
+        }
+        .btn-bridge:hover { background: var(--primary-hover); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media (max-width: 768px) {
+            .calc-header h1 { font-size: 28px; }
+            .calc-card { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="brand">
+            <img src="djen-128.png" alt="Logo Buscador DJEN">
+            Buscador DJEN
+        </a>
+        <a href="index.html" class="back-link">Voltar ao Início</a>
+    </header>
+
+    <main class="calc-wrapper">
+        <div class="calc-header">
+            <h1>Calculadora de Prazos</h1>
+            <p>Simule prazos processuais em dias úteis (Art. 219 do CPC).</p>
+        </div>
+
+        <div class="calc-card">
+            <div class="form-group">
+                <label for="data-pub">Data da Publicação / Intimação</label>
+                <input type="date" id="data-pub" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="prazo-dias">Prazo (em dias)</label>
+                <input type="number" id="prazo-dias" class="form-control" placeholder="Ex: 15" min="1">
+            </div>
+
+            <button class="btn-calc" onclick="calcularPrazo()">Calcular Data Final</button>
+
+            <div class="alert-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <div>
+                    <strong>Aviso importante:</strong> Por ser uma versão web simplificada, esta calculadora desconsidera apenas sábados e domingos. <strong>Feriados municipais, estaduais e suspensões forenses não são computados</strong> automaticamente.
+                </div>
+            </div>
+
+            <div id="resultado-box">
+                <span style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Prazo Final</span>
+                <div id="data-final">--</div>
+                <span style="font-size: 13px; color: var(--text-muted);">*Cálculo em dias úteis a partir do primeiro dia útil subsequente.</span>
+            </div>
+        </div>
+
+        <div class="cta-bridge">
+            <h3>Calculando prazos na mão?</h3>
+            <p>A extensão do Buscador DJEN extrai os dados, cruza com os feriados forenses e audita o prazo processual automaticamente direto no painel do eproc e do PJe.</p>
+            <a href="index.html" class="btn-bridge">Conheça a Automação Gratuita</a>
+        </div>
+    </main>
+
+    <script>
+        // Lógica de Dias Úteis (CPC - Pula Sábados e Domingos)
+        function calcularPrazo() {
+            const dataInput = document.getElementById('data-pub').value;
+            let dias = parseInt(document.getElementById('prazo-dias').value);
+
+            if (!dataInput || isNaN(dias) || dias <= 0) {
+                alert("Por favor, insira uma data válida e a quantidade de dias.");
+                return;
+            }
+
+            // Define a data ao meio-dia para evitar bug de fuso horário
+            let dataAtual = new Date(dataInput + 'T12:00:00'); 
+            
+            // O prazo só começa a contar no primeiro dia ÚTIL seguinte.
+            // O while abaixo faz a contagem adicionando dias e subtraindo do contador
+            // apenas quando o dia cair de segunda a sexta.
+            
+            while (dias > 0) {
+                dataAtual.setDate(dataAtual.getDate() + 1);
+                
+                // Pula Sábado (6) e Domingo (0)
+                if (dataAtual.getDay() !== 0 && dataAtual.getDay() !== 6) {
+                    dias--;
+                }
+            }
+
+            // Formatar para o padrão brasileiro (DD/MM/AAAA)
+            const diaFinal = String(dataAtual.getDate()).padStart(2, '0');
+            const mesFinal = String(dataAtual.getMonth() + 1).padStart(2, '0');
+            const anoFinal = dataAtual.getFullYear();
+
+            // Mostra o resultado na tela
+            document.getElementById('data-final').innerText = `${diaFinal}/${mesFinal}/${anoFinal}`;
+            document.getElementById('resultado-box').style.display = 'block';
+        }
+
+        // Puxa o tema do localStorage para manter a consistência com a index principal
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+
+</body>
+</html>
