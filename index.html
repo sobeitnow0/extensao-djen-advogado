@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Buscador DJEN - Prazos e Intimações Judiciais</title>
-    <meta name="description" content="O fim da leitura manual dos Diários de Justiça. Buscador DJEN automatiza a triagem de publicações e calcula prazos processuais para a advocacia.">
+    <meta name="description" content="A única extensão que une triagem automatizada, cálculo de prazos e gestão de tarefas em uma interface minimalista.">
     <meta name="author" content="Amilcar Moreira">
     
     <meta property="og:type" content="website">
@@ -103,7 +103,7 @@
         .iframe-wrapper { position: relative; width: 100%; max-width: 400px; height: 600px; display: flex; justify-content: center; align-items: center; }
         .iframe-wrapper iframe { width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: 12px; box-shadow: var(--shadow-modal); }
 
-        /* FUNCIONALIDADES (7 CARDS) */
+        /* FUNCIONALIDADES */
         .features-container { padding: 100px 5% 60px; background: var(--bg-page); }
         .features-header { text-align: center; margin-bottom: 64px; }
         .features-header h2 { font-size: 40px; font-weight: 800; margin-bottom: 16px; letter-spacing: -1.5px;}
@@ -131,17 +131,20 @@
             border-radius: 12px; border: 1px solid var(--border-light); box-shadow: var(--shadow-card); 
             background: var(--card-bg); overflow: hidden; display: flex; justify-content: center; 
             align-items: center; 
-            /* Transição para o efeito Hover */
-            transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Efeito Zoom ao passar o mouse */
         .carousel-item:hover {
             transform: scale(1.03);
             box-shadow: var(--shadow-hover);
         }
 
-        .carousel-item img { width: 100%; height: auto; display: block; }
+        .carousel-item img { 
+            width: 100%; 
+            height: auto; 
+            display: block; 
+            cursor: zoom-in; /* Indica que a imagem é clicável */
+        }
 
         /* AUTORIDADE, FAQ & BOTTOM CTA */
         .info-container { max-width: 800px; margin: 0 auto; padding: 60px 20px; border-top: 1px solid var(--border-light); }
@@ -191,7 +194,7 @@
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "Buscador DJEN",
+      "name": "Buscador DJEN - Prazos Judiciais e Intimações",
       "operatingSystem": "Chrome, Firefox, Edge",
       "applicationCategory": "BrowserApplication",
       "description": "Extensão para automatizar a triagem de publicações do Diário de Justiça Eletrônico Nacional (DJEN) e calcular prazos processuais para advogados.",
@@ -215,17 +218,17 @@
     </header>
 
     <section class="hero">
-        <h1>Gestão de Prazos Judiciais e <span>Intimações</span></h1>
-        <p>Pare de perder tempo caçando publicações e calculando prazos na mão. O Buscador DJEN é a extensão definitiva que transforma seu navegador no seu assistente jurídico pessoal.</p>
+        <h1>Recupere suas horas de sono. Deixe o DJEN calcular os <span>prazos</span> por você.</h1>
+        <p>A única extensão que une triagem automatizada, cálculo de prazos em dias úteis e gestão de tarefas em uma interface minimalista. De advogado para advogado.</p>
         
         <div class="hero-buttons">
             <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" rel="noopener noreferrer" class="btn-browser chrome" aria-label="Baixar extensão para Chrome">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="21.17" y1="8" x2="12" y2="8"></line><line x1="3.95" y1="6.06" x2="8.54" y2="14"></line><line x1="10.88" y1="21.94" x2="15.46" y2="14"></line></svg>
-                Disponível para Chrome
+                Instalar Grátis no Chrome
             </a>
             <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" rel="noopener noreferrer" class="btn-browser firefox" aria-label="Baixar extensão para Firefox">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path><path d="M14.5 15.5c-1.5 1.5-3.5 1.5-5 0"></path><path d="M9.5 8.5c1.5-1.5 3.5-1.5 5 0"></path></svg>
-                Disponível para Firefox
+                Instalar Grátis no Firefox
             </a>
         </div>
     </section>
@@ -309,8 +312,8 @@
                 <div class="feature-icon" style="color: var(--text-main);">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 </div>
-                <h3>Privacidade e Segurança</h3>
-                <p>A confidencialidade dos seus clientes é a nossa prioridade número um.</p>
+                <h3>Arquitetura Zero-Cloud</h3>
+                <p>Diferente de softwares jurídicos comuns, o Buscador DJEN processa tudo localmente. Sem contas, sem senhas na nuvem, sem riscos de vazamento. O sigilo profissional é inviolável.</p>
                 <ul class="feature-list">
                     <li><b>100% Offline:</b> O Buscador DJEN não sincroniza dados na nuvem e não envia seus processos para fora.</li>
                     <li><b>Cofre Pessoal:</b> Sua agenda, anotações e tarefas ficam salvas localmente e criptografadas no seu próprio navegador.</li>
@@ -349,7 +352,7 @@
     <section class="info-container fade-in-section">
         <div class="authority-box">
             <h3>Da prática diária para o seu navegador.</h3>
-            <p>Sou Amilcar Moreira, especialista em Direito Digital e Propriedade Intelectual, com participaçao no curso <i>CopyrightX</i> pela Harvard Law School e membro das Comissões de Propriedade Intelectual e de Mídia, Entretenimento e Cultura da OAB/SP. Criei o Buscador DJEN porque, atuando no contencioso, estava exausto de perder horas produtivas na leitura de Diários de Justiça. Desenvolvi cada funcionalidade da ferramenta pensando na pressão real dos prazos fatais. É uma extensão 100% independente, feita de colega para colega, para garantir que você assuma o controle definitivo da sua pauta.</p>
+            <p>Sou Amilcar Moreira, jornalista, advogado, especialista em Direito Digital e Propriedade Intelectual, com participação no curso <i>CopyrightX</i> pela Harvard Law School e membro das Comissões de Propriedade Intelectual e de Mídia, Entretenimento e Cultura da OAB/SP. Criei o Buscador DJEN porque, atuando no contencioso, estava exausto de perder horas produtivas na leitura de Diários de Justiça. Desenvolvi cada funcionalidade da ferramenta pensando na pressão real dos prazos fatais. É uma extensão 100% independente, feita de colega para colega, para garantir que você assuma o controle definitivo da sua pauta.</p>
         </div>
 
         <div class="faq-section">
@@ -378,10 +381,10 @@
         <p style="margin-bottom: 32px; font-weight: 600;">Instale agora e assuma o controle total da sua pauta!</p>
         <div class="hero-buttons">
             <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" rel="noopener noreferrer" class="btn-browser chrome" style="background-color: var(--primary); color: #fff; border: none;">
-                Adicionar ao Chrome
+                Instalar Grátis no Chrome
             </a>
             <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" rel="noopener noreferrer" class="btn-browser firefox" style="background-color: var(--zen-orange); color: #fff; border: none;">
-                Adicionar ao Firefox
+                Instalar Grátis no Firefox
             </a>
         </div>
     </section>
@@ -403,7 +406,7 @@
                 </button>
                 
                 <div class="coffee-content" id="contentCoffee">
-                    <div style="color: var(--text-muted); font-size: 13px; margin-top: 12px; margin-bottom: 12px;">O Buscador DJEN é um projeto independente criado de colega para colega. Se a extensão já te poupou de perder um prazo ou economizou suas horas de leitura, considere pagar um café para manter os servidores rodando!</div>
+                    <div style="color: var(--text-muted); font-size: 13px; margin-top: 12px; margin-bottom: 12px;">Se o Buscador DJEN já te salvou de um erro de contagem ou te devolveu 1 hora do seu dia, considere manter esse projeto vivo.</div>
                     
                     <img src="qrcode-pix.png" alt="QR Code PIX para doação" onerror="this.style.display='none'">
                     
@@ -428,7 +431,7 @@
     </footer>
 
     <script>
-        // Lógica do botão de café
+        // 1. Lógica do botão de café
         const btnToggleCoffee = document.getElementById('btnToggleCoffee');
         const contentCoffee = document.getElementById('contentCoffee');
 
@@ -439,7 +442,7 @@
             btnToggleCoffee.setAttribute('aria-expanded', isActive);
         });
 
-        // Copiar chave Pix
+        // 2. Copiar chave Pix
         function copyPixCode() {
             const pixInput = document.getElementById('pixKey');
             const btnCopy = document.getElementById('btnCopyPix');
@@ -463,7 +466,7 @@
             });
         }
 
-        // Animação de entrada (Fade In)
+        // 3. Animação de entrada (Fade In)
         document.addEventListener("DOMContentLoaded", function() {
             const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
             const observer = new IntersectionObserver((entries, observer) => {
@@ -478,22 +481,45 @@
             document.querySelectorAll('.fade-in-section').forEach(section => {
                 observer.observe(section);
             });
+            
+            // 4. Detecção de Navegador (Instalação 1 Clique)
+            const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+            const isChrome = !!window.chrome;
+            
+            const btnChrome = document.querySelectorAll('.btn-browser.chrome');
+            const btnFirefox = document.querySelectorAll('.btn-browser.firefox');
+
+            if (isChrome) {
+                btnChrome.forEach(btn => {
+                    btn.style.border = '2px solid var(--primary)';
+                    btn.style.boxShadow = '0 0 15px var(--primary-light)';
+                });
+                btnFirefox.forEach(btn => btn.style.opacity = '0.6');
+            } else if (isFirefox) {
+                btnFirefox.forEach(btn => {
+                    btn.style.border = '2px solid var(--zen-orange)';
+                    btn.style.boxShadow = '0 0 15px rgba(221, 91, 0, 0.2)';
+                });
+                btnChrome.forEach(btn => btn.style.opacity = '0.6');
+            }
         });
 
-        // Lógica do Carrossel Automático
+        // 5. Lógica do Carrossel Automático Corrigida
         const carousel = document.querySelector('.carousel');
         let autoPlayInterval;
 
         function startAutoPlay() {
             autoPlayInterval = setInterval(() => {
-                // Margem de erro de 10px para celular
-                if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 10) {
+                const item = carousel.querySelector('.carousel-item');
+                if(!item) return;
+                
+                const itemWidth = item.offsetWidth + 24; // largura + gap
+                if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 20) {
                     carousel.scrollTo({ left: 0, behavior: 'smooth' });
                 } else {
-                    // Rola o tamanho aproximado de um item (350px + gap)
-                    carousel.scrollBy({ left: 374, behavior: 'smooth' }); 
+                    carousel.scrollBy({ left: itemWidth, behavior: 'smooth' }); 
                 }
-            }, 3000);
+            }, 4000);
         }
 
         function stopAutoPlay() {
@@ -507,6 +533,26 @@
         carousel.addEventListener('mouseleave', startAutoPlay);
         carousel.addEventListener('touchstart', stopAutoPlay, {passive: true});
         carousel.addEventListener('touchend', startAutoPlay);
+
+        // 6. Lógica do Lightbox (Zoom nas Imagens)
+        const modal = document.createElement('div');
+        modal.id = 'imgModal';
+        modal.style.cssText = 'display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; cursor: zoom-out;';
+        modal.innerHTML = '<img id="modalImg" style="max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5); object-fit: contain;">';
+        document.body.appendChild(modal);
+
+        document.querySelectorAll('.carousel-item img').forEach(img => {
+            img.addEventListener('click', () => {
+                document.getElementById('modalImg').src = img.src;
+                modal.style.display = 'flex';
+                stopAutoPlay();
+            });
+        });
+
+        modal.addEventListener('click', () => {
+            modal.style.display = 'none';
+            startAutoPlay();
+        });
     </script>
 </body>
 </html>
