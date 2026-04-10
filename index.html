@@ -91,7 +91,8 @@
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-page); position: sticky; top: 0; z-index: 100; transition: background-color 0.3s, border-color 0.3s; }
         .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; letter-spacing: -0.25px; }
         .brand img { width: 32px; height: 32px; border-radius: var(--radius-btn); }
-        .badge-cortesia-site { font-size: 12px; background: var(--badge-bg); color: var(--badge-text); padding: 4px 8px; border-radius: var(--radius-pill); font-weight: 600; letter-spacing: 0.125px; }
+        /* CORRIGIDO DE VOLTA PARA CORTESIA */
+        .badge-cortesia-site { font-size: 11px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 2px 8px; border-radius: var(--radius-pill); font-weight: 600; border: 1px solid rgba(221, 91, 0, 0.2); letter-spacing: 0.5px; }
         
         .header-actions { display: flex; align-items: center; gap: 16px; }
         .theme-toggle { background: transparent; border: 1px solid var(--border-light); color: var(--text-muted); width: 32px; height: 32px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; }
@@ -116,11 +117,16 @@
         .trust-badges { display: flex; align-items: center; justify-content: center; gap: 16px; color: var(--text-placeholder); font-size: 14px; font-weight: 500; margin-bottom: 8px; flex-wrap: wrap;}
         .microcopy { color: var(--text-muted); font-size: 12px; font-weight: 400; }
 
-        /* SIMULADOR */
+        /* SIMULADOR COM GLOW EFEITO */
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 117, 222, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0); }
+        }
         .demo-section { display: flex; flex-direction: column; align-items: center; padding: 64px 20px 100px; background-color: var(--bg-section); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); transition: background-color 0.3s; }
         .demo-badge { background: var(--badge-bg); color: var(--badge-text); padding: 4px 8px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; margin-bottom: 24px; letter-spacing: 0.125px; text-transform: uppercase;}
         .iframe-wrapper { position: relative; width: 100%; max-width: 400px; height: 600px; display: flex; justify-content: center; align-items: center; }
-        .iframe-wrapper iframe { width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: var(--radius-card); box-shadow: var(--shadow-modal); background: var(--bg-page); transition: box-shadow 0.3s; }
+        .iframe-wrapper iframe { width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: var(--radius-card); box-shadow: var(--shadow-modal); background: var(--bg-page); transition: box-shadow 0.3s; animation: pulseGlow 3s infinite;}
 
         /* FUNCIONALIDADES */
         .features-container { padding: 120px 5% 80px; background: var(--bg-page); transition: background-color 0.3s; }
@@ -253,7 +259,7 @@
         <div class="brand">
             <img src="djen-128.png" alt="Logo Buscador DJEN">
             Buscador DJEN
-            <span class="badge-cortesia-site">BETA</span>
+            <span class="badge-cortesia-site">CORTESIA</span>
         </div>
         
         <div class="header-actions">
@@ -292,7 +298,7 @@
 
     <section class="demo-section">
         <div class="demo-badge">Test Drive Interativo</div>
-        <p style="color: var(--text-muted); margin-bottom: 40px; font-size: 16px;">Explore as abas e simule uma consulta real abaixo.</p>
+        <p style="color: var(--text-muted); margin-bottom: 40px; font-size: 16px;">Explore a interface interativa abaixo para conhecer o design e o fluxo de trabalho da extensão.</p>
         <div class="iframe-wrapper fade-in-section">
             <iframe src="simulador.html" width="400" height="600" scrolling="no" loading="lazy" title="Simulador Buscador DJEN"></iframe>
         </div>
@@ -307,7 +313,7 @@
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--primary);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                 <h3>Busca Inteligente</h3>
-                <p>Apenas sua OAB e UF. Resultados instantâneos, sem captchas intermináveis ou lentidão do PJe.</p>
+                <p>Apenas sua OAB e UF. Resultados instantâneos, sem captchas intermináveis ou lentidão.</p>
             </div>
 
             <div class="feature-card fade-in-section">
@@ -356,13 +362,41 @@
                 <img src="3.webp" alt="Tarefas" loading="lazy">
                 <div class="carousel-caption">Gestão de Tarefas por Processo</div>
             </div>
+            <div class="carousel-item">
+                <img src="4.webp" alt="Interface de cálculos e prazos" loading="lazy">
+                <div class="carousel-caption">Interface de Cálculos e Prazos</div>
+            </div>
+            <div class="carousel-item">
+                <img src="5.webp" alt="Gestão visual de publicações" loading="lazy">
+                <div class="carousel-caption">Gestão Visual de Publicações</div>
+            </div>
+            <div class="carousel-item">
+                <img src="6.webp" alt="Calendário mensal de controle de prazos" loading="lazy">
+                <div class="carousel-caption">Calendário Mensal de Prazos</div>
+            </div>
+            <div class="carousel-item">
+                <img src="7.webp" alt="Menu de configurações e backup local" loading="lazy">
+                <div class="carousel-caption">Configurações e Backup Local</div>
+            </div>
+            <div class="carousel-item">
+                <img src="8.webp" alt="Configuração do Radar de palavras-chave jurídicas" loading="lazy">
+                <div class="carousel-caption">Radar de Palavras-chave</div>
+            </div>
+            <div class="carousel-item">
+                <img src="9.webp" alt="Guia rápido e atalhos de teclado da extensão" loading="lazy">
+                <div class="carousel-caption">Atalhos de Teclado e Guia</div>
+            </div>
+            <div class="carousel-item">
+                <img src="10.webp" alt="Exportação e compartilhamento via WhatsApp e Google" loading="lazy">
+                <div class="carousel-caption">Exportação para Google e WhatsApp</div>
+            </div>
         </div>
     </section>
 
     <section class="info-container fade-in-section">
         <div class="authority-box">
-            <h3>Do contencioso para o código.</h3>
-            <p>Sou Amilcar Moreira. Advogado e desenvolvedor.<br><br>O Buscador DJEN nasceu da necessidade de eliminar o trabalho braçal da leitura manual de diários de justiça. É uma ferramenta 100% independente, construída sob a ótica de quem enfrenta a pressão dos prazos fatais todos os dias. O objetivo é simples: devolver a precisão matemática e o controle da pauta à advocacia.</p>
+            <h3>Da prática diária para o seu navegador.</h3>
+            <p>Sou Amilcar Moreira, jornalista, advogado - especialista em Direito Digital e Propriedade Intelectual, com participação no curso <i>CopyrightX</i> pela Harvard Law School e membro das Comissões de Propriedade Intelectual e de Mídia, Entretenimento e Cultura da OAB/SP. Criei o Buscador DJEN porque, atuando no contencioso, estava exausto de perder horas produtivas na leitura de Diários de Justiça. Desenvolvi cada funcionalidade da ferramenta pensando na pressão real dos prazos fatais. É uma extensão 100% independente, feita de colega para colega, para garantir que você assuma o controle definitivo da sua pauta.</p>
         </div>
     </section>
 
