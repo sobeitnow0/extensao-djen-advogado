@@ -99,8 +99,7 @@
 
     <main class="calc-wrapper">
         <div style="text-align: center; margin-bottom: 32px;">
-            <h1 style="font-size: 28px; margin: 0 0 8px 0; letter-spacing: -1px;">Auditoria de Prazos</h1>
-            <p style="color: var(--text-muted); margin: 0; font-size: 15px;">Simulador inteligente com regras do Art. 224 do CPC.</p>
+            <h1 style="font-size: 28px; margin: 0; letter-spacing: -1px;">Calculadora e Auditoria de Prazos</h1>
         </div>
 
         <div class="calculadora-prazo">
@@ -126,6 +125,9 @@
                 </div>
 
                 <button class="btn-main" id="btn-exec">Calcular Prazo Fatal</button>
+                <div id="aviso-uso" style="font-size: 13px; color: var(--text-muted); text-align: center; margin-top: 12px; font-weight: 500;">
+                    Você tem <span id="span-limite" style="color: var(--zen-orange); font-weight: 700;">3</span> simulações gratuitas hoje.
+                </div>
             </div>
 
             <div id="calc-limit-reached">
@@ -184,7 +186,23 @@
             let usoWeb = verificarLimiteUso();
             usoWeb.contagem++;
             localStorage.setItem('djen_uso_web', JSON.stringify(usoWeb));
+            atualizarTextoLimite();
         }
+
+        function atualizarTextoLimite() {
+            const usoAtual = verificarLimiteUso();
+            const restante = Math.max(0, LIMITE_DIARIO - usoAtual.contagem);
+            const spanLimite = document.getElementById('span-limite');
+            if (spanLimite) {
+                spanLimite.textContent = restante;
+            }
+            // Oculta o botão se o limite foi atingido logo no carregamento
+            if(restante === 0) {
+                document.getElementById('calc-inputs').style.display = 'none';
+                document.getElementById('calc-limit-reached').style.display = 'block';
+            }
+        }
+        atualizarTextoLimite();
 
         // --- LÓGICA DE DADOS (Extraída da Extensão) ---
         let feriadosExtras = {}; 
@@ -375,8 +393,14 @@
         });
 
         document.getElementById('btn-voltar-calc').addEventListener('click', () => {
-            document.getElementById('calc-result').style.display = 'none';
-            document.getElementById('calc-inputs').style.display = 'block';
+            const usoAtual = verificarLimiteUso();
+            if (usoAtual.contagem >= LIMITE_DIARIO) {
+                document.getElementById('calc-result').style.display = 'none';
+                document.getElementById('calc-limit-reached').style.display = 'block';
+            } else {
+                document.getElementById('calc-result').style.display = 'none';
+                document.getElementById('calc-inputs').style.display = 'block';
+            }
         });
 
         document.getElementById('btn-voltar-limite').addEventListener('click', () => {
