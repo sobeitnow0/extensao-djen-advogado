@@ -93,7 +93,13 @@
         .brand img { width: 32px; height: 32px; border-radius: var(--radius-btn); }
         .badge-cortesia-site { font-size: 11px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 2px 8px; border-radius: var(--radius-pill); font-weight: 600; border: 1px solid rgba(221, 91, 0, 0.2); letter-spacing: 0.5px; }
         
-        .header-actions { display: flex; align-items: center; gap: 16px; }
+        .header-actions { display: flex; align-items: center; gap: 12px; }
+        
+        /* NOVO BOTÃO DE COMPARTILHAR */
+        .share-btn { display: flex; align-items: center; gap: 6px; background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); padding: 6px 12px; height: 32px; border-radius: var(--radius-btn); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; }
+        .share-btn:hover { background: var(--bg-section); color: var(--text-main); }
+        .share-btn svg { width: 14px; height: 14px; }
+
         .theme-toggle { background: transparent; border: 1px solid var(--border-light); color: var(--text-muted); width: 32px; height: 32px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; }
         .theme-toggle:hover { background: var(--bg-section); color: var(--text-main); }
         .theme-toggle svg { width: 16px; height: 16px; }
@@ -206,9 +212,17 @@
         .prev-btn { left: 10px; }
         .next-btn { right: 10px; }
         
-        /* Esconde as setas em telas muito pequenas (celulares), pois lá o toque resolve */
-        @media (max-width: 768px) {
+        /* Mobile responsivity adjustments */
+        @media (max-width: 768px) { 
+            .hero h1 { font-size: 40px; letter-spacing: -1.5px;} 
+            .features-header h2 { font-size: 32px;}
+            .mobile-sticky-cta { display: block; }
+            body { padding-bottom: 80px; } 
             .carousel-btn { display: none; }
+            /* Ajusta header em telas pequenas */
+            .share-text { display: none; }
+            .share-btn { padding: 6px; width: 32px; justify-content: center;}
+            .brand span.badge-cortesia-site { display: none; }
         }
 
         /* AUTORIDADE & CTA FINAL */
@@ -248,13 +262,6 @@
 
         /* Mobile Sticky CTA */
         .mobile-sticky-cta { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-page); border-top: 1px solid var(--border-light); padding: 16px 20px; z-index: 100; box-shadow: 0 -4px 12px rgba(0,0,0,0.05); text-align: center; box-sizing: border-box; transition: background-color 0.3s; }
-        
-        @media (max-width: 768px) { 
-            .hero h1 { font-size: 40px; letter-spacing: -1.5px;} 
-            .features-header h2 { font-size: 32px;}
-            .mobile-sticky-cta { display: block; }
-            body { padding-bottom: 80px; } 
-        }
     </style>
 
     <script type="application/ld+json">
@@ -324,6 +331,17 @@
         </div>
         
         <div class="header-actions">
+            <button id="btn-compartilhar" class="share-btn" aria-label="Compartilhar site">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+                <span class="share-text">Compartilhar</span>
+            </button>
+
             <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 500; color: var(--text-muted); text-decoration: none;">
                 por 
             </a>
@@ -602,7 +620,6 @@
             prevBtn.addEventListener('click', () => {
                 const itemWidth = carousel.querySelector('.carousel-item').offsetWidth + 24;
                 carousel.scrollBy({ left: -itemWidth, behavior: 'smooth' });
-                // Reinicia o tempo para não pular sozinho logo após o clique
                 stopAutoPlay();
                 startAutoPlay(); 
             });
@@ -635,6 +652,38 @@
         modal.addEventListener('click', () => {
             modal.style.display = 'none';
             startAutoPlay();
+        });
+
+        // 7. Lógica de Compartilhamento (Web Share API)
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnCompartilhar = document.getElementById('btn-compartilhar');
+            if (btnCompartilhar) {
+                btnCompartilhar.addEventListener('click', async () => {
+                    const shareData = {
+                        title: 'Buscador DJEN',
+                        text: 'Conheça o Buscador DJEN: a extensão que devolve o controle absoluto da sua pauta.',
+                        url: window.location.href
+                    };
+
+                    try {
+                        if (navigator.share) {
+                            await navigator.share(shareData);
+                        } else {
+                            // Fallback para navegadores sem suporte
+                            await navigator.clipboard.writeText(shareData.url);
+                            const iconSvg = btnCompartilhar.innerHTML;
+                            btnCompartilhar.innerHTML = '<span style="font-size: 13px;">Copiado!</span>';
+                            setTimeout(() => {
+                                btnCompartilhar.innerHTML = iconSvg;
+                            }, 2000);
+                        }
+                    } catch (err) {
+                        if (err.name !== 'AbortError') {
+                            console.error('Erro ao compartilhar:', err);
+                        }
+                    }
+                });
+            }
         });
     </script>
 </body>
