@@ -5,20 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Buscador DJEN - Prazos e Intimações Judiciais</title>
-    <meta name="description" content="A única extensão que une triagem automatizada, cálculo de prazos e gestão de tarefas em uma interface minimalista.">
+    <meta name="description" content="Transforme seu navegador em uma central de auditoria de prazos, leitura limpa e gestão de tarefas. Sem sincronização em nuvem, com total sigilo profissional.">
     <meta name="author" content="Amilcar Moreira">
     
     <meta property="og:type" content="website">
     <meta property="og:title" content="Buscador DJEN - Prazos e Intimações Judiciais">
-    <meta property="og:description" content="Automatize a triagem de publicações, audite prazos e organize a sua rotina num painel flutuante no seu navegador.">
+    <meta property="og:description" content="Gestão inteligente de publicações judiciais direto no seu navegador.">
     <meta property="og:image" content="https://www.buscadordjen.com.br/djen-128.png"> 
     <meta property="og:url" content="https://www.buscadordjen.com.br/">
     
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Buscador DJEN - Prazos e Intimações Judiciais">
-    <meta name="twitter:description" content="Automatize a triagem de publicações, audite prazos e organize a sua rotina num painel flutuante no seu navegador.">
-    <meta name="twitter:image" content="https://www.buscadordjen.com.br/djen-128.png">
-
     <link rel="icon" type="image/png" href="djen-128.png">
     <link rel="canonical" href="https://www.buscadordjen.com.br/">
     
@@ -27,33 +22,48 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* DESIGN SYSTEM */
+        /* DESIGN SYSTEM - NOTION INSPIRATION */
         :root {
+            /* Cores e Fundos */
             --bg-page: #ffffff;
-            --bg-section: #f6f5f4; 
+            --bg-section: #f6f5f4; /* Warm White */
             --card-bg: #ffffff;
-            --text-main: rgba(0, 0, 0, 0.95); 
-            --text-muted: #615d59; 
-            --text-placeholder: #a39e98;
-            --primary: #0075de; 
-            --primary-hover: #005bab;
+            
+            /* Textos */
+            --text-main: rgba(0, 0, 0, 0.95); /* Notion Black */
+            --text-muted: #615d59; /* Warm Gray 500 */
+            --text-placeholder: #a39e98; /* Warm Gray 300 */
+            
+            /* Acentos */
+            --primary: #0075de; /* Notion Blue */
+            --primary-hover: #005bab; /* Active Blue */
             --primary-text: #ffffff;
-            --primary-light: #f2f9ff;
-            --border-light: rgba(0, 0, 0, 0.1); 
+            
+            /* Semânticas e Badges */
+            --badge-bg: #f2f9ff;
+            --badge-text: #097fe8;
+            --border-light: rgba(0, 0, 0, 0.1); /* Whisper Border */
+            
+            /* Decorativas */
             --zen-orange: #dd5b00;
             --zen-green: #1aae39;
             --zen-purple: #391c57;
             --zen-red: #d93025;
             --zen-blue: #0075de;
             --zen-gold: #f5a623;
-            --radius-btn: 6px;
-            --radius-card: 12px;
-            --radius-pill: 9999px;
-            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.85px, rgba(0,0,0,0.02) 0px 0.8px 2.93px;
-            --shadow-hover: rgba(0,0,0,0.08) 0px 8px 24px, rgba(0,0,0,0.04) 0px 4px 8px;
-            --shadow-modal: rgba(0,0,0,0.05) 0px 23px 52px, rgba(0,0,0,0.04) 0px 14px 28px;
+            
+            /* Radios */
+            --radius-btn: 4px; /* Micro */
+            --radius-card: 12px; /* Comfortable */
+            --radius-pill: 9999px; /* Full Pill */
+            
+            /* Sombras (Multicamadas) */
+            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.84688px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04062px;
+            --shadow-hover: rgba(0,0,0,0.06) 0px 8px 24px, rgba(0,0,0,0.04) 0px 4px 12px;
+            --shadow-modal: rgba(0,0,0,0.01) 0px 1px 3px, rgba(0,0,0,0.02) 0px 3px 7px, rgba(0,0,0,0.02) 0px 7px 15px, rgba(0,0,0,0.04) 0px 14px 28px, rgba(0,0,0,0.05) 0px 23px 52px;
         }
 
+        /* Mantendo Dark Mode adaptado para a suavidade do Notion */
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-page: #191919;
@@ -65,13 +75,13 @@
                 --primary: #52a8ff;
                 --primary-hover: #62aef0;
                 --primary-text: #191919;
-                --primary-light: rgba(82, 168, 255, 0.15);
+                --badge-bg: rgba(82, 168, 255, 0.15);
+                --badge-text: #52a8ff;
                 --border-light: rgba(255, 255, 255, 0.1);
                 --zen-orange: #ffa344;
                 --zen-green: #4dabb6;
                 --zen-purple: #b992e6;
                 --zen-red: #ff7369;
-                --zen-blue: #52a8ff;
                 --zen-gold: #ffd04f;
                 --shadow-card: rgba(0,0,0,0.5) 0px 4px 18px;
                 --shadow-hover: rgba(0,0,0,0.6) 0px 8px 24px;
@@ -79,130 +89,103 @@
             }
         }
 
-        body { margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; transition: background-color 0.3s, color 0.3s; }
+        /* TIPOGRAFIA E BASE */
+        body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; font-feature-settings: "lnum" 1, "locl" 1; }
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-page); position: sticky; top: 0; z-index: 100; }
-        .brand { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 700; letter-spacing: -0.25px; }
+        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; letter-spacing: -0.25px; }
         .brand img { width: 32px; height: 32px; border-radius: var(--radius-btn); }
-        .badge-cortesia-site { font-size: 11px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 2px 8px; border-radius: var(--radius-pill); font-weight: 600; border: 1px solid rgba(221, 91, 0, 0.2); letter-spacing: 0.5px; }
+        .badge-cortesia-site { font-size: 12px; background: var(--badge-bg); color: var(--badge-text); padding: 4px 8px; border-radius: var(--radius-pill); font-weight: 600; letter-spacing: 0.125px; }
 
         /* HERO */
-        .hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 80px 20px 60px; max-width: 900px; margin: 0 auto; }
-        .hero h1 { font-size: 64px; font-weight: 800; line-height: 1.05; margin-bottom: 24px; letter-spacing: -2.125px; }
+        .hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 100px 20px 80px; max-width: 900px; margin: 0 auto; }
+        .hero h1 { font-size: 64px; font-weight: 700; line-height: 1.00; margin-bottom: 24px; letter-spacing: -2.125px; }
         .hero h1 span { color: var(--primary); }
-        .hero p { font-size: 20px; color: var(--text-muted); margin-bottom: 40px; max-width: 800px; font-weight: 400; line-height: 1.5; letter-spacing: -0.125px;}
+        .hero p { font-size: 20px; color: var(--text-muted); margin-bottom: 48px; max-width: 800px; font-weight: 600; line-height: 1.40; letter-spacing: -0.125px;}
 
-        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-        .btn-browser { display: flex; align-items: center; gap: 10px; background-color: transparent; color: var(--text-main); padding: 12px 24px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--border-light); transition: all 0.2s ease; }
-        .btn-browser:hover { background-color: rgba(0,0,0,0.03); border-color: var(--primary); color: var(--primary);}
-        @media (prefers-color-scheme: dark) { .btn-browser:hover { background-color: rgba(255,255,255,0.05); } }
+        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
+        .btn-browser { display: flex; align-items: center; gap: 10px; background-color: var(--bg-section); color: var(--text-main); padding: 8px 16px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--border-light); transition: all 0.2s ease; line-height: 1.33; }
+        .btn-browser:hover { transform: scale(1.02); }
+        .btn-browser:active { transform: scale(0.98); }
+        .btn-browser.primary { background-color: var(--primary); color: var(--primary-text); border: 1px solid transparent; }
+        .btn-browser.primary:hover { background-color: var(--primary-hover); }
+
+        .trust-badges { display: flex; align-items: center; justify-content: center; gap: 16px; color: var(--text-placeholder); font-size: 14px; font-weight: 500; margin-bottom: 8px; flex-wrap: wrap;}
+        .microcopy { color: var(--text-muted); font-size: 12px; font-weight: 400; }
 
         /* SIMULADOR */
-        .demo-section { display: flex; flex-direction: column; align-items: center; padding: 40px 20px 100px; background-color: var(--bg-section); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
-        .demo-badge { background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .demo-section { display: flex; flex-direction: column; align-items: center; padding: 64px 20px 100px; background-color: var(--bg-section); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+        .demo-badge { background: var(--badge-bg); color: var(--badge-text); padding: 4px 8px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; margin-bottom: 24px; letter-spacing: 0.125px; text-transform: uppercase;}
         .iframe-wrapper { position: relative; width: 100%; max-width: 400px; height: 600px; display: flex; justify-content: center; align-items: center; }
-        .iframe-wrapper iframe { width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: 12px; box-shadow: var(--shadow-modal); }
+        .iframe-wrapper iframe { width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: var(--radius-card); box-shadow: var(--shadow-modal); background: var(--bg-page);}
 
         /* FUNCIONALIDADES */
-        .features-container { padding: 100px 5% 60px; background: var(--bg-page); }
-        .features-header { text-align: center; margin-bottom: 64px; }
-        .features-header h2 { font-size: 40px; font-weight: 800; margin-bottom: 16px; letter-spacing: -1.5px;}
-        .features-header p { color: var(--text-muted); font-size: 18px; max-width: 700px; margin: 0 auto; }
+        .features-container { padding: 120px 5% 80px; background: var(--bg-page); }
+        .features-header { text-align: center; margin-bottom: 80px; }
+        .features-header h2 { font-size: 48px; font-weight: 700; margin-bottom: 16px; line-height: 1.00; letter-spacing: -1.5px;}
 
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; max-width: 1200px; margin: 0 auto; }
-        .feature-card { background: var(--card-bg); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease; display: flex; flex-direction: column; position: relative; z-index: 1; }
-        .feature-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); border-color: var(--primary); }
-        .feature-icon { font-size: 24px; margin-bottom: 24px; background: var(--bg-section); width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; border-radius: 8px; border: 1px solid var(--border-light); }
-        .feature-card h3 { margin: 0 0 12px 0; font-size: 22px; font-weight: 700; letter-spacing: -0.25px;}
-        .feature-card p { color: var(--text-muted); margin: 0 0 24px 0; font-size: 16px; line-height: 1.5; }
-        .feature-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
-        .feature-list li { position: relative; padding-left: 20px; font-size: 15px; color: var(--text-muted); line-height: 1.5; }
-        .feature-list li::before { content: '•'; position: absolute; left: 0; top: 0; color: var(--primary); font-weight: bold; font-size: 16px; }
-        .feature-list li b { color: var(--text-main); font-weight: 600; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; max-width: 1200px; margin: 0 auto; }
+        .feature-card { background: var(--card-bg); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); transition: box-shadow 0.2s ease, transform 0.2s ease; display: flex; flex-direction: column; }
+        .feature-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+        .feature-icon { font-size: 24px; margin-bottom: 24px; width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; border-radius: var(--radius-btn); }
+        .feature-card h3 { margin: 0 0 12px 0; font-size: 22px; font-weight: 700; letter-spacing: -0.25px; line-height: 1.27;}
+        .feature-card p { color: var(--text-muted); margin: 0; font-size: 16px; font-weight: 400; line-height: 1.5; }
 
         /* CARROSSEL */
-        .gallery-section { padding: 0 0 100px 0; background: var(--bg-page); width: 100%; overflow: hidden; }
+        .gallery-section { padding: 0 0 120px 0; background: var(--bg-page); width: 100%; overflow: hidden; }
         .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 24px; padding: 20px 5%; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
         .carousel::-webkit-scrollbar { display: none; }
         .carousel { -ms-overflow-style: none; scrollbar-width: none; }
+        .carousel-item { scroll-snap-align: center; flex: 0 0 auto; width: 85%; max-width: 350px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); background: var(--card-bg); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .carousel-item:hover { transform: scale(1.02); box-shadow: var(--shadow-hover); }
+        .carousel-item img { width: 100%; height: auto; display: block; cursor: zoom-in; }
+        .carousel-caption { padding: 12px; font-size: 14px; text-align: center; color: var(--text-muted); font-weight: 500; border-top: 1px solid var(--border-light); background: var(--bg-section);}
+
+        /* AUTORIDADE & CTA FINAL */
+        .info-container { background: var(--bg-section); padding: 80px 20px; border-top: 1px solid var(--border-light); }
+        .authority-box { max-width: 800px; margin: 0 auto; text-align: center; }
+        .authority-box h3 { font-size: 26px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.625px; line-height: 1.23;}
+        .authority-box p { color: var(--text-muted); font-size: 16px; line-height: 1.5; margin-bottom: 0;}
+
+        .bottom-cta { text-align: center; padding: 100px 20px; background: var(--bg-page); border-top: 1px solid var(--border-light);}
+        .bottom-cta h2 { font-size: 40px; font-weight: 700; margin-bottom: 16px; line-height: 1.5;}
+        .bottom-cta p { color: var(--text-muted); font-size: 16px; font-weight: 500; margin-bottom: 32px;}
+
+        /* FOOTER & CAFÉ */
+        footer { padding: 64px 20px; border-top: 1px solid var(--border-light); background: var(--bg-page); display: flex; flex-direction: column; align-items: center; }
+        .footer-content { max-width: 500px; width: 100%; display: flex; flex-direction: column; gap: 24px; }
         
-        .carousel-item { 
-            scroll-snap-align: center; flex: 0 0 auto; width: 85%; max-width: 350px; 
-            border-radius: 12px; border: 1px solid var(--border-light); box-shadow: var(--shadow-card); 
-            background: var(--card-bg); overflow: hidden; display: flex; justify-content: center; 
-            align-items: center; 
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .carousel-item:hover {
-            transform: scale(1.03);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .carousel-item img { 
-            width: 100%; 
-            height: auto; 
-            display: block; 
-            cursor: zoom-in; /* Indica que a imagem é clicável */
-        }
-
-        /* AUTORIDADE, FAQ & BOTTOM CTA */
-        .info-container { max-width: 800px; margin: 0 auto; padding: 60px 20px; border-top: 1px solid var(--border-light); }
-        .authority-box { background: var(--bg-section); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); margin-bottom: 48px; text-align: center; }
-        .authority-box h3 { margin-top: 0; font-size: 24px; margin-bottom: 16px; }
-        .authority-box p { color: var(--text-muted); font-size: 16px; line-height: 1.6; margin-bottom: 0;}
-        .faq-section h2 { font-size: 32px; text-align: center; margin-bottom: 32px; letter-spacing: -1px;}
-        details { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: var(--radius-btn); margin-bottom: 12px; overflow: hidden; }
-        summary { padding: 16px 20px; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-        summary::-webkit-details-marker { display: none; } 
-        summary::after { content: '+'; color: var(--primary); font-size: 20px; font-weight: 400; transition: transform 0.2s; }
-        details[open] summary::after { transform: rotate(45deg); }
-        details p { padding: 0 20px 20px; margin: 0; color: var(--text-muted); line-height: 1.6; font-size: 15px; }
-        .bottom-cta { text-align: center; padding: 60px 20px 100px; }
-        .bottom-cta h2 { font-size: 32px; margin-bottom: 16px; letter-spacing: -1px;}
-        .bottom-cta p { color: var(--text-muted); font-size: 18px; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;}
-
-        /* FOOTER */
-        footer { padding: 60px 20px 40px; border-top: 1px solid var(--border-light); background: var(--bg-section); display: flex; flex-direction: column; align-items: center; }
-        .footer-content { max-width: 500px; width: 100%; display: flex; flex-direction: column; gap: 20px; }
-        .premium-banner-footer { background: rgba(221, 91, 0, 0.1); border: 1px solid rgba(221, 91, 0, 0.2); padding: 16px; border-radius: 8px; color: var(--zen-orange); font-size: 14px; text-align: center; line-height: 1.5; }
-        .coffee-container { border: 1px solid var(--border-light); border-radius: 8px; background: var(--card-bg); overflow: hidden; transition: all 0.2s ease; }
-        .coffee-btn { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; color: var(--text-main); font-size: 15px; font-weight: 500; background: transparent; border: none; width: 100%; cursor: pointer; transition: background 0.2s ease; }
-        .coffee-btn:hover { background: rgba(0,0,0,0.02); }
-        @media (prefers-color-scheme: dark) { .coffee-btn:hover { background: rgba(255,255,255,0.02); } }
+        .coffee-container { border: 1px solid var(--border-light); border-radius: var(--radius-card); background: var(--card-bg); overflow: hidden; }
+        .coffee-btn { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; color: var(--text-main); font-size: 15px; font-weight: 600; background: transparent; border: none; width: 100%; cursor: pointer; transition: background 0.2s ease; }
+        .coffee-btn:hover { background: var(--bg-section); }
         .coffee-btn svg.chevron { transition: transform 0.3s ease; }
         .coffee-btn.active svg.chevron { transform: rotate(180deg); }
         .coffee-content { display: none; padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); text-align: center; }
         .coffee-content.show { display: block; }
-        .coffee-content img { width: 160px; height: 160px; margin: 20px auto; border-radius: 8px; background: #fff; padding: 10px; display: block; border: 1px solid var(--border-light); }
-        .pix-code-container { display: flex; gap: 8px; margin-top: 16px; }
-        .pix-code-container input { flex: 1; padding: 10px; background: var(--bg-section); border: 1px solid var(--border-light); color: var(--text-muted); border-radius: var(--radius-btn); font-size: 13px; outline: none; }
-        .pix-code-container button { background: var(--primary); color: var(--primary-text); border: none; padding: 0 16px; border-radius: var(--radius-btn); font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .pix-code-container button:hover { background: var(--primary-hover); }
-        .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-top: 20px; }
-        .footer-links a { color: var(--text-muted); font-size: 13px; text-decoration: none; transition: color 0.2s; }
+        .coffee-content img { width: 160px; height: 160px; margin: 16px auto; border-radius: 8px; display: block; border: 1px solid var(--border-light); }
+        .pix-code-container { display: flex; gap: 8px; }
+        .pix-code-container input { flex: 1; padding: 8px; background: var(--bg-section); border: 1px solid var(--border-light); color: var(--text-muted); border-radius: var(--radius-btn); font-size: 14px; outline: none; }
+        .pix-code-container button { background: var(--bg-section); color: var(--text-main); border: 1px solid var(--border-light); padding: 0 16px; border-radius: var(--radius-btn); font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .pix-code-container button:hover { background: var(--border-light); }
+        
+        .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 24px; }
+        .footer-links a { color: var(--text-muted); font-size: 14px; font-weight: 500; text-decoration: none; transition: color 0.2s; }
         .footer-links a:hover { color: var(--primary); text-decoration: underline; }
-        .footer-copy { text-align: center; color: var(--text-placeholder); font-size: 13px; margin-top: 8px; }
+        .footer-copy { text-align: center; color: var(--text-placeholder); font-size: 12px; margin-top: 16px; }
 
-        .fade-in-section { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; will-change: opacity, transform; }
+        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; will-change: opacity, transform; }
         .fade-in-section.is-visible { opacity: 1; transform: none; }
 
-        @media (max-width: 768px) { .hero h1 { font-size: 40px; letter-spacing: -1.5px;} }
+        /* Mobile Sticky CTA */
+        .mobile-sticky-cta { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-page); border-top: 1px solid var(--border-light); padding: 16px 20px; z-index: 100; box-shadow: 0 -4px 12px rgba(0,0,0,0.05); text-align: center; box-sizing: border-box; }
+        
+        @media (max-width: 768px) { 
+            .hero h1 { font-size: 40px; letter-spacing: -1.5px;} 
+            .features-header h2 { font-size: 32px;}
+            .mobile-sticky-cta { display: block; }
+            body { padding-bottom: 80px; } /* Espaço para o menu fixo */
+        }
     </style>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Buscador DJEN - Prazos Judiciais e Intimações",
-      "operatingSystem": "Chrome, Firefox, Edge",
-      "applicationCategory": "BrowserApplication",
-      "description": "Extensão para automatizar a triagem de publicações do Diário de Justiça Eletrônico Nacional (DJEN) e calcular prazos processuais para advogados.",
-      "url": "https://www.buscadordjen.com.br/",
-      "author": { "@type": "Person", "name": "Amilcar Moreira" },
-      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "BRL" }
-    }
-    </script>
 </head>
 <body>
 
@@ -210,279 +193,187 @@
         <div class="brand">
             <img src="djen-128.png" alt="Logo Buscador DJEN">
             Buscador DJEN
-            <span class="badge-cortesia-site">CORTESIA</span>
+            <span class="badge-cortesia-site">BETA</span>
         </div>
-        <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 500; color: var(--text-muted); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">
+        <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 500; color: var(--text-muted); text-decoration: none;">
             por Amilcar Moreira
         </a>
     </header>
 
     <section class="hero">
-        <h1>Recupere suas horas de sono. Deixe o DJEN calcular os <span>prazos</span> por você.</h1>
-        <p>A única extensão que une triagem automatizada, cálculo de prazos em dias úteis e gestão de tarefas em uma interface minimalista. De advogado para advogado.</p>
+        <h1>Gestão inteligente de <span>publicações judiciais.</span></h1>
+        <p>Transforme seu navegador em uma central de auditoria de prazos, leitura limpa e gestão de tarefas. Sem sincronização em nuvem, com total sigilo profissional.</p>
         
         <div class="hero-buttons">
-            <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" rel="noopener noreferrer" class="btn-browser chrome" aria-label="Baixar extensão para Chrome">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="21.17" y1="8" x2="12" y2="8"></line><line x1="3.95" y1="6.06" x2="8.54" y2="14"></line><line x1="10.88" y1="21.94" x2="15.46" y2="14"></line></svg>
-                Instalar Grátis no Chrome
+            <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser chrome primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="21.17" y1="8" x2="12" y2="8"></line><line x1="3.95" y1="6.06" x2="8.54" y2="14"></line><line x1="10.88" y1="21.94" x2="15.46" y2="14"></line></svg>
+                Adicionar ao Chrome
             </a>
-            <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" rel="noopener noreferrer" class="btn-browser firefox" aria-label="Baixar extensão para Firefox">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path><path d="M14.5 15.5c-1.5 1.5-3.5 1.5-5 0"></path><path d="M9.5 8.5c1.5-1.5 3.5-1.5 5 0"></path></svg>
-                Instalar Grátis no Firefox
+            <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-browser firefox">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12.23 20.42c-4.007 1.44 -8.23 -2.053 -6.18 -6.07l.84 -1.65c.19 -.37 .11 -.81 -.19 -1.11l-1.06 -1.06a1.047 1.047 0 0 1 .42 -1.77c.4 -.11 .7 -.46 .79 -.86c.09 -.42 -.16 -.82 -.54 -1l-1.3 -.61c-.24 -.11 -.3 -.44 -.13 -.63c1.5 -1.74 3.7 -2.83 6.13 -2.83c4.12 0 7.73 2.5 9.06 6.25c.34 1.05 -1.24 1.15 -1.5 0a6 6 0 1 0 -9 7.21c-.42 0 -.9 0 -1.26 -.38c-.37 -.37 -.16 -1.18 .21 -1.64l1.45 -1.71c.21 -.24 .2 -.61 -.03 -.84l-1.07 -1.07a1.05 1.05 0 0 1 .4 -1.77c.4 -.11 .7 -.46 .78 -.86c.09 -.43 -.16 -.83 -.54 -1.01l-1.3 -.61"></path>
+                </svg>
+                Adicionar ao Firefox
             </a>
         </div>
+        
+        <div class="trust-badges">
+            <span>Compatível com PJe, e-SAJ e Projudi</span>
+        </div>
+        <div class="microcopy">🔒 Não requer Certificado Digital ou senhas.</div>
     </section>
 
     <section class="demo-section">
         <div class="demo-badge">Test Drive Interativo</div>
-        <p style="color: var(--text-muted); margin-bottom: 40px; font-size: 16px;">Explore as abas e clique em <b>Consultar DJEN</b> para ver a extensão em ação.</p>
+        <p style="color: var(--text-muted); margin-bottom: 40px; font-size: 16px;">Explore as abas e simule uma consulta real abaixo.</p>
         <div class="iframe-wrapper fade-in-section">
-            <iframe src="simulador.html" width="400" height="600" scrolling="no" loading="lazy" title="Simulador Interativo do Buscador DJEN"></iframe>
+            <iframe src="simulador.html" width="400" height="600" scrolling="no" loading="lazy" title="Simulador Buscador DJEN"></iframe>
         </div>
     </section>
 
     <section class="features-container">
         <div class="features-header fade-in-section">
-            <h2>🚀 Principais Funcionalidades</h2>
-            <p>Unificamos pesquisa, cálculo de prazos e gestão de tarefas em um único lugar.</p>
+            <h2>Precisão absoluta.</h2>
         </div>
 
         <div class="features">
             <div class="feature-card fade-in-section">
-                <div class="feature-icon" style="color: var(--primary);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                </div>
-                <h3>Busca Inteligente no DJEN</h3>
-                <p>Consulte publicações de qualquer tribunal integrado ao PJe utilizando apenas o seu número da OAB e UF.</p>
-                <ul class="feature-list">
-                    <li><b>Filtros Instantâneos:</b> Filtre os resultados por tribunal, período ou palavras-chave instantaneamente.</li>
-                </ul>
+                <div class="feature-icon" style="color: var(--primary);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+                <h3>Busca Inteligente</h3>
+                <p>Apenas sua OAB e UF. Resultados instantâneos de qualquer tribunal PJe, com filtros aplicados em tempo real.</p>
             </div>
 
             <div class="feature-card fade-in-section">
-                <div class="feature-icon" style="color: var(--zen-red);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                </div>
-                <h3>Calculadora de Prazos Avançada</h3>
-                <p>Esqueça a contagem manual! O sistema calcula seus prazos fatais em dias úteis (CPC/CLT) ou corridos (CPP).</p>
-                <ul class="feature-list">
-                    <li><b>Desvios Automáticos:</b> Considera Feriados Nacionais, Estaduais e Municipais.</li>
-                    <li><b>Recessos:</b> Pula Recesso Forense e suspensões dos Tribunais.</li>
-                    <li><b>Prorrogações:</b> Prorrogações automáticas para o próximo dia útil.</li>
-                </ul>
+                <div class="feature-icon" style="color: var(--zen-red);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+                <h3>Cálculo Preciso</h3>
+                <p>Dias úteis ou corridos. O sistema desvia automaticamente de feriados, suspensões e do recesso forense.</p>
             </div>
 
             <div class="feature-card fade-in-section">
-                <div class="feature-icon" style="color: var(--zen-green);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                </div>
-                <h3>Gestor de Tarefas por Processo</h3>
-                <p>Cada intimação possui sua própria lista de tarefas. O foco fica sempre no que importa.</p>
-                <ul class="feature-list">
-                    <li><b>Organização:</b> Anote o que precisa ser feito (ex: "Elaborar Peça").</li>
-                    <li><b>Progresso:</b> Marque as concluídas e veja a barra de progresso do card avançar.</li>
-                </ul>
+                <div class="feature-icon" style="color: var(--zen-green);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></div>
+                <h3>Gestor de Tarefas</h3>
+                <p>Uma lista de afazeres para cada intimação. O foco da sua pauta permanece no que realmente importa.</p>
             </div>
 
             <div class="feature-card fade-in-section">
-                <div class="feature-icon" style="color: var(--zen-purple);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-                </div>
-                <h3>Radar de Urgência & Modo Foco</h3>
-                <p>O sistema lê por você e avisa o que é urgente.</p>
-                <ul class="feature-list">
-                    <li><b>Alertas:</b> Detecta automaticamente palavras sensíveis (Penhora, Bloqueio, Liminar) e cria etiquetas.</li>
-                    <li><b>Leitura Limpa:</b> Ative o Modo Foco para ler despachos longos sem distrações, destacar texto e ajustar a fonte.</li>
-                </ul>
+                <div class="feature-icon" style="color: var(--zen-purple);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
+                <h3>Radar & Foco</h3>
+                <p>Detecção automática de urgências (Liminares, Penhoras) e um modo de leitura imersiva sem distrações.</p>
             </div>
 
             <div class="feature-card fade-in-section">
-                <div class="feature-icon" style="color: var(--zen-blue);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-                </div>
-                <h3>Integração e Compartilhamento</h3>
-                <p>Mova seus prazos e comunique-se com os clientes rapidamente.</p>
-                <ul class="feature-list">
-                    <li><b>Google Agenda:</b> Exporte seus prazos calculados direto para sua agenda com 1 clique.</li>
-                    <li><b>WhatsApp & Telegram:</b> Gere relatórios e avise seus clientes com mensagens formatadas e limpas.</li>
-                </ul>
+                <div class="feature-icon" style="color: var(--zen-blue);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg></div>
+                <h3>Integração Ágil</h3>
+                <p>Exporte prazos para o Google Agenda em um clique. Gere relatórios estruturados para o WhatsApp.</p>
             </div>
 
             <div class="feature-card fade-in-section">
-                <div class="feature-icon" style="color: var(--text-main);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                </div>
+                <div class="feature-icon" style="color: var(--text-main);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
                 <h3>Arquitetura Zero-Cloud</h3>
-                <p>Diferente de softwares jurídicos comuns, o Buscador DJEN processa tudo localmente. Sem contas, sem senhas na nuvem, sem riscos de vazamento. O sigilo profissional é inviolável.</p>
-                <ul class="feature-list">
-                    <li><b>100% Offline:</b> O Buscador DJEN não sincroniza dados na nuvem e não envia seus processos para fora.</li>
-                    <li><b>Cofre Pessoal:</b> Sua agenda, anotações e tarefas ficam salvas localmente e criptografadas no seu próprio navegador.</li>
-                </ul>
-            </div>
-
-            <div class="feature-card fade-in-section">
-                <div class="feature-icon" style="color: var(--zen-gold);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                </div>
-                <h3>Produtividade Gamificada</h3>
-                <p>Trabalhe de forma mais leve e engajante.</p>
-                <ul class="feature-list">
-                    <li><b>Evolução:</b> Cumpra prazos, adicione tarefas e faça buscas para ganhar XP.</li>
-                    <li><b>Suba de Nível:</b> Avance de Estagiário até Sócio Titular acompanhando suas estatísticas semanais.</li>
-                </ul>
+                <p>Sem servidores externos. Seus dados, processos e agenda ficam criptografados apenas na sua máquina.</p>
             </div>
         </div>
     </section>
 
     <section class="gallery-section fade-in-section">
         <div class="carousel">
-            <div class="carousel-item"><img src="1.webp" alt="Interface de busca do Buscador DJEN" loading="lazy"></div>
-            <div class="carousel-item"><img src="2.webp" alt="Calendário e auditoria visual de dias úteis" loading="lazy"></div>
-            <div class="carousel-item"><img src="3.webp" alt="Gestor de tarefas e checklists por processo" loading="lazy"></div>
-            <div class="carousel-item"><img src="4.webp" alt="Interface de cálculos e prazos" loading="lazy"></div>
-            <div class="carousel-item"><img src="5.webp" alt="Gestão visual de publicações" loading="lazy"></div>
-            <div class="carousel-item"><img src="6.webp" alt="Calendário mensal de controle de prazos" loading="lazy"></div>
-            <div class="carousel-item"><img src="7.webp" alt="Menu de configurações e backup local" loading="lazy"></div>
-            <div class="carousel-item"><img src="8.webp" alt="Configuração do Radar de palavras-chave jurídicas" loading="lazy"></div>
-            <div class="carousel-item"><img src="9.webp" alt="Guia rápido e atalhos de teclado da extensão" loading="lazy"></div>
-            <div class="carousel-item"><img src="10.webp" alt="Exportação e compartilhamento via WhatsApp e Google" loading="lazy"></div>
+            <div class="carousel-item">
+                <img src="1.webp" alt="Interface de busca" loading="lazy">
+                <div class="carousel-caption">Interface de Busca e Filtros</div>
+            </div>
+            <div class="carousel-item">
+                <img src="2.webp" alt="Auditoria de prazos" loading="lazy">
+                <div class="carousel-caption">Auditoria Visual de Dias Úteis</div>
+            </div>
+            <div class="carousel-item">
+                <img src="3.webp" alt="Tarefas" loading="lazy">
+                <div class="carousel-caption">Gestão de Tarefas por Processo</div>
+            </div>
         </div>
     </section>
 
     <section class="info-container fade-in-section">
         <div class="authority-box">
-            <h3>Da prática diária para o seu navegador.</h3>
-            <p>Sou Amilcar Moreira, jornalista, advogado, especialista em Direito Digital e Propriedade Intelectual, com participação no curso <i>CopyrightX</i> pela Harvard Law School e membro das Comissões de Propriedade Intelectual e de Mídia, Entretenimento e Cultura da OAB/SP. Criei o Buscador DJEN porque, atuando no contencioso, estava exausto de perder horas produtivas na leitura de Diários de Justiça. Desenvolvi cada funcionalidade da ferramenta pensando na pressão real dos prazos fatais. É uma extensão 100% independente, feita de colega para colega, para garantir que você assuma o controle definitivo da sua pauta.</p>
-        </div>
-
-        <div class="faq-section">
-            <h2>Perguntas Frequentes</h2>
-            
-            <details>
-                <summary>A extensão tem acesso aos meus processos em segredo de justiça?</summary>
-                <p>Não. A extensão funciona 100% no seu navegador e não envia nenhuma informação dos seus processos para servidores externos. Todos os seus prazos, anotações e buscas ficam salvos exclusivamente no armazenamento local da sua máquina, garantindo total privacidade e sigilo profissional.</p>
-            </details>
-            
-            <details>
-                <summary>A contagem de prazos considera feriados locais?</summary>
-                <p>A calculadora de prazos é equipada com os feriados nacionais e recessos forenses federais/estaduais mapeados. Contudo, devido às variações municipais, a ferramenta permite que você audite a linha do tempo e adicione ou remova manualmente dias não úteis (como feriados da sua cidade) com apenas um clique antes de salvar o prazo.</p>
-            </details>
-            
-            <details>
-                <summary>A ferramenta é realmente gratuita?</summary>
-                <p>Sim. Atualmente, todas as funções Premium (incluindo o Radar, Modo Foco e exportação) estão liberadas de forma gratuita por tempo limitado como cortesia. A extensão é mantida de forma independente por meio de contribuições voluntárias (como a opção "Pague-me um café" no rodapé).</p>
-            </details>
+            <h3>Do contencioso para o código.</h3>
+            <p>Sou Amilcar Moreira. Advogado e desenvolvedor.<br><br>O Buscador DJEN nasceu da necessidade de eliminar o trabalho braçal da leitura manual de diários de justiça. É uma ferramenta 100% independente, construída sob a ótica de quem enfrenta a pressão dos prazos fatais todos os dias. O objetivo é simples: devolver a precisão matemática e o controle da pauta à advocacia.</p>
         </div>
     </section>
 
     <section class="bottom-cta fade-in-section">
-        <h2>💡 Por que instalar?</h2>
-        <p>Se você trabalha com múltiplos prazos diários e precisa de uma ferramenta rápida, que não trave e que não custe mensalidades absurdas, o Buscador DJEN foi feito para você.</p>
-        <p style="margin-bottom: 32px; font-weight: 600;">Instale agora e assuma o controle total da sua pauta!</p>
+        <h2>O controle da sua pauta, a um clique.</h2>
+        <p>Sem lentidão. Sem mensalidades abusivas. Instale agora e automatize sua rotina.</p>
         <div class="hero-buttons">
-            <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" rel="noopener noreferrer" class="btn-browser chrome" style="background-color: var(--primary); color: #fff; border: none;">
-                Instalar Grátis no Chrome
-            </a>
-            <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" rel="noopener noreferrer" class="btn-browser firefox" style="background-color: var(--zen-orange); color: #fff; border: none;">
-                Instalar Grátis no Firefox
-            </a>
+            <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser chrome primary">Adicionar ao Chrome</a>
+            <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-browser firefox">Adicionar ao Firefox</a>
         </div>
     </section>
 
     <footer>
         <div class="footer-content">
-            
-            <div class="premium-banner-footer fade-in-section">
-                ✨ <b>Premium Liberado:</b> Todas as funções avançadas estão gratuitas por tempo limitado.
-            </div>
-
             <div class="coffee-container fade-in-section">
-                <button class="coffee-btn" id="btnToggleCoffee" aria-expanded="false" aria-controls="contentCoffee">
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
-                        <span>Pague-me um café</span>
-                    </div>
-                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <button class="coffee-btn" id="btnToggleCoffee">
+                    <span>Pague-me um café</span>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </button>
-                
                 <div class="coffee-content" id="contentCoffee">
-                    <div style="color: var(--text-muted); font-size: 13px; margin-top: 12px; margin-bottom: 12px;">Se o Buscador DJEN já te salvou de um erro de contagem ou te devolveu 1 hora do seu dia, considere manter esse projeto vivo.</div>
-                    
-                    <img src="qrcode-pix.png" alt="QR Code PIX para doação" onerror="this.style.display='none'">
-                    
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Um projeto independente, de colega para colega. Se a extensão poupou seu tempo hoje, considere pagar um café para manter os servidores rodando.</p>
                     <div class="pix-code-container">
-                        <input type="text" id="pixKey" value="50f781e2-9d94-4624-8f08-a9938bb0c4dc" readonly aria-label="Chave PIX para copiar">
-                        <button id="btnCopyPix" onclick="copyPixCode()" aria-label="Copiar chave PIX">Copiar</button>
+                        <input type="text" id="pixKey" value="50f781e2-9d94-4624-8f08-a9938bb0c4dc" readonly>
+                        <button id="btnCopyPix" onclick="copyPixCode()">Copiar Pix</button>
                     </div>
                 </div>
             </div>
 
             <div class="footer-links fade-in-section">
                 <a href="termos.html">Termos de Uso</a>
-                <a href="privacidade.html">Política de Privacidade</a>
-                <a href="mailto:adv.amilcarmoreira@gmail.com">Contato / Suporte</a>
+                <a href="privacidade.html">Privacidade</a>
+                <a href="mailto:adv.amilcarmoreira@gmail.com">Contato</a>
             </div>
             
             <div class="footer-copy fade-in-section">
                 &copy; 2026 Buscador DJEN. Feito com cuidado para a advocacia.
             </div>
-            
         </div>
     </footer>
 
+    <div class="mobile-sticky-cta">
+        <a href="#top" onclick="window.scrollTo(0,0);" class="btn-browser primary" style="width: 100%; justify-content: center; box-sizing: border-box;">Baixar Extensão</a>
+    </div>
+
     <script>
-        // 1. Lógica do botão de café
+        // 1. Café / Pix
         const btnToggleCoffee = document.getElementById('btnToggleCoffee');
         const contentCoffee = document.getElementById('contentCoffee');
-
         btnToggleCoffee.addEventListener('click', (e) => {
             e.preventDefault();
-            const isActive = btnToggleCoffee.classList.toggle('active');
+            btnToggleCoffee.classList.toggle('active');
             contentCoffee.classList.toggle('show');
-            btnToggleCoffee.setAttribute('aria-expanded', isActive);
         });
 
-        // 2. Copiar chave Pix
         function copyPixCode() {
             const pixInput = document.getElementById('pixKey');
             const btnCopy = document.getElementById('btnCopyPix');
-            
             pixInput.select();
-            pixInput.setSelectionRange(0, 99999);
-            
             navigator.clipboard.writeText(pixInput.value).then(() => {
                 const textOriginal = btnCopy.innerText;
                 btnCopy.innerText = 'Copiado!';
-                btnCopy.style.backgroundColor = 'var(--zen-green)';
-                btnCopy.style.color = '#fff';
-                
-                setTimeout(() => {
-                    btnCopy.innerText = textOriginal;
-                    btnCopy.style.backgroundColor = 'var(--primary)';
-                    btnCopy.style.color = 'var(--primary-text)';
-                }, 2000);
-            }).catch(err => {
-                console.error('Erro ao copiar: ', err);
+                setTimeout(() => btnCopy.innerText = textOriginal, 2000);
             });
         }
 
-        // 3. Animação de entrada (Fade In)
+        // 2. Animação de Entrada (Fade In)
         document.addEventListener("DOMContentLoaded", function() {
-            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
-            const observer = new IntersectionObserver((entries, observer) => {
+            const observer = new IntersectionObserver((entries, obs) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
+                        obs.unobserve(entry.target);
                     }
                 });
-            }, observerOptions);
-
-            document.querySelectorAll('.fade-in-section').forEach(section => {
-                observer.observe(section);
-            });
+            }, { threshold: 0.15 });
+            document.querySelectorAll('.fade-in-section').forEach(sec => observer.observe(sec));
             
-            // 4. Detecção de Navegador (Instalação 1 Clique)
+            // 3. Detecção de Navegador UI/UX
             const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
             const isChrome = !!window.chrome;
             
@@ -490,30 +381,21 @@
             const btnFirefox = document.querySelectorAll('.btn-browser.firefox');
 
             if (isChrome) {
-                btnChrome.forEach(btn => {
-                    btn.style.border = '2px solid var(--primary)';
-                    btn.style.boxShadow = '0 0 15px var(--primary-light)';
-                });
-                btnFirefox.forEach(btn => btn.style.opacity = '0.6');
+                btnFirefox.forEach(btn => { btn.style.display = 'none'; });
             } else if (isFirefox) {
-                btnFirefox.forEach(btn => {
-                    btn.style.border = '2px solid var(--zen-orange)';
-                    btn.style.boxShadow = '0 0 15px rgba(221, 91, 0, 0.2)';
-                });
-                btnChrome.forEach(btn => btn.style.opacity = '0.6');
+                btnFirefox.forEach(btn => { btn.classList.add('primary'); });
+                btnChrome.forEach(btn => { btn.style.display = 'none'; });
             }
         });
 
-        // 5. Lógica do Carrossel Automático Corrigida
+        // 4. Carrossel e Modal
         const carousel = document.querySelector('.carousel');
         let autoPlayInterval;
-
         function startAutoPlay() {
             autoPlayInterval = setInterval(() => {
                 const item = carousel.querySelector('.carousel-item');
                 if(!item) return;
-                
-                const itemWidth = item.offsetWidth + 24; // largura + gap
+                const itemWidth = item.offsetWidth + 24; 
                 if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 20) {
                     carousel.scrollTo({ left: 0, behavior: 'smooth' });
                 } else {
@@ -521,24 +403,16 @@
                 }
             }, 4000);
         }
-
-        function stopAutoPlay() {
-            clearInterval(autoPlayInterval);
-        }
-
+        function stopAutoPlay() { clearInterval(autoPlayInterval); }
         startAutoPlay();
-
-        // Pausa a animação em interações
         carousel.addEventListener('mouseenter', stopAutoPlay);
         carousel.addEventListener('mouseleave', startAutoPlay);
         carousel.addEventListener('touchstart', stopAutoPlay, {passive: true});
         carousel.addEventListener('touchend', startAutoPlay);
 
-        // 6. Lógica do Lightbox (Zoom nas Imagens)
         const modal = document.createElement('div');
-        modal.id = 'imgModal';
         modal.style.cssText = 'display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; cursor: zoom-out;';
-        modal.innerHTML = '<img id="modalImg" style="max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5); object-fit: contain;">';
+        modal.innerHTML = '<img id="modalImg" style="max-width: 90%; max-height: 90%; border-radius: 12px; box-shadow: var(--shadow-modal); object-fit: contain;">';
         document.body.appendChild(modal);
 
         document.querySelectorAll('.carousel-item img').forEach(img => {
@@ -548,7 +422,6 @@
                 stopAutoPlay();
             });
         });
-
         modal.addEventListener('click', () => {
             modal.style.display = 'none';
             startAutoPlay();
