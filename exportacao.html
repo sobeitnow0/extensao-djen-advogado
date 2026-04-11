@@ -3,104 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatórios em Visual Law e Jurimetria | Buscador DJEN</title>
-    <meta name="description" content="Gere relatórios de publicações judiciais em PDF com Visual Law. Exporte planilhas CSV para aplicar Jurimetria e compartilhe andamentos via WhatsApp.">
+    <title>Relatórios PDF, Jurimetria e WhatsApp | Buscador DJEN</title>
+    <meta name="description" content="Gere fichas processuais em PDF (Visual Law). Exporte a base para CSV visando Jurimetria e comunique andamentos via WhatsApp instantaneamente.">
     <link rel="icon" type="image/png" href="djen-128.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Os mesmos estilos do template base comprimidos aqui... */
-        :root { --bg-page: #ffffff; --bg-header: rgba(255, 255, 255, 0.85); --bg-section: #f6f5f4; --text-main: rgba(0, 0, 0, 0.95); --text-muted: #615d59; --primary: #0075de; --primary-hover: #005bab; --border-light: rgba(0, 0, 0, 0.08); --zen-green: #1aae39; --radius-btn: 6px; --radius-card: 16px; --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px; }
+        :root { --bg-page: #ffffff; --bg-header: rgba(255, 255, 255, 0.85); --bg-section: #f6f5f4; --text-main: rgba(0, 0, 0, 0.95); --text-muted: #615d59; --primary: #0075de; --primary-hover: #005bab; --border-light: rgba(0, 0, 0, 0.08); --zen-green: #1aae39; --zen-orange: #dd5b00; --zen-blue: #0075de; --radius-btn: 6px; --radius-card: 16px; --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px; }
         [data-theme="dark"] { --bg-page: #191919; --bg-header: rgba(25, 25, 25, 0.85); --bg-section: #202020; --text-main: rgba(255, 255, 255, 0.95); --text-muted: rgba(255, 255, 255, 0.6); --primary: #52a8ff; --primary-hover: #62aef0; --border-light: rgba(255, 255, 255, 0.08); }
         ::-webkit-scrollbar { width: 10px; height: 10px; } ::-webkit-scrollbar-track { background: var(--bg-page); } ::-webkit-scrollbar-thumb { background: rgba(163, 158, 152, 0.3); border-radius: 10px; border: 2px solid var(--bg-page); }
         body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); line-height: 1.6; transition: 0.3s; } a { text-decoration: none; }
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; transition: 0.3s; }
-        header.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.03); } .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); } .brand img { width: 32px; height: 32px; border-radius: 8px; }
-        .header-nav { display: flex; align-items: center; gap: 24px; } .nav-link { font-size: 14px; font-weight: 600; color: var(--text-muted); transition: 0.2s; } .nav-link:hover, .nav-link.active { color: var(--primary); }
-        .theme-toggle { background: transparent; border: 1px solid var(--border-light); color: var(--text-muted); width: 36px; height: 36px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        header.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.03); } 
+        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); } .brand img { width: 32px; height: 32px; border-radius: 8px; }
+        .badge-cortesia-site { font-size: 10px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 3px 8px; border-radius: 999px; font-weight: 700; border: none; letter-spacing: 0.5px; }
+        .header-nav { display: flex; gap: 24px; margin: 0 auto; padding: 0 24px; } .nav-link { font-size: 14px; font-weight: 600; color: var(--text-muted); transition: 0.2s; } .nav-link:hover, .nav-link.active { color: var(--primary); }
+        .header-actions { display: flex; align-items: center; gap: 12px; }
+        .share-btn { display: flex; align-items: center; gap: 6px; background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); padding: 6px 12px; height: 36px; border-radius: var(--radius-btn); font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .share-btn:hover { background: var(--bg-section); color: var(--text-main); border-color: transparent; }
+        .theme-toggle { background: transparent; border: 1px solid var(--border-light); color: var(--text-muted); width: 36px; height: 36px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; }
+        .theme-toggle:hover { background: var(--bg-section); color: var(--text-main); border-color: transparent; }
         [data-theme="dark"] .sun-icon { display: none; } [data-theme="light"] .moon-icon { display: none; }
-        .feature-hero { padding: 100px 5% 60px; text-align: center; max-width: 900px; margin: 0 auto; } .hero-badge { display: inline-block; background: rgba(0, 117, 222, 0.1); color: var(--primary); padding: 6px 16px; border-radius: 99px; font-size: 13px; font-weight: 700; margin-bottom: 24px; text-transform: uppercase; }
-        .feature-hero h1 { font-size: 56px; font-weight: 800; line-height: 1.1; margin: 0 0 24px 0; letter-spacing: -1.5px; } .feature-hero p { font-size: 20px; color: var(--text-muted); font-weight: 500; margin-bottom: 0; }
-        .feature-blocks { padding: 40px 5% 100px; max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 100px; } .block-row { display: flex; align-items: center; gap: 60px; } .block-row.reverse { flex-direction: row-reverse; }
-        .block-text { flex: 1; } .block-text h2 { font-size: 32px; font-weight: 800; margin: 0 0 16px 0; line-height: 1.2; } .block-text p { font-size: 18px; color: var(--text-muted); margin: 0 0 24px 0; }
-        .check-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 16px; } .check-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 16px; font-weight: 500; } .check-list svg { width: 20px; height: 20px; color: var(--zen-green); flex-shrink: 0; margin-top: 2px; }
-        .block-image { flex: 1.2; } .block-image img { width: 100%; border-radius: var(--radius-card); box-shadow: var(--shadow-card); border: 1px solid var(--border-light); }
-        .bottom-cta { text-align: center; padding: 100px 20px; background: var(--bg-section); border-top: 1px solid var(--border-light); } .bottom-cta h2 { font-size: 40px; font-weight: 800; margin-bottom: 16px; letter-spacing: -1px; }
-        .btn-browser { display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: #fff; padding: 14px 28px; border-radius: var(--radius-btn); font-weight: 600; font-size: 16px; transition: 0.2s; } .btn-browser:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 117, 222, 0.25); }
-        footer { padding: 40px 20px; text-align: center; border-top: 1px solid var(--border-light); font-size: 14px; color: var(--text-muted); } @media (max-width: 900px) { .feature-hero h1 { font-size: 40px; } .block-row, .block-row.reverse { flex-direction: column; gap: 40px; } .header-nav { display: none; } }
+        
+        .feature-hero { padding: 120px 5% 80px; text-align: center; max-width: 900px; margin: 0 auto; } 
+        .hero-badge { display: inline-block; background: rgba(0, 117, 222, 0.1); color: var(--primary); padding: 6px 16px; border-radius: 99px; font-size: 13px; font-weight: 700; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .feature-hero h1 { font-size: 56px; font-weight: 800; line-height: 1.1; margin: 0 0 24px 0; letter-spacing: -1.5px; } 
+        .feature-hero p { font-size: 22px; color: var(--text-muted); font-weight: 500; margin-bottom: 0; line-height: 1.5; }
+
+        .text-grid { padding: 40px 5% 100px; max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 60px; }
+        .text-card { background: var(--bg-section); padding: 50px; border-radius: var(--radius-card); border: 1px solid var(--border-light); transition: 0.3s; }
+        .text-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); background: var(--card-bg); }
+        .icon-wrapper { width: 56px; height: 56px; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 24px; }
+        .text-card h2 { font-size: 32px; font-weight: 800; margin: 0 0 16px 0; line-height: 1.2; letter-spacing: -0.5px;} 
+        .text-card p { font-size: 18px; color: var(--text-muted); margin: 0 0 24px 0; line-height: 1.6; }
+        .check-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 12px; }
+        @media(min-width: 768px){ .check-list { grid-template-columns: 1fr 1fr; } }
+        .check-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 16px; font-weight: 500; } 
+        .check-list svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
+
+        .bottom-cta { text-align: center; padding: 100px 20px; background: var(--bg-section); border-top: 1px solid var(--border-light); } 
+        .bottom-cta h2 { font-size: 40px; font-weight: 800; margin-bottom: 32px; letter-spacing: -1px; }
+        .btn-browser { display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: #fff; padding: 14px 28px; border-radius: var(--radius-btn); font-weight: 600; font-size: 16px; transition: 0.2s; } 
+        .btn-browser:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 117, 222, 0.25); }
+        footer { padding: 40px 20px; text-align: center; border-top: 1px solid var(--border-light); font-size: 14px; color: var(--text-muted); } 
+        @media (max-width: 900px) { .feature-hero h1 { font-size: 40px; } .header-nav { display: none; } .text-card { padding: 30px; } }
     </style>
 </head>
 <body>
     <header id="mainHeader">
-        <a href="index.html" class="brand"><img src="djen-128.png" alt="Logo DJEN">Buscador DJEN</a>
+        <a href="index.html" class="brand" style="text-decoration: none;"><img src="djen-128.png" alt="Logo DJEN">Buscador DJEN<span class="badge-cortesia-site">CORTESIA</span></a>
         <div class="header-nav">
             <a href="busca.html" class="nav-link">Busca & Tags</a>
             <a href="prazos.html" class="nav-link">Prazos & Agenda</a>
-            <a href="exportacao.html" class="nav-link active">Relatórios PDF/CSV</a>
-            <a href="radar.html" class="nav-link">Radar de Urgências</a>
-            <button id="themeToggle" class="theme-toggle"><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
+            <a href="exportacao.html" class="nav-link active">Relatórios PDF</a>
+            <a href="radar.html" class="nav-link">Radar</a>
+        </div>
+        <div class="header-actions">
+            <button id="btn-compartilhar" class="share-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg><span class="share-text" style="display: inline-block;">Compartilhar</span></button>
+            <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" style="font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none;">por Amilcar</a>
+            <button id="themeToggle" class="theme-toggle"><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
         </div>
     </header>
 
     <section class="feature-hero">
-        <span class="hero-badge">Jurimetria e Legal Design</span>
-        <h1>Transforme dados brutos em decisões estratégicas.</h1>
-        <p>Saia das planilhas manuais. Gere relatórios processuais em PDF com qualidade de Visual Law, e exporte sua base para aplicar jurimetria na advocacia.</p>
+        <span class="hero-badge">Jurimetria & Legal Design</span>
+        <h1>Dados que valorizam o seu trabalho.</h1>
+        <p>A percepção de valor do cliente depende da forma como você comunica. Gere relatórios processuais impecáveis em PDF e extraia bases CSV para análises de jurimetria avançada.</p>
     </section>
 
-    <section class="feature-blocks">
-        <div class="block-row">
-            <div class="block-text">
-                <h2>Relatórios PDF com Visual Law.</h2>
-                <p>Impressão e envio de fichas de processo não precisam ser feios e difíceis de ler. O DJEN gera PDFs lindíssimos com a sua identidade, prontos para a pasta do cliente.</p>
-                <ul class="check-list">
-                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Fichas detalhadas de andamentos processuais.</li>
-                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Tabelas consolidadas de prazos para prestação de contas.</li>
-                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Formatação de Legal Design que valoriza o seu trabalho.</li>
-                </ul>
-            </div>
-            <div class="block-image"><img src="11.png" alt="Geração de relatório de publicações judiciais em visual law"></div>
+    <section class="text-grid">
+        <div class="text-card">
+            <div class="icon-wrapper" style="color: var(--primary); background: rgba(0, 117, 222, 0.1);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+            <h2>Relatórios PDF com Visual Law</h2>
+            <p>O envio de andamentos aos clientes não precisa ser uma folha A4 com texto esmagado. O sistema formata automaticamente tabelas de prazos e ementas com qualidade institucional, gerando um documento PDF de alto nível.</p>
+            <ul class="check-list" style="color: var(--primary);">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Identidade limpa e profissional.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Fichas individuais por processo.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Relatórios amplos de controladoria.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Pronto para anexar em e-mails e pastas de clientes.</span></li>
+            </ul>
         </div>
 
-        <div class="block-row reverse">
-            <div class="block-text">
-                <h2>Exportação CSV e Jurimetria.</h2>
-                <p>Para o escritório crescer, você precisa medir. Exporte toda a sua base de intimações em formato compatível com Excel para construir painéis de análise de dados.</p>
-                <ul class="check-list">
-                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Exporte publicações judiciais para Excel ou PowerBI.</li>
-                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Identifique os tribunais com maior volume de despachos.</li>
-                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Ideal para a modernização da controladoria jurídica digital.</li>
-                </ul>
-            </div>
-            <div class="block-image"><img src="10.png" alt="Controladoria jurídica digital e jurimetria"></div>
+        <div class="text-card">
+            <div class="icon-wrapper" style="color: var(--zen-green); background: rgba(26, 174, 57, 0.1);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></div>
+            <h2>Exportação CSV para Jurimetria</h2>
+            <p>A gestão de um escritório moderno exige análise de dados. Exporte toda a sua base histórica de intimações para o Excel (CSV) e utilize softwares como o PowerBI para aplicar métricas de jurimetria sobre as suas varas e prazos.</p>
+            <ul class="check-list" style="color: var(--zen-green);">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Análise preditiva de decisões e varas.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Controle de volume processual por advogado.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Formatação colunar amigável (Data, Teor, Status).</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Backup local e inviolável dos dados.</span></li>
+            </ul>
         </div>
 
-        <div class="block-row">
-            <div class="block-text">
-                <h2>Comunicação Ágil (WhatsApp & Telegram).</h2>
-                <p>Pare de dar "Ctrl+C" em textos desformatados. A extensão formata automaticamente a movimentação processual, limpando o lixo textual, para envio imediato aos clientes.</p>
-                <ul class="check-list">
-                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Disparo de andamentos processuais pelo WhatsApp Web.</li>
-                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Compartilhamento via Telegram ou copiar/colar enriquecido.</li>
-                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Oculta CNPJs e dados irrelevantes, enviando apenas o essencial.</li>
-                </ul>
-            </div>
-            <div class="block-image"><img src="7.png" alt="Exportação de andamentos para WhatsApp"></div>
+        <div class="text-card">
+            <div class="icon-wrapper" style="color: var(--zen-orange); background: rgba(221, 91, 0, 0.1);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></div>
+            <h2>Comunicação Ágil: WhatsApp e Telegram</h2>
+            <p>O cliente de hoje quer respostas imediatas. Copiar os despachos do tribunal resulta em textos cheios de pontuações e códigos ilegíveis. Nós filtramos o essencial e formatamos o andamento para disparo com um clique.</p>
+            <ul class="check-list" style="color: var(--zen-orange);">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Integração nativa com o WhatsApp Web.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Ocultação inteligente de CNPJs e dados irrelevantes.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Inclusão das suas anotações junto do teor.</span></li>
+            </ul>
         </div>
     </section>
 
     <section class="bottom-cta">
-        <h2>Melhore as apresentações do escritório.</h2>
-        <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="21.17" y1="8" x2="12" y2="8"></line><line x1="3.95" y1="6.06" x2="8.54" y2="14"></line><line x1="10.88" y1="21.94" x2="15.46" y2="14"></line></svg>Instalar Buscador DJEN</a>
+        <h2>Entregue valor aos seus clientes.</h2>
+        <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser">Instalar Buscador DJEN</a>
     </section>
 
     <footer>
-        <div style="margin-bottom: 12px; font-weight: 600;"><a href="index.html" style="color: var(--text-muted); margin-right: 16px;">Voltar ao Início</a><a href="calculadora.html" style="color: var(--primary);">Calculadora de Prazos Online</a></div>
+        <div style="margin-bottom: 12px; font-weight: 600;"><a href="index.html" style="color: var(--text-muted); margin-right: 16px;">Voltar ao Início</a><a href="calculadora.html" style="color: var(--primary);">Calculadora de Prazos</a></div>
         &copy; 2026 Buscador DJEN. Feito por Amilcar Moreira.
     </footer>
     <script>
         const header = document.getElementById('mainHeader'); window.addEventListener('scroll', () => { if (window.scrollY > 10) header.classList.add('scrolled'); else header.classList.remove('scrolled'); });
         const themeToggleBtn = document.getElementById('themeToggle'); themeToggleBtn.addEventListener('click', () => { const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', newTheme); localStorage.setItem('theme', newTheme); });
         if(localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        document.addEventListener('DOMContentLoaded', () => { const btnCompartilhar = document.getElementById('btn-compartilhar'); if (btnCompartilhar) { btnCompartilhar.addEventListener('click', async () => { try { if (navigator.share) { await navigator.share({ title: 'Buscador DJEN', text: 'Conheça esta funcionalidade do Buscador DJEN.', url: window.location.href }); } else { await navigator.clipboard.writeText(window.location.href); const iconSvg = btnCompartilhar.innerHTML; btnCompartilhar.innerHTML = '<span style="font-size: 13px;">Copiado!</span>'; setTimeout(() => { btnCompartilhar.innerHTML = iconSvg; }, 2000); } } catch (err) { console.error(err); } }); } });
     </script>
 </body>
 </html>
