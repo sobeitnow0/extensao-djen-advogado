@@ -25,7 +25,7 @@
         /* DESIGN SYSTEM - NOTION INSPIRATION */
         :root {
             --bg-page: #ffffff;
-            --bg-header: rgba(255, 255, 255, 0.85); /* Para efeito vidro */
+            --bg-header: rgba(255, 255, 255, 0.85); 
             --bg-section: #f6f5f4; 
             --card-bg: #ffffff;
             --text-main: rgba(0, 0, 0, 0.95); 
@@ -54,7 +54,7 @@
         /* DARK THEME VARIABLES */
         [data-theme="dark"] {
             --bg-page: #191919;
-            --bg-header: rgba(25, 25, 25, 0.85); /* Para efeito vidro */
+            --bg-header: rgba(25, 25, 25, 0.85);
             --bg-section: #202020;
             --card-bg: #252525;
             --text-main: rgba(255, 255, 255, 0.95);
@@ -76,30 +76,31 @@
             --shadow-modal: rgba(0,0,0,0.8) 0px 23px 52px;
         }
 
-        /* SCROLLBAR CUSTOMIZADA MINIMALISTA */
         ::-webkit-scrollbar { width: 10px; height: 10px; }
         ::-webkit-scrollbar-track { background: var(--bg-page); }
         ::-webkit-scrollbar-thumb { background: rgba(163, 158, 152, 0.3); border-radius: 10px; border: 2px solid var(--bg-page); }
         ::-webkit-scrollbar-thumb:hover { background: rgba(163, 158, 152, 0.6); }
 
-        /* BARRA DE PROGRESSO DE LEITURA */
         .progress-container { width: 100%; height: 3px; background: transparent; position: fixed; top: 0; left: 0; z-index: 1001; }
         .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.15s ease-out; border-radius: 0 2px 2px 0; }
 
-        /* TIPOGRAFIA E BASE */
         body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; font-feature-settings: "lnum" 1, "locl" 1; transition: background-color 0.3s, color 0.3s; }
 
-        /* HEADER E TOGGLE DE TEMA (COM EFEITO GLASS) */
+        /* HEADER E TOGGLE DE TEMA */
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s; }
         header.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
         
-        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; letter-spacing: -0.25px; }
+        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; letter-spacing: -0.25px; text-decoration: none; color: var(--text-main); }
         .brand img { width: 32px; height: 32px; border-radius: 8px; }
         .badge-cortesia-site { font-size: 10px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 3px 8px; border-radius: var(--radius-pill); font-weight: 700; border: none; letter-spacing: 0.5px; }
         
+        /* MENU DE NAVEGAÇÃO SUPERIOR */
+        .header-nav { display: flex; gap: 24px; margin: 0 auto; padding: 0 24px; }
+        .nav-link { font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .nav-link:hover { color: var(--primary); }
+
         .header-actions { display: flex; align-items: center; gap: 12px; }
         
-        /* BOTÃO DE COMPARTILHAR */
         .share-btn { display: flex; align-items: center; gap: 6px; background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); padding: 6px 12px; height: 36px; border-radius: var(--radius-btn); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; }
         .share-btn:hover { background: var(--bg-section); color: var(--text-main); border-color: transparent; }
         .share-btn svg { width: 14px; height: 14px; }
@@ -124,28 +125,21 @@
         .btn-browser.primary { background-color: var(--primary); color: var(--primary-text); border: 1px solid transparent; }
         .btn-browser.primary:hover { background-color: var(--primary-hover); box-shadow: 0 6px 20px rgba(0, 117, 222, 0.25); }
 
-        /* EFEITO GLOW SUAVE PARA BOTÃO SECUNDÁRIO */
-        @keyframes pulseGlowBtn {
-            0% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0.2); }
-            70% { box-shadow: 0 0 0 8px rgba(0, 117, 222, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0); }
-        }
+        @keyframes pulseGlowBtn { 0% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0.2); } 70% { box-shadow: 0 0 0 8px rgba(0, 117, 222, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0); } }
         .btn-glow { animation: pulseGlowBtn 2.5s infinite; }
         .btn-glow:hover { animation: none; border-color: var(--primary); }
 
         .trust-badges { display: flex; align-items: center; justify-content: center; gap: 16px; color: var(--text-placeholder); font-size: 14px; font-weight: 600; margin-bottom: 12px; flex-wrap: wrap;}
         .microcopy { color: var(--text-muted); font-size: 12px; font-weight: 500; }
 
-        /* CALCULADORA PROMO SECTION */
+        /* CALCULADORA E SIMULADOR */
         .calculator-promo { padding: 80px 20px; text-align: center; background: var(--bg-section); border-top: 1px solid var(--border-light); transition: background-color 0.3s; }
-        
-        /* SIMULADOR SECTION */
         .demo-section { display: flex; flex-direction: column; align-items: center; padding: 80px 20px 100px; background-color: var(--bg-page); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); transition: background-color 0.3s; }
         .demo-badge { background: var(--badge-bg); color: var(--badge-text); padding: 6px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 700; margin-bottom: 24px; letter-spacing: 0.5px; text-transform: uppercase;}
         .iframe-wrapper { position: relative; width: 100%; max-width: 400px; height: 600px; display: flex; justify-content: center; align-items: center; }
         .iframe-wrapper iframe { width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: var(--radius-card); box-shadow: var(--shadow-modal); background: var(--bg-page); transition: box-shadow 0.3s;}
 
-        /* FUNCIONALIDADES */
+        /* FUNCIONALIDADES (CARTÕES) */
         .features-container { padding: 120px 5% 80px; background: var(--bg-page); transition: background-color 0.3s; }
         .features-header { text-align: center; margin-bottom: 80px; }
         .features-header h2 { font-size: 44px; font-weight: 800; margin-bottom: 16px; line-height: 1.1; letter-spacing: -1.2px;}
@@ -158,49 +152,33 @@
         .feature-card h3 { margin: 0 0 12px 0; font-size: 20px; font-weight: 700; letter-spacing: -0.25px; line-height: 1.3;}
         .feature-card p { color: var(--text-muted); margin: 0; font-size: 15px; font-weight: 500; line-height: 1.6; transition: color 0.3s; }
 
+        /* LINK ANIMADO DENTRO DOS CARTÕES */
+        .feature-link { margin-top: auto; padding-top: 16px; font-size: 14px; font-weight: 700; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 4px; transition: gap 0.2s ease; }
+        .feature-link:hover { gap: 8px; text-decoration: underline; }
+
         [data-theme="dark"] .features-container { background: var(--bg-section); }
         [data-theme="dark"] .feature-card { background: var(--card-bg); }
         [data-theme="dark"] .feature-icon { background: var(--bg-section); }
 
         /* CARROSSEL */
         .gallery-section { padding: 0 0 120px 0; background: var(--bg-page); width: 100%; overflow: hidden; transition: background-color 0.3s; }
-        .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 24px; padding: 20px 5%; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
-        .carousel { -ms-overflow-style: none; scrollbar-width: none; }
+        .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 24px; padding: 20px 5%; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; }
         .carousel::-webkit-scrollbar { display: none; }
-        
-        .carousel-item { 
-            scroll-snap-align: center; 
-            flex: 0 0 auto; 
-            width: 85%; 
-            max-width: 400px; 
-            border-radius: var(--radius-card); 
-            border: 1px solid var(--border-light); 
-            box-shadow: var(--shadow-card); 
-            background: var(--card-bg); 
-            overflow: hidden; 
-            display: flex; 
-            flex-direction: column; 
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; 
-        }
-
-        @media (min-width: 1024px) {
-            .carousel-item { width: calc(33.333% - 16px); max-width: none; scroll-snap-align: start; }
-        }
-        @media (min-width: 768px) and (max-width: 1023px) {
-            .carousel-item { width: calc(50% - 12px); max-width: none; scroll-snap-align: start; }
-        }
-
+        .carousel-item { scroll-snap-align: center; flex: 0 0 auto; width: 85%; max-width: 400px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); background: var(--card-bg); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; }
+        @media (min-width: 1024px) { .carousel-item { width: calc(33.333% - 16px); max-width: none; scroll-snap-align: start; } }
+        @media (min-width: 768px) and (max-width: 1023px) { .carousel-item { width: calc(50% - 12px); max-width: none; scroll-snap-align: start; } }
         .carousel-item:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
         .carousel-item img { width: 100%; height: auto; display: block; cursor: zoom-in; object-fit: cover; }
         .carousel-caption { padding: 16px; font-size: 14px; text-align: center; color: var(--text-muted); font-weight: 600; border-top: 1px solid var(--border-light); background: var(--bg-section); transition: background-color 0.3s, color 0.3s;}
-
-        /* SETAS DO CARROSSEL */
         .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; background: var(--bg-header); backdrop-filter: blur(4px); border: 1px solid var(--border-light); border-radius: 50%; box-shadow: var(--shadow-card); color: var(--text-main); display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
         .carousel-btn:hover { background: var(--card-bg); transform: translateY(-50%) scale(1.1); box-shadow: var(--shadow-hover); }
         .prev-btn { left: 2%; } 
         .next-btn { right: 2%; } 
         
-        /* Mobile responsivity adjustments */
+        /* Mobile responsivity */
+        @media (max-width: 900px) {
+            .header-nav { display: none; } /* Esconde o menu no mobile */
+        }
         @media (max-width: 768px) { 
             .hero h1 { font-size: 42px; letter-spacing: -1.5px;} 
             .features-header h2 { font-size: 32px;}
@@ -261,12 +239,19 @@
     </div>
 
     <header id="mainHeader">
-        <div class="brand">
+        <a href="index.html" class="brand" style="text-decoration: none;">
             <img src="djen-128.png" alt="Logo Buscador DJEN">
             Buscador DJEN
             <span class="badge-cortesia-site">CORTESIA</span>
-        </div>
+        </a>
         
+        <div class="header-nav">
+            <a href="busca.html" class="nav-link">Busca & Tags</a>
+            <a href="prazos.html" class="nav-link">Prazos & Agenda</a>
+            <a href="exportacao.html" class="nav-link">Relatórios PDF</a>
+            <a href="radar.html" class="nav-link">Radar</a>
+        </div>
+
        <div class="header-actions">
             <button id="btn-compartilhar" class="share-btn" aria-label="Compartilhar site">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -346,54 +331,63 @@
                 <div class="feature-icon" style="color: var(--primary);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                 <h3>Consulta Direta (DJEN e CNJ)</h3>
                 <p>Busca rápida por OAB, UF ou número do processo. Extraia dados e publicações instantaneamente, sem bloqueios de captchas ou a lentidão dos portais oficiais.</p>
+                <a href="busca.html" class="feature-link">Conhecer a Busca & Tags ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-red);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
                 <h3>Cálculo Inteligente de Prazos</h3>
                 <p>Contagem precisa em dias úteis ou corridos. O algoritmo desvia automaticamente de feriados, suspensões locais e do recesso forense, garantindo segurança na pauta.</p>
+                <a href="prazos.html" class="feature-link">Conhecer Prazos & Agenda ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-green);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></div>
                 <h3>Gestão de Intimações e Foco</h3>
                 <p>Transforme publicações em tarefas acionáveis. Ative o <strong>Modo Foco</strong> para analisar despachos longos e complexos em um ambiente de leitura imersivo e livre de distrações.</p>
+                <a href="busca.html" class="feature-link">Ver detalhes do Modo Foco ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-purple);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
                 <h3>Radar de Urgências</h3>
                 <p>Monitoramento automático da sua pauta. Configure palavras-chave para que o sistema emita alertas imediatos sempre que identificar termos críticos (como <em>Liminar</em> ou <em>Penhora</em>).</p>
+                <a href="radar.html" class="feature-link">Conhecer o Radar ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-orange);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg></div>
                 <h3>Apelidos e Anotações Internas</h3>
                 <p>Esqueça os números de 20 dígitos. Atribua apelidos práticos aos seus processos e adicione anotações estratégicas para facilitar a identificação e o controle do seu acervo.</p>
+                <a href="busca.html" class="feature-link">Descobrir como organizar ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-gold);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
                 <h3>Calendário Macro da Pauta</h3>
                 <p>Obtenha uma visão global de todas as intimações e tarefas mensais. Um painel interativo para que a controladoria possa visualizar e antecipar o fluxo de trabalho da semana.</p>
+                <a href="prazos.html" class="feature-link">Ver Calendário de Prazos ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-blue);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
                 <h3>Relatórios PDF e Jurimetria</h3>
                 <p>Emita relatórios de auditoria com formatação impecável em Visual Law. Exporte sua base para planilhas CSV para aplicar Jurimetria e extrair métricas de desempenho do contencioso.</p>
+                <a href="exportacao.html" class="feature-link">Conhecer Relatórios em PDF ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--primary);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></div>
                 <h3>Sincronização e Disparo</h3>
                 <p>Conecte seus prazos diretamente ao Google Agenda com um único clique. Compartilhe rapidamente o andamento dos processos com a equipe ou clientes via WhatsApp e Telegram.</p>
+                <a href="exportacao.html" class="feature-link">Ver integrações ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--text-main);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
                 <h3>Segurança e Sigilo Local</h3>
                 <p>Zero exposição. Seus dados, processos e a agenda da advocacia permanecem criptografados de ponta a ponta, existindo fisicamente apenas na memória do seu próprio computador.</p>
+                <a href="privacidade.html" class="feature-link">Termos de Privacidade ➔</a>
             </div>
         </div>
     </section>
@@ -508,7 +502,6 @@
     </div>
 
     <script>
-        // 1. Sombras dinâmicas no Header (Efeito Premium)
         const header = document.getElementById('mainHeader');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 10) {
@@ -518,7 +511,6 @@
             }
         });
 
-        // 2. Lógica do Dark Mode Manual
         const themeToggleBtn = document.getElementById('themeToggle');
         themeToggleBtn.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -527,7 +519,10 @@
             localStorage.setItem('theme', newTheme);
         });
 
-        // 3. Barra de Progresso de Leitura
+        if(localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -535,7 +530,6 @@
             document.getElementById("progressBar").style.width = scrolled + "%";
         });
 
-        // 4. Café / Pix
         const btnToggleCoffee = document.getElementById('btnToggleCoffee');
         const contentCoffee = document.getElementById('contentCoffee');
         btnToggleCoffee.addEventListener('click', (e) => {
@@ -555,7 +549,6 @@
             });
         }
 
-        // 5. Animação de Entrada (Fade In)
         document.addEventListener("DOMContentLoaded", function() {
             const observer = new IntersectionObserver((entries, obs) => {
                 entries.forEach(entry => {
@@ -567,7 +560,6 @@
             }, { threshold: 0.15 });
             document.querySelectorAll('.fade-in-section').forEach(sec => observer.observe(sec));
             
-            // 6. Detecção de Navegador UI/UX
             const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
             const isChrome = !!window.chrome;
             
@@ -582,7 +574,6 @@
             }
         });
 
-        // 7. Carrossel e Modal
         const carousel = document.querySelector('.carousel');
         let autoPlayInterval;
         function startAutoPlay() {
@@ -599,7 +590,6 @@
         }
         function stopAutoPlay() { clearInterval(autoPlayInterval); }
         
-        // Lógica dos Botões de Navegação do Carrossel
         const prevBtn = document.querySelector('.prev-btn');
         const nextBtn = document.querySelector('.next-btn');
 
@@ -624,7 +614,6 @@
         carousel.addEventListener('touchstart', stopAutoPlay, {passive: true});
         carousel.addEventListener('touchend', startAutoPlay);
 
-        // Modal de Imagens
         const modal = document.createElement('div');
         modal.style.cssText = 'display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; cursor: zoom-out; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);';
         modal.innerHTML = '<img id="modalImg" style="max-width: 90%; max-height: 90%; border-radius: 12px; box-shadow: var(--shadow-modal); object-fit: contain;">';
@@ -638,13 +627,11 @@
             });
         });
         
-        // Fechar Modal com clique
         modal.addEventListener('click', () => {
             modal.style.display = 'none';
             startAutoPlay();
         });
         
-        // NOVO: Fechar Modal com tecla Esc
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && modal.style.display === 'flex') {
                 modal.style.display = 'none';
@@ -652,7 +639,6 @@
             }
         });
 
-        // 8. Lógica de Compartilhamento (Web Share API)
         document.addEventListener('DOMContentLoaded', () => {
             const btnCompartilhar = document.getElementById('btn-compartilhar');
             if (btnCompartilhar) {
