@@ -593,18 +593,6 @@
             }, { threshold: 0.15 });
             document.querySelectorAll('.fade-in-section').forEach(sec => observer.observe(sec));
             
-            const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
-            const isChrome = !!window.chrome;
-            
-            const btnChrome = document.querySelectorAll('.btn-browser.chrome');
-            const btnFirefox = document.querySelectorAll('.btn-browser.firefox');
-
-            if (isChrome) {
-                btnFirefox.forEach(btn => { btn.style.display = 'none'; });
-            } else if (isFirefox) {
-                btnFirefox.forEach(btn => { btn.classList.add('primary'); });
-                btnChrome.forEach(btn => { btn.style.display = 'none'; });
-            }
         });
 
         const carousel = document.querySelector('.carousel');
