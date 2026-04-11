@@ -91,7 +91,6 @@
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-page); position: sticky; top: 0; z-index: 100; transition: background-color 0.3s, border-color 0.3s; }
         .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; letter-spacing: -0.25px; }
         .brand img { width: 32px; height: 32px; border-radius: var(--radius-btn); }
-        /* ARRIUMADO: Removida a borda do badge cortesia */
         .badge-cortesia-site { font-size: 11px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 2px 8px; border-radius: var(--radius-pill); font-weight: 600; border: none; letter-spacing: 0.5px; }
         
         .header-actions { display: flex; align-items: center; gap: 12px; }
@@ -142,20 +141,18 @@
         .iframe-wrapper iframe { width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: var(--radius-card); box-shadow: var(--shadow-modal); background: var(--bg-page); transition: box-shadow 0.3s;}
 
         /* FUNCIONALIDADES */
-        /* ARRUMADO NO MODO CLARO: Fundo da seção agora é branco para dar contraste com os cards */
         .features-container { padding: 120px 5% 80px; background: var(--bg-page); transition: background-color 0.3s; }
         .features-header { text-align: center; margin-bottom: 80px; }
         .features-header h2 { font-size: 48px; font-weight: 700; margin-bottom: 16px; line-height: 1.00; letter-spacing: -1.5px;}
 
         .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; max-width: 1200px; margin: 0 auto; justify-content: center; }
-        /* ARRUMADO NO MODO CLARO: Fundo do card agora é cinza claro para destacar as bordas e sombras */
+        
         .feature-card { background: var(--bg-section); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.3s; display: flex; flex-direction: column; }
         .feature-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
         .feature-icon { font-size: 24px; margin-bottom: 24px; width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; border-radius: var(--radius-btn); }
         .feature-card h3 { margin: 0 0 12px 0; font-size: 22px; font-weight: 700; letter-spacing: -0.25px; line-height: 1.27;}
         .feature-card p { color: var(--text-muted); margin: 0; font-size: 16px; font-weight: 400; line-height: 1.5; transition: color 0.3s; }
 
-        /* No modo escuro, mantemos a lógica original que já funcionava bem (fundo escuro na seção, cards ligeiramente mais claros) */
         [data-theme="dark"] .features-container { background: var(--bg-section); }
         [data-theme="dark"] .feature-card { background: var(--card-bg); }
 
@@ -339,38 +336,56 @@
         <div class="features">
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--primary);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
-                <h3>Consulta Direta no DJEN e CNJ</h3>
-                <p>Busca rápida por OAB, UF ou consulta pública por número do processo. Extração de dados de atos judiciais e publicações instantâneas, ignorando captchas intermináveis e a lentidão do portal oficial, e-mail ou aplicativo externo.</p>
+                <h3>Consulta Direta (DJEN e CNJ)</h3>
+                <p>Busca rápida por OAB, UF ou número do processo. Extraia dados e publicações instantaneamente, sem bloqueios de captchas ou a lentidão dos portais oficiais.</p>
             </div>
 
             <div class="feature-card fade-in-section">
-                <div class="feature-icon" style="color: var(--zen-red);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
-                <h3>Cálculo de Prazos Processuais</h3>
-                <p>Dias úteis ou corridos. O sistema desvia automaticamente de feriados, suspensões e do recesso forense ao calcular o prazo.</p>
+                <div class="feature-icon" style="color: var(--zen-red);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                <h3>Cálculo Inteligente de Prazos</h3>
+                <p>Contagem precisa em dias úteis ou corridos. O algoritmo desvia automaticamente de feriados, suspensões locais e do recesso forense, garantindo segurança na pauta.</p>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-green);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></div>
-                <h3>Gestão de Intimações e Prazos</h3>
-                <p>Uma lista de afazeres para cada intimação focada em Legal Design. A sua controladoria jurídica digital permanece organizada e focada no que realmente importa.</p>
+                <h3>Gestão de Intimações e Foco</h3>
+                <p>Transforme publicações em tarefas acionáveis. Ative o <strong>Modo Foco</strong> para analisar despachos longos e complexos em um ambiente de leitura imersivo e livre de distrações.</p>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-purple);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
-                <h3>Radar de Atos Judiciais</h3>
-                <p>Monitoramento assíncrono com detecção automática de urgências (Liminares, Penhoras) e um modo de leitura imersiva sem distrações para suas publicações.</p>
+                <h3>Radar de Urgências</h3>
+                <p>Monitoramento automático da sua pauta. Configure palavras-chave para que o sistema emita alertas imediatos sempre que identificar termos críticos (como <em>Liminar</em> ou <em>Penhora</em>).</p>
             </div>
 
             <div class="feature-card fade-in-section">
-                <div class="feature-icon" style="color: var(--zen-blue);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg></div>
-                <h3>Exportação e Relatórios</h3>
-                <p>Gere relatórios em PDF com padrão Visual Law, exporte sua base para CSV (Jurimetria) e compartilhe andamentos via WhatsApp, Telegram e Google Agenda.</p>
+                <div class="feature-icon" style="color: var(--zen-orange);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg></div>
+                <h3>Apelidos e Anotações Internas</h3>
+                <p>Esqueça os números de 20 dígitos. Atribua apelidos práticos aos seus processos e adicione anotações estratégicas para facilitar a identificação e o controle do seu acervo.</p>
+            </div>
+
+            <div class="feature-card fade-in-section">
+                <div class="feature-icon" style="color: var(--zen-gold);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+                <h3>Calendário Macro da Pauta</h3>
+                <p>Obtenha uma visão global de todas as intimações e tarefas mensais. Um painel interativo para que a controladoria possa visualizar e antecipar o fluxo de trabalho da semana.</p>
+            </div>
+
+            <div class="feature-card fade-in-section">
+                <div class="feature-icon" style="color: var(--zen-blue);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+                <h3>Relatórios PDF e Jurimetria</h3>
+                <p>Emita relatórios de auditoria com formatação impecável em Visual Law. Exporte sua base para planilhas CSV para aplicar Jurimetria e extrair métricas de desempenho do contencioso.</p>
+            </div>
+
+            <div class="feature-card fade-in-section">
+                <div class="feature-icon" style="color: var(--primary);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></div>
+                <h3>Sincronização e Disparo</h3>
+                <p>Conecte seus prazos diretamente ao Google Agenda com um único clique. Compartilhe rapidamente o andamento dos processos com a equipe ou clientes via WhatsApp e Telegram.</p>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--text-main);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
-                <h3>Segurança para Controladoria</h3>
-                <p>Sem servidores externos. Seus dados, processos e agenda ficam criptografados apenas na sua máquina, garantindo sigilo absoluto.</p>
+                <h3>Segurança e Sigilo Local</h3>
+                <p>Zero exposição. Seus dados, processos e a agenda da advocacia permanecem criptografados de ponta a ponta, existindo fisicamente apenas na memória do seu próprio computador.</p>
             </div>
         </div>
     </section>
