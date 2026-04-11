@@ -86,30 +86,26 @@
 
         body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; font-feature-settings: "lnum" 1, "locl" 1; transition: background-color 0.3s, color 0.3s; }
 
-        /* HEADER E TOGGLE DE TEMA */
+        /* HEADER PADRÃO UNIVERSAL */
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s; }
-        header.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        header.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.03); } 
         
-        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; letter-spacing: -0.25px; text-decoration: none; color: var(--text-main); }
-        .brand img { width: 32px; height: 32px; border-radius: 8px; }
-        .badge-cortesia-site { font-size: 10px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 3px 8px; border-radius: var(--radius-pill); font-weight: 700; border: none; letter-spacing: 0.5px; }
+        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); text-decoration: none; white-space: nowrap; } 
+        .brand img { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; }
+        .badge-cortesia-site { font-size: 10px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 3px 8px; border-radius: 999px; font-weight: 700; border: none; letter-spacing: 0.5px; white-space: nowrap; }
         
-        /* MENU DE NAVEGAÇÃO SUPERIOR */
-        .header-nav { display: flex; gap: 24px; margin: 0 auto; padding: 0 24px; }
-        .nav-link { font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-        .nav-link:hover { color: var(--primary); }
-
-        .header-actions { display: flex; align-items: center; gap: 12px; }
+        .header-nav { display: flex; gap: 24px; margin: 0 auto; padding: 0 24px; } 
+        .nav-link { font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; white-space: nowrap; } 
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
         
-        .share-btn { display: flex; align-items: center; gap: 6px; background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); padding: 6px 12px; height: 36px; border-radius: var(--radius-btn); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; }
+        .header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .share-btn { display: flex; align-items: center; gap: 6px; background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); padding: 6px 12px; height: 36px; border-radius: var(--radius-btn); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; white-space: nowrap; }
+        .share-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
         .share-btn:hover { background: var(--bg-section); color: var(--text-main); border-color: transparent; }
-        .share-btn svg { width: 14px; height: 14px; }
-
-        .theme-toggle { background: transparent; border: 1px solid var(--border-light); color: var(--text-muted); width: 36px; height: 36px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; }
+        
+        .theme-toggle { background: transparent; border: 1px solid var(--border-light); color: var(--text-muted); width: 36px; height: 36px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; }
         .theme-toggle:hover { background: var(--bg-section); color: var(--text-main); border-color: transparent; }
-        .theme-toggle svg { width: 16px; height: 16px; }
-        [data-theme="dark"] .sun-icon { display: none; }
-        [data-theme="light"] .moon-icon { display: none; }
+        [data-theme="dark"] .sun-icon { display: none; } [data-theme="light"] .moon-icon { display: none; }
 
         /* HERO COM MALHA DOT GRID */
         .hero { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 120px 20px 100px; margin: 0 auto; background-image: radial-gradient(var(--border-light) 1.5px, transparent 1.5px); background-size: 32px 32px; background-position: center top; }
@@ -118,16 +114,32 @@
         .hero h1 span { color: var(--primary); }
         .hero p { font-size: 20px; color: var(--text-muted); margin-bottom: 48px; max-width: 800px; margin-left: auto; margin-right: auto; font-weight: 500; line-height: 1.5; letter-spacing: -0.125px;}
 
-        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 28px; }
-        .btn-browser { display: flex; align-items: center; justify-content: center; gap: 10px; background-color: var(--bg-section); color: var(--text-main); padding: 12px 20px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--border-light); transition: all 0.2s ease; line-height: 1.33; }
+        /* BOTÕES BASE (USADOS NA CALCULADORA/ETC) */
+        .btn-browser { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background-color: var(--bg-section); color: var(--text-main); padding: 12px 20px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--border-light); transition: all 0.2s ease; line-height: 1.33; }
         .btn-browser:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .btn-browser:active { transform: translateY(0); }
         .btn-browser.primary { background-color: var(--primary); color: var(--primary-text); border: 1px solid transparent; }
         .btn-browser.primary:hover { background-color: var(--primary-hover); box-shadow: 0 6px 20px rgba(0, 117, 222, 0.25); }
-
         @keyframes pulseGlowBtn { 0% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0.2); } 70% { box-shadow: 0 0 0 8px rgba(0, 117, 222, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0); } }
         .btn-glow { animation: pulseGlowBtn 2.5s infinite; }
         .btn-glow:hover { animation: none; border-color: var(--primary); }
+
+        /* NOVOS BOTÕES ESTILO "APP STORE" (DOWNLOAD) */
+        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; }
+        .btn-store { position: relative; display: flex; align-items: center; justify-content: center; gap: 14px; background-color: var(--card-bg); color: var(--text-main); padding: 12px 24px; border-radius: var(--radius-btn); text-decoration: none; border: 1px solid var(--border-light); box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: all 0.2s ease; overflow: visible; }
+        .btn-store:hover { background-color: var(--bg-section); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); border-color: var(--text-placeholder); }
+        .btn-store .store-text { display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.2; }
+        .btn-store .store-text small { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-store .store-text strong { font-size: 16px; font-weight: 800; letter-spacing: -0.2px; }
+        .btn-store svg { width: 28px; height: 28px; flex-shrink: 0; }
+
+        /* BALÃO DE VERSÃO (TOOLTIP) NO HOVER */
+        .version-tooltip { position: absolute; top: -38px; left: 50%; transform: translateX(-50%) translateY(5px); background: #2b2a28; color: #ffffff; font-size: 11px; padding: 6px 12px; border-radius: 6px; opacity: 0; visibility: hidden; transition: all 0.2s ease; white-space: nowrap; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10; pointer-events: none; }
+        .version-tooltip::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); border-width: 5px 5px 0; border-style: solid; border-color: #2b2a28 transparent transparent transparent; }
+        .btn-store:hover .version-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+        /* LINK DE COMPARATIVO */
+        .compare-link { font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 24px; }
+        .compare-link:hover { color: var(--primary); text-decoration: underline; }
 
         .trust-badges { display: flex; align-items: center; justify-content: center; gap: 16px; color: var(--text-placeholder); font-size: 14px; font-weight: 600; margin-bottom: 12px; flex-wrap: wrap;}
         .microcopy { color: var(--text-muted); font-size: 12px; font-weight: 500; }
@@ -177,7 +189,7 @@
         
         /* Mobile responsivity */
         @media (max-width: 900px) {
-            .header-nav { display: none; } /* Esconde o menu no mobile */
+            .header-nav { display: none; }
         }
         @media (max-width: 768px) { 
             .hero h1 { font-size: 42px; letter-spacing: -1.5px;} 
@@ -239,7 +251,7 @@
     </div>
 
     <header id="mainHeader">
-        <a href="index.html" class="brand" style="text-decoration: none;">
+        <a href="index.html" class="brand">
             <img src="djen-128.png" alt="Logo Buscador DJEN">
             Buscador DJEN
             <span class="badge-cortesia-site">CORTESIA</span>
@@ -264,7 +276,7 @@
                 <span class="share-text">Compartilhar</span>
             </button>
 
-            <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none;">
+            <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; white-space: nowrap;">
                 por Amilcar
             </a>
 
@@ -280,17 +292,27 @@
             <h1 class="fade-in-section">Automação e controle de <span>publicações judiciais</span> no navegador.</h1>
             <p class="fade-in-section">A forma mais rápida de pesquisar nome no DJEN CNJ. Automatize a consulta de publicações no Diário da Justiça Eletrônico Nacional, calcule prazos processuais e gerencie PJe, eproc e e-SAJ direto do navegador.</p>
             
-            <div class="hero-buttons fade-in-section">
-                <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser chrome primary">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="21.17" y1="8" x2="12" y2="8"></line><line x1="3.95" y1="6.06" x2="8.54" y2="14"></line><line x1="10.88" y1="21.94" x2="15.46" y2="14"></line></svg>
-                    Adicionar ao Chrome
-                </a>
-                <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-browser firefox">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12.23 20.42c-4.007 1.44 -8.23 -2.053 -6.18 -6.07l.84 -1.65c.19 -.37 .11 -.81 -.19 -1.11l-1.06 -1.06a1.047 1.047 0 0 1 .42 -1.77c.4 -.11 .7 -.46 .79 -.86c.09 -.42 -.16 -.82 -.54 -1l-1.3 -.61c-.24 -.11 -.3 -.44 -.13 -.63c1.5 -1.74 3.7 -2.83 6.13 -2.83c4.12 0 7.73 2.5 9.06 6.25c.34 1.05 -1.24 1.15 -1.5 0a6 6 0 1 0 -9 7.21c-.42 0 -.9 0 -1.26 -.38c-.37 -.37 -.16 -1.18 .21 -1.64l1.45 -1.71c.21 -.24 .2 -.61 -.03 -.84l-1.07 -1.07a1.05 1.05 0 0 1 .4 -1.77c.4 -.11 .7 -.46 .78 -.86c.09 -.43 -.16 -.83 -.54 -1.01l-1.3 -.61"></path>
-                    </svg>
-                    Adicionar ao Firefox
-                </a>
+            <div style="display: flex; flex-direction: column; align-items: center;" class="fade-in-section">
+                <div class="hero-buttons">
+                    <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store">
+                        <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C8.21 0 4.83 1.76 2.63 4.5l3.95 6.85A5.45 5.45 0 0 1 12 6.54h9.07A11.97 11.97 0 0 0 12 0z" fill="#EA4335"/><path d="M12 17.45a5.45 5.45 0 0 1-4.73-2.72L2.73 6.88A11.98 11.98 0 0 0 0 12c0 6.63 5.37 12 12 12 1.54 0 3.01-.29 4.37-.82l-4.24-7.34A5.44 5.44 0 0 1 12 17.45z" fill="#34A853"/><path d="M24 12c0-3.38-1.4-6.44-3.65-8.62l-4.05 7.02A5.46 5.46 0 0 1 12 17.45h-4.05A11.97 11.97 0 0 0 24 12z" fill="#FBBC05"/><path d="M12 16.36A4.36 4.36 0 1 0 12 7.64a4.36 4.36 0 0 0 0 8.72z" fill="#4285F4"/><circle cx="12" cy="12" r="3.27" fill="#fff"/></svg>
+                        <div class="store-text">
+                            <small>Baixar para</small>
+                            <strong>Google Chrome</strong>
+                        </div>
+                    </a>
+
+                    <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store">
+                        <span class="version-tooltip firefox-tooltip">Buscando versão...</span>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#E66000" d="M11.9 1C5.46 1 1.25 5.5.58 11.5c-.13 1.2.14 2.45.28 3.5.15.8.94 1.05 1.5.47 1-1.25 1.83-2.6 1.73-4.22-.2-2.22.14-3.8 1.6-5.5.93-1.07 2.4-1.7 3.96-2 1.1-.2 2.1-.32 3.25-.2 2.7 1.3 3.8 3.8 3.4 6.7.35 2.5 2.2 4.3 4.4 5.1 2.4.8 5 .4 6.9-1.2.78-.6 1.54-1.4 1.88-2.4.63-1.6.76-3.1.34-4.7-.4-1.7-1.2-3.1-2.5-4.3-.34-.3-.76-.6-1.2-.9.76.7 1.3 1.5 1.6 2.6 0 0 .1.1.2 0 .5-1 .5-2-.1-3-.6-1-1.5-1.9-2.7-2.3-1.4-.5-3.1-.5-4.5-.1z"/><path fill="#FF9500" d="M12.1 5.6c-1.4.3-2.6 1-3.4 2-1 1.3-1.2 2.7-1.1 4.2-.3-.6-.4-1.3-.2-2.1.2-1 .9-1.8 1.6-2.3 1.1-.7 2.3-1.1 3.6-.9 1.1.1 2 .4 3 1-.5-.6-1.3-1-2-1.3-1.2-.4-2.5-.5-3.8-.3.2 1.8 1.1 3.3 2.5 4.4 1.6 1.1 3.7 1.6 5.8 1.1-.6 1.8-2 3.1-3.9 3.6-2.1.5-4.4.1-6-1.1-1.8-1.2-2.9-3.1-3-5.2-.1-1.8.5-3.4 1.7-4.7.6-.7 1.4-1.2 2.3-1.6z"/><path fill="#FFCC00" d="M18 10.5c-.4-.5-.9-1-1.5-1.3.8.5 1.4 1.2 1.6 2 .2 1.1 0 2.3-.6 3.2-.7 1-1.8 1.6-3 1.8-1.6.3-3.2-.1-4.5-.9.8 1.1 2.1 1.8 3.5 1.9 1.5.1 3-.3 4.2-1.2 1.3-1 2-2.3 2.1-3.9.1-1.2-.3-2.5-1-3.6-.1.5-.2.9-.4 1.3.1-1-.1-2.1-.5-2.9-.3 1-.8 1.9-1.5 2.6z"/><path fill="#00539F" d="M13 22.2c-5.1 0-9.6-3.6-10.3-8.6-.1-.5-.2-1.1-.2-1.6 0-.3-.3-.4-.5-.2-1.5 2.3-1.3 5.4.5 7.5 1.9 2.3 4.9 3.4 7.9 3.1 3-.3 5.6-2.1 7.1-4.5 1.3-2 1.6-4.4.8-6.6.3.6.4 1.3.4 2.1-.1 3.3-2.7 6.1-5.9 7-.7.2-1.6.3-2.4.3-1 0-2.1-.2-3.1-.6.8.2 1.7.3 2.6.3z"/><path fill="#0095DD" d="M3.7 16.5c1.4 1.8 3.5 2.8 5.7 3 2.1.2 4.2-.6 5.8-2 1.5-1.3 2.4-3.1 2.5-5.1-.3 1.9-1.5 3.6-3.2 4.6-1.8 1.1-4 1.4-6 .6-1.8-.7-3.2-2.2-3.7-4.1-.1.9-.1 1.8.1 2.7.4 1.6 1.4 3 2.7 3.9-1.2-.9-2.1-2.2-2.5-3.6z"/></svg>
+                        <div class="store-text">
+                            <small>Baixar para</small>
+                            <strong>Mozilla Firefox</strong>
+                        </div>
+                    </a>
+                </div>
+                <a href="versoes.html" class="compare-link">Ver comparativo das versões ➔</a>
             </div>
             
             <div class="trust-badges fade-in-section">
@@ -394,7 +416,6 @@
 
     <section class="gallery-section fade-in-section">
         <div class="carousel-wrapper" style="position: relative; max-width: 1400px; margin: 0 auto;">
-            
             <button class="carousel-btn prev-btn" aria-label="Imagem Anterior">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
             </button>
@@ -459,7 +480,7 @@
         </div>
     </section>
 
-<section class="features-container fade-in-section" style="padding-top: 0; padding-bottom: 40px;">
+    <section class="features-container fade-in-section" style="padding-top: 0; padding-bottom: 40px;">
         <div style="max-width: 800px; margin: 0 auto;">
             <h2 style="text-align: center; font-size: 36px; font-weight: 800; margin-bottom: 48px; letter-spacing: -1px;">Perguntas Frequentes</h2>
             
@@ -491,13 +512,31 @@
         </div>
     </section>
 
-    
     <section class="bottom-cta fade-in-section">
         <h2>O controle da sua pauta, a um clique.</h2>
         <p>Sem lentidão. Sem mensalidades abusivas. Instale agora e automatize sua rotina.</p>
-        <div class="hero-buttons">
-            <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser chrome primary">Adicionar ao Chrome</a>
-            <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-browser firefox">Adicionar ao Firefox</a>
+        
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <div class="hero-buttons">
+                <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store">
+                    <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C8.21 0 4.83 1.76 2.63 4.5l3.95 6.85A5.45 5.45 0 0 1 12 6.54h9.07A11.97 11.97 0 0 0 12 0z" fill="#EA4335"/><path d="M12 17.45a5.45 5.45 0 0 1-4.73-2.72L2.73 6.88A11.98 11.98 0 0 0 0 12c0 6.63 5.37 12 12 12 1.54 0 3.01-.29 4.37-.82l-4.24-7.34A5.44 5.44 0 0 1 12 17.45z" fill="#34A853"/><path d="M24 12c0-3.38-1.4-6.44-3.65-8.62l-4.05 7.02A5.46 5.46 0 0 1 12 17.45h-4.05A11.97 11.97 0 0 0 24 12z" fill="#FBBC05"/><path d="M12 16.36A4.36 4.36 0 1 0 12 7.64a4.36 4.36 0 0 0 0 8.72z" fill="#4285F4"/><circle cx="12" cy="12" r="3.27" fill="#fff"/></svg>
+                    <div class="store-text">
+                        <small>Baixar para</small>
+                        <strong>Google Chrome</strong>
+                    </div>
+                </a>
+
+                <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store">
+                    <span class="version-tooltip firefox-tooltip">Buscando versão...</span>
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#E66000" d="M11.9 1C5.46 1 1.25 5.5.58 11.5c-.13 1.2.14 2.45.28 3.5.15.8.94 1.05 1.5.47 1-1.25 1.83-2.6 1.73-4.22-.2-2.22.14-3.8 1.6-5.5.93-1.07 2.4-1.7 3.96-2 1.1-.2 2.1-.32 3.25-.2 2.7 1.3 3.8 3.8 3.4 6.7.35 2.5 2.2 4.3 4.4 5.1 2.4.8 5 .4 6.9-1.2.78-.6 1.54-1.4 1.88-2.4.63-1.6.76-3.1.34-4.7-.4-1.7-1.2-3.1-2.5-4.3-.34-.3-.76-.6-1.2-.9.76.7 1.3 1.5 1.6 2.6 0 0 .1.1.2 0 .5-1 .5-2-.1-3-.6-1-1.5-1.9-2.7-2.3-1.4-.5-3.1-.5-4.5-.1z"/><path fill="#FF9500" d="M12.1 5.6c-1.4.3-2.6 1-3.4 2-1 1.3-1.2 2.7-1.1 4.2-.3-.6-.4-1.3-.2-2.1.2-1 .9-1.8 1.6-2.3 1.1-.7 2.3-1.1 3.6-.9 1.1.1 2 .4 3 1-.5-.6-1.3-1-2-1.3-1.2-.4-2.5-.5-3.8-.3.2 1.8 1.1 3.3 2.5 4.4 1.6 1.1 3.7 1.6 5.8 1.1-.6 1.8-2 3.1-3.9 3.6-2.1.5-4.4.1-6-1.1-1.8-1.2-2.9-3.1-3-5.2-.1-1.8.5-3.4 1.7-4.7.6-.7 1.4-1.2 2.3-1.6z"/><path fill="#FFCC00" d="M18 10.5c-.4-.5-.9-1-1.5-1.3.8.5 1.4 1.2 1.6 2 .2 1.1 0 2.3-.6 3.2-.7 1-1.8 1.6-3 1.8-1.6.3-3.2-.1-4.5-.9.8 1.1 2.1 1.8 3.5 1.9 1.5.1 3-.3 4.2-1.2 1.3-1 2-2.3 2.1-3.9.1-1.2-.3-2.5-1-3.6-.1.5-.2.9-.4 1.3.1-1-.1-2.1-.5-2.9-.3 1-.8 1.9-1.5 2.6z"/><path fill="#00539F" d="M13 22.2c-5.1 0-9.6-3.6-10.3-8.6-.1-.5-.2-1.1-.2-1.6 0-.3-.3-.4-.5-.2-1.5 2.3-1.3 5.4.5 7.5 1.9 2.3 4.9 3.4 7.9 3.1 3-.3 5.6-2.1 7.1-4.5 1.3-2 1.6-4.4.8-6.6.3.6.4 1.3.4 2.1-.1 3.3-2.7 6.1-5.9 7-.7.2-1.6.3-2.4.3-1 0-2.1-.2-3.1-.6.8.2 1.7.3 2.6.3z"/><path fill="#0095DD" d="M3.7 16.5c1.4 1.8 3.5 2.8 5.7 3 2.1.2 4.2-.6 5.8-2 1.5-1.3 2.4-3.1 2.5-5.1-.3 1.9-1.5 3.6-3.2 4.6-1.8 1.1-4 1.4-6 .6-1.8-.7-3.2-2.2-3.7-4.1-.1.9-.1 1.8.1 2.7.4 1.6 1.4 3 2.7 3.9-1.2-.9-2.1-2.2-2.5-3.6z"/></svg>
+                    <div class="store-text">
+                        <small>Baixar para</small>
+                        <strong>Mozilla Firefox</strong>
+                    </div>
+                </a>
+            </div>
+            <a href="versoes.html" class="compare-link">Ver comparativo das versões ➔</a>
         </div>
     </section>
 
@@ -519,6 +558,7 @@
 
             <div class="footer-links fade-in-section">
                 <a href="calculadora.html" style="color: var(--primary); font-weight: 700;">Calculadora de Prazos</a> 
+                <a href="versoes.html">Comparativo de Versões</a>
                 <a href="termos.html">Termos de Uso</a>
                 <a href="privacidade.html">Privacidade</a>
                 <a href="mailto:contato@buscadordjen.com.br">Contato</a>
@@ -537,11 +577,8 @@
     <script>
         const header = document.getElementById('mainHeader');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 10) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+            if (window.scrollY > 10) { header.classList.add('scrolled'); } 
+            else { header.classList.remove('scrolled'); }
         });
 
         const themeToggleBtn = document.getElementById('themeToggle');
@@ -592,7 +629,6 @@
                 });
             }, { threshold: 0.15 });
             document.querySelectorAll('.fade-in-section').forEach(sec => observer.observe(sec));
-            
         });
 
         const carousel = document.querySelector('.carousel');
@@ -682,12 +718,21 @@
                             }, 2000);
                         }
                     } catch (err) {
-                        if (err.name !== 'AbortError') {
-                            console.error('Erro ao compartilhar:', err);
-                        }
+                        if (err.name !== 'AbortError') { console.error('Erro ao compartilhar:', err); }
                     }
                 });
             }
+            
+            // MÁGICA: Busca versão das lojas para o Tooltip
+            fetch('https://img.shields.io/chrome-web-store/v/ambfdmjdhikdhmbojljaebkipeahmfab.json')
+                .then(res => res.json())
+                .then(data => { document.querySelectorAll('.chrome-tooltip').forEach(el => el.textContent = 'Versão ' + data.value); })
+                .catch(() => { document.querySelectorAll('.chrome-tooltip').forEach(el => el.textContent = 'Disponível na Store'); });
+
+            fetch('https://img.shields.io/amo/v/buscador-djen-advogado.json')
+                .then(res => res.json())
+                .then(data => { document.querySelectorAll('.firefox-tooltip').forEach(el => el.textContent = 'Versão ' + data.value); })
+                .catch(() => { document.querySelectorAll('.firefox-tooltip').forEach(el => el.textContent = 'Disponível na Store'); });
         });
     </script>
 </body>
