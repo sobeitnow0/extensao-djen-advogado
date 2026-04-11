@@ -6,11 +6,11 @@
     
     <title>Buscador DJEN | Extensão para Pesquisar Intimação no DJEN e CNJ</title>
     <meta name="description" content="Aprenda como pesquisar intimação no DJEN e automatizar buscas no Diário da Justiça Eletrônico Nacional. Calcule prazos processuais e gerencie PJe, eproc e e-SAJ direto do navegador.">
-    <meta name="keywords" content="buscador djen, publicações judiciais, consulta cnj, prazos processuais, contagem dias úteis, novo cpc, art 224 cpc, recesso forense, automação pje eproc, controladoria jurídica digital, radar de intimações, jurimetria, extração de dados judiciais, diário da justiça eletrônico nacional, buscador de oab cnj, calculadora de prazos cpc">    
+    <meta name="keywords" content="buscador djen, publicações judiciais, consulta cnj, prazos processuais, contagem dias úteis, novo cpc, art 224 cpc, recesso forense, automação pje eproc, controladoria jurídica digital, radar de intimações, jurimetria, extração de dados judiciais, diário da justiça eletrônico nacional, buscador de oab cnj, calculadora de prazos cpc, visual law, relatórios jurídicos">    
     
     <meta property="og:type" content="website">
     <meta property="og:title" content="Buscador DJEN - Extensão para Advogados">
-    <meta property="og:description" content="Gestão inteligente de publicações e prazos judiciais direto no seu navegador.">
+    <meta property="og:description" content="Gestão inteligente de publicações, jurimetria e prazos judiciais direto no seu navegador.">
     <meta property="og:image" content="https://www.buscadordjen.com.br/djen-128.png"> 
     <meta property="og:url" content="https://www.buscadordjen.com.br/">
     
@@ -35,7 +35,7 @@
             --primary-text: #ffffff;
             --badge-bg: #f2f9ff;
             --badge-text: #097fe8;
-            --border-light: rgba(0, 0, 0, 0.1); 
+            --border-light: rgba(0, 0, 0, 0.1); /* Whisper Borders */
             --zen-orange: #dd5b00;
             --zen-green: #1aae39;
             --zen-purple: #391c57;
@@ -136,7 +136,7 @@
         
         /* SIMULADOR SECTION */
         .demo-section { display: flex; flex-direction: column; align-items: center; padding: 80px 20px 100px; background-color: var(--bg-page); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); transition: background-color 0.3s; }
-        .demo-badge { background: var(--badge-bg); color: var(--badge-text); padding: 4px 8px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; margin-bottom: 24px; letter-spacing: 0.125px; text-transform: uppercase;}
+        .demo-badge { background: var(--badge-bg); color: var(--badge-text); padding: 4px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; margin-bottom: 24px; letter-spacing: 0.125px; text-transform: uppercase;}
         .iframe-wrapper { position: relative; width: 100%; max-width: 400px; height: 600px; display: flex; justify-content: center; align-items: center; }
         .iframe-wrapper iframe { width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: var(--radius-card); box-shadow: var(--shadow-modal); background: var(--bg-page); transition: box-shadow 0.3s;}
 
@@ -184,8 +184,8 @@
         }
 
         .carousel-item:hover { transform: scale(1.02); box-shadow: var(--shadow-hover); }
-        .carousel-item img { width: 100%; height: auto; display: block; cursor: zoom-in; object-fit: cover; }
-        .carousel-caption { padding: 12px; font-size: 14px; text-align: center; color: var(--text-muted); font-weight: 500; border-top: 1px solid var(--border-light); background: var(--bg-section); transition: background-color 0.3s, color 0.3s;}
+        .carousel-item img { width: 100%; height: auto; display: block; cursor: zoom-in; object-fit: cover; border-bottom: 1px solid var(--border-light); }
+        .carousel-caption { padding: 16px; font-size: 14px; text-align: center; color: var(--text-muted); font-weight: 500; background: var(--bg-section); transition: background-color 0.3s, color 0.3s;}
 
         /* SETAS DO CARROSSEL */
         .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 50%; box-shadow: var(--shadow-hover); color: var(--text-main); display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
@@ -212,7 +212,7 @@
         .authority-box p { color: var(--text-muted); font-size: 16px; line-height: 1.5; margin-bottom: 0; transition: color 0.3s;}
 
         .bottom-cta { text-align: center; padding: 100px 20px; background: var(--bg-page); border-top: 1px solid var(--border-light); transition: background-color 0.3s;}
-        .bottom-cta h2 { font-size: 40px; font-weight: 700; margin-bottom: 16px; line-height: 1.5;}
+        .bottom-cta h2 { font-size: 40px; font-weight: 700; margin-bottom: 16px; line-height: 1.5; letter-spacing: -1.5px;}
         .bottom-cta p { color: var(--text-muted); font-size: 16px; font-weight: 500; margin-bottom: 32px; transition: color 0.3s;}
 
         /* FOOTER & CAFÉ */
@@ -270,7 +270,7 @@
             </button>
 
             <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 500; color: var(--text-muted); text-decoration: none;">
-                por Amilcar
+                por Amílcar
             </a>
 
             <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
@@ -282,7 +282,7 @@
 
     <section class="hero">
         <h1>Automação e controle de <span>publicações judiciais</span> no navegador.</h1>
-        <p>A forma mais rápida de pesquisar nome no DJEN CNJ. Automatize a consulta de publicações no Diário da Justiça Eletrônico Nacional, calcule prazos processuais e faça a gestão de intimações de painéis como PJe, eproc e e-SAJ com total segurança.</p>
+        <p>A forma mais rápida de pesquisar nome no DJEN CNJ. Automatize a consulta de publicações no Diário da Justiça Eletrônico Nacional, calcule prazos processuais e faça a gestão de intimações com relatórios em Visual Law direto do navegador.</p>
         
         <div class="hero-buttons">
             <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser chrome primary">
@@ -298,9 +298,10 @@
         </div>
         
         <div class="trust-badges">
+            <span style="background: var(--badge-bg); color: var(--badge-text); padding: 4px 10px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600;">NOVO: Relatórios PDF e Jurimetria CSV</span>
             <span>Compatível com PJe, e-SAJ, eproc, Projudi</span>
         </div>
-        <div class="microcopy">🔒 Não requer Certificado Digital ou senhas.</div>
+        <div class="microcopy" style="margin-top: 8px;">🔒 Não requer Certificado Digital ou senhas.</div>
     </section>
 
     <section class="calculator-promo fade-in-section">
@@ -333,13 +334,13 @@
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--primary);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                 <h3>Consulta Direta no DJEN e CNJ</h3>
-                <p>Busca rápida por OAB, UF ou consulta pública por número do processo. Extração de dados de atos judiciais e publicações instantâneas, ignorando captchas intermináveis e a lentidão do portal oficial, e-mail ou aplicativo externo.</p>
+                <p>Busca rápida por OAB, UF ou consulta pública por número do processo. Extração de dados de atos judiciais e publicações instantâneas, ignorando captchas intermináveis e a lentidão do portal oficial.</p>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-red);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
                 <h3>Cálculo de Prazos Processuais</h3>
-                <p>Dias úteis ou corridos. O sistema desvia automaticamente de feriados, suspensões e do recesso forense ao calcular o prazo.</p>
+                <p>Dias úteis ou corridos. O sistema desvia automaticamente de feriados, suspensões e do recesso forense ao calcular o prazo de forma visual.</p>
             </div>
 
             <div class="feature-card fade-in-section">
@@ -351,19 +352,19 @@
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-purple);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
                 <h3>Radar de Atos Judiciais</h3>
-                <p>Monitoramento assíncrono com detecção automática de urgências (Liminares, Penhoras) e um modo de leitura imersiva sem distrações para suas publicações.</p>
+                <p>Monitoramento com detecção automática de urgências (Liminares, Penhoras) e um modo de leitura imersiva sem distrações para suas publicações.</p>
             </div>
 
             <div class="feature-card fade-in-section">
-                <div class="feature-icon" style="color: var(--zen-blue);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg></div>
-                <h3>Exportação e Compartilhamento</h3>
-                <p>Exporte prazos e movimentações processuais para o Google Agenda em um clique. Compartilhe via WhatsApp e Telegram.</p>
+                <div class="feature-icon" style="color: var(--zen-blue);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+                <h3>Relatórios PDF e Jurimetria</h3>
+                <p>Gere relatórios em PDF com design minimalista (padrão Visual Law) para casos individuais ou em lote. Exporte sua base de prazos em formato CSV estruturado para análise de dados e Jurimetria no Excel.</p>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--text-main);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
                 <h3>Segurança para Controladoria</h3>
-                <p>Sem servidores externos. Seus dados, processos e agenda ficam criptografados apenas na sua máquina, garantindo sigilo absoluto.</p>
+                <p>Sem servidores externos. Seus dados, processos e agenda ficam criptografados apenas na sua máquina local (Navegador), garantindo sigilo absoluto das informações dos seus clientes.</p>
             </div>
         </div>
     </section>
@@ -379,6 +380,10 @@
                 <div class="carousel-item">
                     <img src="1.png" alt="Interface da extensão Buscador DJEN realizando consulta de atos judiciais e publicações por OAB" loading="lazy">
                     <div class="carousel-caption">Consulta direta de atos judiciais no DJEN e CNJ</div>
+                </div>
+                <div class="carousel-item">
+                    <img src="11.png" alt="Geração de Relatórios em PDF e Planilhas CSV para jurimetria" loading="lazy">
+                    <div class="carousel-caption">Novos Relatórios em PDF (Visual Law) e CSV para Jurimetria</div>
                 </div>
                 <div class="carousel-item">
                     <img src="2.png" alt="Gestão de publicações judiciais, comentários e tarefas sincronizadas com processos do PJe e eproc" loading="lazy">
@@ -409,10 +414,6 @@
                     <div class="carousel-caption">Radar de alerta para termos urgentes em atos judiciais</div>
                 </div>
                 <div class="carousel-item">
-                    <img src="9.png" alt="Guia de atalhos de teclado para otimizar a triagem de publicações e a Consulta CNJ" loading="lazy">
-                    <div class="carousel-caption">Atalhos rápidos para otimizar sua consulta</div>
-                </div>
-                <div class="carousel-item">
                     <img src="10.png" alt="Menu de segurança da informação e backup local de publicações e dados jurídicos" loading="lazy">
                     <div class="carousel-caption">Menu de configurações e backup local da controladoria</div>
                 </div>
@@ -427,7 +428,7 @@
     <section class="info-container fade-in-section">
        <div class="authority-box">
             <h3>Da prática diária para o seu navegador.</h3>
-            <p>Sou Amilcar Moreira — jornalista, advogado especialista em Direito Digital e Propriedade Intelectual. O Buscador DJEN nasceu da minha própria exaustão no contencioso. Ao unir conceitos práticos de <strong>Jurimetria</strong> e <strong>Legal Design</strong>, criei uma ferramenta para eliminar o trabalho braçal de monitorar Painéis Eletrônicos e Diários Oficiais. Desenvolvi cada funcionalidade sob a pressão de prazos processuais reais, pensando em otimizar tanto a rotina do advogado autônomo quanto a dinâmica diária com o assistente jurídico. É uma solução de <em>legaltech</em> 100% independente, com foco em automação e interface limpa, criada com um único objetivo: devolver a você o controle absoluto da sua pauta.</p>
+            <p>Sou Amílcar Moreira — jornalista, advogado especialista em Direito Digital e Propriedade Intelectual. O Buscador DJEN nasceu da minha própria exaustão no contencioso. Ao unir conceitos práticos de <strong>Jurimetria</strong> e <strong>Legal Design</strong>, criei uma ferramenta para eliminar o trabalho braçal de monitorar Painéis Eletrônicos e Diários Oficiais. Desenvolvi cada funcionalidade sob a pressão de prazos processuais reais, pensando em otimizar tanto a rotina do advogado autônomo quanto a dinâmica diária de uma equipe jurídica. É uma solução de <em>legaltech</em> independente, com foco em automação e interface limpa, criada com um único objetivo: devolver a você o controle absoluto da sua pauta.</p>
         </div>
     </section>
 
@@ -444,11 +445,11 @@
         <div class="footer-content">
             <div class="coffee-container fade-in-section">
                 <button class="coffee-btn" id="btnToggleCoffee">
-                    <span>Pague-me um café</span>
+                    <span>Apoie o Projeto (Pague um café)</span>
                     <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </button>
                 <div class="coffee-content" id="contentCoffee">
-                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Um projeto independente, de colega para colega. Se a extensão poupou seu tempo hoje, considere pagar um café para manter os servidores rodando.</p>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Um projeto independente, de colega para colega. Se a extensão poupou seu tempo hoje, considere pagar um café para manter a ferramenta no ar.</p>
                     <div class="pix-code-container">
                         <input type="text" id="pixKey" value="50f781e2-9d94-4624-8f08-a9938bb0c4dc" readonly>
                         <button id="btnCopyPix" onclick="copyPixCode()">Copiar Pix</button>
@@ -457,13 +458,14 @@
             </div>
 
             <div class="footer-links fade-in-section">
-                <a href="calculadora.html" style="color: var(--primary); font-weight: 600;">Calculadora de Prazos</a> <a href="termos.html">Termos de Uso</a>
+                <a href="calculadora.html" style="color: var(--primary); font-weight: 600;">Calculadora de Prazos</a> 
+                <a href="termos.html">Termos de Uso</a>
                 <a href="privacidade.html">Privacidade</a>
                 <a href="mailto:contato@buscadordjen.com.br">Contato</a>
             </div>
             
             <div class="footer-copy fade-in-section">
-                &copy; 2026 Buscador DJEN. Feito com cuidado para a advocacia.
+                &copy; 2026 Buscador DJEN. Amílcar Barreto de Barros Moreira Sociedade Individual de Advocacia. OAB/SP 349.457.
             </div>
         </div>
     </footer>
@@ -603,7 +605,7 @@
                 btnCompartilhar.addEventListener('click', async () => {
                     const shareData = {
                         title: 'Buscador DJEN',
-                        text: 'Conheça o Buscador DJEN: a extensão que automatiza a busca de publicações judiciais e cálculos de prazos processuais.',
+                        text: 'Conheça o Buscador DJEN: a extensão que automatiza a busca de publicações judiciais e cálculos de prazos processuais com Relatórios em Visual Law.',
                         url: window.location.href
                     };
 
@@ -611,7 +613,6 @@
                         if (navigator.share) {
                             await navigator.share(shareData);
                         } else {
-                            // Fallback para navegadores sem suporte
                             await navigator.clipboard.writeText(shareData.url);
                             const iconSvg = btnCompartilhar.innerHTML;
                             btnCompartilhar.innerHTML = '<span style="font-size: 13px;">Copiado!</span>';
