@@ -8,64 +8,115 @@
     <link rel="icon" type="image/png" href="djen-128.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-page: #ffffff; --bg-header: rgba(255, 255, 255, 0.85); --bg-section: #f6f5f4; --text-main: rgba(0, 0, 0, 0.95); --text-muted: #615d59; --primary: #0075de; --primary-hover: #005bab; --border-light: rgba(0, 0, 0, 0.08); --zen-green: #1aae39; --zen-orange: #dd5b00; --zen-blue: #0075de; --radius-btn: 6px; --radius-card: 16px; --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px; }
-        [data-theme="dark"] { --bg-page: #191919; --bg-header: rgba(25, 25, 25, 0.85); --bg-section: #202020; --text-main: rgba(255, 255, 255, 0.95); --text-muted: rgba(255, 255, 255, 0.6); --primary: #52a8ff; --primary-hover: #62aef0; --border-light: rgba(255, 255, 255, 0.08); }
-        ::-webkit-scrollbar { width: 10px; height: 10px; } ::-webkit-scrollbar-track { background: var(--bg-page); } ::-webkit-scrollbar-thumb { background: rgba(163, 158, 152, 0.3); border-radius: 10px; border: 2px solid var(--bg-page); }
-        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); line-height: 1.6; transition: 0.3s; } a { text-decoration: none; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; transition: 0.3s; }
+        :root { 
+            --bg-page: #ffffff; --bg-header: rgba(255, 255, 255, 0.85); --bg-section: #f6f5f4; 
+            --card-bg: #ffffff; --text-main: rgba(0, 0, 0, 0.95); --text-muted: #615d59; 
+            --primary: #0075de; --primary-hover: #005bab; --border-light: rgba(0, 0, 0, 0.08); 
+            --zen-green: #1aae39; --zen-orange: #dd5b00; 
+            --radius-btn: 6px; --radius-card: 16px; 
+            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px; 
+        }
+        [data-theme="dark"] { 
+            --bg-page: #191919; --bg-header: rgba(25, 25, 25, 0.85); --bg-section: #202020; 
+            --card-bg: #252525; --text-main: rgba(255, 255, 255, 0.95); --text-muted: rgba(255, 255, 255, 0.6); 
+            --primary: #52a8ff; --primary-hover: #62aef0; --border-light: rgba(255, 255, 255, 0.08); 
+            --shadow-card: rgba(0,0,0,0.4) 0px 4px 18px; 
+        }
+        
+        ::-webkit-scrollbar { width: 10px; height: 10px; } 
+        ::-webkit-scrollbar-track { background: var(--bg-page); } 
+        ::-webkit-scrollbar-thumb { background: rgba(163, 158, 152, 0.3); border-radius: 10px; border: 2px solid var(--bg-page); }
+        
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); line-height: 1.6; transition: 0.3s; } 
+        a { text-decoration: none; }
+
+        /* HEADER PADRÃO UNIVERSAL */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s; }
         header.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.03); } 
-      .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); white-space: nowrap; } 
+        
+        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); text-decoration: none; white-space: nowrap; } 
         .brand img { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; }
         .badge-cortesia-site { font-size: 10px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 3px 8px; border-radius: 999px; font-weight: 700; border: none; letter-spacing: 0.5px; white-space: nowrap; }
+        
         .header-nav { display: flex; gap: 24px; margin: 0 auto; padding: 0 24px; } 
-        .nav-link { font-size: 14px; font-weight: 600; color: var(--text-muted); transition: 0.2s; white-space: nowrap; } 
+        .nav-link { font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; white-space: nowrap; } 
         .nav-link:hover, .nav-link.active { color: var(--primary); }
-        .header-actions { display: flex; align-items: center; gap: 12px; }
-        .share-btn { display: flex; align-items: center; gap: 6px; background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); padding: 6px 12px; height: 36px; border-radius: var(--radius-btn); font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+        
+        .header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .share-btn { display: flex; align-items: center; gap: 6px; background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); padding: 6px 12px; height: 36px; border-radius: var(--radius-btn); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; white-space: nowrap; }
         .share-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
         .share-btn:hover { background: var(--bg-section); color: var(--text-main); border-color: transparent; }
-        .share-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
-        .theme-toggle { background: transparent; border: 1px solid var(--border-light); color: var(--text-muted); width: 36px; height: 36px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; }
+        
+        .theme-toggle { background: transparent; border: 1px solid var(--border-light); color: var(--text-muted); width: 36px; height: 36px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; }
         .theme-toggle:hover { background: var(--bg-section); color: var(--text-main); border-color: transparent; }
         [data-theme="dark"] .sun-icon { display: none; } [data-theme="light"] .moon-icon { display: none; }
-        
+
+        /* HERO MINIMALISTA */
         .feature-hero { padding: 120px 5% 80px; text-align: center; max-width: 900px; margin: 0 auto; } 
         .hero-badge { display: inline-block; background: rgba(0, 117, 222, 0.1); color: var(--primary); padding: 6px 16px; border-radius: 99px; font-size: 13px; font-weight: 700; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.5px;}
         .feature-hero h1 { font-size: 56px; font-weight: 800; line-height: 1.1; margin: 0 0 24px 0; letter-spacing: -1.5px; } 
         .feature-hero p { font-size: 22px; color: var(--text-muted); font-weight: 500; margin-bottom: 0; line-height: 1.5; }
 
+        /* GRID DE TEXTOS */
         .text-grid { padding: 40px 5% 100px; max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 60px; }
         .text-card { background: var(--bg-section); padding: 50px; border-radius: var(--radius-card); border: 1px solid var(--border-light); transition: 0.3s; }
         .text-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); background: var(--card-bg); }
         .icon-wrapper { width: 56px; height: 56px; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 24px; }
+        .icon-wrapper svg { width: 28px; height: 28px; }
         .text-card h2 { font-size: 32px; font-weight: 800; margin: 0 0 16px 0; line-height: 1.2; letter-spacing: -0.5px;} 
         .text-card p { font-size: 18px; color: var(--text-muted); margin: 0 0 24px 0; line-height: 1.6; }
+        
         .check-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 12px; }
         @media(min-width: 768px){ .check-list { grid-template-columns: 1fr 1fr; } }
         .check-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 16px; font-weight: 500; } 
         .check-list svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
 
+        /* BOTTOM CTA */
         .bottom-cta { text-align: center; padding: 100px 20px; background: var(--bg-section); border-top: 1px solid var(--border-light); } 
         .bottom-cta h2 { font-size: 40px; font-weight: 800; margin-bottom: 32px; letter-spacing: -1px; }
         .btn-browser { display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: #fff; padding: 14px 28px; border-radius: var(--radius-btn); font-weight: 600; font-size: 16px; transition: 0.2s; } 
         .btn-browser:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 117, 222, 0.25); }
+        
         footer { padding: 40px 20px; text-align: center; border-top: 1px solid var(--border-light); font-size: 14px; color: var(--text-muted); } 
         @media (max-width: 900px) { .feature-hero h1 { font-size: 40px; } .header-nav { display: none; } .text-card { padding: 30px; } }
     </style>
 </head>
 <body>
+    
     <header id="mainHeader">
-        <a href="index.html" class="brand" style="text-decoration: none;"><img src="djen-128.png" alt="Logo DJEN">Buscador DJEN<span class="badge-cortesia-site">CORTESIA</span></a>
+        <a href="index.html" class="brand">
+            <img src="djen-128.png" alt="Logo Buscador DJEN">
+            Buscador DJEN
+            <span class="badge-cortesia-site">CORTESIA</span>
+        </a>
+        
         <div class="header-nav">
             <a href="busca.html" class="nav-link">Busca & Tags</a>
             <a href="prazos.html" class="nav-link">Prazos & Agenda</a>
-            <a href="exportacao.html" class="nav-link active">Relatórios PDF/CSV</a>
-            <a href="radar.html" class="nav-link">Radar de Urgências</a>
+            <a href="exportacao.html" class="nav-link active">Relatórios PDF</a>
+            <a href="radar.html" class="nav-link">Radar</a>
         </div>
-        <div class="header-actions">
-            <button id="btn-compartilhar" class="share-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg><span class="share-text" style="display: inline-block;">Compartilhar</span></button>
-            <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" style="font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none;">por Amilcar</a>
-            <button id="themeToggle" class="theme-toggle"><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
+
+       <div class="header-actions">
+            <button id="btn-compartilhar" class="share-btn" aria-label="Compartilhar site">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+                <span class="share-text">Compartilhar</span>
+            </button>
+
+            <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; white-space: nowrap;">
+                por Amilcar
+            </a>
+
+            <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
+                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
         </div>
     </header>
 
@@ -84,7 +135,7 @@
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Identidade limpa e profissional.</span></li>
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Fichas individuais por processo.</span></li>
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Relatórios amplos de controladoria.</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Pronto para anexar em e-mails e pastas de clientes.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Pronto para anexar em pastas de clientes.</span></li>
             </ul>
         </div>
 
@@ -93,9 +144,9 @@
             <h2>Exportação CSV para Jurimetria</h2>
             <p>A gestão de um escritório moderno exige análise de dados. Exporte toda a sua base histórica de intimações para o Excel (CSV) e utilize softwares como o PowerBI para aplicar métricas de jurimetria sobre as suas varas e prazos.</p>
             <ul class="check-list" style="color: var(--zen-green);">
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Análise preditiva de decisões e varas.</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Controle de volume processual por advogado.</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Formatação colunar amigável (Data, Teor, Status).</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Análise preditiva de decisões.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Controle de volume por advogado.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Formatação colunar amigável.</span></li>
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Backup local e inviolável dos dados.</span></li>
             </ul>
         </div>
@@ -106,19 +157,22 @@
             <p>O cliente de hoje quer respostas imediatas. Copiar os despachos do tribunal resulta em textos cheios de pontuações e códigos ilegíveis. Nós filtramos o essencial e formatamos o andamento para disparo com um clique.</p>
             <ul class="check-list" style="color: var(--zen-orange);">
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Integração nativa com o WhatsApp Web.</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Ocultação inteligente de CNPJs e dados irrelevantes.</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Inclusão das suas anotações junto do teor.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Ocultação de dados irrelevantes.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: var(--text-main);">Inclusão de anotações junto ao teor.</span></li>
             </ul>
         </div>
     </section>
 
     <section class="bottom-cta">
         <h2>Entregue valor aos seus clientes.</h2>
-        <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser">Instalar Buscador DJEN</a>
+        <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="21.17" y1="8" x2="12" y2="8"></line><line x1="3.95" y1="6.06" x2="8.54" y2="14"></line><line x1="10.88" y1="21.94" x2="15.46" y2="14"></line></svg>
+            Instalar Buscador DJEN
+        </a>
     </section>
 
     <footer>
-        <div style="margin-bottom: 12px; font-weight: 600;"><a href="index.html" style="color: var(--text-muted); margin-right: 16px;">Voltar ao Início</a><a href="calculadora.html" style="color: var(--primary);">Calculadora de Prazos</a></div>
+        <div style="margin-bottom: 12px; font-weight: 600;"><a href="index.html" style="color: var(--text-muted); margin-right: 16px;">Voltar ao Início</a><a href="calculadora.html" style="color: var(--primary);">Calculadora de Prazos Online</a></div>
         &copy; 2026 Buscador DJEN. Feito por Amilcar Moreira.
     </footer>
     <script>
