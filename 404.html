@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página não encontrada | Buscador DJEN</title>
+    <link rel="icon" type="image/png" href="djen-128.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-page: #ffffff; --bg-header: rgba(255, 255, 255, 0.85); --bg-section: #f6f5f4; --text-main: rgba(0, 0, 0, 0.95); --text-muted: #615d59; --primary: #0075de; --primary-hover: #005bab; --border-light: rgba(0, 0, 0, 0.08); --zen-red: #d93025; --zen-orange: #dd5b00; --radius-btn: 6px; --radius-card: 16px; --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px; }
+        [data-theme="dark"] { --bg-page: #191919; --bg-header: rgba(25, 25, 25, 0.85); --bg-section: #202020; --text-main: rgba(255, 255, 255, 0.95); --text-muted: rgba(255, 255, 255, 0.6); --primary: #52a8ff; --primary-hover: #62aef0; --border-light: rgba(255, 255, 255, 0.08); }
+        ::-webkit-scrollbar { width: 10px; height: 10px; } ::-webkit-scrollbar-track { background: var(--bg-page); } ::-webkit-scrollbar-thumb { background: rgba(163, 158, 152, 0.3); border-radius: 10px; border: 2px solid var(--bg-page); }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); line-height: 1.6; transition: 0.3s; display: flex; flex-direction: column; min-height: 100vh; } a { text-decoration: none; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; transition: 0.3s; }
+        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); } .brand img { width: 32px; height: 32px; border-radius: 8px; }
+        .badge-cortesia-site { font-size: 10px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 3px 8px; border-radius: 999px; font-weight: 700; border: none; letter-spacing: 0.5px; }
+        .header-nav { display: flex; gap: 24px; margin: 0 auto; padding: 0 24px; } .nav-link { font-size: 14px; font-weight: 600; color: var(--text-muted); transition: 0.2s; } .nav-link:hover, .nav-link.active { color: var(--primary); }
+        .theme-toggle { background: transparent; border: 1px solid var(--border-light); color: var(--text-muted); width: 36px; height: 36px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; }
+        .theme-toggle:hover { background: var(--bg-section); color: var(--text-main); border-color: transparent; }
+        [data-theme="dark"] .sun-icon { display: none; } [data-theme="light"] .moon-icon { display: none; }
+        
+        .error-container { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 80px 20px; }
+        .error-badge { display: inline-block; background: rgba(217, 48, 37, 0.1); color: var(--zen-red); padding: 6px 16px; border-radius: 99px; font-size: 13px; font-weight: 700; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .error-container h1 { font-size: 64px; font-weight: 800; line-height: 1.1; margin: 0 0 24px 0; letter-spacing: -1.5px; }
+        .error-container p { font-size: 20px; color: var(--text-muted); font-weight: 500; margin-bottom: 40px; max-width: 600px; line-height: 1.5; }
+        .btn-browser { display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: #fff; padding: 14px 28px; border-radius: var(--radius-btn); font-weight: 600; font-size: 16px; transition: 0.2s; } 
+        .btn-browser:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 117, 222, 0.25); }
+        
+        footer { padding: 40px 20px; text-align: center; border-top: 1px solid var(--border-light); font-size: 14px; color: var(--text-muted); margin-top: auto; } 
+        @media (max-width: 900px) { .error-container h1 { font-size: 48px; } .header-nav { display: none; } }
+    </style>
+</head>
+<body>
+    <header id="mainHeader">
+        <a href="index.html" class="brand" style="text-decoration: none;"><img src="djen-128.png" alt="Logo DJEN">Buscador DJEN<span class="badge-cortesia-site">CORTESIA</span></a>
+        <div class="header-nav">
+            <a href="busca.html" class="nav-link">Busca & Tags</a>
+            <a href="prazos.html" class="nav-link">Prazos & Agenda</a>
+            <a href="exportacao.html" class="nav-link">Relatórios PDF</a>
+            <a href="radar.html" class="nav-link">Radar</a>
+        </div>
+        <div class="header-actions">
+            <button id="themeToggle" class="theme-toggle"><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
+        </div>
+    </header>
+
+    <div class="error-container">
+        <span class="error-badge">Erro 404</span>
+        <h1>Objeção acolhida!</h1>
+        <p>A página que você procura não foi encontrada nos autos virtuais. É provável que o link esteja quebrado ou a funcionalidade tenha sido arquivada.</p>
+        <a href="index.html" class="btn-browser">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            Voltar para a Página Inicial
+        </a>
+    </div>
+
+    <footer>
+        <div style="margin-bottom: 12px; font-weight: 600;"><a href="calculadora.html" style="color: var(--primary);">Calculadora de Prazos</a></div>
+        &copy; 2026 Buscador DJEN. Feito por Amilcar Moreira.
+    </footer>
+    
+    <script>
+        const themeToggleBtn = document.getElementById('themeToggle'); themeToggleBtn.addEventListener('click', () => { const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', newTheme); localStorage.setItem('theme', newTheme); });
+        if(localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    </script>
+</body>
+</html>
