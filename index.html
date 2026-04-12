@@ -107,9 +107,17 @@
         .theme-toggle:hover { background: var(--bg-section); color: var(--text-main); border-color: transparent; }
         [data-theme="dark"] .sun-icon { display: none; } [data-theme="light"] .moon-icon { display: none; }
 
+        /* ALERTA DE NOVIDADE NO HERO */
+        .hero-alert-badge { display: inline-flex; align-items: center; gap: 12px; background: var(--card-bg); border: 1px solid var(--border-light); padding: 6px 16px 6px 6px; border-radius: 999px; text-decoration: none; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: all 0.2s ease; }
+        .hero-alert-badge:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); border-color: var(--primary); }
+        .hero-alert-badge .badge-new { background: var(--zen-red); color: white; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px; letter-spacing: 0.5px; text-transform: uppercase; }
+        .hero-alert-badge .alert-text { font-size: 14px; font-weight: 600; color: var(--text-main); }
+        .hero-alert-badge .alert-icon { color: var(--text-muted); font-size: 14px; transition: transform 0.2s ease; }
+        .hero-alert-badge:hover .alert-icon { transform: translateX(4px); color: var(--primary); }
+
         /* HERO COM MALHA DOT GRID */
         .hero { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 120px 20px 100px; margin: 0 auto; background-image: radial-gradient(var(--border-light) 1.5px, transparent 1.5px); background-size: 32px 32px; background-position: center top; }
-        .hero-content { position: relative; z-index: 2; max-width: 900px; }
+        .hero-content { position: relative; z-index: 2; max-width: 900px; display: flex; flex-direction: column; align-items: center; }
         .hero h1 { font-size: 64px; font-weight: 800; line-height: 1.05; margin-bottom: 24px; letter-spacing: -2px; }
         .hero h1 span { color: var(--primary); }
         .hero p { font-size: 20px; color: var(--text-muted); margin-bottom: 48px; max-width: 800px; margin-left: auto; margin-right: auto; font-weight: 500; line-height: 1.5; letter-spacing: -0.125px;}
@@ -201,6 +209,7 @@
             .share-btn { padding: 6px; width: 36px; justify-content: center;}
             .brand span.badge-cortesia-site { display: none; }
             .hero { padding-top: 60px; }
+            .hero-alert-badge .alert-text { font-size: 12px; }
         }
 
         /* AUTORIDADE & CTA FINAL */
@@ -289,6 +298,12 @@
 
     <section class="hero">
         <div class="hero-content">
+            
+            <a href="versoes.html" class="hero-alert-badge fade-in-section">
+                <span class="badge-new">Novo</span>
+                <span class="alert-text">Auditoria de Feriados Locais: blindagem contra intempestividade</span>
+                <span class="alert-icon">➔</span>
+            </a>
             <h1 class="fade-in-section">Automação e controle de <span>publicações judiciais</span> no navegador.</h1>
             <p class="fade-in-section">A forma mais rápida de pesquisar nome no DJEN CNJ. Automatize a consulta de publicações no Diário da Justiça Eletrônico Nacional, calcule prazos processuais e gerencie PJe, eproc e e-SAJ direto do navegador.</p>
             
