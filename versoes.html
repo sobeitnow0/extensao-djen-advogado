@@ -81,6 +81,16 @@
         .update-header h2 { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
         .update-header p { font-size: 18px; color: var(--text-muted); max-width: 800px; margin: 0 auto; font-weight: 500; }
 
+        /* NOVO BLOCO DE HIGHLIGHT v45.9 */
+        .feature-highlight { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-light); border-radius: var(--radius-card); padding: 40px; margin-bottom: 40px; box-shadow: var(--shadow-card); position: relative; overflow: hidden; }
+        .feature-highlight::before { content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--zen-red); opacity: 0.8; }
+        .highlight-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(217, 48, 37, 0.1); color: var(--zen-red); padding: 6px 12px; border-radius: 99px; font-size: 12px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 16px; }
+        .feature-highlight h3 { font-size: 28px; font-weight: 800; margin: 0 0 16px 0; letter-spacing: -0.5px; color: var(--text-main); line-height: 1.2; }
+        .feature-highlight > p { font-size: 16px; color: var(--text-muted); margin: 0 0 32px 0; max-width: 850px; line-height: 1.6; }
+        .highlight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+        .highlight-item strong { display: block; font-size: 16px; color: var(--text-main); margin-bottom: 6px; }
+        .highlight-item p { font-size: 14.5px; color: var(--text-muted); margin: 0; line-height: 1.5; }
+
         .update-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
         .update-card { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); transition: 0.3s; display: flex; flex-direction: column; }
         .update-card:hover { transform: translateY(-4px); border-color: var(--primary); }
@@ -114,6 +124,7 @@
             .matrix-table th, .matrix-table td { padding: 16px 12px; font-size: 14px; }
             .hero h1 { font-size: 36px; }
             .header-nav { display: none; }
+            .feature-highlight { padding: 24px; }
         }
     </style>
 </head>
@@ -184,6 +195,28 @@
             <p>Reescrevemos a interface e o motor do Buscador DJEN para garantir que você gaste menos tempo gerenciando abas e mais tempo focando no que realmente importa na sua advocacia.</p>
         </div>
 
+        <div class="feature-highlight">
+            <div class="highlight-badge">
+                ✨ NOVIDADE NA v45.9
+            </div>
+            <h3>Auditoria de Feriados Locais: A sua blindagem contra a intempestividade.</h3>
+            <p>O STJ não perdoa o esquecimento de um decreto municipal. O Buscador DJEN também não deixa você esquecer. O sistema identifica automaticamente se o seu prazo cruzou com suspensões municipais ou estaduais e gera alertas de conformidade (Art. 1.003, § 6º do CPC).</p>
+            
+            <div class="highlight-grid">
+                <div class="highlight-item">
+                    <strong>🚨 Alerta Visual Inteligente</strong>
+                    <p>Se a calculadora detectar um feriado local, um aviso de destaque é exibido imediatamente abaixo da data fatal. Sem surpresas na hora de protocolar.</p>
+                </div>
+                <div class="highlight-item">
+                    <strong>📅 Google Agenda Blindado</strong>
+                    <p>Ao exportar o prazo, o lembrete para anexar o decreto de suspensão de expediente é inserido automaticamente na descrição do seu evento.</p>
+                </div>
+                <div class="highlight-item">
+                    <strong>📲 Delegação Segura</strong>
+                    <p>Vai enviar o prazo para a equipe? O alerta de jurisprudência acompanha o texto formatado para o WhatsApp, garantindo que ninguém esqueça a certidão.</p>
+                </div>
+            </div>
+        </div>
         <div class="update-grid">
             <div class="update-card">
                 <div class="notion-icon">📊</div>
