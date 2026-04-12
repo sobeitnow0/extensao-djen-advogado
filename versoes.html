@@ -25,6 +25,21 @@
             --primary: #52a8ff; --primary-hover: #62aef0; --border-light: rgba(255, 255, 255, 0.08); 
             --shadow-card: rgba(0,0,0,0.4) 0px 4px 18px; 
         }
+
+        .feature-highlight .highlight-term {
+    text-decoration: underline;
+    text-decoration-color: var(--primary);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    font-weight: 700;
+    color: var(--text-main) !important;
+    transition: color 0.3s;
+}
+
+/* Tratamento para o tema escuro, se aplicável nessa página */
+[data-theme="dark"] .feature-highlight .highlight-term {
+    color: var(--text-main) !important;
+}
         
         ::-webkit-scrollbar { width: 10px; height: 10px; } 
         ::-webkit-scrollbar-track { background: var(--bg-page); } 
@@ -199,8 +214,8 @@
                 ✨ NOVIDADE NA v45.9
             </div>
             <h3>Auditoria de Feriados Locais: Prevenção inteligente contra a intempestividade.</h3>
-<p>Um feriado municipal ignorado pode custar seu recurso no <span class="highlight-term">STJ</span>. Além da contagem precisa, o Buscador DJEN agora <span class="highlight-term">emite alertas automáticos</span> sempre que seu prazo cruzar com <span class="highlight-term">suspensões locais</span>, garantindo que você lembre de comprovar o Art. 1.003, § 6º do CPC.</p>            
-            <div class="highlight-grid">
+    <p>Um feriado municipal ignorado pode custar seu recurso no <span class="highlight-term">STJ</span>. Além da contagem precisa, o Buscador DJEN agora <span class="highlight-term">emite alertas automáticos</span> sempre que seu prazo cruzar com <span class="highlight-term">suspensões locais</span>, garantindo que você lembre de comprovar o Art. 1.003, § 6º do CPC.</p>            
+    <div class="highlight-grid">
                 <div class="highlight-item">
                     <strong>🚨 Alerta Visual Inteligente</strong>
                     <p>Se a calculadora detectar um feriado local, um aviso de destaque é exibido imediatamente abaixo da data fatal. Sem surpresas na hora de protocolar.</p>
