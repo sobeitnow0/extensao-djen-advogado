@@ -84,7 +84,7 @@
         .progress-container { width: 100%; height: 3px; background: transparent; position: fixed; top: 0; left: 0; z-index: 1001; }
         .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.15s ease-out; border-radius: 0 2px 2px 0; }
 
-        body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; font-feature-settings: "lnum" 1, "locl" 1; transition: background-color 0.3s, color 0.3s; }
+        body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; font-feature-settings: "lnum" 1, "locl" 1; transition: background-color 0.3s, color 0.3s; scroll-behavior: smooth; }
 
         /* HEADER PADRÃO UNIVERSAL */
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s; }
@@ -92,7 +92,8 @@
         
         .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); text-decoration: none; white-space: nowrap; } 
         .brand img { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; }
-        .badge-cortesia-site { font-size: 10px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 3px 8px; border-radius: 999px; font-weight: 700; border: none; letter-spacing: 0.5px; white-space: nowrap; }
+        .badge-cortesia-site { font-size: 10px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 4px 8px; border-radius: 999px; font-weight: 800; border: none; letter-spacing: 0.5px; white-space: nowrap; transition: transform 0.2s; }
+        .badge-cortesia-site:hover { transform: scale(1.05); }
         
         .header-nav { display: flex; gap: 24px; margin: 0 auto; padding: 0 24px; } 
         .nav-link { font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; white-space: nowrap; } 
@@ -132,25 +133,28 @@
         .btn-glow:hover { animation: none; border-color: var(--primary); }
 
         /* NOVOS BOTÕES ESTILO "APP STORE" (DOWNLOAD) */
-        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; }
+        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 8px; }
         .btn-store { position: relative; display: flex; align-items: center; justify-content: center; gap: 14px; background-color: var(--card-bg); color: var(--text-main); padding: 12px 24px; border-radius: var(--radius-btn); text-decoration: none; border: 1px solid var(--border-light); box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: all 0.2s ease; overflow: visible; }
         .btn-store:hover { background-color: var(--bg-section); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); border-color: var(--text-placeholder); }
         .btn-store .store-text { display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.2; }
         .btn-store .store-text small { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
         .btn-store .store-text strong { font-size: 16px; font-weight: 800; letter-spacing: -0.2px; }
         .btn-store svg { width: 28px; height: 28px; flex-shrink: 0; }
+        
+        .rating-stars { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--zen-gold); margin-top: 4px; opacity: 0; transition: opacity 0.3s; }
+        .rating-stars.visible { opacity: 1; }
 
         /* BALÃO DE VERSÃO (TOOLTIP) NO HOVER */
         .version-tooltip { position: absolute; top: -38px; left: 50%; transform: translateX(-50%) translateY(5px); background: #2b2a28; color: #ffffff; font-size: 11px; padding: 6px 12px; border-radius: 6px; opacity: 0; visibility: hidden; transition: all 0.2s ease; white-space: nowrap; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10; pointer-events: none; }
         .version-tooltip::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); border-width: 5px 5px 0; border-style: solid; border-color: #2b2a28 transparent transparent transparent; }
         .btn-store:hover .version-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
-        /* LINK DE COMPARATIVO */
-        .compare-link { font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 24px; }
+        /* LINK DE COMPARATIVO E MICROCOPY */
+        .compare-link { font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 24px; margin-top: 12px;}
         .compare-link:hover { color: var(--primary); text-decoration: underline; }
 
         .trust-badges { display: flex; align-items: center; justify-content: center; gap: 16px; color: var(--text-placeholder); font-size: 14px; font-weight: 600; margin-bottom: 12px; flex-wrap: wrap;}
-        .microcopy { color: var(--text-muted); font-size: 12px; font-weight: 500; }
+        .microcopy { color: var(--text-muted); font-size: 13px; font-weight: 500; }
 
         /* CALCULADORA E SIMULADOR */
         .calculator-promo { padding: 80px 20px; text-align: center; background: var(--bg-section); border-top: 1px solid var(--border-light); transition: background-color 0.3s; }
@@ -171,6 +175,9 @@
         .feature-icon { font-size: 24px; margin-bottom: 24px; width: 52px; height: 52px; display: flex; justify-content: center; align-items: center; border-radius: 12px; background: var(--bg-page); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .feature-card h3 { margin: 0 0 12px 0; font-size: 20px; font-weight: 700; letter-spacing: -0.25px; line-height: 1.3;}
         .feature-card p { color: var(--text-muted); margin: 0; font-size: 15px; font-weight: 500; line-height: 1.6; transition: color 0.3s; }
+        
+        /* HIGHLIGHT TEXT CSS */
+        .highlight-term { text-decoration: underline; text-decoration-color: var(--primary); text-decoration-thickness: 2px; text-underline-offset: 3px; font-weight: 700; color: var(--text-main); transition: color 0.3s;}
 
         /* LINK ANIMADO DENTRO DOS CARTÕES */
         .feature-link { margin-top: auto; padding-top: 16px; font-size: 14px; font-weight: 700; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 4px; transition: gap 0.2s ease; }
@@ -179,6 +186,7 @@
         [data-theme="dark"] .features-container { background: var(--bg-section); }
         [data-theme="dark"] .feature-card { background: var(--card-bg); }
         [data-theme="dark"] .feature-icon { background: var(--bg-section); }
+        [data-theme="dark"] .highlight-term { color: var(--text-main); }
 
         /* CARROSSEL */
         .gallery-section { padding: 0 0 120px 0; background: var(--bg-page); width: 100%; overflow: hidden; transition: background-color 0.3s; }
@@ -263,7 +271,7 @@
         <a href="index.html" class="brand">
             <img src="djen-128.png" alt="Logo Buscador DJEN">
             Buscador DJEN
-            <span class="badge-cortesia-site">CORTESIA</span>
+            <a href="#footer-coffee" class="badge-cortesia-site" style="text-decoration: none;">USO GRATUITO ☕</a>
         </a>
         
         <div class="header-nav">
@@ -301,34 +309,41 @@
             
             <a href="versoes.html" class="hero-alert-badge fade-in-section">
                 <span class="badge-new">Novo</span>
-                <span class="alert-text">Auditoria de Feriados Locais: blindagem contra intempestividade</span>
+                <span class="alert-text">Cálculo de prazos imune a feriados locais</span>
                 <span class="alert-icon">➔</span>
             </a>
-            <h1 class="fade-in-section">Automação e controle de <span>publicações judiciais</span> no navegador.</h1>
-            <p class="fade-in-section">A forma mais rápida de pesquisar nome no DJEN CNJ. Automatize a consulta de publicações no Diário da Justiça Eletrônico Nacional, calcule prazos processuais e gerencie PJe, eproc e e-SAJ direto do navegador.</p>
+            <h1 class="fade-in-section">O controle absoluto da sua pauta, direto no navegador.</h1>
+            <p class="fade-in-section">Não perca mais tempo (nem prazos) e cliques. Automação inteligente de publicações no DJEN e ferramentas de gestão integradas para PJe, eproc e e-SAJ.</p>
             
            <div style="display: flex; flex-direction: column; align-items: center;">
                 <div class="hero-buttons fade-in-section">
                     
-                    <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store">
-    <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" style="width: 28px; height: 28px; flex-shrink: 0;">
-    <div class="store-text">
-        <small>Baixar para</small>
-        <strong>Google Chrome</strong>
-    </div>
-</a>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store">
+                            <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" style="width: 28px; height: 28px; flex-shrink: 0;">
+                            <div class="store-text">
+                                <small>Baixar para</small>
+                                <strong>Google Chrome</strong>
+                            </div>
+                        </a>
+                        <div class="rating-stars chrome-rating">★★★★★ 5.0</div>
+                    </div>
 
-<a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store">
-    <span class="version-tooltip firefox-tooltip">Buscando versão...</span>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" style="width: 28px; height: 28px; flex-shrink: 0;">
-    <div class="store-text">
-        <small>Baixar para</small>
-        <strong>Mozilla Firefox</strong>
-    </div>
-</a>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store">
+                            <span class="version-tooltip firefox-tooltip">Buscando versão...</span>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" style="width: 28px; height: 28px; flex-shrink: 0;">
+                            <div class="store-text">
+                                <small>Baixar para</small>
+                                <strong>Mozilla Firefox</strong>
+                            </div>
+                        </a>
+                        <div class="rating-stars firefox-rating">★★★★★ 5.0</div>
+                    </div>
                     
                 </div>
+                <div class="microcopy fade-in-section" style="margin-top: 8px;">Instalação em segundos pelas lojas oficiais. Sem necessidade de cadastro.</div>
                 <a href="versoes.html" class="compare-link fade-in-section">Ver comparativo das versões ➔</a>
             </div>
             
@@ -344,7 +359,7 @@
         <p style="color: var(--text-muted); margin-bottom: 32px; font-size: 18px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; font-weight: 500;">
             Utilize nossa ferramenta web real e gratuita para o cálculo algorítmico de prazos processuais.
         </p>
-        <a href="calculadora.html" class="btn-browser btn-glow" style="margin: 0 auto; width: fit-content; padding: 14px 28px; border-radius: 6px;">
+        <a href="calculadora.html" target="_blank" rel="noopener noreferrer" class="btn-browser btn-glow" style="margin: 0 auto; width: fit-content; padding: 14px 28px; border-radius: 6px;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16.01" y2="14"></line><line x1="12" y1="14" x2="12.01" y2="14"></line><line x1="8" y1="14" x2="8.01" y2="14"></line><line x1="16" y1="10" x2="16.01" y2="10"></line><line x1="12" y1="10" x2="12.01" y2="10"></line><line x1="8" y1="10" x2="8.01" y2="10"></line><line x1="16" y1="18" x2="16.01" y2="18"></line><line x1="12" y1="18" x2="12.01" y2="18"></line><line x1="8" y1="18" x2="8.01" y2="18"></line></svg>
             Abrir Calculadora de Prazos Online
         </a>
@@ -369,63 +384,63 @@
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--primary);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                 <h3>Consulta Direta (DJEN e CNJ)</h3>
-                <p>Busca rápida por OAB, UF ou número do processo. Extraia dados e publicações instantaneamente, sem bloqueios de captchas ou a lentidão dos portais oficiais.</p>
+                <p>Busca rápida por OAB, UF ou número do processo. Extraia dados e publicações <span class="highlight-term">instantaneamente</span>, sem bloqueios de captchas ou a lentidão dos portais oficiais.</p>
                 <a href="busca.html" class="feature-link">Conhecer a Busca & Tags ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-red);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
                 <h3>Cálculo Inteligente de Prazos</h3>
-                <p>Contagem precisa em dias úteis ou corridos. O algoritmo desvia automaticamente de feriados, suspensões locais e do recesso forense, garantindo segurança na pauta.</p>
+                <p>Contagem precisa em dias úteis ou corridos. O algoritmo desvia <span class="highlight-term">automaticamente</span> de feriados, suspensões locais e do recesso forense, garantindo segurança na pauta.</p>
                 <a href="prazos.html" class="feature-link">Conhecer Prazos & Agenda ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-green);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></div>
                 <h3>Gestão de Intimações e Foco</h3>
-                <p>Transforme publicações em tarefas acionáveis. Ative o <strong>Modo Foco</strong> para analisar despachos longos e complexos em um ambiente de leitura imersivo e livre de distrações.</p>
+                <p>Transforme publicações em tarefas acionáveis. Ative o Modo Foco para analisar despachos longos e complexos em um ambiente de leitura <span class="highlight-term">imersivo</span> e livre de distrações.</p>
                 <a href="busca.html" class="feature-link">Ver detalhes do Modo Foco ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-purple);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
                 <h3>Radar de Urgências</h3>
-                <p>Monitoramento automático da sua pauta. Configure palavras-chave para que o sistema emita alertas imediatos sempre que identificar termos críticos (como <em>Liminar</em> ou <em>Penhora</em>).</p>
+                <p>Monitoramento contínuo da pauta. Configure palavras-chave para que o sistema emita <span class="highlight-term">alertas imediatos</span> sempre que identificar termos críticos (como <em>Liminar</em> ou <em>Penhora</em>).</p>
                 <a href="radar.html" class="feature-link">Conhecer o Radar ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-orange);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg></div>
                 <h3>Apelidos e Anotações Internas</h3>
-                <p>Esqueça os números de 20 dígitos. Atribua apelidos práticos aos seus processos e adicione anotações estratégicas para facilitar a identificação e o controle do seu acervo.</p>
+                <p>Esqueça os números de 20 dígitos. Atribua <span class="highlight-term">apelidos práticos</span> aos seus processos e adicione anotações estratégicas para facilitar a identificação rápida.</p>
                 <a href="busca.html" class="feature-link">Descobrir como organizar ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-gold);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
                 <h3>Calendário Macro da Pauta</h3>
-                <p>Obtenha uma visão global de todas as intimações e tarefas mensais. Um painel interativo para que a controladoria possa visualizar e antecipar o fluxo de trabalho da semana.</p>
+                <p>Obtenha uma visão global de todas as intimações e tarefas mensais. Um painel interativo para visualizar e antecipar o <span class="highlight-term">fluxo de trabalho</span> da semana.</p>
                 <a href="prazos.html" class="feature-link">Ver Calendário de Prazos ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-blue);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
                 <h3>Relatórios PDF e Jurimetria</h3>
-                <p>Emita relatórios de auditoria com formatação impecável em Visual Law. Exporte sua base para planilhas CSV para aplicar Jurimetria e extrair métricas de desempenho do contencioso.</p>
+                <p>Emita relatórios de auditoria com formatação impecável em <span class="highlight-term">Visual Law</span>. Exporte sua base para planilhas CSV para aplicar Jurimetria e extrair métricas de desempenho.</p>
                 <a href="exportacao.html" class="feature-link">Conhecer Relatórios em PDF ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--primary);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></div>
                 <h3>Sincronização e Disparo</h3>
-                <p>Conecte seus prazos diretamente ao Google Agenda com um único clique. Compartilhe rapidamente o andamento dos processos com a equipe ou clientes via WhatsApp e Telegram.</p>
+                <p>Conecte seus prazos diretamente ao <span class="highlight-term">Google Agenda</span> com um único clique. Compartilhe rapidamente o andamento dos processos com a equipe ou clientes via WhatsApp e Telegram.</p>
                 <a href="exportacao.html" class="feature-link">Ver integrações ➔</a>
             </div>
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--text-main);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
                 <h3>Segurança e Sigilo Local</h3>
-                <p>Zero exposição. Seus dados, processos e a agenda da advocacia permanecem criptografados de ponta a ponta, existindo fisicamente apenas na memória do seu próprio computador.</p>
+                <p>Zero exposição. Seus dados, processos e a agenda da advocacia permanecem <span class="highlight-term">criptografados</span> de ponta a ponta, existindo apenas na memória local do seu computador.</p>
                 <a href="privacidade.html" class="feature-link">Termos de Privacidade ➔</a>
             </div>
         </div>
@@ -523,7 +538,7 @@
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--zen-orange);"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
                         <h3 style="font-size: 18px; margin: 0; font-weight: 700;">A extensão é realmente gratuita? Tem mensalidade?</h3>
                     </div>
-                    <p style="color: var(--text-muted); margin: 0; font-size: 16px; line-height: 1.6; margin-left: 36px;"><strong>Sim, totalmente sem mensalidades.</strong> O projeto nasceu para resolver uma dor real do meu escritório. Se a ferramenta poupar o seu tempo, você tem a opção de contribuir voluntariamente pagando um café no rodapé do site, apenas para ajudar com os custos.</p>
+                    <p style="color: var(--text-muted); margin: 0; font-size: 16px; line-height: 1.6; margin-left: 36px;"><strong>Sim, totalmente sem mensalidades.</strong> O projeto atua como um controle interno inteligente e independente. Se a ferramenta poupar o seu tempo, você tem a opção de contribuir voluntariamente pagando um café no rodapé do site, apenas para ajudar com os custos de manutenção.</p>
                 </div>
             </div>
         </div>
@@ -536,28 +551,28 @@
         <div style="display: flex; flex-direction: column; align-items: center;">
             <div class="hero-buttons">
                 <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store">
-    <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" style="width: 28px; height: 28px; flex-shrink: 0;">
-    <div class="store-text">
-        <small>Baixar para</small>
-        <strong>Google Chrome</strong>
-    </div>
-</a>
+                    <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" style="width: 28px; height: 28px; flex-shrink: 0;">
+                    <div class="store-text">
+                        <small>Baixar para</small>
+                        <strong>Google Chrome</strong>
+                    </div>
+                </a>
 
-<a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store">
-    <span class="version-tooltip firefox-tooltip">Buscando versão...</span>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" style="width: 28px; height: 28px; flex-shrink: 0;">
-    <div class="store-text">
-        <small>Baixar para</small>
-        <strong>Mozilla Firefox</strong>
-    </div>
-</a>
+                <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store">
+                    <span class="version-tooltip firefox-tooltip">Buscando versão...</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" style="width: 28px; height: 28px; flex-shrink: 0;">
+                    <div class="store-text">
+                        <small>Baixar para</small>
+                        <strong>Mozilla Firefox</strong>
+                    </div>
+                </a>
             </div>
             <a href="versoes.html" class="compare-link">Ver comparativo das versões ➔</a>
         </div>
     </section>
 
-    <footer>
+    <footer id="footer-coffee">
         <div class="footer-content">
             <div class="coffee-container fade-in-section">
                 <button class="coffee-btn" id="btnToggleCoffee">
@@ -740,16 +755,36 @@
                 });
             }
             
-            // MÁGICA: Busca versão das lojas para o Tooltip
+            // MÁGICA: Busca versão e rating das lojas dinamicamente via Shields.io
             fetch('https://img.shields.io/chrome-web-store/v/ambfdmjdhikdhmbojljaebkipeahmfab.json')
                 .then(res => res.json())
                 .then(data => { document.querySelectorAll('.chrome-tooltip').forEach(el => el.textContent = 'Versão ' + data.value); })
                 .catch(() => { document.querySelectorAll('.chrome-tooltip').forEach(el => el.textContent = 'Disponível na Store'); });
 
+            fetch('https://img.shields.io/chrome-web-store/rating/ambfdmjdhikdhmbojljaebkipeahmfab.json')
+                .then(res => res.json())
+                .then(data => { 
+                    const ratingStr = parseFloat(data.value);
+                    if(ratingStr >= 4.0) {
+                        document.querySelectorAll('.chrome-rating').forEach(el => el.classList.add('visible'));
+                    }
+                })
+                .catch(e => console.log('Rating Chrome Indisponível'));
+
             fetch('https://img.shields.io/amo/v/buscador-djen-advogado.json')
                 .then(res => res.json())
                 .then(data => { document.querySelectorAll('.firefox-tooltip').forEach(el => el.textContent = 'Versão ' + data.value); })
                 .catch(() => { document.querySelectorAll('.firefox-tooltip').forEach(el => el.textContent = 'Disponível na Store'); });
+                
+            fetch('https://img.shields.io/amo/rating/buscador-djen-advogado.json')
+                .then(res => res.json())
+                .then(data => { 
+                    const ratingStr = parseFloat(data.value);
+                    if(ratingStr >= 4.0) {
+                        document.querySelectorAll('.firefox-rating').forEach(el => el.classList.add('visible'));
+                    }
+                })
+                .catch(e => console.log('Rating Firefox Indisponível'));
         });
     </script>
 </body>
