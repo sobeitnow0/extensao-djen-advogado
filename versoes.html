@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novidades & Versões | Buscador DJEN</title>
-    <meta name="description" content="Descubra a nova Edição Gold Master do Buscador DJEN. Compare as funcionalidades entre Google Chrome e Mozilla Firefox e adicione ao seu navegador.">
+    <meta name="description" content="Descubra a nova atualização do Buscador DJEN. Compare as funcionalidades entre Google Chrome e Mozilla Firefox e adicione ao seu navegador.">
     <link rel="icon" type="image/png" href="djen-128.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -74,7 +74,7 @@
         .dot-firefox { background: var(--zen-orange); }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,0,0, 0.2); } 70% { box-shadow: 0 0 0 6px rgba(0,0,0, 0); } 100% { box-shadow: 0 0 0 0 rgba(0,0,0, 0); } }
 
-        /* UPDATE SECTION (GOLD MASTER) */
+        /* UPDATE SECTION */
         .update-section { padding: 60px 5% 100px; max-width: 1200px; margin: 0 auto; scroll-margin-top: 100px; }
         .update-header { text-align: center; margin-bottom: 56px; }
         .update-header h2 { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
@@ -142,36 +142,42 @@
     </header>
 
     <section class="hero">
-        <h1>Edição Gold Master</h1>
+        <h1>Atualização e Versões</h1>
         <p>A ferramenta já está homologada e atualizada nas lojas oficiais. Instale agora e tenha o controle absoluto da sua pauta.</p>
 
         <a href="#novidades" class="discover-link">Descubra o que mudou ↓</a>
 
         <div class="stores-container">
-           <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store">
-    <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" style="width: 28px; height: 28px; flex-shrink: 0;">
-    <div class="store-text">
-        <small>Baixar para</small>
-        <strong>Google Chrome</strong>
-    </div>
-</a>
+            <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="store-card" style="border-color: rgba(0, 117, 222, 0.3);">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" class="store-icon">
+                <div class="store-info">
+                    <span class="store-microcopy">Adicionar ao Navegador</span>
+                    <span class="store-title">Google Chrome</span>
+                    <span class="store-version version-chrome">
+                        <span class="pulse-dot dot-chrome"></span> 
+                        <span id="chrome-version">Buscando versão...</span>
+                    </span>
+                </div>
+            </a>
 
-<a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store">
-    <span class="version-tooltip firefox-tooltip">Buscando versão...</span>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" style="width: 28px; height: 28px; flex-shrink: 0;">
-    <div class="store-text">
-        <small>Baixar para</small>
-        <strong>Mozilla Firefox</strong>
-    </div>
-</a>
+            <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="store-card" style="border-color: rgba(221, 91, 0, 0.3);">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" class="store-icon">
+                <div class="store-info">
+                    <span class="store-microcopy">Adicionar ao Navegador</span>
+                    <span class="store-title">Mozilla Firefox</span>
+                    <span class="store-version version-firefox">
+                        <span class="pulse-dot dot-firefox"></span> 
+                        <span id="firefox-version">Buscando versão...</span>
+                    </span>
+                </div>
+            </a>
         </div>
     </section>
 
     <section id="novidades" class="update-section">
         <div class="update-header">
             <h2>🚀 A Nova Atualização: Mais Ágil, Segura e Direto ao Ponto</h2>
-            <p>Reescrevemos a interface e o motor do Buscador DJEN (Edição Gold Master) para garantir que você gaste menos tempo gerenciando abas e mais tempo focando no que realmente importa na sua advocacia.</p>
+            <p>Reescrevemos a interface e o motor do Buscador DJEN para garantir que você gaste menos tempo gerenciando abas e mais tempo focando no que realmente importa na sua advocacia.</p>
         </div>
 
         <div class="update-grid">
@@ -294,17 +300,17 @@
         if(localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
         
         // Compartilhamento
-        document.addEventListener('DOMContentLoaded', () => { const btnCompartilhar = document.getElementById('btn-compartilhar'); if (btnCompartilhar) { btnCompartilhar.addEventListener('click', async () => { try { if (navigator.share) { await navigator.share({ title: 'Novidades DJEN', text: 'Veja as novidades da versão Gold Master do Buscador DJEN.', url: window.location.href }); } else { await navigator.clipboard.writeText(window.location.href); const iconSvg = btnCompartilhar.innerHTML; btnCompartilhar.innerHTML = '<span style="font-size: 13px;">Copiado!</span>'; setTimeout(() => { btnCompartilhar.innerHTML = iconSvg; }, 2000); } } catch (err) { console.error(err); } }); } });
+        document.addEventListener('DOMContentLoaded', () => { const btnCompartilhar = document.getElementById('btn-compartilhar'); if (btnCompartilhar) { btnCompartilhar.addEventListener('click', async () => { try { if (navigator.share) { await navigator.share({ title: 'Novidades DJEN', text: 'Veja as novidades do Buscador DJEN.', url: window.location.href }); } else { await navigator.clipboard.writeText(window.location.href); const iconSvg = btnCompartilhar.innerHTML; btnCompartilhar.innerHTML = '<span style="font-size: 13px;">Copiado!</span>'; setTimeout(() => { btnCompartilhar.innerHTML = iconSvg; }, 2000); } } catch (err) { console.error(err); } }); } });
 
         // API Versões
         fetch('https://img.shields.io/chrome-web-store/v/ambfdmjdhikdhmbojljaebkipeahmfab.json')
             .then(response => response.json())
-            .then(data => { document.getElementById('chrome-version').textContent = 'Gold Master ' + data.value; })
+            .then(data => { document.getElementById('chrome-version').textContent = 'Versão ' + data.value; })
             .catch(() => { document.getElementById('chrome-version').textContent = 'Instalar Chrome'; });
 
         fetch('https://img.shields.io/amo/v/buscador-djen-advogado.json')
             .then(response => response.json())
-            .then(data => { document.getElementById('firefox-version').textContent = 'Gold Master ' + data.value; })
+            .then(data => { document.getElementById('firefox-version').textContent = 'Versão ' + data.value; })
             .catch(() => { document.getElementById('firefox-version').textContent = 'Instalar Firefox'; });
     </script>
 </body>
