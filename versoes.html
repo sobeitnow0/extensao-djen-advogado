@@ -12,7 +12,8 @@
         :root { 
             --bg-page: #ffffff; --bg-header: rgba(255, 255, 255, 0.85); --bg-section: #f6f5f4; 
             --card-bg: rgba(255, 255, 255, 0.6); --text-main: rgba(0, 0, 0, 0.95); --text-muted: #615d59; 
-            --primary: #0075de; --primary-hover: #005bab; --border-light: rgba(0, 0, 0, 0.08); 
+            --text-placeholder: #a39e98; /* Warm Gray 300 para disabled states */
+            --primary: #0075de; --primary-hover: #005bab; --border-light: rgba(0, 0, 0, 0.1); 
             --zen-green: #1aae39; --zen-orange: #dd5b00; --zen-red: #d93025; 
             --radius-btn: 6px; --radius-card: 16px; 
             --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.02) 0px 1px 4px; 
@@ -20,6 +21,7 @@
         [data-theme="dark"] { 
             --bg-page: #191919; --bg-header: rgba(25, 25, 25, 0.85); --bg-section: #202020; 
             --card-bg: rgba(37, 37, 37, 0.6); --text-main: rgba(255, 255, 255, 0.95); --text-muted: rgba(255, 255, 255, 0.6); 
+            --text-placeholder: rgba(255, 255, 255, 0.3);
             --primary: #52a8ff; --primary-hover: #62aef0; --border-light: rgba(255, 255, 255, 0.08); 
             --shadow-card: rgba(0,0,0,0.4) 0px 4px 18px; 
         }
@@ -52,7 +54,6 @@
         .hero h1 { font-size: 48px; font-weight: 800; line-height: 1.1; margin: 0 0 16px 0; letter-spacing: -1.5px; }
         .hero p { font-size: 18px; color: var(--text-muted); font-weight: 500; margin: 0 0 32px 0; }
         
-        /* MICROCOPY UPDATED CTA */
         .discover-link { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 40px; transition: 0.2s; padding: 8px 16px; border-radius: 99px; background: rgba(0, 117, 222, 0.08); }
         .discover-link:hover { background: rgba(0, 117, 222, 0.15); transform: translateY(-1px); }
 
@@ -100,7 +101,10 @@
         
         .matrix-table td.category-row { background: var(--bg-page); font-weight: 800; font-size: 14px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; padding: 32px 24px 12px; border-bottom: 2px solid var(--border-light); text-align: left; }
 
-        .check-icon { color: var(--zen-green); width: 24px; height: 24px; display: inline-block; vertical-align: middle; }
+        /* ÍCONES DA TABELA - FIXADOS PARA MANTER SUTILEZA */
+        .check-icon { color: var(--zen-green); width: 20px; height: 20px; display: inline-block; vertical-align: middle; stroke-width: 2px !important; }
+        .cross-icon { color: var(--text-placeholder); width: 18px; height: 18px; display: inline-block; vertical-align: middle; stroke-width: 1.5px !important; opacity: 0.6; }
+        
         .chrome-col { background: rgba(0, 117, 222, 0.02); }
         .firefox-col { background: rgba(221, 91, 0, 0.02); }
         .browser-header { display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -240,55 +244,47 @@
                 <tr><td colspan="3" class="category-row">Pesquisa e Organização</td></tr>
                 <tr>
                     <td class="feature-name">Busca rápida de intimações (DJEN/CNJ)</td>
-                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
                 </tr>
                 <tr>
                     <td class="feature-name">Criação de Apelidos e Anotações no Processo</td>
-                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
                 </tr>
                 <tr>
                     <td class="feature-name">Leitura Imersiva (Modo Foco)</td>
-                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
                 </tr>
 
                 <tr><td colspan="3" class="category-row">Prazos e Controladoria</td></tr>
                 <tr>
                     <td class="feature-name">Calculadora de Prazos (Dias Úteis) com Feriados</td>
-                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
                 </tr>
                 <tr>
                     <td class="feature-name">Calendário Mensal de Pauta</td>
-                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
                 </tr>
 
                 <tr><td colspan="3" class="category-row">Automação Avançada</td></tr>
                 <tr>
                     <td class="feature-name">Radar Automático de Urgências (Penhora, Liminar)</td>
-                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
                 </tr>
                 <tr>
                     <td class="feature-name">Geração de Relatórios PDF (Visual Law)</td>
-<td class="chrome-col">
-    <svg class="cross-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="15" y1="9" x2="9" y2="15"></line>
-        <line x1="9" y1="9" x2="15" y2="15"></line>
-    </svg>
-</td>                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="chrome-col"><svg class="cross-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="8" x2="8" y2="16"></line><line x1="8" y1="8" x2="16" y2="16"></line></svg></td>
+                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
                 </tr>
                 <tr>
                     <td class="feature-name">Exportação de Base Excel (Nativa)</td>
-<td class="chrome-col">
-    <svg class="cross-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="15" y1="9" x2="9" y2="15"></line>
-        <line x1="9" y1="9" x2="15" y2="15"></line>
-    </svg>
-</td>                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                    <td class="chrome-col"><svg class="cross-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="8" x2="8" y2="16"></line><line x1="8" y1="8" x2="16" y2="16"></line></svg></td>
+                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
                 </tr>
             </tbody>
         </table>
