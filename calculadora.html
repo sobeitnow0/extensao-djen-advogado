@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora e Auditoria de Prazos | Buscador DJEN</title>
     <meta name="description" content="Simulador de prazos processuais e auditoria visual da linha do tempo em conformidade com o Novo CPC.">
-    <link rel="icon" type="image/png" href="djen-128.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* DESIGN SYSTEM - NOTION (Consistente com a Extensão) */
+        /* DESIGN SYSTEM - MANTIDO DO ORIGINAL */
         :root {
             --bg-page: #efeee9; --bg-section: #f6f5f4; --card-bg: #ffffff; --card-inner: #f9f8f6;
             --text-main: rgba(0, 0, 0, 0.95); --text-muted: #615d59; 
@@ -38,7 +37,6 @@
         
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--card-bg); }
         .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; text-decoration: none; color: var(--text-main);}
-        .brand img { width: 32px; border-radius: var(--radius-btn); }
         .back-link { color: var(--text-muted); font-size: 14px; font-weight: 600; text-decoration: none; transition: 0.2s; }
         .back-link:hover { color: var(--text-main); }
 
@@ -54,7 +52,7 @@
         
         .btn-main { width: 100%; padding: 12px 16px; background-color: var(--primary); color: var(--primary-text); border: none; border-radius: var(--radius-btn); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-sm); margin-top: 16px; font-family: inherit;}
         .btn-main:hover { background-color: var(--primary-hover); transform: scale(0.99); }
-        .btn-pill { width: 100%; padding: 12px 16px; background-color: transparent; color: var(--text-muted); border: 1px solid var(--border-light); border-radius: var(--radius-btn); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: 16px; font-family: inherit;}
+        .btn-pill { width: 100%; padding: 12px 16px; background-color: transparent; color: var(--text-muted); border: 1px solid var(--border-light); border-radius: var(--radius-btn); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: 16px; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px;}
         .btn-pill:hover { background-color: rgba(0,0,0,0.05); color: var(--text-main);}
 
         .calc-result-box { display: none; text-align: center; padding: 20px 16px; background: var(--card-bg); border-radius: var(--radius-sm); margin-top: 16px; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); animation: fadeIn 0.3s;}
@@ -63,12 +61,10 @@
         #calc-limit-reached { display: none; text-align: center; padding: 32px 16px; background: var(--zen-orange-bg); border-radius: var(--radius-md); border: 1px solid rgba(168, 69, 0, 0.2); box-shadow: var(--shadow-sm); animation: fadeIn 0.3s;}
         
         .audit-flow { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-start; margin-top: 16px; padding: 12px; background: var(--card-inner); border-radius: var(--radius-md); border: 1px solid var(--border-light);}
-        .audit-day { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 44px; height: 52px; border-radius: 4px; font-size: 11px; background: var(--card-bg); border: 1px solid var(--border-light); position: relative; cursor: help;}
-        .audit-day.is-pulo { opacity: 0.6; color: var(--zen-red); }
-        .audit-day.is-fatal { background: var(--zen-orange-bg); border-color: transparent; color: var(--zen-orange); }
-        .day-icon { font-size: 14px; margin-bottom: 2px;}
-        .day-num { font-size: 13px; font-weight: 700; }
-        
+        .audit-day { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 4px; border: 1px solid var(--border-light); border-radius: 6px; width: calc(25% - 5px); box-sizing: border-box; background: transparent; transition: all 0.2s ease; cursor: default;}
+        .audit-day.is-pulo { opacity: 0.6; }
+        .audit-day.is-fatal { background: rgba(212, 76, 71, 0.1); border-color: rgba(212, 76, 71, 0.3); }
+
         [data-tooltip]::before { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); padding: 4px 8px; background: var(--text-main); color: var(--card-bg); font-size: 11px; border-radius: 4px; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.2s; z-index: 10;}
         [data-tooltip]:hover::before { opacity: 1; bottom: calc(100% + 4px); }
 
@@ -85,7 +81,7 @@
 <body>
 
     <header>
-        <a href="index.html" class="brand"><img src="djen-128.png" alt="Logo"> Buscador DJEN</a>
+        <a href="index.html" class="brand">Buscador DJEN</a>
         <a href="index.html" class="back-link">Voltar ao Início</a>
     </header>
 
@@ -95,16 +91,30 @@
             <p style="color: var(--text-muted); margin: 0; font-size: 15px;">Simulador de prazos processuais e auditoria visual da linha do tempo.</p>
         </div>
 
-        <div class="calculadora-prazo">
+        <div class="calculadora-prazo" id="mainCalcPanel">
             <div class="calc-title">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line></svg>
                 Configuração do Prazo
             </div>
             
             <div id="calc-inputs">
+                <div class="input-group" style="margin-bottom: 16px;">
+                    <label>Tribunal</label>
+                    <input type="text" id="cTrib" placeholder="Ex: TJSP (Opcional)" style="text-transform: uppercase;">
+                </div>
+
                 <div style="display: flex; gap: 12px; margin-bottom: 16px;">
-                    <div class="input-group" style="flex: 0 0 80px;"><label>UF</label><select id="cUf"><option value="UF" selected>SP</option><option value="RJ">RJ</option><option value="MG">MG</option><option value="PR">PR</option><option value="RS">RS</option><option value="SC">SC</option></select></div>
-                    <div class="input-group" style="flex: 1;"><label>Município (IBGE)</label><input type="text" id="cMun" placeholder="Digite para buscar..." autocomplete="off"></div>
+                    <div class="input-group" style="flex: 0 0 80px;">
+                        <label>UF</label>
+                        <select id="cUf">
+                            <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option><option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option><option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option><option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option><option value="SP" selected>SP</option><option value="SE">SE</option><option value="TO">TO</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="flex: 1;">
+                        <label>Município</label>
+                        <input type="text" id="cMun" list="lista-municipios" placeholder="Digite para buscar..." autocomplete="off">
+                        <datalist id="lista-municipios"></datalist>
+                    </div>
                 </div>
 
                 <div style="display: flex; gap: 12px; margin-bottom: 16px;">
@@ -136,17 +146,21 @@
             <div class="calc-result-box" id="calc-result">
                 <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Prazo Fatal</div>
                 <div class="resultado-data-fatal" id="lblDataFatal">--/--/----</div>
-                <div id="containerAlertas" style="display:flex; gap:6px; justify-content:center; margin-bottom: 16px;"></div>
+                <div id="containerAlertas" style="display:flex; gap:6px; flex-direction:column; align-items:center; margin-bottom: 16px;"></div>
                 
                 <div style="text-align: left; font-size: 12px; font-weight: 600; color: var(--text-main); margin-bottom: 8px;">Auditoria da Linha do Tempo:</div>
-                <div class="calc-preview audit-flow" id="previewContainer"></div>
+                <div class="calc-preview audit-flow" id="previewContainer" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
                 
-                <button class="btn-pill" id="btn-voltar-calc">Nova Simulação</button>
+                <button class="btn-pill btn-exportar-png" style="color: var(--primary); border-color: var(--border-light); margin-top: 16px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Baixar Imagem da Auditoria
+                </button>
+                <button class="btn-main" id="btn-voltar-calc" style="background-color: var(--text-muted);">Nova Simulação</button>
             </div>
         </div>
 
         <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted); text-align: center; line-height: 1.5;">
-            *Simulação baseada em Feriados Nacionais e Recesso Forense.
+            *Simulação baseada em Feriados Nacionais, Estaduais, Municipais (IBGE) e Recesso Forense.
         </div>
 
         <div class="cta-bridge">
@@ -194,107 +208,459 @@
             atualizarDisplayLimite();
         }
 
-        // Inicializa display
         atualizarDisplayLimite();
 
-        // --- MOTOR DE CÁLCULO (Sincronizado com Extensão) ---
-        let feriadosExtras = {}; 
-        async function carregarFeriados() { 
-            try { 
-                const r = await fetch("https://raw.githubusercontent.com/alexandrehtrb/FeriadosDoBrasil/main/feriados.json"); 
-                const dados = await r.json(); 
-                feriadosExtras = {"BR": dados.filter(f => !f.uf && !f.municipio).map(f => f.data)}; 
-            } catch(e) {} 
+        // =====================================================================
+        // MOTOR DE CÁLCULO ROBUSTO (MIGRADO DA EXTENSÃO)
+        // =====================================================================
+        let feriadosExtras = {};
+        const cacheMunicipios = {};
+        let cacheMunicipiosDetalhado = {};
+        let cacheFeriadosMunicipaisAnual = {};
+        window.cacheFeriadosTribunaisJson = null;
+
+        // 1. Busca Cidades no IBGE
+        async function carregarMunicipios(uf) { 
+            const datalist = document.getElementById('lista-municipios'); 
+            if (!cacheMunicipios[uf]) { 
+                try { 
+                    const r = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`); 
+                    const dados = await r.json(); cacheMunicipios[uf] = dados.map(m => m.nome); datalist.innerHTML = ""; 
+                    cacheMunicipios[uf].forEach(nome => { const opt = document.createElement('option'); opt.value = nome; datalist.appendChild(opt); }); 
+                } catch (e) { console.error("Erro IBGE", e); } 
+            } else { 
+                datalist.innerHTML = "";
+                cacheMunicipios[uf].forEach(nome => { const opt = document.createElement('option'); opt.value = nome; datalist.appendChild(opt); }); 
+            } 
         }
-        carregarFeriados();
 
-        function isRecesso(d) { return (d.getMonth() === 11 && d.getDate() >= 20) || (d.getMonth() === 0 && d.getDate() <= 20); }
+        document.getElementById('cUf').addEventListener('change', (e) => {
+            document.getElementById('cMun').value = "";
+            carregarMunicipios(e.target.value);
+        });
+        carregarMunicipios('SP'); // Load inicial
 
-        function checarMotivo(dStr, dObj) {
-            if (dObj.getDay() === 0 || dObj.getDay() === 6) return "Fim de Semana"; 
-            if (isRecesso(dObj)) return "Recesso Forense"; 
-            if (feriadosExtras["BR"] && feriadosExtras["BR"].includes(dStr)) return "Feriado Nacional"; 
+        // 2. Busca Feriados Nacionais (GitHub)
+        async function atualizarFeriadosNacionais() { 
+            try { 
+                const r = await fetch(`https://raw.githubusercontent.com/sobeitnow0/FeriadosDoBrasil---buscador-djen/main/feriados.json?v=${Date.now()}`); 
+                if (!r.ok) throw new Error("404 Not Found"); 
+                const dadosBrutos = await r.json(); 
+                const dicionarioRapido = {}; 
+                dadosBrutos.forEach(feriado => { 
+                    const data = String(feriado.data || feriado.date); 
+                    const uf = feriado.uf ? feriado.uf.toUpperCase() : null; 
+                    const mun = feriado.municipio ? feriado.municipio.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim() : null; 
+                    if (mun) { 
+                        if (!dicionarioRapido[mun]) dicionarioRapido[mun] = []; 
+                        dicionarioRapido[mun].push(data); 
+                    } else if (uf) { 
+                        if (!dicionarioRapido[uf]) dicionarioRapido[uf] = []; 
+                        dicionarioRapido[uf].push(data); 
+                    } else { 
+                        if (!dicionarioRapido["BR"]) dicionarioRapido["BR"] = []; 
+                        dicionarioRapido["BR"].push(data); 
+                    } 
+                }); 
+                feriadosExtras = dicionarioRapido; 
+            } catch(e) { console.error("Erro Feriados Nacionais", e); } 
+        }
+        atualizarFeriadosNacionais();
+
+        // 3. Busca Feriados do Tribunal (GitHub)
+        async function buscarFeriadosTribunal(siglaTribunal) { 
+            if (!siglaTribunal || siglaTribunal === 'MANUAL') return {}; 
+            try { 
+                if (!window.cacheFeriadosTribunaisJson) { 
+                    const url = `https://raw.githubusercontent.com/sobeitnow0/prazos-judiciais-api/main/feriados.json?v=${Date.now()}`;
+                    const r = await fetch(url); 
+                    if (!r.ok) throw new Error(`Arquivo não encontrado`); 
+                    window.cacheFeriadosTribunaisJson = await r.json(); 
+                } 
+                
+                const json = window.cacheFeriadosTribunaisJson;
+                let regras = [];
+
+                if (json.feriados_nacionais) regras = regras.concat(json.feriados_nacionais);
+                if (json.pontos_facultativos_comuns) regras = regras.concat(json.pontos_facultativos_comuns);
+
+                const categorias = ['tribunais_superiores', 'tribunais_regionais_federais', 'tribunais_regionais_do_trabalho', 'tribunais_de_justica'];
+                let tribunalEncontrado = null;
+
+                for (let cat of categorias) {
+                    if (json[cat] && json[cat][siglaTribunal.toUpperCase()]) {
+                        tribunalEncontrado = json[cat][siglaTribunal.toUpperCase()];
+                        break;
+                    }
+                }
+
+                if (tribunalEncontrado) {
+                    if (tribunalEncontrado.feriados_especificos) regras = regras.concat(tribunalEncontrado.feriados_especificos);
+                    if (tribunalEncontrado.feriados_toda_regiao) regras = regras.concat(tribunalEncontrado.feriados_toda_regiao);
+                    if (tribunalEncontrado.suspensoes_por_conveniencia) regras = regras.concat(tribunalEncontrado.suspensoes_por_conveniencia);
+                    if (tribunalEncontrado.recesso && tribunalEncontrado.recesso.inicio) {
+                        regras.push({ data_inicio: tribunalEncontrado.recesso.inicio, data_fim: tribunalEncontrado.recesso.fim, descricao: "Recesso Forense" });
+                    }
+                }
+                
+                let dicionarioFeriados = {};
+                regras.forEach(regra => {
+                    let dataIn = regra.data_inicio || regra.data;
+                    let dataFi = regra.data_fim || regra.data;
+                    let nomeFeriado = regra.descricao || regra.nome || "Feriado/Suspensão Tribunal";
+
+                    if (!dataIn) return;
+                    let dtAtual = new Date(`${dataIn}T12:00:00`);
+                    let dtFim = new Date(`${dataFi}T12:00:00`);
+
+                    while (dtAtual <= dtFim) {
+                        let chaveData = `${dtAtual.getFullYear()}-${String(dtAtual.getMonth() + 1).padStart(2, '0')}-${String(dtAtual.getDate()).padStart(2, '0')}`;
+                        dicionarioFeriados[chaveData] = nomeFeriado;
+                        dtAtual.setDate(dtAtual.getDate() + 1);
+                    }
+                });
+                return dicionarioFeriados; 
+            } catch (erro) { return {}; } 
+        }
+
+        // 4. Busca Feriados Municipais (GitHub Dinâmico)
+        async function buscarFeriadosMunicipaisAnual(ano, uf, municipioNome) {
+            if (!uf || !municipioNome) return [];
+            let codigoIbge = null;
+            
+            if (cacheMunicipiosDetalhado[uf] && cacheMunicipiosDetalhado[uf][municipioNome]) {
+                codigoIbge = cacheMunicipiosDetalhado[uf][municipioNome];
+            } else {
+                try {
+                    const r = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`);
+                    const dados = await r.json();
+                    if (!cacheMunicipiosDetalhado[uf]) cacheMunicipiosDetalhado[uf] = {};
+                    dados.forEach(m => cacheMunicipiosDetalhado[uf][m.nome] = m.id);
+                    codigoIbge = cacheMunicipiosDetalhado[uf][municipioNome];
+                } catch(e) {}
+            }
+
+            if (!codigoIbge) return []; 
+
+            if (!cacheFeriadosMunicipaisAnual[ano]) {
+                try {
+                    const url = `https://raw.githubusercontent.com/sobeitnow0/feriados-buscador-djen/main/feriados/municipal/json/${ano}.json?v=${Date.now()}`;
+                    const r = await fetch(url);
+                    if (r.ok) cacheFeriadosMunicipaisAnual[ano] = await r.json();
+                    else cacheFeriadosMunicipaisAnual[ano] = [];
+                } catch (e) { cacheFeriadosMunicipaisAnual[ano] = []; }
+            }
+
+            const todosFeriadosAno = cacheFeriadosMunicipaisAnual[ano] || [];
+            const feriadosDaCidade = todosFeriadosAno.filter(f => String(f.codigo_ibge) === String(codigoIbge));
+
+            return feriadosDaCidade.map(f => {
+                const dataStr = String(f.data || f.date).trim();
+                const partes = dataStr.split('/');
+                if (partes.length === 3) return `${partes[2]}-${partes[1]}-${partes[0]}`;
+                return dataStr;
+            });
+        }
+
+        // Lógica Core
+        function isRecessoForense(dataObj) { 
+            const m = dataObj.getMonth(); const d = dataObj.getDate(); 
+            return (m === 11 && d >= 20) || (m === 0 && d <= 20);
+        }
+
+        function checarMotivoFeriado(dStr, dataObj, uf, municipio, feriadosTribunal, feriadosMunisDinamicos) {
+            const ds = dataObj.getDay(); 
+            if (ds === 0 || ds === 6) return "Fim de Semana"; 
+            
+            const mesDiaNovo = `${String(dataObj.getMonth()+1).padStart(2,'0')}-${String(dataObj.getDate()).padStart(2,'0')}`;
+            if (feriadosTribunal && typeof feriadosTribunal === 'object') {
+                if (feriadosTribunal[dStr]) return feriadosTribunal[dStr];
+                if (feriadosTribunal[mesDiaNovo]) return feriadosTribunal[mesDiaNovo];
+            }
+
+            if (isRecessoForense(dataObj)) return "Recesso Forense (Art. 220, CPC)"; 
+
+            const ano = dataObj.getFullYear(); 
+            const mesDia = `${String(dataObj.getMonth()+1).padStart(2,'0')}-${String(dataObj.getDate()).padStart(2,'0')}`;
+            const diaMes = `${String(dataObj.getDate()).padStart(2,'0')}/${String(dataObj.getMonth()+1).padStart(2,'0')}`; 
+            const diaMesHifen = `${String(dataObj.getDate()).padStart(2,'0')}-${String(dataObj.getMonth()+1).padStart(2,'0')}`; 
+            
+            const format = (data) => data.toISOString().split('T')[0]; 
+            const addDias = (data, dias) => { const nd = new Date(data); nd.setDate(nd.getDate() + dias); return nd; }; 
+            
+            const a = ano % 19, b = Math.floor(ano / 100), c = ano % 100; const d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25); const g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30; const i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7; const m = Math.floor((a + 11 * h + 22 * l) / 451); const mes = Math.floor((h + l - 7 * m + 114) / 31); const dia = ((h + l - 7 * m + 114) % 31) + 1; const pascoa = new Date(ano, mes - 1, dia, 12, 0, 0); 
+            
+            const nacionaisFixos = [`${ano}-01-01`, `${ano}-04-21`, `${ano}-05-01`, `${ano}-09-07`, `${ano}-10-12`, `${ano}-11-02`, `${ano}-11-15`, `${ano}-11-20`, `${ano}-12-25`]; 
+            const moveis = [format(addDias(pascoa, -47)), format(addDias(pascoa, -46)), format(addDias(pascoa, -3)), format(addDias(pascoa, -2)), format(addDias(pascoa, 60))];
+            
+            const feriadosBR = feriadosExtras["BR"] || [];
+            if (nacionaisFixos.includes(dStr) || moveis.includes(dStr) || feriadosBR.includes(dStr) || feriadosBR.includes(mesDia) || feriadosBR.includes(diaMes) || feriadosBR.includes(diaMesHifen)) return "Feriado Nacional"; 
+            
+            const feriadosUF = uf ? (feriadosExtras[uf] || []) : [];
+            if (feriadosUF.includes(dStr) || feriadosUF.includes(mesDia) || feriadosUF.includes(diaMes) || feriadosUF.includes(diaMesHifen)) return "Feriado Estadual"; 
+            
+            if (municipio) { 
+                const munFormatado = municipio.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim(); 
+                const feriadosMunBase = feriadosExtras[munFormatado] || [];
+                if (feriadosMunBase.includes(dStr) || feriadosMunBase.includes(mesDia) || feriadosMunBase.includes(diaMes) || feriadosMunBase.includes(diaMesHifen)) return "Feriado Municipal"; 
+            } 
+            
+            if (feriadosMunisDinamicos && (feriadosMunisDinamicos.includes(dStr) || feriadosMunisDinamicos.includes(mesDia) || feriadosMunisDinamicos.includes(diaMes) || feriadosMunisDinamicos.includes(diaMesHifen))) return "Feriado Municipal";
+
+            if ([`${ano}-08-11`, `${ano}-11-01`, `${ano}-12-08`].includes(dStr)) return "Feriado Forense (Justiça Federal)"; 
             return "Dia Útil"; 
         }
 
-        function calcular(dataDisp, dias, tipo) {
-            let data = new Date(dataDisp + 'T12:00:00');
-            let timeline = [];
-            let feriados = 0;
-            const getS = (obj) => obj.toISOString().split('T')[0];
-            const isUtil = (obj) => {
-                if (obj.getDay() === 0 || obj.getDay() === 6) return false;
-                if (isRecesso(obj) && tipo === 'cpc') return false;
-                return checarMotivo(getS(obj), obj) === "Dia Útil";
-            };
-
-            timeline.push({ data: getS(data), desc: "Disponibilizado", tipo: "info", numero: "Disp." });
+        // EVENTO PRINCIPAL DE CALCULAR
+        document.getElementById('btn-exec').addEventListener('click', async (e) => {
+            const btn = e.target;
+            const originalText = btn.textContent;
             
-            // Publicação
-            data.setDate(data.getDate() + 1);
-            while(!isUtil(data)) { timeline.push({ data: getS(data), desc: checarMotivo(getS(data), data), tipo: "pulo", numero: "-" }); feriados++; data.setDate(data.getDate() + 1); }
-            timeline.push({ data: getS(data), desc: "Publicação Efetiva", tipo: "info", numero: "Pub." });
-
-            // Início
-            data.setDate(data.getDate() + 1);
-            while(!isUtil(data)) { timeline.push({ data: getS(data), desc: checarMotivo(getS(data), data), tipo: "pulo", numero: "-" }); feriados++; data.setDate(data.getDate() + 1); }
-            
-            let contagem = 1;
-            timeline.push({ data: getS(data), desc: "Início do Prazo", tipo: contagem === dias ? "fatal" : "util", numero: "01" });
-
-            while(contagem < dias) {
-                data.setDate(data.getDate() + 1);
-                if (tipo === 'cpp' || isUtil(data)) {
-                    contagem++;
-                    timeline.push({ data: getS(data), desc: "Dia de Prazo", tipo: contagem === dias ? "fatal" : "util", numero: contagem.toString().padStart(2, '0') });
-                } else {
-                    timeline.push({ data: getS(data), desc: checarMotivo(getS(data), data), tipo: "pulo", numero: "-" });
-                    feriados++;
-                }
-            }
-
-            let prorrogado = false;
-            while(!isUtil(data)) { 
-                let last = timeline[timeline.length - 1];
-                if(last.tipo === "fatal") { last.tipo = "pulo"; last.desc += " (Prorrogado)"; }
-                prorrogado = true; feriados++; data.setDate(data.getDate() + 1);
-                if(isUtil(data)) timeline.push({ data: getS(data), desc: "Prazo Prorrogado", tipo: "fatal", numero: contagem.toString().padStart(2, '0') });
-            }
-
-            return { fatal: data.toLocaleDateString('pt-BR'), timeline, feriados, prorrogado };
-        }
-
-        // EVENTOS
-        document.getElementById('btn-exec').addEventListener('click', () => {
-            const data = document.getElementById('cData').value;
+            const dataDispStr = document.getElementById('cData').value;
             const dias = parseInt(document.getElementById('cDias').value);
-            const materia = document.getElementById('cMat').value;
+            const tipo = document.getElementById('cMat').value;
+            const siglaTribunal = document.getElementById('cTrib').value.trim().toUpperCase();
+            const uf = document.getElementById('cUf').value;
+            const municipio = document.getElementById('cMun').value.trim();
 
-            if (!data || isNaN(dias)) return alert("Preencha os campos.");
+            if (!dataDispStr || isNaN(dias) || !uf || !municipio) {
+                alert("Preencha Tribunal, UF, Município, Dias e Data corretamente.");
+                return;
+            }
 
-            const res = calcular(data, dias, materia);
-            registrarUso();
+            btn.textContent = "Calculando...";
+            btn.disabled = true;
 
-            document.getElementById('lblDataFatal').textContent = res.fatal;
-            const alerts = document.getElementById('containerAlertas');
-            alerts.innerHTML = res.feriados > 0 ? `<span style="background:rgba(168,69,0,0.1);color:var(--zen-orange);padding:4px 8px;border-radius:4px;font-size:10px;font-weight:700;">⚠️ ${res.feriados} DIAS DESVIADOS</span>` : "";
-            if(res.prorrogado) alerts.innerHTML += `<span style="background:rgba(163,44,40,0.1);color:var(--zen-red);padding:4px 8px;border-radius:4px;font-size:10px;font-weight:700;">🚨 PRORROGADO</span>`;
+            try {
+                const anoCalculo = new Date(dataDispStr).getFullYear();
 
-            const flow = document.getElementById('previewContainer');
-            flow.innerHTML = "";
-            res.timeline.forEach(t => {
-                const d = document.createElement('div');
-                d.className = `audit-day is-${t.tipo}`;
-                let icon = t.tipo === "fatal" ? "🚨" : (t.numero === "Disp." ? "📥" : (t.numero === "Pub." ? "📄" : "🗓️"));
-                d.innerHTML = `<span class="day-icon">${icon}</span><span class="day-num">${t.numero}</span><span style="font-size:9px;opacity:0.6;">${t.data.split('-').reverse().slice(0,2).join('/')}</span>`;
-                d.setAttribute('data-tooltip', t.desc);
-                flow.appendChild(d);
-            });
+                const [feriadosTribunal, feriadosMunisDinamicos] = await Promise.all([
+                    buscarFeriadosTribunal(siglaTribunal),
+                    buscarFeriadosMunicipaisAnual(anoCalculo, uf, municipio)
+                ]);
 
-            document.getElementById('calc-inputs').style.display = 'none';
-            document.getElementById('calc-result').style.display = 'block';
+                let dataAtual = new Date(dataDispStr + 'T15:00:00');
+                let timeline = []; let totalFeriados = 0; let temFeriadoMun = false; let prorrogado = false;
+                const f = (d) => `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+
+                timeline.push({ data: dataAtual.toISOString(), desc: "Disponibilizado", tipo: "info", numero: "Disp." });
+
+                // Publicação
+                dataAtual.setDate(dataAtual.getDate() + 1);
+                while (true) {
+                    let dStr = dataAtual.toISOString().split('T')[0];
+                    let motivo = checarMotivoFeriado(dStr, dataAtual, uf, municipio, feriadosTribunal, feriadosMunisDinamicos);
+                    if (motivo === "Dia Útil") break;
+                    if (motivo.includes("Municipal")) temFeriadoMun = true;
+                    timeline.push({ data: dataAtual.toISOString(), desc: motivo, tipo: "pulo", numero: "-" });
+                    dataAtual.setDate(dataAtual.getDate() + 1);
+                }
+                timeline.push({ data: dataAtual.toISOString(), desc: "Publicação", tipo: "info", numero: "Pub." });
+
+                // Início
+                dataAtual.setDate(dataAtual.getDate() + 1);
+                while (true) {
+                    let dStr = dataAtual.toISOString().split('T')[0];
+                    let motivo = checarMotivoFeriado(dStr, dataAtual, uf, municipio, feriadosTribunal, feriadosMunisDinamicos);
+                    if (motivo === "Dia Útil") break;
+                    if (motivo.includes("Municipal")) temFeriadoMun = true;
+                    timeline.push({ data: dataAtual.toISOString(), desc: motivo, tipo: "pulo", numero: "-" });
+                    dataAtual.setDate(dataAtual.getDate() + 1);
+                }
+
+                // Contagem
+                if (tipo === 'cpc') { 
+                    let diasContados = 1;
+                    timeline.push({ data: dataAtual.toISOString(), desc: "Dia Útil", tipo: diasContados === dias ? "fatal" : "util", numero: "01" });
+                    while (diasContados < dias) {
+                        dataAtual.setDate(dataAtual.getDate() + 1);
+                        let dStr = dataAtual.toISOString().split('T')[0];
+                        let motivo = checarMotivoFeriado(dStr, dataAtual, uf, municipio, feriadosTribunal, feriadosMunisDinamicos);
+                        if (motivo === "Dia Útil") {
+                            diasContados++;
+                            timeline.push({ data: dataAtual.toISOString(), desc: motivo, tipo: diasContados === dias ? "fatal" : "util", numero: String(diasContados).padStart(2, '0') });
+                        } else {
+                            totalFeriados++;
+                            if (motivo.includes("Municipal")) temFeriadoMun = true;
+                            timeline.push({ data: dataAtual.toISOString(), desc: motivo, tipo: "pulo", numero: "-" });
+                        }
+                    }
+                } else { 
+                    let diasContados = 1;
+                    timeline.push({ data: dataAtual.toISOString(), desc: "Dia Corrido", tipo: diasContados === dias ? "fatal" : "util", numero: "01" });
+                    while (diasContados < dias) {
+                        dataAtual.setDate(dataAtual.getDate() + 1);
+                        let dStr = dataAtual.toISOString().split('T')[0];
+                        let motivo = checarMotivoFeriado(dStr, dataAtual, uf, municipio, feriadosTribunal, feriadosMunisDinamicos);
+                        if (motivo !== "Dia Útil") { totalFeriados++; if (motivo.includes("Municipal")) temFeriadoMun = true; }
+                        diasContados++;
+                        timeline.push({ data: dataAtual.toISOString(), desc: motivo !== "Dia Útil" ? motivo : "Dia Corrido", tipo: diasContados === dias ? "fatal" : "util", numero: String(diasContados).padStart(2, '0') });
+                    }
+                    
+                    let dStrFatal = dataAtual.toISOString().split('T')[0];
+                    let motivoFatal = checarMotivoFeriado(dStrFatal, dataAtual, uf, municipio, feriadosTribunal, feriadosMunisDinamicos);
+                    while (motivoFatal !== "Dia Útil") {
+                        prorrogado = true;
+                        timeline[timeline.length - 1].tipo = "pulo"; timeline[timeline.length - 1].numero = "Prorrog.";
+                        dataAtual.setDate(dataAtual.getDate() + 1);
+                        dStrFatal = dataAtual.toISOString().split('T')[0];
+                        motivoFatal = checarMotivoFeriado(dStrFatal, dataAtual, uf, municipio, feriadosTribunal, feriadosMunisDinamicos);
+                        timeline.push({ data: dataAtual.toISOString(), desc: motivoFatal === "Dia Útil" ? "Prorrogação" : motivoFatal, tipo: motivoFatal === "Dia Útil" ? "fatal" : "pulo", numero: motivoFatal === "Dia Útil" ? String(dias).padStart(2, '0') : "-" });
+                    }
+                }
+
+                registrarUso(); // Apenas debita o uso se a conta foi sucesso
+
+                // --- ATUALIZAR UI ---
+                document.getElementById('lblDataFatal').textContent = f(dataAtual);
+                const alerts = document.getElementById('containerAlertas');
+                alerts.innerHTML = "";
+                
+                let badgesHtml = "";
+                if (totalFeriados > 0) badgesHtml += `<span style="background:rgba(168,69,0,0.1);color:var(--zen-orange);padding:4px 8px;border-radius:4px;font-size:11px;font-weight:700;">⚠️ ${totalFeriados} SUSPENSÕES</span>`;
+                if (prorrogado) badgesHtml += `<span style="background:rgba(163,44,40,0.1);color:var(--zen-red);padding:4px 8px;border-radius:4px;font-size:11px;font-weight:700;">🚨 PRORROGADO</span>`;
+                
+                if (badgesHtml) alerts.innerHTML += `<div style="display:flex; gap:6px;">${badgesHtml}</div>`;
+
+                if (temFeriadoMun) {
+                    alerts.innerHTML += `
+                        <div style="width: 100%; box-sizing: border-box; background: rgba(212, 76, 71, 0.08); color: #d44c47; padding: 12px; border-radius: 6px; font-size: 11px; text-align: left; border: 1px solid rgba(212, 76, 71, 0.2); line-height: 1.4; margin-top: 8px;">
+                            <div style="font-weight: 700; font-size: 12px; margin-bottom: 4px;">🚨 Alerta de Jurisprudência (STJ)</div>
+                            Prazo coincide com um <b>Feriado Municipal</b>. Anexe certidão ou decreto local para comprovar a tempestividade.
+                        </div>`;
+                }
+
+                const flow = document.getElementById('previewContainer');
+                flow.innerHTML = "";
+                timeline.forEach(t => {
+                    const d = document.createElement('div');
+                    d.className = `audit-day is-${t.tipo}`;
+                    let icon = "🗓️";
+                    if (t.desc.includes("Nacional")) icon = "🇧🇷";
+                    else if (t.desc.includes("Estadual")) icon = "🚩";
+                    else if (t.desc.includes("Forense") || t.desc.includes("Tribunal") || t.desc.includes("Recesso") || t.desc.includes("Suspensão")) icon = "🏛️";
+                    else if (t.desc.includes("Municipal")) icon = "🏘️";
+                    else if (t.tipo === "fatal") icon = "🚨";
+                    else if (t.desc === "Disponibilizado") icon = "📥";
+                    else if (t.desc === "Publicação") icon = "📄";
+
+                    const dataCurta = t.data.split('T')[0].split('-').reverse().slice(0,2).join('/');
+                    let corNum = (t.tipo === "pulo" || t.tipo === "info") ? "var(--text-muted)" : "var(--text-main)";
+
+                    d.innerHTML = `
+                        <div style="font-size:14px; margin-bottom:4px; line-height: 1;">${icon}</div>
+                        <div style="font-weight:700; font-size:13px; color: ${corNum}; line-height: 1;">${t.numero}</div>
+                        <div style="font-size:9px; opacity:0.6; margin-top:4px; color: var(--text-muted); line-height: 1;">${dataCurta}</div>
+                    `;
+                    d.setAttribute('data-tooltip', t.desc);
+                    flow.appendChild(d);
+                });
+
+                document.getElementById('calc-inputs').style.display = 'none';
+                document.getElementById('calc-result').style.display = 'block';
+
+            } catch (err) {
+                alert("Erro ao calcular: " + err.message);
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
         });
 
+        // =====================================================================
+        // EXPORTAÇÃO PARA PNG (CANVAS)
+        // =====================================================================
+        document.querySelector('.btn-exportar-png').addEventListener('click', () => {
+            const fatalText = document.getElementById('lblDataFatal').textContent;
+            const boxes = Array.from(document.getElementById('previewContainer').children);
+            const alerta = document.getElementById('containerAlertas').innerHTML;
+            const temAlertaSTJ = alerta.includes('Alerta de Jurisprudência');
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const cols = 5; const itemW = 120; const itemH = 140; const gap = 16;
+            const padX = 40; const padY = 40;
+            const rows = Math.ceil(boxes.length / cols);
+
+            const stjHeight = temAlertaSTJ ? 130 : 0;
+            canvas.width = padX * 2 + (cols * itemW) + ((cols - 1) * gap);
+            canvas.height = padY + 180 + stjHeight + (rows * itemH) + ((rows - 1) * gap) + 60;
+
+            ctx.fillStyle = '#fdfcfb'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Cabeçalho
+            ctx.fillStyle = '#0075de'; ctx.beginPath(); ctx.roundRect(padX, padY, 44, 44, 8); ctx.fill();
+            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 22px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('DJ', padX + 22, padY + 22);
+            ctx.fillStyle = '#1a1a1a'; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.font = 'bold 24px sans-serif'; ctx.fillText('Buscador DJEN', padX + 60, padY);
+            ctx.fillStyle = '#0075de'; ctx.font = '16px sans-serif'; ctx.fillText('www.buscadordjen.com.br', padX + 60, padY + 26);
+
+            ctx.fillStyle = '#1a1a1a'; ctx.font = 'bold 28px sans-serif'; ctx.fillText('Auditoria de Prazo', padX, padY + 70);
+            
+            const tribText = document.getElementById('cTrib').value.toUpperCase();
+            const ufText = document.getElementById('cUf').value;
+            const munText = document.getElementById('cMun').value;
+            ctx.fillStyle = '#615d59'; ctx.font = '18px sans-serif';
+            ctx.fillText(`Cenário: ${tribText ? tribText + ' | ' : ''}${ufText} - ${munText}`, padX, padY + 110);
+
+            ctx.fillStyle = '#d44c47'; ctx.font = 'bold 22px sans-serif';
+            ctx.fillText(`Prazo Fatal Calculado: ${fatalText}`, padX, padY + 145);
+
+            let startY = padY + 200;
+
+            // Alerta STJ
+            if (temAlertaSTJ) {
+                ctx.fillStyle = '#1f1616'; ctx.beginPath(); ctx.roundRect(padX, startY, canvas.width - (padX*2), 100, 8); ctx.fill();
+                ctx.strokeStyle = '#3a2020'; ctx.lineWidth = 1; ctx.stroke();
+                
+                ctx.fillStyle = '#f87171'; ctx.font = 'bold 16px sans-serif';
+                ctx.fillText('🚨 Alerta STJ', padX + 20, startY + 25);
+                ctx.fillStyle = '#e5baba'; ctx.font = '15px sans-serif';
+                ctx.fillText('Prazo coincide com feriado municipal. Anexe certidão ou decreto', padX + 20, startY + 55);
+                ctx.fillText('local para comprovar a tempestividade (art. 1.003, § 6º, CPC).', padX + 20, startY + 75);
+                startY += 130;
+            }
+
+            // Grid
+            boxes.forEach((box, idx) => {
+                const col = idx % cols; const row = Math.floor(idx / cols);
+                const x = padX + (col * (itemW + gap)); const y = startY + (row * (itemH + gap));
+                
+                // Pega a dica para saber se é util, pulo ou fatal, e pega o texto
+                const isFatal = box.className.includes('is-fatal');
+                const isPulo = box.className.includes('is-pulo');
+                const tooltipText = box.getAttribute('data-tooltip') || '';
+                
+                ctx.fillStyle = isFatal ? 'rgba(212, 76, 71, 0.1)' : '#ffffff'; 
+                ctx.beginPath(); ctx.roundRect(x, y, itemW, itemH, 12); ctx.fill();
+                
+                ctx.strokeStyle = isFatal ? 'rgba(212, 76, 71, 0.3)' : '#e0e0e0'; 
+                ctx.lineWidth = 1; ctx.stroke();
+
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                
+                const spans = box.querySelectorAll('span, div');
+                const emoji = spans[0]?.textContent || '';
+                const num = spans[1]?.textContent || '';
+                const dateC = spans[2]?.textContent || '';
+
+                ctx.font = '24px sans-serif'; ctx.fillStyle = '#1a1a1a'; ctx.fillText(emoji, x + itemW/2, y + 30);
+                ctx.font = 'bold 22px sans-serif'; ctx.fillStyle = isPulo ? '#a39e98' : '#1a1a1a'; ctx.fillText(num, x + itemW/2, y + 65);
+                ctx.font = '12px sans-serif'; ctx.fillStyle = '#a39e98'; ctx.fillText(dateC, x + itemW/2, y + 95);
+                
+                let drawLine = tooltipText.length > 16 ? tooltipText.substring(0,14)+'...' : tooltipText;
+                ctx.font = '11px sans-serif'; ctx.fillStyle = '#a39e98'; ctx.fillText(drawLine, x + itemW/2, y + 120);
+            });
+
+            ctx.textAlign = 'right'; ctx.fillStyle = '#a39e98'; ctx.font = '12px sans-serif';
+            ctx.fillText(`Auditoria Cível e Criminal • Gerado em ${new Date().toLocaleString('pt-BR')}`, canvas.width - padX, canvas.height - padY/2);
+
+            const link = document.createElement('a'); 
+            link.download = `Auditoria_DJEN.png`; 
+            link.href = canvas.toDataURL('image/png'); 
+            link.click();
+        });
+
+        // Botões de navegação
         document.getElementById('btn-voltar-calc').onclick = () => {
             document.getElementById('calc-result').style.display = 'none';
             document.getElementById('calc-inputs').style.display = 'block';
