@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca de Publicações | Buscador DJEN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* [INSERIR AQUI O BLOCO :ROOT E ESTILOS BASE DO SEU INDEX.HTML PARA MANTER CONSISTÊNCIA] */
+        :root {
+            --bg-page: #ffffff; --bg-section: #f6f5f4; --card-bg: #ffffff;
+            --text-main: rgba(0, 0, 0, 0.95); --text-muted: #615d59;
+            --primary: #0075de; --primary-hover: #005bab;
+            --border-light: rgba(0, 0, 0, 0.08); --radius-btn: 6px; --radius-card: 12px;
+            --zen-orange: #dd5b00; --zen-blue-bg: #f2f9ff; --zen-blue: #097fe8;
+        }
+
+        body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); margin: 0; }
+        
+        .container-busca { max-width: 800px; margin: 60px auto; padding: 0 20px; }
+        .search-card { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: var(--radius-card); padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        
+        .tabs-search { display: flex; gap: 8px; margin-bottom: 24px; background: var(--bg-section); padding: 4px; border-radius: 8px; }
+        .tab-btn { flex: 1; border: none; padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer; background: transparent; color: var(--text-muted); transition: 0.2s; }
+        .tab-btn.active { background: var(--card-bg); color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+        .form-row { display: flex; gap: 16px; margin-bottom: 20px; }
+        .input-group { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+        input { padding: 12px; border: 1px solid var(--border-light); border-radius: var(--radius-btn); outline: none; transition: 0.2s; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(0,117,222,0.1); }
+
+        .btn-buscar { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: var(--radius-btn); font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-buscar:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+        /* Estilo dos Resultados (Extraído da sua Sidebar) */
+        .resultado-item { margin-top: 24px; padding: 20px; border: 1px solid var(--border-light); border-radius: var(--radius-card); background: var(--card-bg); animation: fadeIn 0.3s ease; }
+        .badge-trib { font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px; background: var(--zen-blue-bg); color: var(--zen-blue); }
+        .proc-num { font-weight: 700; margin: 8px 0; display: block; color: var(--primary); }
+        .teor-preview { font-size: 14px; line-height: 1.6; color: var(--text-muted); text-align: justify; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="container-busca">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h1 style="font-size: 32px; font-weight: 800; letter-spacing: -1px;">Consultar Publicações</h1>
+            <p style="color: var(--text-muted);">Acesso direto ao DJEN e base consolidada do CNJ.</p>
+        </div>
+
+        <div class="search-card">
+            <div class="tabs-search">
+                <button class="tab-btn active" onclick="toggleMode('oab', this)">Por OAB</button>
+                <button class="tab-btn" onclick="toggleMode('proc', this)">Por Processo</button>
+            </div>
+
+            <div id="set-oab">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Número da OAB</label>
+                        <input type="text" id="oabNum" placeholder="Ex: 123456">
+                    </div>
+                    <div class="input-group" style="max-width: 100px;">
+                        <label>UF</label>
+                        <input type="text" id="oabUf" maxlength="2" placeholder="SP">
+                    </div>
+                </div>
+            </div>
+
+            <div id="set-proc" style="display: none;">
+                <div class="input-group" style="margin-bottom: 20px;">
+                    <label>Número do Processo (CNJ)</label>
+                    <input type="text" id="procNum" placeholder="0000000-00.0000.0.00.0000">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <label>Data Início</label>
+                    <input type="date" id="dataIni">
+                </div>
+                <div class="input-group">
+                    <label>Data Fim</label>
+                    <input type="date" id="dataFim">
+                </div>
+            </div>
+
+            <button class="btn-buscar" id="btnExecutarBusca">Pesquisar Intimações</button>
+        </div>
+
+        <div id="area-resultados">
+            </div>
+    </div>
+
+    <script>
+        let searchMode = 'oab';
+
+        // Inicializa datas (Hoje e 7 dias atrás)
+        const d = new Date();
+        document.getElementById('dataFim').value = d.toISOString().split('T')[0];
+        d.setDate(d.getDate() - 7);
+        document.getElementById('dataIni').value = d.toISOString().split('T')[0];
+
+        function toggleMode(mode, btn) {
+            searchMode = mode;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('set-oab').style.display = mode === 'oab' ? 'block' : 'none';
+            document.getElementById('set-proc').style.display = mode === 'proc' ? 'block' : 'none';
+        }
+
+        // Lógica de Busca Adaptada da sua sidebar.js
+        document.getElementById('btnExecutarBusca').onclick = async () => {
+            const btn = document.getElementById('btnExecutarBusca');
+            const resArea = document.getElementById('area-resultados');
+            const dtIni = document.getElementById('dataIni').value;
+            const dtFim = document.getElementById('dataFim').value;
+
+            resArea.innerHTML = '<p style="text-align:center; margin-top:20px;">Buscando publicações...</p>';
+            btn.disabled = true;
+
+            let url = '';
+            if (searchMode === 'oab') {
+                const oab = document.getElementById('oabNum').value;
+                const uf = document.getElementById('oabUf').value.toUpperCase();
+                url = `https://comunicaapi.pje.jus.br/api/v1/comunicacao?numeroOab=${oab}&ufOab=${uf}&dataDisponibilizacaoInicio=${dtIni}&dataDisponibilizacaoFim=${dtFim}`;
+            } else {
+                const proc = document.getElementById('procNum').value.replace(/\D/g, '');
+                url = `https://comunicaapi.pje.jus.br/api/v1/comunicacao?numeroProcesso=${proc}&dataDisponibilizacaoInicio=${dtIni}&dataDisponibilizacaoFim=${dtFim}`;
+            }
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                resArea.innerHTML = '';
+                if (!data.items || data.items.length === 0) {
+                    resArea.innerHTML = '<div class="resultado-item">Nenhuma publicação encontrada para os critérios informados.</div>';
+                } else {
+                    data.items.forEach(item => {
+                        const card = document.createElement('div');
+                        card.className = 'resultado-item';
+                        card.innerHTML = `
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span class="badge-trib">${item.siglaTribunal}</span>
+                                <small style="color:var(--text-muted)">Disp: ${item.data_disponibilizacao.split('-').reverse().join('/')}</small>
+                            </div>
+                            <span class="proc-num">${item.numeroProcesso || 'Processo sem número'}</span>
+                            <div class="teor-preview">${item.texto.substring(0, 500)}...</div>
+                            <button onclick="alert('Instale a extensão para calcular prazos e gerenciar este processo!')" 
+                                    style="margin-top:16px; background:var(--bg-section); border:none; padding:8px 12px; border-radius:4px; font-size:12px; font-weight:700; cursor:pointer;">
+                                📅 Calcular Prazo (Versão Completa)
+                            </button>
+                        `;
+                        resArea.appendChild(card);
+                    });
+                }
+            } catch (error) {
+                resArea.innerHTML = '<div class="resultado-item" style="color:red">Erro ao conectar com a base do CNJ. Tente novamente.</div>';
+            } finally {
+                btn.disabled = false;
+            }
+        };
+
+        // Máscara básica para processo (Adaptado de sidebar.js)
+        document.getElementById('procNum').oninput = (e) => {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 20) v = v.substring(0, 20);
+            e.target.value = v.replace(/^(\d{7})(\d{2})(\d{4})(\d{1})(\d{2})(\d{4})$/, "$1-$2.$3.$4.$5.$6");
+        };
+    </script>
+</body>
+</html>
