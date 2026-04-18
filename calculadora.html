@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* DESIGN SYSTEM */
+        /* DESIGN SYSTEM - NOTION */
         :root {
             --bg-page: #efeee9; --bg-section: #f6f5f4; --card-bg: #ffffff; --card-inner: #f9f8f6;
             --text-main: rgba(0, 0, 0, 0.95); --text-muted: #615d59; 
@@ -63,10 +63,12 @@
         #calc-limit-reached { display: none; text-align: center; padding: 32px 16px; background: var(--zen-orange-bg); border-radius: var(--radius-md); border: 1px solid rgba(168, 69, 0, 0.2); box-shadow: var(--shadow-sm); animation: fadeIn 0.3s;}
         
         .audit-flow { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-start; margin-top: 16px; padding: 12px; background: var(--card-inner); border-radius: var(--radius-md); border: 1px solid var(--border-light);}
-        .audit-day { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 4px; border: 1px solid var(--border-light); border-radius: 6px; width: calc(25% - 5px); box-sizing: border-box; background: transparent; transition: all 0.2s ease; cursor: default;}
-        .audit-day.is-pulo { opacity: 0.6; }
-        .audit-day.is-fatal { background: rgba(212, 76, 71, 0.1); border-color: rgba(212, 76, 71, 0.3); }
-
+        .audit-day { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 44px; height: 52px; border-radius: 4px; font-size: 11px; background: var(--card-bg); border: 1px solid var(--border-light); position: relative; cursor: help;}
+        .audit-day.is-pulo { opacity: 0.6; color: var(--zen-red); }
+        .audit-day.is-fatal { background: var(--zen-orange-bg); border-color: transparent; color: var(--zen-orange); }
+        .day-icon { font-size: 14px; margin-bottom: 2px;}
+        .day-num { font-size: 13px; font-weight: 700; }
+        
         [data-tooltip]::before { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); padding: 4px 8px; background: var(--text-main); color: var(--card-bg); font-size: 11px; border-radius: 4px; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.2s; z-index: 10;}
         [data-tooltip]:hover::before { opacity: 1; bottom: calc(100% + 4px); }
 
@@ -113,7 +115,7 @@
                         </select>
                     </div>
                     <div class="input-group" style="flex: 1;">
-                        <label>Município</label>
+                        <label>Município (IBGE)</label>
                         <input type="text" id="cMun" list="lista-municipios" placeholder="Digite para buscar..." autocomplete="off">
                         <datalist id="lista-municipios"></datalist>
                     </div>
@@ -151,7 +153,7 @@
                 <div id="containerAlertas" style="display:flex; gap:6px; flex-direction:column; align-items:center; margin-bottom: 16px;"></div>
                 
                 <div style="text-align: left; font-size: 12px; font-weight: 600; color: var(--text-main); margin-bottom: 8px;">Auditoria da Linha do Tempo:</div>
-                <div class="calc-preview audit-flow" id="previewContainer" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+                <div class="calc-preview audit-flow" id="previewContainer"></div>
                 
                 <button class="btn-pill btn-exportar-png" style="color: var(--primary); border-color: var(--border-light); margin-top: 16px;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -173,14 +175,18 @@
     </main>
 
     <script>
+        // Data inicial
         document.getElementById('cData').value = new Date().toISOString().split('T')[0];
         
+        // Tema escuro opcional
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.setAttribute('data-theme', 'dark');
         }
 
-        // --- SISTEMA DE LIMITE (3 USOS/DIA) ---
+        // =====================================================================
+        // SISTEMA DE LIMITE (3 USOS/DIA)
+        // =====================================================================
         const LIMITE_DIARIO = 3;
         function obterDadosUso() {
             const hoje = new Date().toISOString().split('T')[0];
@@ -205,11 +211,12 @@
         atualizarDisplayLimite();
 
         // =====================================================================
-        // MOTOR DE BUSCA DE FERIADOS (COM LOGS E TRATAMENTO DE ERRO)
+        // MOTOR DE BUSCA DE FERIADOS (API GITHUB E IBGE)
         // =====================================================================
         let feriadosExtras = {};
         const cacheMunicipios = {};
         let cacheMunicipiosDetalhado = {};
+        let cacheFeriadosMunicipaisAnual = {};
 
         // 1. Busca Cidades no IBGE
         async function carregarMunicipios(uf) { 
@@ -217,7 +224,9 @@
             if (!cacheMunicipios[uf]) { 
                 try { 
                     const r = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`); 
-                    const dados = await r.json(); cacheMunicipios[uf] = dados.map(m => m.nome); datalist.innerHTML = ""; 
+                    const dados = await r.json(); 
+                    cacheMunicipios[uf] = dados.map(m => m.nome); 
+                    datalist.innerHTML = ""; 
                     cacheMunicipios[uf].forEach(nome => { const opt = document.createElement('option'); opt.value = nome; datalist.appendChild(opt); }); 
                 } catch (e) { console.error("❌ Erro IBGE", e); } 
             } else { 
@@ -233,7 +242,6 @@
         // 2. Busca Feriados Nacionais (GitHub)
         async function atualizarFeriadosNacionais() { 
             try { 
-                console.log("⏳ Baixando Feriados Nacionais e Estaduais...");
                 const url = `https://raw.githubusercontent.com/sobeitnow0/FeriadosDoBrasil---buscador-djen/main/feriados.json?v=${Date.now()}`;
                 const r = await fetch(url); 
                 if (!r.ok) throw new Error(`HTTP Erro ${r.status}`); 
@@ -249,9 +257,8 @@
                     else { if (!dicionarioRapido["BR"]) dicionarioRapido["BR"] = []; dicionarioRapido["BR"].push(data); } 
                 }); 
                 feriadosExtras = dicionarioRapido; 
-                console.log("✅ Feriados Nacionais carregados!", feriadosExtras);
             } catch(e) { 
-                console.error("❌ Erro Feriados Nacionais. Verifique a URL do repositório.", e); 
+                console.error("❌ Erro Feriados Nacionais.", e); 
             } 
         }
         atualizarFeriadosNacionais();
@@ -260,7 +267,6 @@
         async function buscarFeriadosTribunal(siglaTribunal) { 
             if (!siglaTribunal || siglaTribunal === 'MANUAL') return {}; 
             try { 
-                console.log(`⏳ Baixando Feriados do Tribunal: ${siglaTribunal}...`);
                 const url = `https://raw.githubusercontent.com/sobeitnow0/prazos-judiciais-api/main/feriados.json?v=${Date.now()}`;
                 const r = await fetch(url); 
                 if (!r.ok) throw new Error(`HTTP Erro ${r.status}`); 
@@ -301,15 +307,14 @@
                         dtAtual.setDate(dtAtual.getDate() + 1);
                     }
                 });
-                console.log(`✅ Feriados do Tribunal ${siglaTribunal} carregados!`);
                 return dicionarioFeriados; 
             } catch (erro) { 
-                console.error(`❌ Erro ao baixar dados do tribunal ${siglaTribunal}.`, erro); 
+                console.error(`❌ Erro tribunal ${siglaTribunal}.`, erro); 
                 return {}; 
             } 
         }
 
-        // 4. Busca Feriados Municipais
+        // 4. Busca Feriados Municipais Dinâmicos
         async function buscarFeriadosMunicipaisAnual(ano, uf, municipioNome) {
             if (!uf || !municipioNome) return [];
             let codigoIbge = null;
@@ -323,33 +328,35 @@
                     if (!cacheMunicipiosDetalhado[uf]) cacheMunicipiosDetalhado[uf] = {};
                     dados.forEach(m => cacheMunicipiosDetalhado[uf][m.nome] = m.id);
                     codigoIbge = cacheMunicipiosDetalhado[uf][municipioNome];
-                } catch(e) { console.error("❌ Falha no IBGE", e); }
+                } catch(e) {}
             }
 
             if (!codigoIbge) return []; 
 
-            try {
-                console.log(`⏳ Baixando Feriados Municipais de ${municipioNome} (${ano})...`);
-                const url = `https://raw.githubusercontent.com/sobeitnow0/feriados-buscador-djen/main/feriados/municipal/json/${ano}.json?v=${Date.now()}`;
-                const r = await fetch(url);
-                if (!r.ok) throw new Error(`HTTP Erro ${r.status}`);
-                const todosFeriadosAno = await r.json();
-                
-                const feriadosDaCidade = todosFeriadosAno.filter(f => String(f.codigo_ibge) === String(codigoIbge));
-                const feriadosList = feriadosDaCidade.map(f => {
-                    const dataStr = String(f.data || f.date).trim();
-                    const partes = dataStr.split('/');
-                    return partes.length === 3 ? `${partes[2]}-${partes[1]}-${partes[0]}` : dataStr;
-                });
-                console.log(`✅ Feriados Municipais carregados!`, feriadosList);
-                return feriadosList;
-            } catch (e) { 
-                console.error(`❌ Falha ao buscar municipal de ${ano}.`, e); 
-                return []; 
+            if (!cacheFeriadosMunicipaisAnual[ano]) {
+                try {
+                    const url = `https://raw.githubusercontent.com/sobeitnow0/feriados-buscador-djen/main/feriados/municipal/json/${ano}.json?v=${Date.now()}`;
+                    const r = await fetch(url);
+                    if (r.ok) cacheFeriadosMunicipaisAnual[ano] = await r.json();
+                    else cacheFeriadosMunicipaisAnual[ano] = [];
+                } catch (e) {
+                    cacheFeriadosMunicipaisAnual[ano] = [];
+                }
             }
+
+            const todosFeriadosAno = cacheFeriadosMunicipaisAnual[ano] || [];
+            const feriadosDaCidade = todosFeriadosAno.filter(f => String(f.codigo_ibge) === String(codigoIbge));
+
+            return feriadosDaCidade.map(f => {
+                const dataStr = String(f.data || f.date).trim();
+                const partes = dataStr.split('/');
+                return partes.length === 3 ? `${partes[2]}-${partes[1]}-${partes[0]}` : dataStr;
+            });
         }
 
-        // Lógica Core de Verificação
+        // =====================================================================
+        // LÓGICA CORE DE VERIFICAÇÃO DE DATAS
+        // =====================================================================
         function isRecessoForense(dataObj) { 
             const m = dataObj.getMonth(); const d = dataObj.getDate(); 
             return (m === 11 && d >= 20) || (m === 0 && d <= 20);
@@ -392,7 +399,7 @@
         }
 
         // =====================================================================
-        // BOTÃO CALCULAR
+        // EVENTO PRINCIPAL DE CÁLCULO
         // =====================================================================
         document.getElementById('btn-exec').addEventListener('click', async (e) => {
             const btn = e.target;
@@ -585,7 +592,6 @@
 
             let startY = padY + 200;
 
-            // Alerta STJ
             if (temAlertaSTJ) {
                 ctx.fillStyle = '#1f1616'; ctx.beginPath(); ctx.roundRect(padX, startY, canvas.width - (padX*2), 100, 8); ctx.fill();
                 ctx.strokeStyle = '#3a2020'; ctx.lineWidth = 1; ctx.stroke();
@@ -598,7 +604,6 @@
                 startY += 130;
             }
 
-            // Grid
             boxes.forEach((box, idx) => {
                 const col = idx % cols; const row = Math.floor(idx / cols);
                 const x = padX + (col * (itemW + gap)); const y = startY + (row * (itemH + gap));
