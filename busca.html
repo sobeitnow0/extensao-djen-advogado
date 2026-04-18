@@ -3,128 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Busca e Radar | Buscador DJEN</title>
+    <title>Busca Web DJEN | Buscador DJEN</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* Estilos baseados no seu index.html (Minimalismo/Legal Design) */
+        /* DESIGN SYSTEM - NOTION INSPIRATION */
         :root {
-            --primary: #0075de;
+            --bg-page: #ffffff;
+            --bg-header: rgba(255, 255, 255, 0.85); 
+            --bg-section: #f6f5f4; 
+            --card-bg: #ffffff;
+            --text-main: rgba(0, 0, 0, 0.95); 
+            --text-muted: #615d59; 
+            --text-placeholder: #a39e98;
+            --primary: #0075de; 
+            --primary-hover: #005bab; 
+            --primary-text: #ffffff;
+            --badge-bg: #f2f9ff;
+            --badge-text: #097fe8;
+            --border-light: rgba(0, 0, 0, 0.1); 
             --zen-orange: #dd5b00;
-            --bg-section: #f6f5f4;
-            --text-main: rgba(0, 0, 0, 0.95);
-            --text-muted: #615d59;
-            --border-light: rgba(0, 0, 0, 0.08);
-            --radius-card: 12px;
-            --highlight-bg: #fff9c4; /* Cor do Radar */
+            --zen-green: #1aae39;
+            --zen-red: #d93025;
+            --radius-btn: 4px; 
+            --radius-card: 12px; 
+            --radius-pill: 9999px; 
+            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.8468px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04px;
+            --shadow-modal: rgba(0,0,0,0.01) 0px 1px 3px, rgba(0,0,0,0.02) 0px 3px 7px, rgba(0,0,0,0.02) 0px 7px 15px, rgba(0,0,0,0.04) 0px 14px 28px, rgba(0,0,0,0.05) 0px 23px 52px;
         }
 
-        body { font-family: 'Inter', sans-serif; background: #fff; color: var(--text-main); line-height: 1.6; }
-        .container { max-width: 850px; margin: 40px auto; padding: 0 20px; }
-        
-        .search-box { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-card); padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
-        
-        /* Estilo do Campo Radar */
-        .radar-config { margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--border-light); }
-        .radar-input { width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 13px; margin-top: 8px; box-sizing: border-box; }
+        [data-theme="dark"] {
+            --bg-page: #1e1d1c;
+            --bg-header: rgba(30, 29, 28, 0.85);
+            --bg-section: #252423;
+            --card-bg: #2b2a29;
+            --text-main: rgba(255, 255, 255, 0.95);
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --text-placeholder: rgba(255, 255, 255, 0.3);
+            --border-light: rgba(255, 255, 255, 0.08);
+            --shadow-card: rgba(0,0,0,0.4) 0px 4px 18px;
+            --shadow-modal: rgba(0,0,0,0.8) 0px 23px 52px;
+        }
 
-        .btn-busca { width: 100%; background: var(--primary); color: #fff; border: none; padding: 15px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 20px; transition: 0.2s; }
-        .btn-busca:hover { opacity: 0.9; transform: translateY(-1px); }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); line-height: 1.5; transition: 0.3s; }
+        
+        header { display: flex; justify-content: space-between; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+        .brand { font-weight: 700; color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 8px;}
+        .brand img { width: 32px; height: 32px; border-radius: 8px;}
+        .btn-browser { display: inline-flex; align-items: center; justify-content: center; background: var(--primary); color: var(--primary-text); padding: 12px 20px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: none; cursor: pointer; transition: 0.2s;}
+        .btn-browser:hover { background: var(--primary-hover); transform: translateY(-1px);}
 
-        /* Estilo dos Resultados com Realce */
-        .result-item { margin-top: 20px; padding: 20px; border: 1px solid var(--border-light); border-radius: 12px; transition: 0.3s; }
-        .result-item:hover { border-color: var(--primary); }
+        /* LAYOUT DA BUSCA */
+        .search-container { max-width: 900px; margin: 60px auto; padding: 0 20px; }
+        .search-panel { background: var(--bg-section); border: 1px solid var(--border-light); border-radius: var(--radius-card); padding: 32px; margin-bottom: 40px; }
+        .search-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .search-header h1 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+        .limit-badge { background: rgba(217, 48, 37, 0.1); color: var(--zen-red); padding: 6px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .input-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .input-grid-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
         
-        .mark-radar { background-color: var(--highlight-bg); font-weight: 600; padding: 0 2px; border-bottom: 2px solid var(--zen-orange); color: #000; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+        .input-group input { width: 100%; padding: 12px; background: var(--card-bg); border: 1px solid var(--border-light); border-radius: var(--radius-btn); color: var(--text-main); font-size: 15px; font-family: 'Inter', sans-serif; outline: none; box-sizing: border-box; transition: 0.2s; }
+        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(0, 117, 222, 0.15); }
+        .input-group input[type="date"] { color: var(--text-main); }
+
+        .radar-panel { background: var(--card-bg); padding: 20px; border-radius: 8px; border: 1px dashed var(--border-light); margin-bottom: 24px; }
+        .radar-panel label { color: var(--zen-orange); display: flex; align-items: center; gap: 6px; font-weight: 700;}
+
+        /* RESULTADOS */
+        .results-area { display: flex; flex-direction: column; gap: 24px; }
+        .result-card { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: var(--radius-card); padding: 24px; box-shadow: var(--shadow-card); transition: 0.2s; }
+        .result-card:hover { border-color: rgba(0,0,0,0.15); box-shadow: var(--shadow-modal); }
         
-        .badge { font-size: 10px; text-transform: uppercase; font-weight: 800; background: var(--bg-section); padding: 4px 8px; border-radius: 4px; color: var(--primary); }
+        .result-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border-light); }
+        .tribunal-badge { background: var(--badge-bg); color: var(--badge-text); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill); }
+        .date-text { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+        
+        .process-number { font-size: 18px; font-weight: 700; color: var(--primary); margin: 0 0 16px 0; font-feature-settings: "lnum" 1; }
+        
+        /* MODO FOCO */
+        .publication-text { font-size: 15px; line-height: 1.6; color: var(--text-muted); max-height: 150px; overflow: hidden; position: relative; transition: max-height 0.3s ease; }
+        .publication-text.expanded { max-height: 5000px; }
+        .publication-text::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 60px; background: linear-gradient(transparent, var(--card-bg)); pointer-events: none; }
+        .publication-text.expanded::after { display: none; }
+        
+        .read-more-btn { background: transparent; border: none; color: var(--primary); font-size: 14px; font-weight: 600; padding: 8px 0 0 0; cursor: pointer; margin-top: 8px; }
+        .read-more-btn:hover { text-decoration: underline; }
+
+        /* HIGHLIGHT RADAR */
+        .mark-radar { background-color: rgba(255, 100, 200, 0.15); padding: 0 4px; border-radius: 3px; font-weight: 700; color: var(--text-main); border-bottom: 2px solid var(--zen-orange); }
+        [data-theme="dark"] .mark-radar { background-color: rgba(255, 100, 200, 0.25); }
+
+        .loader { display: none; text-align: center; padding: 40px; color: var(--text-muted); font-weight: 600; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="search-box">
-        <h2 style="margin-top:0">🔍 Busca Processual</h2>
-        
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
-            <div>
-                <label style="font-size:12px; font-weight:700">OAB ou Processo</label>
-                <input type="text" id="inputBusca" class="radar-input" style="font-size:16px" placeholder="Ex: 349757SP ou NPU">
+    <header>
+        <a href="index.html" class="brand"><img src="djen-128.png" alt="Logo">Buscador DJEN</a>
+        <a href="index.html" style="color: var(--text-muted); font-size: 14px; font-weight: 600; text-decoration: none;">Voltar ao site</a>
+    </header>
+
+    <div class="search-container">
+        <div class="search-panel">
+            <div class="search-header">
+                <h1>Consulta DJEN & CNJ</h1>
+                <span class="limit-badge" id="limitDisplay">Buscas Restantes: 3/3</span>
             </div>
-            <div>
-                <label style="font-size:12px; font-weight:700">UF (OAB)</label>
-                <input type="text" id="inputUF" class="radar-input" style="font-size:16px" placeholder="SP">
+
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>Nº da OAB ou NPU do Processo</label>
+                    <input type="text" id="inputBusca" placeholder="Ex: 123456 ou 0001234-56.2026...">
+                </div>
+                <div class="input-group">
+                    <label>UF (Se for OAB)</label>
+                    <input type="text" id="inputUF" placeholder="SP" maxlength="2" style="text-transform: uppercase;">
+                </div>
             </div>
+
+            <div class="input-grid-dates">
+                <div class="input-group">
+                    <label>Data Inicial</label>
+                    <input type="date" id="inputDataInicio">
+                </div>
+                <div class="input-group">
+                    <label>Data Final</label>
+                    <input type="date" id="inputDataFim">
+                </div>
+            </div>
+
+            <div class="radar-panel input-group">
+                <label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> Radar de Urgências</label>
+                <p style="font-size: 13px; color: var(--text-muted); margin: 4px 0 12px;">Palavras-chave (separadas por vírgula) que serão destacadas na publicação.</p>
+                <input type="text" id="termosRadar" placeholder="Ex: Prazo, Revelia, Penhora, Liminar...">
+            </div>
+
+            <button class="btn-browser" id="btnPesquisar" style="width: 100%; padding: 16px; font-size: 16px;">
+                Pesquisar Publicações
+            </button>
         </div>
 
-        <div class="radar-config">
-            <label style="font-size:12px; font-weight:700; color: var(--zen-orange)">🛰️ RADAR DE TERMOS</label>
-            <p style="font-size:11px; color: var(--text-muted); margin: 4px 0;">Palavras separadas por vírgula que o sistema irá destacar nas publicações.</p>
-            <input type="text" id="termosRadar" class="radar-input" placeholder="Ex: Prazo, Sentença, Urgente, Seu Nome...">
-        </div>
-
-        <button class="btn-busca" id="executar">Pesquisar e Aplicar Radar</button>
+        <div class="loader" id="loader">Consultando base de dados nacional...</div>
+        <div class="results-area" id="resultados"></div>
     </div>
 
-    <div id="resultados"></div>
-</div>
+    <div id="paywall-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px;">
+        <div style="background: var(--card-bg); border: 1px solid var(--border-light); border-radius: var(--radius-card); box-shadow: var(--shadow-modal); max-width: 480px; width: 100%; padding: 40px; text-align: center;">
+            <div style="width: 48px; height: 48px; background: rgba(217, 48, 37, 0.1); color: var(--zen-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            </div>
+            <h2 style="font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 12px;">Cota diária atingida</h2>
+            <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 32px;">
+                A versão web é limitada a 3 buscas por dia. Para continuar rastreando processos e prazos de forma <strong style="color: var(--text-main);">ilimitada e gratuita</strong>, instale a extensão direto no seu navegador.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser">Baixar para Chrome</a>
+                <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-browser" style="background: var(--bg-section); color: var(--text-main); border: 1px solid var(--border-light);">Baixar para Firefox</a>
+            </div>
+            <button onclick="window.location.href='index.html'" style="margin-top: 24px; background: none; border: none; color: var(--text-placeholder); font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: underline;">Voltar para o site</button>
+        </div>
+    </div>
 
-<script>
-    // Recupera termos salvos para manter a experiência do usuário (UX)
-    document.getElementById('termosRadar').value = localStorage.getItem('site_radar_termos') || 'prazo, sentença, acórdão';
+    <script>
+        const MAX_SEARCHES = 3;
 
-    async function realizarBusca() {
-        const query = document.getElementById('inputBusca').value;
-        const uf = document.getElementById('inputUF').value;
-        const radarTermos = document.getElementById('termosRadar').value.split(',').map(t => t.trim()).filter(t => t !== "");
+        // INICIALIZAÇÃO DE DATAS (Padrão: Últimos 30 dias para evitar Timeout na API)
+        const dateFim = new Date();
+        const dateInicio = new Date();
+        dateInicio.setDate(dateFim.getDate() - 30);
         
-        // Salva termos no navegador
-        localStorage.setItem('site_radar_termos', document.getElementById('termosRadar').value);
+        document.getElementById('inputDataInicio').valueAsDate = dateInicio;
+        document.getElementById('inputDataFim').valueAsDate = dateFim;
 
-        const resDiv = document.getElementById('resultados');
-        resDiv.innerHTML = "<p>Consultando base do CNJ...</p>";
+        // Recupera termos salvos
+        document.getElementById('termosRadar').value = localStorage.getItem('djen_web_radar') || 'prazo, audiência, liminar, revelia, penhora';
+        
+        function updateLimitDisplay() {
+            const today = new Date().toDateString();
+            const stored = JSON.parse(localStorage.getItem('djen_web_limit') || '{}');
+            let count = (stored.date === today) ? stored.count : 0;
+            let remaining = Math.max(0, MAX_SEARCHES - count);
+            
+            const display = document.getElementById('limitDisplay');
+            display.innerText = `Buscas Restantes: ${remaining}/${MAX_SEARCHES}`;
+            
+            if(remaining === 0) {
+                display.style.background = 'rgba(217, 48, 37, 0.1)';
+                display.style.color = 'var(--zen-red)';
+            } else {
+                display.style.background = 'rgba(26, 174, 57, 0.1)';
+                display.style.color = 'var(--zen-green)';
+            }
+            return count;
+        }
 
-        try {
-            // Lógica de fetch simplificada para o exemplo
-            const url = `https://comunicaapi.pje.jus.br/api/v1/comunicacao?numeroOab=${query}&ufOab=${uf}`;
-            const response = await fetch(url);
-            const data = await response.json();
+        updateLimitDisplay();
 
-            resDiv.innerHTML = "";
+        document.getElementById('btnPesquisar').addEventListener('click', async () => {
+            const query = document.getElementById('inputBusca').value.trim();
+            const uf = document.getElementById('inputUF').value.trim().toUpperCase();
+            const dataInicioVal = document.getElementById('inputDataInicio').value;
+            const dataFimVal = document.getElementById('inputDataFim').value;
+            const radarInput = document.getElementById('termosRadar').value;
+            
+            if (!query) return alert("Digite uma OAB ou número de processo.");
 
-            if(data.items.length === 0) {
-                resDiv.innerHTML = "<p>Nenhuma publicação encontrada.</p>";
+            // PAYWALL
+            const today = new Date().toDateString();
+            const stored = JSON.parse(localStorage.getItem('djen_web_limit') || '{}');
+            let currentCount = (stored.date === today) ? stored.count : 0;
+
+            if (currentCount >= MAX_SEARCHES) {
+                document.getElementById('paywall-modal').style.display = 'flex';
                 return;
             }
 
-            data.items.forEach(item => {
-                let textoFormatado = item.texto;
+            localStorage.setItem('djen_web_limit', JSON.stringify({ date: today, count: currentCount + 1 }));
+            updateLimitDisplay();
+            localStorage.setItem('djen_web_radar', radarInput);
 
-                // APLICAÇÃO DO RADAR (Highlight dinâmico)
-                radarTermos.forEach(termo => {
-                    const regex = new RegExp(`(${termo})`, 'gi');
-                    textoFormatado = textoFormatado.replace(regex, '<span class="mark-radar">$1</span>');
+            const radarTermos = radarInput.split(',').map(t => t.trim()).filter(t => t !== "");
+            const resDiv = document.getElementById('resultados');
+            const loader = document.getElementById('loader');
+            
+            resDiv.innerHTML = "";
+            loader.style.display = 'block';
+
+            try {
+                // CONSTRUÇÃO DA URL COM AS DATAS
+                let url = `https://comunicaapi.pje.jus.br/api/v1/comunicacao?numeroOab=${query}&ufOab=${uf}`;
+                if (dataInicioVal) url += `&dataDisponibilizacaoInicio=${dataInicioVal}`;
+                if (dataFimVal) url += `&dataDisponibilizacaoFim=${dataFimVal}`;
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                loader.style.display = 'none';
+
+                if(!data.items || data.items.length === 0) {
+                    resDiv.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--text-muted); background: var(--bg-section); border-radius: 12px;">Nenhuma publicação encontrada no período selecionado.</div>`;
+                    return;
+                }
+
+                data.items.forEach((item, index) => {
+                    // FALLBACKS BLINDADOS PARA EVITAR O "UNDEFINED"
+                    let textoOriginal = item.texto || 'Texto do despacho indisponível.';
+                    let tribunal = item.siglaTribunal || item.sigla_tribunal || 'DJEN';
+                    
+                    // Número do Processo: A API varia muito (string ou array)
+                    let numeroProc = 'Processo não informado';
+                    if (item.numeroProcesso) numeroProc = item.numeroProcesso;
+                    else if (item.numero_processo) numeroProc = item.numero_processo;
+                    else if (item.numeros_processos && item.numeros_processos.length > 0) numeroProc = item.numeros_processos[0];
+
+                    // Data
+                    let dataDispAPI = item.data_disponibilizacao || item.dataDisponibilizacao;
+                    let dataFormatada = dataDispAPI ? new Date(dataDispAPI).toLocaleDateString('pt-BR') : 'Data não informada';
+
+                    // APLICAÇÃO DO RADAR
+                    let textoFormatado = textoOriginal;
+                    radarTermos.forEach(termo => {
+                        const regex = new RegExp(`(${termo})`, 'gi');
+                        textoFormatado = textoFormatado.replace(regex, '<span class="mark-radar">$1</span>');
+                    });
+
+                    const card = document.createElement('div');
+                    card.className = 'result-card';
+                    card.innerHTML = `
+                        <div class="result-meta">
+                            <span class="tribunal-badge">${tribunal}</span>
+                            <span class="date-text">Disponibilizado em: ${dataFormatada}</span>
+                        </div>
+                        <h3 class="process-number">${numeroProc}</h3>
+                        
+                        <div class="publication-text" id="text-${index}">
+                            ${textoFormatado}
+                        </div>
+                        <button class="read-more-btn" onclick="toggleText('text-${index}', this)">Ler inteiro teor (Modo Foco) ➔</button>
+                    `;
+                    resDiv.appendChild(card);
                 });
 
-                const card = document.createElement('div');
-                card.className = 'result-item';
-                card.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; margin-bottom:10px">
-                        <span class="badge">${item.siglaTribunal}</span>
-                        <small>${item.data_disponibilizacao}</small>
-                    </div>
-                    <strong style="color:var(--primary)">${item.numeroProcesso}</strong>
-                    <div style="margin-top:10px; font-size:14px; color:var(--text-muted)">${textoFormatado}</div>
-                `;
-                resDiv.appendChild(card);
-            });
+            } catch (e) {
+                loader.style.display = 'none';
+                resDiv.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--zen-red); background: rgba(217,48,37,0.05); border-radius: 12px; border: 1px solid rgba(217,48,37,0.2);">
+                    Erro de conexão com o painel do CNJ ou Timeout. Tente diminuir o período de datas.<br><br>
+                    <small style="color: var(--text-muted);">A extensão de navegador não sofre com esses bloqueios.</small>
+                </div>`;
+            }
+        });
 
-        } catch (e) {
-            resDiv.innerHTML = "<p>Erro na conexão. Verifique os dados ou tente novamente.</p>";
-        }
-    }
-
-    document.getElementById('executar').onclick = realizarBusca;
-</script>
-
+        window.toggleText = function(id, btn) {
+            const textDiv = document.getElementById(id);
+            if(textDiv.classList.contains('expanded')) {
+                textDiv.classList.remove('expanded');
+                btn.innerText = "Ler inteiro teor (Modo Foco) ➔";
+            } else {
+                textDiv.classList.add('expanded');
+                btn.innerText = "Recolher texto ⬆";
+            }
+        };
+    </script>
 </body>
 </html>
