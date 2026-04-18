@@ -37,27 +37,27 @@
             --primary-text: #ffffff;
             --badge-bg: #f2f9ff;
             --badge-text: #097fe8;
-            --border-light: rgba(0, 0, 0, 0.08); 
+            --border-light: rgba(0, 0, 0, 0.1); 
             --zen-orange: #dd5b00;
             --zen-green: #1aae39;
             --zen-purple: #391c57;
             --zen-red: #d93025;
             --zen-blue: #0075de;
             --zen-gold: #f5a623;
-            --radius-btn: 6px; 
-            --radius-card: 16px; 
+            --radius-btn: 4px; 
+            --radius-card: 12px; 
             --radius-pill: 9999px; 
             --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.8468px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04px;
-            --shadow-hover: rgba(0,0,0,0.08) 0px 10px 30px, rgba(0,0,0,0.04) 0px 4px 12px;
+            --shadow-hover: rgba(0,0,0,0.05) 0px 10px 30px, rgba(0,0,0,0.03) 0px 4px 12px;
             --shadow-modal: rgba(0,0,0,0.01) 0px 1px 3px, rgba(0,0,0,0.02) 0px 3px 7px, rgba(0,0,0,0.02) 0px 7px 15px, rgba(0,0,0,0.04) 0px 14px 28px, rgba(0,0,0,0.05) 0px 23px 52px;
         }
 
-        /* DARK THEME VARIABLES */
+        /* DARK THEME VARIABLES - WARMED UP */
         [data-theme="dark"] {
-            --bg-page: #191919;
-            --bg-header: rgba(25, 25, 25, 0.85);
-            --bg-section: #202020;
-            --card-bg: #252525;
+            --bg-page: #1e1d1c;
+            --bg-header: rgba(30, 29, 28, 0.85);
+            --bg-section: #252423;
+            --card-bg: #2b2a29;
             --text-main: rgba(255, 255, 255, 0.95);
             --text-muted: rgba(255, 255, 255, 0.6);
             --text-placeholder: rgba(255, 255, 255, 0.3);
@@ -118,39 +118,50 @@
         /* HERO COM MALHA DOT GRID */
         .hero { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 120px 20px 100px; margin: 0 auto; background-image: radial-gradient(var(--border-light) 1.5px, transparent 1.5px); background-size: 32px 32px; background-position: center top; }
         .hero-content { position: relative; z-index: 2; max-width: 900px; display: flex; flex-direction: column; align-items: center; }
-        .hero h1 { font-size: 64px; font-weight: 800; line-height: 1.05; margin-bottom: 24px; letter-spacing: -2px; }
+        .hero h1 { font-size: 64px; font-weight: 700; line-height: 1.00; margin-bottom: 24px; letter-spacing: -2.125px; }
         .hero h1 span { color: var(--primary); }
-        .hero p { font-size: 20px; color: var(--text-muted); margin-bottom: 48px; max-width: 800px; margin-left: auto; margin-right: auto; font-weight: 500; line-height: 1.5; letter-spacing: -0.125px;}
+        .hero p { font-size: 20px; color: var(--text-muted); margin-bottom: 48px; max-width: 800px; margin-left: auto; margin-right: auto; font-weight: 600; line-height: 1.40; letter-spacing: -0.125px;}
 
         /* BOTÕES BASE */
         .btn-browser { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background-color: var(--bg-section); color: var(--text-main); padding: 12px 20px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--border-light); transition: all 0.2s ease; line-height: 1.33; }
         .btn-browser:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .btn-browser.primary { background-color: var(--primary); color: var(--primary-text); border: 1px solid transparent; }
         .btn-browser.primary:hover { background-color: var(--primary-hover); box-shadow: 0 6px 20px rgba(0, 117, 222, 0.25); }
+        @keyframes pulseGlowBtn { 0% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0.2); } 70% { box-shadow: 0 0 0 8px rgba(0, 117, 222, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0); } }
+        .btn-glow { animation: pulseGlowBtn 2.5s infinite; }
+        .btn-glow:hover { animation: none; border-color: var(--primary); }
 
-        /* NOVOS BOTÕES ESTILO "APP STORE" (DOWNLOAD) */
-        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 8px; }
-        .btn-store { position: relative; display: flex; align-items: center; justify-content: center; gap: 14px; background-color: var(--card-bg); color: var(--text-main); padding: 12px 24px; border-radius: var(--radius-btn); text-decoration: none; border: 1px solid var(--border-light); box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: all 0.2s ease; overflow: visible; }
-        .btn-store:hover { background-color: var(--bg-section); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); border-color: var(--text-placeholder); }
+        /* BOTÕES DOWNLOAD (NOTION STYLE) */
+        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
+        .btn-store { position: relative; display: flex; align-items: center; justify-content: center; gap: 14px; background-color: var(--card-bg); color: var(--text-main); padding: 12px 24px; border-radius: var(--radius-btn); text-decoration: none; border: 1px solid var(--border-light); transition: all 0.2s ease; overflow: visible; }
+        .btn-store:hover { background-color: rgba(0,0,0,0.02); transform: translateY(-1px); box-shadow: var(--shadow-card); border-color: rgba(0,0,0,0.15); }
+        [data-theme="dark"] .btn-store:hover { background-color: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.15); }
         .btn-store .store-text { display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.2; }
         .btn-store .store-text small { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
         .btn-store .store-text strong { font-size: 16px; font-weight: 800; letter-spacing: -0.2px; }
         .btn-store svg { width: 28px; height: 28px; flex-shrink: 0; }
         
-        .rating-stars { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--zen-gold); margin-top: 4px; opacity: 0; transition: opacity 0.3s; }
+        .rating-stars { display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--zen-gold); margin-top: 8px; opacity: 0; transition: opacity 0.3s; }
         .rating-stars.visible { opacity: 1; }
 
-        /* BALÃO DE VERSÃO (TOOLTIP) NO HOVER */
+        /* BALÃO DE VERSÃO */
         .version-tooltip { position: absolute; top: -38px; left: 50%; transform: translateX(-50%) translateY(5px); background: #2b2a28; color: #ffffff; font-size: 11px; padding: 6px 12px; border-radius: 6px; opacity: 0; visibility: hidden; transition: all 0.2s ease; white-space: nowrap; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10; pointer-events: none; }
         .version-tooltip::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); border-width: 5px 5px 0; border-style: solid; border-color: #2b2a28 transparent transparent transparent; }
         .btn-store:hover .version-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
-        /* LINK DE COMPARATIVO E MICROCOPY */
         .compare-link { font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 24px; margin-top: 12px;}
         .compare-link:hover { color: var(--primary); text-decoration: underline; }
 
-        .trust-badges { display: flex; align-items: center; justify-content: center; gap: 16px; color: var(--text-placeholder); font-size: 14px; font-weight: 600; margin-bottom: 12px; flex-wrap: wrap;}
+        .trust-badges { display: flex; align-items: center; justify-content: center; gap: 24px; color: var(--text-placeholder); font-size: 14px; font-weight: 600; margin-bottom: 16px; flex-wrap: wrap; }
+        .trust-badges span { display: flex; align-items: center; gap: 6px; }
         .microcopy { color: var(--text-muted); font-size: 13px; font-weight: 500; }
+
+        /* CALCULADORA E SIMULADOR */
+        .calculator-promo { padding: 80px 20px; text-align: center; background: var(--bg-section); border-top: 1px solid var(--border-light); transition: background-color 0.3s; }
+        .demo-section { display: flex; flex-direction: column; align-items: center; padding: 80px 20px 100px; background-color: var(--bg-page); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); transition: background-color 0.3s; }
+        .demo-badge { background: var(--badge-bg); color: var(--badge-text); padding: 6px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 700; margin-bottom: 24px; letter-spacing: 0.5px; text-transform: uppercase;}
+        .iframe-wrapper { position: relative; width: 100%; max-width: 400px; height: 600px; display: flex; justify-content: center; align-items: center; }
+        .iframe-wrapper iframe { width: 400px; height: 600px; border: 1px solid var(--border-light); border-radius: var(--radius-card); box-shadow: var(--shadow-modal); background: var(--bg-page); transition: box-shadow 0.3s;}
 
         /* FUNCIONALIDADES (CARTÕES) */
         .features-container { padding: 120px 5% 80px; background: var(--bg-page); transition: background-color 0.3s; }
@@ -165,7 +176,9 @@
         .feature-card h3 { margin: 0 0 12px 0; font-size: 20px; font-weight: 700; letter-spacing: -0.25px; line-height: 1.3;}
         .feature-card p { color: var(--text-muted); margin: 0; font-size: 15px; font-weight: 500; line-height: 1.6; transition: color 0.3s; }
         
-        .highlight-term { text-decoration: underline; text-decoration-color: var(--primary); text-decoration-thickness: 2px; text-underline-offset: 3px; font-weight: 700; color: var(--text-main); transition: color 0.3s;}
+        /* HIGHLIGHT TEXT CSS - NOTION STYLE */
+        .highlight-term { background-color: rgba(255, 100, 200, 0.15); padding: 0 4px; border-radius: 3px; font-weight: 600; color: var(--text-main); transition: background-color 0.3s; }
+        [data-theme="dark"] .highlight-term { background-color: rgba(255, 100, 200, 0.25); }
 
         .feature-link { margin-top: auto; padding-top: 16px; font-size: 14px; font-weight: 700; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 4px; transition: gap 0.2s ease; }
         .feature-link:hover { gap: 8px; text-decoration: underline; }
@@ -173,7 +186,6 @@
         [data-theme="dark"] .features-container { background: var(--bg-section); }
         [data-theme="dark"] .feature-card { background: var(--card-bg); }
         [data-theme="dark"] .feature-icon { background: var(--bg-section); }
-        [data-theme="dark"] .highlight-term { color: var(--text-main); }
 
         /* CARROSSEL */
         .gallery-section { padding: 0 0 120px 0; background: var(--bg-page); width: 100%; overflow: hidden; transition: background-color 0.3s; }
@@ -190,10 +202,7 @@
         .prev-btn { left: 2%; } 
         .next-btn { right: 2%; } 
         
-        /* Mobile responsivity */
-        @media (max-width: 900px) {
-            .header-nav { display: none; }
-        }
+        @media (max-width: 900px) { .header-nav { display: none; } }
         @media (max-width: 768px) { 
             .hero h1 { font-size: 42px; letter-spacing: -1.5px;} 
             .features-header h2 { font-size: 32px;}
@@ -243,7 +252,6 @@
         .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; }
         .fade-in-section.is-visible { opacity: 1; transform: none; }
 
-        /* Mobile Sticky CTA */
         .mobile-sticky-cta { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-header); backdrop-filter: blur(10px); border-top: 1px solid var(--border-light); padding: 16px 20px; z-index: 100; box-shadow: 0 -4px 20px rgba(0,0,0,0.08); text-align: center; box-sizing: border-box; transition: background-color 0.3s; }
     </style>
 </head>
@@ -267,6 +275,10 @@
         </div>
 
        <div class="header-actions">
+          <a href="#footer-coffee" onclick="document.getElementById('contentCoffee').classList.add('show'); document.getElementById('btnToggleCoffee').classList.add('active');" class="share-btn" style="color: var(--zen-orange); border-color: rgba(221, 91, 0, 0.2); background: rgba(221, 91, 0, 0.05);">
+    ☕ <span class="share-text" style="margin-left: 4px;">Apoiar</span>
+</a>
+
             <button id="btn-compartilhar" class="share-btn" aria-label="Compartilhar site">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="18" cy="5" r="3"></circle>
@@ -286,7 +298,7 @@
                 <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                 <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
             </button>
-        </div>
+                  </div>
     </header>
 
     <section class="hero">
@@ -298,11 +310,19 @@
                 <span class="alert-icon">➔</span>
             </a>
             <h1 class="fade-in-section">O controle absoluto da sua pauta, direto no navegador.</h1>
-            <p class="fade-in-section">Não perca mais tempo, prazos e cliques. Controle inteligente de publicações no DJEN e ferramentas de gestão integradas para PJe, eproc e e-SAJ.</p>
+            <p class="fade-in-section">O painel de controle que o seu sistema judiciário não oferece. Gestão inteligente de publicações do DJEN, cálculo algorítmico de prazos e integração nativa com PJe, eproc e e-SAJ.</p>
             
            <div style="display: flex; flex-direction: column; align-items: center;">
+                
+                <div class="trust-badges fade-in-section">
+                    <span>Compatível com:</span>
+                    <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg> PJe</span>
+                    <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> e-SAJ</span>
+                    <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> eproc</span>
+                    <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Projudi</span>
+                </div>
+
                 <div class="hero-buttons fade-in-section">
-                    
                     <div style="display: flex; flex-direction: column; align-items: center;">
                         <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store">
                             <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
@@ -326,59 +346,52 @@
                         </a>
                         <div class="rating-stars firefox-rating">★★★★★ 5.0</div>
                     </div>
-                    
                 </div>
                 
-                <div class="fade-in-section" style="display: flex; gap: 24px; justify-content: center; margin-top: 24px; margin-bottom: 24px; flex-wrap: wrap;">
-                    <div style="background: var(--bg-section); padding: 8px 16px; border-radius: var(--radius-pill); border: 1px solid var(--border-light); display: flex; align-items: center; gap: 8px;">
-                        <span style="font-size: 18px;">⚡</span>
-                        <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Tempo salvo por busca: <strong style="color: var(--text-main);">~3 min</strong></span>
-                    </div>
-                    <div style="background: var(--bg-section); padding: 8px 16px; border-radius: var(--radius-pill); border: 1px solid var(--border-light); display: flex; align-items: center; gap: 8px;">
-                        <span style="font-size: 18px;">🛡️</span>
-                        <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Feriados mapeados: <strong style="color: var(--text-main);">100% automático</strong></span>
-                    </div>
-                </div>
-
-                <div class="microcopy fade-in-section" style="margin-bottom: 8px;">Instalação <strong style="color: var(--zen-green);">gratuita</strong> em segundos pelas lojas oficiais. Sem necessidade de cadastro.</div>
+                <div class="microcopy fade-in-section">Gratuito e de código aberto. Instale em segundos, sem necessidade de cadastro ou senhas.</div>
                 <a href="versoes.html" class="compare-link fade-in-section">Ver comparativo das versões ➔</a>
             </div>
-            
-            <div class="trust-badges fade-in-section">
-                <span>Compatível com PJe, e-SAJ, eproc, Projudi</span>
-            </div>
-            <div class="microcopy fade-in-section">🔒 Não requer Certificado Digital ou senhas.</div>
         </div>
     </section>
 
-    <section class="core-modules-container fade-in-section" style="padding: 100px 5%; background: var(--bg-section); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
-        <div style="max-width: 1200px; margin: 0 auto;">
-            <div style="text-align: center; margin-bottom: 60px;">
-                <h2 style="font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px;">Dois pilares para dominar sua pauta.</h2>
-                <p style="color: var(--text-muted); font-size: 18px; max-width: 600px; margin: 0 auto; font-weight: 500;">Ferramentas independentes e poderosas, desenhadas para eliminar o trabalho braçal da advocacia.</p>
-            </div>
+    <section class="web-tools-promo fade-in-section" style="padding: 100px 5%; background: var(--bg-section); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
+        <div style="text-align: center; margin-bottom: 56px;">
+            <h2 style="font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px;">Resolva agora. Direto no navegador.</h2>
+            <p style="color: var(--text-muted); font-size: 18px; max-width: 600px; margin: 0 auto; font-weight: 500; line-height: 1.6;">
+                Precisa de uma resposta rápida? Utilize o motor do Buscador DJEN na versão web. Ferramentas gratuitas para uso avulso e sem necessidade de instalação.
+            </p>
+        </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 32px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; max-width: 900px; margin: 0 auto;">
+            
+            <div style="background: var(--card-bg); padding: 40px 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); display: flex; flex-direction: column; align-items: flex-start; transition: transform 0.2s ease, box-shadow 0.2s ease;">
+                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 24px;">
+                    <div class="feature-icon" style="margin: 0; color: var(--zen-red); box-shadow: none; border: 1px solid var(--border-light);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </div>
+                    <span style="font-size: 11px; font-weight: 800; background: rgba(217, 48, 37, 0.1); color: var(--zen-red); padding: 4px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.5px;">Limite: 3/dia</span>
+                </div>
+                <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px;">Calculadora de Prazos</h3>
+                <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 32px; flex-grow: 1;">Algoritmo de precisão absoluta. Contagem em dias úteis com desvio automático de feriados, recesso forense e suspensões locais confirmadas.</p>
+<a href="calculadora.html" class="btn-browser" style="width: 100%; box-sizing: border-box;">Abrir Calculadora Online</a>            </div>
+
+            <div style="background: var(--card-bg); padding: 40px 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); display: flex; flex-direction: column; align-items: flex-start; transition: transform 0.2s ease, box-shadow 0.2s ease;">
+                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 24px;">
+                    <div class="feature-icon" style="margin: 0; color: var(--primary); box-shadow: none; border: 1px solid var(--border-light);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+                    <span style="font-size: 11px; font-weight: 800; background: var(--badge-bg); color: var(--badge-text); padding: 4px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.5px;">Versão Web</span>
+                </div>
+                <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px;">Consulta DJEN e CNJ</h3>
+                <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 32px; flex-grow: 1;">Pesquise publicações ativas e base de dados do CNJ direto pelo navegador. Sem captchas, sem bloqueios institucionais e em tempo real.</p>
                 
-                <div style="background: var(--card-bg); padding: 48px 40px; border-radius: 24px; border: 1px solid var(--border-light); box-shadow: var(--shadow-card); transition: transform 0.3s ease;">
-                    <div style="width: 56px; height: 56px; background: rgba(0, 117, 222, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; color: var(--primary);">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    </div>
-                    <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 16px;">Buscador & Tags</h3>
-                    <p style="color: var(--text-muted); font-size: 16px; line-height: 1.6; margin-bottom: 32px;">Consulte o DJEN e CNJ sem captchas ou bloqueios. Extraia publicações instantaneamente, crie tags de urgência e ative o Modo Foco para leitura de despachos complexos.</p>
-                    <a href="busca.html" class="btn-browser primary" style="width: 100%; justify-content: center;">Conhecer o Buscador ➔</a>
-                </div>
-
-                <div style="background: var(--card-bg); padding: 48px 40px; border-radius: 24px; border: 1px solid var(--border-light); box-shadow: var(--shadow-card); transition: transform 0.3s ease;">
-                    <div style="width: 56px; height: 56px; background: rgba(217, 48, 37, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; color: var(--zen-red);">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                    </div>
-                    <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 16px;">Cálculo de Prazos</h3>
-                    <p style="color: var(--text-muted); font-size: 16px; line-height: 1.6; margin-bottom: 32px;">Motor algorítmico de alta precisão. Desvia automaticamente de feriados, suspensões locais e do recesso forense (Art. 220, CPC). Teste a versão web gratuitamente.</p>
-                    <a href="calculadora.html" class="btn-browser" style="width: 100%; justify-content: center;">Abrir Calculadora Online</a>
-                </div>
-
+                <a href="busca.html" class="btn-browser" style="width: 100%; box-sizing: border-box;">Acessar Busca Online</a>
             </div>
+
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; font-size: 14px; font-weight: 500; color: var(--text-muted);">
+            Dica: A <a href="#top" onclick="window.scrollTo(0,0);" style="color: var(--primary); text-decoration: underline; font-weight: 700;">extensão de navegador</a> garante cálculos e buscas <strong style="color: var(--text-main);">ilimitadas</strong>.
         </div>
     </section>
 
@@ -388,6 +401,27 @@
         </div>
 
         <div class="features">
+            <div class="feature-card fade-in-section">
+                <div class="feature-icon" style="color: var(--primary);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+                <h3>Consulta Direta (DJEN e CNJ)</h3>
+                <p>Busca rápida por OAB, UF ou número do processo. Extraia dados e publicações <span class="highlight-term">instantaneamente</span>, sem bloqueios de captchas ou a lentidão dos portais oficiais.</p>
+                <a href="busca.html" class="feature-link">Conhecer a Busca & Tags ➔</a>
+            </div>
+
+            <div class="feature-card fade-in-section">
+                <div class="feature-icon" style="color: var(--zen-red);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                <h3>Cálculo Inteligente de Prazos</h3>
+                <p>Contagem precisa em dias úteis ou corridos. O algoritmo desvia <span class="highlight-term">automaticamente</span> de feriados, suspensões locais e do recesso forense, garantindo segurança na pauta.</p>
+                <a href="prazos.html" class="feature-link">Conhecer Prazos & Agenda ➔</a>
+            </div>
+
+            <div class="feature-card fade-in-section">
+                <div class="feature-icon" style="color: var(--zen-green);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></div>
+                <h3>Gestão de Intimações e Foco</h3>
+                <p>Transforme publicações em tarefas acionáveis. Ative o Modo Foco para analisar despachos longos e complexos em um ambiente de leitura <span class="highlight-term">imersivo</span> e livre de distrações.</p>
+                <a href="busca.html" class="feature-link">Ver detalhes do Modo Foco ➔</a>
+            </div>
+
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-purple);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
                 <h3>Radar de Urgências</h3>
@@ -404,8 +438,8 @@
 
             <div class="feature-card fade-in-section">
                 <div class="feature-icon" style="color: var(--zen-gold);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
-                <h3>Calendário Macro da Pauta</h3>
-                <p>Obtenha uma visão global de todas as intimações e tarefas mensais. Um painel interativo para visualizar e antecipar o <span class="highlight-term">fluxo de trabalho</span> da semana.</p>
+                <h3>Visão Panorâmica da Pauta</h3>
+                <p>Visualize o fluxo de intimações e o estrangulamento da semana em um painel interativo. Antecipe o trabalho antes que o prazo se torne <span class="highlight-term">fatal</span>.</p>
                 <a href="prazos.html" class="feature-link">Ver Calendário de Prazos ➔</a>
             </div>
 
@@ -424,10 +458,10 @@
             </div>
 
             <div class="feature-card fade-in-section">
-                <div class="feature-icon" style="color: var(--text-main);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
-                <h3>Segurança e Sigilo Local</h3>
-                <p>Zero exposição. Seus dados, processos e a agenda da advocacia permanecem <span class="highlight-term">criptografados</span> de ponta a ponta, existindo apenas na memória local do seu computador.</p>
-                <a href="privacidade.html" class="feature-link">Termos de Privacidade ➔</a>
+                <div class="feature-icon" style="color: var(--zen-red);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                <h3>Produtividade Gamificada</h3>
+                <p>Acompanhe seu desempenho e ganhe XP a cada prazo gerenciado. Suba de nível na advocacia, de <span class="highlight-term">Estagiário a Sócio Titular</span>, transformando a rotina exaustiva em evolução visual.</p>
+                <a href="busca.html" class="feature-link">Ver painel de XP ➔</a>
             </div>
         </div>
     </section>
@@ -566,8 +600,10 @@
                     <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </button>
                 <div class="coffee-content" id="contentCoffee">
-                    <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 16px;">Um projeto independente, de colega para colega. Se a extensão poupou seu tempo hoje, considere apoiar o projeto.</p>
-                    <div class="pix-code-container">
+    <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 16px; line-height: 1.6;">
+        Desenvolvido de forma independente, sem as mensalidades abusivas das <em>LegalTechs</em>. Se o Buscador poupou horas do seu contencioso hoje ou evitou a perda de um prazo fatal, considere apoiar a manutenção dos servidores. Qualquer valor é bem-vindo.
+    </p>
+    <div class="pix-code-container">
                         <input type="text" id="pixKey" value="50f781e2-9d94-4624-8f08-a9938bb0c4dc" readonly>
                         <button id="btnCopyPix" onclick="copyPixCode()">Copiar Pix</button>
                     </div>
@@ -741,7 +777,6 @@
                 });
             }
             
-            // MÁGICA: Busca versão e rating das lojas dinamicamente via Shields.io
             fetch('https://img.shields.io/chrome-web-store/v/ambfdmjdhikdhmbojljaebkipeahmfab.json')
                 .then(res => res.json())
                 .then(data => { document.querySelectorAll('.chrome-tooltip').forEach(el => el.textContent = 'Versão ' + data.value); })
