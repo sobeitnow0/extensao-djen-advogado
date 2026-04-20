@@ -7,6 +7,8 @@
     <title>Buscador DJEN | Extensão para Prazos e Publicações Judiciais</title>
     <meta name="description" content="Gestão algorítmica de publicações no DJEN e CNJ. Calcule prazos processuais com precisão e automatize a controladoria do PJe, eproc e e-SAJ no navegador.">
     
+    <link rel="canonical" href="https://www.buscadordjen.com.br/">
+    
     <meta property="og:type" content="website">
     <meta property="og:title" content="Buscador DJEN - Extensão para Advogados">
     <meta property="og:description" content="Gestão inteligente de publicações e prazos judiciais direto no seu navegador. Gratuito e open-source.">
@@ -18,7 +20,6 @@
     <meta name="twitter:description" content="A extensão que o seu sistema judiciário não oferece. Automatize o DJEN e seus prazos no navegador.">
     <meta name="twitter:image" content="https://www.buscadordjen.com.br/djen-128.png">
 
-    <link rel="canonical" href="https://www.buscadordjen.com.br">
     <link rel="icon" type="image/png" href="djen-128.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,41 +73,28 @@
     <style>
         /* DESIGN SYSTEM - NOTION INSPIRATION */
         :root {
-            /* Warm Neutral Scale */
             --bg-page: #ffffff;
             --bg-header: rgba(255, 255, 255, 0.85); 
             --bg-section: #f6f5f4; 
             --card-bg: #ffffff;
-            
-            /* Text Hierarchy */
             --text-main: rgba(0, 0, 0, 0.95); 
             --text-muted: #615d59; 
             --text-placeholder: #a39e98;
-            
-            /* Primary Accents */
             --primary: #0075de; 
             --primary-hover: #005bab; 
             --primary-text: #ffffff;
             --badge-bg: #f2f9ff;
             --badge-text: #097fe8;
-            
-            /* Whisper Border */
             --border-light: rgba(0, 0, 0, 0.1); 
-            
-            /* Semantic Colors Mapped */
             --zen-orange: #dd5b00;
             --zen-green: #1aae39;
             --zen-purple: #391c57;
             --zen-red: #ff64c8; 
             --zen-blue: #0075de;
             --zen-gold: #523410; 
-            
-            /* Radii constraints */
             --radius-btn: 4px; 
             --radius-card: 12px; 
             --radius-pill: 9999px; 
-            
-            /* Shadow System */
             --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.8468px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04px;
             --shadow-hover: rgba(0,0,0,0.05) 0px 10px 30px, rgba(0,0,0,0.03) 0px 4px 12px;
             --shadow-modal: rgba(0,0,0,0.01) 0px 1px 3px, rgba(0,0,0,0.02) 0px 3px 7px, rgba(0,0,0,0.02) 0px 7px 15px, rgba(0,0,0,0.04) 0px 14px 28px, rgba(0,0,0,0.05) 0px 23px 52px;
@@ -137,30 +125,26 @@
             --shadow-modal: rgba(0,0,0,0.4) 0px 23px 52px;
         }
 
-        /* Scroll & Selection */
         ::-webkit-scrollbar { width: 10px; height: 10px; }
         ::-webkit-scrollbar-track { background: var(--bg-page); }
         ::-webkit-scrollbar-thumb { background: rgba(163, 158, 152, 0.3); border-radius: 10px; border: 2px solid var(--bg-page); }
         ::-webkit-scrollbar-thumb:hover { background: rgba(163, 158, 152, 0.6); }
         ::selection { background: rgba(0, 117, 222, 0.2); color: var(--text-main); }
 
-        /* Typography & Reset */
-        body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-weight: 400; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; font-feature-settings: "lnum" 1, "locl" 1; transition: background-color 0.3s, color 0.3s; scroll-behavior: smooth; }
+        body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; font-weight: 400; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; font-feature-settings: "lnum" 1, "locl" 1; transition: background-color 0.3s, color 0.3s; scroll-behavior: smooth; }
         
         section { scroll-margin-top: 80px; }
 
         /* Estilo base para ícones Phosphor */
         .ph { font-size: 1.25em; display: inline-flex; align-items: center; justify-content: center; }
 
-        /* Strict Typography Scale */
+        /* Typography */
         h1 { font-size: 64px; font-weight: 700; line-height: 1.00; letter-spacing: -2.125px; margin-bottom: 24px; }
         h2 { font-size: 48px; font-weight: 700; line-height: 1.00; letter-spacing: -1.5px; margin-bottom: 16px; }
         h3 { font-size: 22px; font-weight: 700; line-height: 1.27; letter-spacing: -0.25px; margin: 0 0 12px 0; }
         
-        /* Focus States (A11y) */
         *:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--radius-btn); }
 
-        /* Progress Bar */
         .progress-container { width: 100%; height: 3px; background: transparent; position: fixed; top: 0; left: 0; z-index: 1001; }
         .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.15s ease-out; border-radius: 0 2px 2px 0; }
 
@@ -170,6 +154,7 @@
         
         .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); text-decoration: none; white-space: nowrap; } 
         .brand img { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; border: 1px solid var(--border-light); }
+        .badge-cortesia-site { font-size: 10px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 3px 8px; border-radius: 999px; font-weight: 700; border: none; letter-spacing: 0.5px; white-space: nowrap; }
         
         .header-nav { display: flex; gap: 24px; margin: 0 auto; padding: 0 24px; } 
         .nav-link { font-size: 15px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; white-space: nowrap; line-height: 1.33;} 
@@ -199,8 +184,8 @@
         .hero h1 span { color: var(--primary); }
         .hero p { font-size: 20px; color: var(--text-muted); margin-bottom: 48px; max-width: 800px; margin-left: auto; margin-right: auto; font-weight: 600; line-height: 1.40; letter-spacing: -0.125px;}
 
-        /* BUTTONS */
-        .btn-browser { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background-color: transparent; color: var(--text-main); padding: 10px 20px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--border-light); transition: all 0.2s ease; line-height: 1.33; cursor: pointer; }
+        /* BUTTONS - BOX-SIZING APLICADO AQUI! */
+        .btn-browser { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background-color: transparent; color: var(--text-main); padding: 12px 24px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--border-light); transition: all 0.2s ease; line-height: 1.33; cursor: pointer; box-sizing: border-box; }
         .btn-browser:hover { background-color: rgba(0,0,0,0.05); }
         [data-theme="dark"] .btn-browser:hover { background-color: rgba(255,255,255,0.05); }
         .btn-browser.primary { background-color: var(--primary); color: white; border: 1px solid transparent; }
@@ -235,22 +220,21 @@
         .microcopy { color: var(--text-muted); font-size: 14px; font-weight: 400; line-height: 1.43; }
 
         /* BENTO BOX TOOLS (UX Technical Highlight) */
-        .bento-tools { background-color: #1a1a1a; padding: 100px 5%; color: #fff; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .bento-header { text-align: center; margin-bottom: 56px; }
-        .bento-header h2 { color: #fff; }
-        .bento-header p { color: #a39e98; font-size: 20px; max-width: 800px; margin: 0 auto; font-weight: 500; }
+        .bento-tools { background-color: #1e1d1c; padding: 120px 5%; color: #fff; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .bento-header { text-align: center; margin-bottom: 64px; }
+        .bento-header h2 { color: #fff; font-size: 40px; letter-spacing: -1px; margin-bottom: 16px;}
+        .bento-header p { color: rgba(255,255,255,0.6); font-size: 20px; max-width: 800px; margin: 0 auto; font-weight: 500; letter-spacing: -0.125px;}
         
-        .bento-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 1000px; margin: 0 auto; }
-        @media (min-width: 768px) { .bento-grid { grid-template-columns: 3fr 2fr; } }
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; max-width: 1000px; margin: 0 auto; }
         
-        .bento-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: var(--radius-card); display: flex; flex-direction: column; transition: transform 0.2s, background 0.3s; }
-        .bento-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.05); }
-        .bento-card h3 { color: #fff; }
-        .bento-card p { color: #a39e98; font-size: 16px; margin-bottom: 32px; flex-grow: 1; }
+        .bento-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 48px; border-radius: var(--radius-card); display: flex; flex-direction: column; transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease; box-shadow: 0 4px 24px rgba(0,0,0,0.2); }
+        .bento-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+        .bento-card h3 { color: #fff; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin: 0 0 16px 0; line-height: 1.2;}
+        .bento-card p { color: rgba(255,255,255,0.6); font-size: 16px; line-height: 1.6; margin: 0 0 40px 0; flex-grow: 1; }
         
-        .bento-icon-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-        .bento-icon { width: 48px; height: 48px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center; border: 1px solid rgba(255,255,255,0.1); color: var(--primary); font-size: 1.5em; }
-        .bento-limit { font-size: 12px; font-weight: 600; background: rgba(255,255,255,0.1); color: #fff; padding: 4px 10px; border-radius: var(--radius-pill); letter-spacing: 0.125px; }
+        .bento-icon-wrapper { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
+        .bento-icon { width: 56px; height: 56px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center; border: 1px solid rgba(255,255,255,0.1); color: var(--primary); font-size: 24px; }
+        .bento-limit { font-size: 12px; font-weight: 700; background: rgba(255,255,255,0.1); color: #fff; padding: 6px 12px; border-radius: var(--radius-pill); letter-spacing: 0.125px; }
 
         /* FEATURES SECTION */
         .features-container { padding: 120px 5% 80px; background: var(--bg-page); transition: background-color 0.3s; }
@@ -335,6 +319,7 @@
             .share-text { display: none; }
             .share-btn { padding: 6px; width: 36px; justify-content: center;}
             .hero { padding-top: 60px; }
+            .bento-card { padding: 32px; }
         }
     </style>
 </head>
@@ -348,6 +333,7 @@
         <a href="index.html" class="brand">
             <img src="djen-128.png" alt="Logo Buscador DJEN">
             Buscador DJEN
+            <span class="badge-cortesia-site">CORTESIA</span>
         </a>
         
         <nav class="header-nav" aria-label="Navegação principal">
@@ -388,8 +374,8 @@
                     <i class="ph ph-arrow-right alert-icon"></i>
                 </a>
                 
-                <h1 class="fade-in-section">Extensão para Prazos e Publicações Judiciais.<br><span>O controle da sua pauta.</span></h1>
-                <p class="fade-in-section">O painel de controle que o seu sistema judiciário não oferece. Gestão inteligente de publicações do DJEN, cálculo algorítmico de prazos e integração nativa com PJe, eproc e e-SAJ direto no navegador.</p>
+                <h1 class="fade-in-section">O controle absoluto da sua pauta, direto no navegador.</h1>
+                <p class="fade-in-section">O painel de controle que o seu sistema judiciário não oferece. Gestão inteligente de publicações do DJEN, cálculo algorítmico de prazos e integração nativa com PJe, eproc e e-SAJ.</p>
                 
                <div style="display: flex; flex-direction: column; align-items: center;">
                     
@@ -427,7 +413,7 @@
                         </div>
                     </div>
                     
-                    <div class="microcopy fade-in-section">Gratuito e open-source. Instale em segundos, sem necessidade de senhas ou cadastros.</div>
+                    <div class="microcopy fade-in-section">Gratuito e de código aberto. Instale em segundos, sem necessidade de cadastro ou senhas.</div>
                     <a href="versoes.html" class="compare-link fade-in-section">Ver comparativo das versões <i class="ph ph-arrow-right"></i></a>
                 </div>
             </div>
@@ -440,7 +426,7 @@
             </div>
 
             <div class="bento-grid">
-                <div class="bento-card" style="grid-column: span 1;">
+                <div class="bento-card">
                     <div class="bento-icon-wrapper">
                         <div class="bento-icon" style="color: #ff64c8; background: rgba(255, 100, 200, 0.1); border-color: rgba(255, 100, 200, 0.2);">
                             <i class="ph ph-calendar-blank"></i>
@@ -452,9 +438,9 @@
                     <a href="calculadora.html" class="btn-browser primary btn-glow" style="width: 100%;">Auditar prazo online <i class="ph ph-arrow-right"></i></a>
                 </div>
 
-                <div class="bento-card" style="grid-column: span 1;">
+                <div class="bento-card">
                     <div class="bento-icon-wrapper">
-                        <div class="bento-icon">
+                        <div class="bento-icon" style="color: #62aef0; background: rgba(0, 117, 222, 0.15); border-color: rgba(0, 117, 222, 0.25);">
                             <i class="ph ph-magnifying-glass"></i>
                         </div>
                         <span class="bento-limit" style="background: rgba(0, 117, 222, 0.15); color: #62aef0;">Versão Web</span>
@@ -593,13 +579,13 @@
 
         <section class="features-container fade-in-section" style="padding-top: 0; padding-bottom: 40px;">
             <div style="max-width: 800px; margin: 0 auto;">
-                <h2 style="text-align: center; margin-bottom: 48px;">Perguntas Frequentes</h2>
+                <h2 style="text-align: center; margin-bottom: 48px; font-size: 48px; letter-spacing: -1.5px;">Perguntas Frequentes</h2>
                 
                 <div style="display: flex; flex-direction: column; gap: 24px;">
                     <div class="faq-item">
                         <div class="faq-header">
                             <i class="ph ph-shield-check" style="color: var(--zen-green);"></i>
-                            <h3>Preciso fornecer meu token ou senhas do PJe/e-SAJ?</h3>
+                            <h3 style="font-size: 22px; margin: 0; letter-spacing: -0.25px;">Preciso fornecer meu token ou senhas do PJe/e-SAJ?</h3>
                         </div>
                         <p style="color: var(--text-muted); margin: 0; font-size: 16px; line-height: 1.50; margin-left: 36px;"><strong style="font-weight: 600; color: var(--text-main);">Não.</strong> A extensão opera de forma totalmente passiva. Ela apenas executa a extração das informações públicas da tela do Diário Oficial que o seu navegador já está processando. Não solicitamos ou armazenamos credenciais institucionais.</p>
                     </div>
@@ -607,7 +593,7 @@
                     <div class="faq-item">
                         <div class="faq-header">
                             <i class="ph ph-database" style="color: var(--primary);"></i>
-                            <h3>Onde os meus dados e metadados ficam salvos?</h3>
+                            <h3 style="font-size: 22px; margin: 0; letter-spacing: -0.25px;">Onde os meus dados e metadados ficam salvos?</h3>
                         </div>
                         <p style="color: var(--text-muted); margin: 0; font-size: 16px; line-height: 1.50; margin-left: 36px;"><strong style="font-weight: 600; color: var(--text-main);">100% no seu próprio hardware</strong> (armazenamento local via <em>IndexedDB</em> do navegador). O Buscador DJEN não transmite seus processos para servidores externos, garantindo sigilo contratual e conformidade irrestrita com a LGPD.</p>
                     </div>
@@ -615,7 +601,7 @@
                     <div class="faq-item">
                         <div class="faq-header">
                             <i class="ph ph-lock-open" style="color: var(--zen-orange);"></i>
-                            <h3>O código é realmente gratuito?</h3>
+                            <h3 style="font-size: 22px; margin: 0; letter-spacing: -0.25px;">O código é realmente gratuito?</h3>
                         </div>
                         <p style="color: var(--text-muted); margin: 0; font-size: 16px; line-height: 1.50; margin-left: 36px;"><strong style="font-weight: 600; color: var(--text-main);">Sim, open-source e sem licenças abusivas.</strong> O projeto atua como um controle de qualidade independente. Se o algoritmo mitigar riscos de perda de prazo na sua banca, você pode optar por contribuir voluntariamente com a manutenção da infraestrutura através do rodapé.</p>
                     </div>
@@ -848,7 +834,7 @@
                 });
             }
             
-            // Lógica Corrigida para Buscar e Injetar Versão e Notas (Chrome)
+            // Lógica para Buscar e Injetar Versão e Notas (Chrome)
             fetch('https://img.shields.io/chrome-web-store/v/ambfdmjdhikdhmbojljaebkipeahmfab.json')
                 .then(res => res.json())
                 .then(data => { document.querySelectorAll('.chrome-tooltip').forEach(el => el.textContent = 'Versão ' + data.value); })
@@ -857,17 +843,16 @@
             fetch('https://img.shields.io/chrome-web-store/rating/ambfdmjdhikdhmbojljaebkipeahmfab.json')
                 .then(res => res.json())
                 .then(data => { 
-                    // Extrai a nota exata da string retornada pela API
                     const ratingVal = parseFloat(data.value);
                     if(!isNaN(ratingVal) && ratingVal >= 4.0) { 
                         document.querySelectorAll('.chrome-rating').forEach(el => {
-                            el.querySelector('span').textContent = ratingVal.toFixed(1); // Atualiza com a nota real
+                            el.querySelector('span').textContent = ratingVal.toFixed(1); 
                             el.classList.add('visible');
                         });
                     }
                 }).catch(e => console.log('Rating Chrome Indisponível'));
 
-            // Lógica Corrigida para Buscar e Injetar Versão e Notas (Firefox)
+            // Lógica para Buscar e Injetar Versão e Notas (Firefox)
             fetch('https://img.shields.io/amo/v/buscador-djen-advogado.json')
                 .then(res => res.json())
                 .then(data => { document.querySelectorAll('.firefox-tooltip').forEach(el => el.textContent = 'Versão ' + data.value); })
@@ -879,7 +864,7 @@
                     const ratingVal = parseFloat(data.value);
                     if(!isNaN(ratingVal) && ratingVal >= 4.0) { 
                         document.querySelectorAll('.firefox-rating').forEach(el => {
-                            el.querySelector('span').textContent = ratingVal.toFixed(1); // Atualiza com a nota real
+                            el.querySelector('span').textContent = ratingVal.toFixed(1);
                             el.classList.add('visible');
                         });
                     }
