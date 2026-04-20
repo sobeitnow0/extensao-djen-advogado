@@ -1,29 +1,278 @@
-Termos de Uso - Extensão Buscador DJEN
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Termos de Uso e Licenciamento | Buscador DJEN</title>
+    <link rel="canonical" href="https://www.buscadordjen.com.br/termos.html">
+    <meta name="description" content="Termos de uso, licenciamento e limitação de responsabilidade civil da extensão Buscador DJEN.">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Termos de Uso | Buscador DJEN">
+    <meta property="og:description" content="Condições de uso e licenciamento do software.">
+    <meta property="og:image" content="https://www.buscadordjen.com.br/djen-128.png"> 
+    
+    <link rel="canonical" href="https://www.buscadordjen.com.br/termos.html">
+    <link rel="icon" type="image/png" href="djen-128.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-Última atualização: Abril de 2026
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Termos de Uso e Licenciamento",
+      "description": "Termos de uso legais e isenção de responsabilidade do software Buscador DJEN.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Buscador DJEN",
+        "url": "https://www.buscadordjen.com.br/"
+      }
+    }
+    </script>
 
-Ao instalar e utilizar a extensão "Buscador DJEN", você (doravante "Usuário") concorda com os presentes Termos de Uso. Caso não concorde com qualquer das disposições abaixo, solicitamos que não utilize a ferramenta.
+    <style>
+        /* DESIGN SYSTEM - NOTION INSPIRATION */
+        :root {
+            --bg-page: #ffffff;
+            --bg-header: rgba(255, 255, 255, 0.85); 
+            --bg-section: #f6f5f4; 
+            --card-bg: #ffffff;
+            --text-main: rgba(0, 0, 0, 0.95); 
+            --text-muted: #615d59; 
+            --text-placeholder: #a39e98;
+            --primary: #0075de; 
+            --primary-hover: #005bab; 
+            --primary-text: #ffffff;
+            --border-light: rgba(0, 0, 0, 0.1); 
+            --zen-orange: #dd5b00;
+            --zen-green: #1aae39;
+            --zen-red: #d93025; 
+            --zen-purple: #391c57;
+            --radius-btn: 4px; 
+            --radius-card: 12px; 
+            --radius-pill: 9999px; 
+            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.8468px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04px;
+            --shadow-hover: rgba(0,0,0,0.05) 0px 10px 30px, rgba(0,0,0,0.03) 0px 4px 12px;
+        }
 
-1. Natureza da Ferramenta
-O Buscador DJEN é uma ferramenta tecnológica de caráter estritamente auxiliar e consultivo. Seu objetivo é facilitar a pesquisa de publicações no Diário de Justiça Eletrônico Nacional (DJEN) e otimizar a contagem preliminar de prazos processuais com base em dados públicos fornecidos por integrações de terceiros (como a API do CNJ).
+        [data-theme="dark"] {
+            --bg-page: #31302e;
+            --bg-header: rgba(49, 48, 46, 0.85);
+            --bg-section: #2a2927; 
+            --card-bg: #31302e;
+            --text-main: rgba(255, 255, 255, 0.95);
+            --text-muted: #a39e98;
+            --text-placeholder: #615d59;
+            --primary: #62aef0; 
+            --primary-hover: #0075de;
+            --primary-text: #191919;
+            --border-light: rgba(255, 255, 255, 0.1); 
+            --zen-orange: #ffa344;
+            --zen-green: #2a9d99; 
+            --zen-red: #ff85d4;
+            --zen-purple: #b992e6;
+            --shadow-card: rgba(0,0,0,0.2) 0px 4px 18px; 
+            --shadow-hover: rgba(0,0,0,0.3) 0px 12px 32px;
+        }
 
-2. Isenção de Responsabilidade sobre Prazos e Publicações
-A advocacia é uma atividade de meio e de responsabilidade pessoal. O Usuário compreende e aceita que:
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-page); }
+        ::-webkit-scrollbar-thumb { background: rgba(163, 158, 152, 0.3); border-radius: 10px; border: 2px solid var(--bg-page); }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(163, 158, 152, 0.6); }
+        ::selection { background: rgba(0, 117, 222, 0.2); color: var(--text-main); }
 
-O Buscador DJEN não substitui a leitura atenta do Diário Oficial ou a consulta direta aos sistemas dos Tribunais. * A extensão depende da estabilidade e precisão da API pública do CNJ. O desenvolvedor não se responsabiliza por atrasos, indisponibilidades, omissões ou falhas nos dados originados pelas fontes oficiais.
+        body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
 
-A calculadora de prazos é uma funcionalidade referencial baseada no cadastro prévio de feriados (nacionais e municipais da base de dados utilizada). É responsabilidade exclusiva do Usuário (advogado/profissional do direito) auditar, confirmar e validar a data fatal do prazo processual, considerando suspensões locais, portarias específicas de tribunais ou instabilidades no PJe que afetem a contagem.
+        *:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--radius-btn); }
+        .ph { font-size: 1.25em; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;}
 
-Em nenhuma hipótese o desenvolvedor (Amilcar Barreto de Barros Moreira) será responsabilizado por perda de prazos processuais, prejuízos a clientes, multas, revelias ou quaisquer danos diretos e indiretos decorrentes do uso da ferramenta.
+        /* HEADER */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s; }
+        header.scrolled { box-shadow: var(--shadow-card); } 
+        
+        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); text-decoration: none; white-space: nowrap; } 
+        .brand img { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; border: 1px solid var(--border-light); }
+        
+        .header-nav { display: flex; gap: 24px; margin: 0 auto; padding: 0 24px; } 
+        .nav-link { font-size: 15px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; white-space: nowrap; line-height: 1.33;} 
+        .nav-link:hover, .nav-link.active { color: var(--text-main); } 
+        
+        .header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .theme-toggle { background: transparent; border: 1px solid transparent; color: var(--text-muted); width: 36px; height: 36px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; font-size: 1.25em; }
+        .theme-toggle:hover { background: rgba(0,0,0,0.05); color: var(--text-main); }
+        [data-theme="dark"] .theme-toggle:hover { background: rgba(255,255,255,0.05); }
+        [data-theme="dark"] .ph-sun { display: none; } [data-theme="light"] .ph-moon { display: none; }
 
-3. Licença de Uso
-O Buscador DJEN é disponibilizado atualmente sob o formato de cortesia. É concedida ao Usuário uma licença limitada, pessoal, não exclusiva e intransferível para utilizar a extensão em seu navegador. É proibido realizar engenharia reversa, copiar, modificar ou distribuir o código da extensão sem autorização prévia.
+        /* LEGAL CONTENT */
+        .legal-container { max-width: 800px; margin: 80px auto 120px; padding: 0 24px; }
+        
+        .legal-hero { margin-bottom: 56px; }
+        .legal-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(57, 28, 87, 0.1); color: var(--zen-purple); padding: 4px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 24px; }
+        .legal-hero h1 { font-size: 48px; font-weight: 800; line-height: 1.04; letter-spacing: -1.5px; margin: 0 0 16px 0; }
+        .last-update { color: var(--text-muted); font-size: 15px; font-weight: 500; display: flex; align-items: center; gap: 6px;}
+        
+        .legal-intro { font-size: 18px; color: var(--text-muted); font-weight: 400; line-height: 1.6; margin-bottom: 48px; letter-spacing: -0.125px;}
 
-4. Privacidade
-O uso da extensão também é regido pela nossa Política de Privacidade, que garante que seus dados, pesquisas e OAB não são coletados, rastreados ou enviados a servidores do desenvolvedor, operando 100% localmente no seu dispositivo.
+        /* SECTIONS / CARDS */
+        .policy-section { margin-bottom: 40px; }
+        .policy-section h2 { font-size: 24px; font-weight: 800; margin: 0 0 16px 0; color: var(--text-main); letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px;}
+        .policy-section p { font-size: 16px; color: var(--text-muted); margin: 0 0 16px 0; }
+        
+        .policy-section ul { padding-left: 20px; margin: 0 0 16px 0; }
+        .policy-section li { font-size: 16px; color: var(--text-muted); margin-bottom: 12px; padding-left: 8px;}
+        .policy-section li::marker { color: var(--primary); }
+        .policy-section strong { color: var(--text-main); font-weight: 600; }
 
-5. Alterações nos Termos
-O desenvolvedor reserva-se o direito de modificar estes Termos de Uso a qualquer momento. Alterações significativas poderão ser comunicadas através de notas de atualização na própria extensão ou na página oficial.
+        /* HIGHLIGHT BOX (RESPONSABILIDADE) */
+        .highlight-box { background: rgba(217, 48, 37, 0.03); border: 1px solid rgba(217, 48, 37, 0.2); border-left: 4px solid var(--zen-red); padding: 32px; border-radius: var(--radius-card); margin: 48px 0; box-shadow: var(--shadow-card); transition: box-shadow 0.3s; }
+        .highlight-box:hover { box-shadow: var(--shadow-hover); }
+        .highlight-box h2 { font-size: 20px; margin-top: 0; color: var(--zen-red);}
+        .highlight-box p { color: var(--text-main); font-weight: 500;}
+        .highlight-box p:last-child { margin-bottom: 0; }
+        [data-theme="dark"] .highlight-box { background: rgba(217, 48, 37, 0.05); border-color: rgba(217, 48, 37, 0.3); }
 
-6. Contato
-Para dúvidas ou suporte, entre em contato através do e-mail: adv.amilcarmoreira@gmail.com.
+        .contact-box { background: var(--card-bg); border: 1px dashed var(--border-light); padding: 32px; border-radius: var(--radius-card); text-align: center; margin-top: 64px; }
+        .contact-box i { font-size: 32px; color: var(--primary); margin-bottom: 16px; }
+        .contact-box p { font-size: 16px; color: var(--text-muted); margin-bottom: 16px; }
+        .contact-link { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; color: var(--primary); text-decoration: none; transition: 0.2s; }
+        .contact-link:hover { text-decoration: underline; }
+
+        footer { padding: 40px 20px; text-align: center; border-top: 1px solid var(--border-light); font-size: 14px; color: var(--text-placeholder); background: var(--bg-page); transition: background-color 0.3s;} 
+        .footer-links { margin-bottom: 16px; font-weight: 600; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--primary); }
+
+        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; }
+        .fade-in-section.is-visible { opacity: 1; transform: none; }
+
+        @media (max-width: 768px) { 
+            .legal-hero h1 { font-size: 40px; }
+            .header-nav { display: none; }
+            .highlight-box { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="mainHeader">
+        <a href="index.html" class="brand">
+            <img src="djen-128.png" alt="Logo Buscador DJEN">
+            Buscador DJEN
+        </a>
+        
+        <nav class="header-nav" aria-label="Navegação principal">
+            <a href="busca.html" class="nav-link">Busca & Tags</a>
+            <a href="prazos.html" class="nav-link">Prazos & Agenda</a>
+            <a href="exportacao.html" class="nav-link">Relatórios PDF</a>
+            <a href="radar.html" class="nav-link">Radar</a>
+        </nav>
+
+       <div class="header-actions">
+            <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
+                <i class="ph ph-sun"></i>
+                <i class="ph ph-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="legal-container">
+        <div class="legal-hero fade-in-section">
+            <div class="legal-badge"><i class="ph ph-scales"></i> Licenciamento de Software</div>
+            <h1>Termos de Uso</h1>
+            <span class="last-update"><i class="ph ph-clock-counter-clockwise"></i> Revisado em: Abril de 2026</span>
+        </div>
+
+        <p class="legal-intro fade-in-section">
+            Ao instalar e utilizar a extensão de navegador ou os aplicativos web denominados <strong>"Buscador DJEN"</strong>, você (doravante "Usuário") expressa sua concordância integral com os presentes Termos de Uso e Condições de Licenciamento. Caso não concorde com qualquer das disposições abaixo, solicitamos a imediata desinstalação e interrupção do uso da ferramenta.
+        </p>
+
+        <div class="policy-section fade-in-section">
+            <h2><i class="ph ph-magnifying-glass"></i> 1. Natureza Auxiliar da Ferramenta</h2>
+            <p>O Buscador DJEN é uma ferramenta tecnológica de caráter <strong>estritamente auxiliar e consultivo</strong>. Seu objetivo principal é otimizar o fluxo de trabalho jurídico através da extração preliminar de publicações no Diário da Justiça Eletrônico Nacional (DJEN) e da simulação de prazos processuais.</p>
+            <p>O software opera interpretando dados e metadados estruturados fornecidos por integrações de terceiros (como a API oficial do Conselho Nacional de Justiça).</p>
+        </div>
+
+        <div class="highlight-box fade-in-section">
+            <h2><i class="ph ph-warning-octagon"></i> 2. Limitação de Responsabilidade Civil e Profissional</h2>
+            <p>A advocacia e a controladoria jurídica configuram atividades cuja responsabilidade técnica é personalíssima. O Usuário compreende, reconhece e aceita irrevogavelmente que:</p>
+            <ul style="margin-top: 16px;">
+                <li><strong>Obrigatoriedade de Consulta Oficial:</strong> O Buscador DJEN não substitui, em hipótese alguma, a leitura atenta do Diário Oficial da Justiça, a consulta nativa aos painéis dos Tribunais (PJe, eproc, e-SAJ) ou a contagem humana de prazos.</li>
+                <li><strong>Instabilidade de APIs:</strong> O software depende da disponibilidade contínua e da precisão técnica da API pública do CNJ. O desenvolvedor não detém controle ou responsabilidade sobre latências, omissões de publicações, bloqueios de CORS ou falhas nos dados originados pelas fontes governamentais.</li>
+                <li><strong>Validação de Prazos (Obrigação de Meio):</strong> O motor algorítmico e a calculadora de prazos operam como ferramentas de referência baseadas no cadastro prévio do IBGE. É <strong>responsabilidade exclusiva do Usuário</strong> validar a data fatal, competindo a ele observar e juntar aos autos decretos de suspensão local, portarias de instabilidade de sistemas e regramentos específicos de cada corte processual.</li>
+            </ul>
+            <p>Em nenhuma hipótese o criador e desenvolvedor do software (Amilcar Barreto de Barros Moreira) poderá ser responsabilizado por perda de prazos processuais, preclusões, multas, decretação de revelia, prejuízos a constituintes ou quaisquer danos diretos, indiretos ou lucros cessantes decorrentes da utilização das métricas geradas pela ferramenta.</p>
+        </div>
+
+        <div class="policy-section fade-in-section">
+            <h2><i class="ph ph-file-code"></i> 3. Licença de Uso e Propriedade Intelectual</h2>
+            <p>O ecossistema Buscador DJEN é disponibilizado ao Usuário, neste ato, sob o formato de cortesia. Concede-se uma licença limitada, revogável, pessoal, não exclusiva e intransferível para execução da extensão no navegador web.</p>
+            <p>É terminantemente proibido realizar engenharia reversa, descompilar, sublicenciar, comercializar, copiar, modificar ou distribuir o código-fonte da extensão ou da aplicação web sem a expressa e prévia autorização por escrito do desenvolvedor.</p>
+        </div>
+
+        <div class="policy-section fade-in-section">
+            <h2><i class="ph ph-shield-check"></i> 4. Privacidade e Zero-Knowledge</h2>
+            <p>A execução do software é subsidiária e indissociável da nossa Política de Privacidade. Reitera-se que o software opera com arquitetura <em>Zero-Knowledge</em> local: seus dados, consultas, número de OAB e metadados de clientes não são coletados, rastreados ou enviados para servidores externos proprietários do desenvolvedor, operando 100% no seu hardware.</p>
+        </div>
+
+        <div class="policy-section fade-in-section">
+            <h2><i class="ph ph-arrows-clockwise"></i> 5. Modificação dos Termos</h2>
+            <p>O desenvolvedor reserva-se o direito de alterar, suspender ou modificar estes Termos de Uso e o modelo de licenciamento do software a qualquer momento. Alterações substanciais serão comunicadas através de notas de atualização (*changelog*) na própria extensão ou no domínio oficial.</p>
+        </div>
+
+        <div class="contact-box fade-in-section">
+            <i class="ph ph-envelope-simple"></i>
+            <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 8px 0;">Atendimento e Suporte Técnico</h2>
+            <p>Para dúvidas legais, suporte algorítmico ou reporte de instabilidades com as APIs dos tribunais, entre em contato através do e-mail abaixo:</p>
+            <a href="mailto:adv.amilcarmoreira@gmail.com" class="contact-link">
+                adv.amilcarmoreira@gmail.com
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Página Inicial</a>
+            <a href="privacidade.html">Política de Privacidade</a>
+        </div>
+        &copy; 2026 Buscador DJEN. Arquitetura para a advocacia.
+    </footer>
+
+    <script>
+        // Sombra do Menu ao Rolar
+        const header = document.getElementById('mainHeader'); 
+        window.addEventListener('scroll', () => { 
+            if (window.scrollY > 10) header.classList.add('scrolled'); 
+            else header.classList.remove('scrolled'); 
+        });
+
+        // Dark Mode Manual
+        const themeToggleBtn = document.getElementById('themeToggle'); 
+        themeToggleBtn.addEventListener('click', () => { 
+            const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; 
+            document.documentElement.setAttribute('data-theme', newTheme); 
+            localStorage.setItem('theme', newTheme); 
+        });
+        if(localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+
+        // Intersection Observer (Fade-in)
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            document.querySelectorAll('.fade-in-section').forEach(sec => observer.observe(sec));
+        });
+    </script>
+</body>
+</html>

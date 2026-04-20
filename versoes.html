@@ -3,107 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novidades & Versões | Buscador DJEN</title>
-    <meta name="description" content="Descubra a nova atualização do Buscador DJEN. Compare as funcionalidades entre Google Chrome e Mozilla Firefox e adicione ao seu navegador.">
+    
+    <title>Changelog & Distribuição | Buscador DJEN</title>
+    <link rel="canonical" href="https://www.buscadordjen.com.br/versoes.html">
+    <meta name="description" content="Acompanhe as atualizações de versão do Buscador DJEN. Compare a matriz de funcionalidades entre as extensões para Google Chrome e Mozilla Firefox.">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Changelog e Versões | Buscador DJEN">
+    <meta property="og:description" content="Matriz de funcionalidades, atualizações de segurança e links para as lojas oficiais.">
+    <meta property="og:image" content="https://www.buscadordjen.com.br/djen-128.png"> 
+    
     <link rel="icon" type="image/png" href="djen-128.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Atualizações e Versões do Software",
+      "description": "Registro de alterações (Changelog) e comparativo de recursos entre navegadores.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Buscador DJEN",
+        "url": "https://www.buscadordjen.com.br/"
+      }
+    }
+    </script>
+
     <style>
-        /* DESIGN SYSTEM BASE - MAC OS / NOTION INSPIRATION */
-        :root { 
-            --bg-page: #ffffff; --bg-header: rgba(255, 255, 255, 0.85); --bg-section: #f6f5f4; 
-            --card-bg: rgba(255, 255, 255, 0.6); --text-main: rgba(0, 0, 0, 0.95); --text-muted: #615d59; 
-            --text-placeholder: #a39e98; /* Warm Gray 300 para disabled states */
-            --primary: #0075de; --primary-hover: #005bab; --border-light: rgba(0, 0, 0, 0.1); 
-            --zen-green: #1aae39; --zen-orange: #dd5b00; --zen-red: #d93025; 
-            --radius-btn: 6px; --radius-card: 16px; 
-            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.02) 0px 1px 4px; 
+        /* DESIGN SYSTEM - NOTION INSPIRATION */
+        :root {
+            --bg-page: #ffffff;
+            --bg-header: rgba(255, 255, 255, 0.85); 
+            --bg-section: #f6f5f4; 
+            --card-bg: #ffffff;
+            --text-main: rgba(0, 0, 0, 0.95); 
+            --text-muted: #615d59; 
+            --text-placeholder: #a39e98;
+            --primary: #0075de; 
+            --primary-hover: #005bab; 
+            --primary-text: #ffffff;
+            --badge-bg: #f2f9ff;
+            --badge-text: #097fe8;
+            --border-light: rgba(0, 0, 0, 0.1); 
+            --zen-orange: #dd5b00;
+            --zen-green: #1aae39;
+            --zen-red: #d93025; 
+            --zen-purple: #391c57;
+            --radius-btn: 4px; 
+            --radius-card: 12px; 
+            --radius-pill: 9999px; 
+            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.8468px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04px;
+            --shadow-hover: rgba(0,0,0,0.05) 0px 10px 30px, rgba(0,0,0,0.03) 0px 4px 12px;
+            --shadow-modal: rgba(0,0,0,0.01) 0px 1px 3px, rgba(0,0,0,0.02) 0px 3px 7px, rgba(0,0,0,0.02) 0px 7px 15px, rgba(0,0,0,0.04) 0px 14px 28px, rgba(0,0,0,0.05) 0px 23px 52px;
         }
-        [data-theme="dark"] { 
-            --bg-page: #191919; --bg-header: rgba(25, 25, 25, 0.85); --bg-section: #202020; 
-            --card-bg: rgba(37, 37, 37, 0.6); --text-main: rgba(255, 255, 255, 0.95); --text-muted: rgba(255, 255, 255, 0.6); 
-            --text-placeholder: rgba(255, 255, 255, 0.3);
-            --primary: #52a8ff; --primary-hover: #62aef0; --border-light: rgba(255, 255, 255, 0.08); 
-            --shadow-card: rgba(0,0,0,0.4) 0px 4px 18px; 
+
+        [data-theme="dark"] {
+            --bg-page: #31302e;
+            --bg-header: rgba(49, 48, 46, 0.85);
+            --bg-section: #2a2927; 
+            --card-bg: #31302e;
+            --text-main: rgba(255, 255, 255, 0.95);
+            --text-muted: #a39e98;
+            --text-placeholder: #615d59;
+            --primary: #62aef0; 
+            --primary-hover: #0075de;
+            --primary-text: #191919;
+            --badge-bg: rgba(98, 174, 240, 0.15);
+            --badge-text: #62aef0;
+            --border-light: rgba(255, 255, 255, 0.1); 
+            --zen-orange: #ffa344;
+            --zen-green: #2a9d99; 
+            --zen-red: #ff85d4;
+            --zen-purple: #b992e6;
+            --shadow-card: rgba(0,0,0,0.2) 0px 4px 18px; 
+            --shadow-hover: rgba(0,0,0,0.3) 0px 12px 32px;
+            --shadow-modal: rgba(0,0,0,0.4) 0px 23px 52px;
         }
 
-/* CSS Reforçado para Destaques (Baseado na Imagem 2) */
-.feature-highlight h3, 
-.feature-highlight p {
-    text-align: left; /* Corrige o espaço em branco na direita */
-}
-
-.feature-highlight .highlight-term {
-    /* Cor do texto: Branco (ou var(--text-main)) */
-    color: var(--text-main) !important;
-    
-    /* Cor do sublinhado: Azul Primário */
-    text-decoration: underline;
-    text-decoration-color: var(--primary);
-    
-    /* Espessura do sublinhado: Grossa (para parecer uma placa, conforme imagem 2) */
-    text-decoration-thickness: 3px; 
-    
-    /* Deslocamento do sublinhado: Pequeno, para parecer logo abaixo da linha de base */
-    text-underline-offset: 1px; /* Ajuste sutil */
-    
-    /* Negrito, conforme imagem 2 */
-    font-weight: 700;
-    
-    /* Transição suave */
-    transition: all 0.3s ease;
-}
-
-/* Tratamento explícito para o tema escuro, se aplicável */
-[data-theme="dark"] .feature-highlight .highlight-term {
-    color: var(--text-main) !important;
-}
-
-/* Tratamento para o tema escuro, se aplicável nessa página */
-[data-theme="dark"] .feature-highlight .highlight-term {
-    color: var(--text-main) !important;
-}
-        
-        ::-webkit-scrollbar { width: 10px; height: 10px; } 
-        ::-webkit-scrollbar-track { background: var(--bg-page); } 
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-page); }
         ::-webkit-scrollbar-thumb { background: rgba(163, 158, 152, 0.3); border-radius: 10px; border: 2px solid var(--bg-page); }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(163, 158, 152, 0.6); }
+        ::selection { background: rgba(0, 117, 222, 0.2); color: var(--text-main); }
+
+        body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; font-feature-settings: "lnum" 1, "locl" 1; transition: background-color 0.3s, color 0.3s; }
+
+        /* Typography */
+        h1 { font-size: 48px; font-weight: 800; line-height: 1.04; letter-spacing: -1.5px; margin: 0 0 16px 0; }
+        h2 { font-size: 32px; font-weight: 800; line-height: 1.1; letter-spacing: -1.0px; margin: 0 0 16px 0; }
+        h3 { font-size: 22px; font-weight: 700; line-height: 1.27; letter-spacing: -0.25px; margin: 0 0 12px 0; }
         
-        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); line-height: 1.6; transition: background-color 0.3s, color 0.3s; } 
-        a { text-decoration: none; }
+        *:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--radius-btn); }
+
+        .ph { font-size: 1.25em; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;}
 
         /* HEADER */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; transition: all 0.3s; }
-        header.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.03); } 
-        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); white-space: nowrap; } 
-        .brand img { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; }
-        .badge-cortesia-site { font-size: 10px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 3px 8px; border-radius: 999px; font-weight: 700; border: none; letter-spacing: 0.5px; white-space: nowrap; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s; }
+        header.scrolled { box-shadow: var(--shadow-card); } 
+        
+        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); text-decoration: none; white-space: nowrap; } 
+        .brand img { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; border: 1px solid var(--border-light); }
+        
         .header-nav { display: flex; gap: 24px; margin: 0 auto; padding: 0 24px; } 
-        .nav-link { font-size: 14px; font-weight: 600; color: var(--text-muted); transition: 0.2s; white-space: nowrap; } 
-        .nav-link:hover, .nav-link.active { color: var(--primary); }
+        .nav-link { font-size: 15px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; white-space: nowrap; line-height: 1.33;} 
+        .nav-link:hover, .nav-link.active { color: var(--text-main); } 
+        
         .header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-        .share-btn, .theme-toggle { display: flex; align-items: center; justify-content: center; gap: 6px; background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); height: 36px; border-radius: var(--radius-btn); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
-        .share-btn { padding: 6px 12px; } .theme-toggle { width: 36px; }
-        .share-btn svg, .theme-toggle svg { width: 14px; height: 14px; flex-shrink: 0; }
-        .share-btn:hover, .theme-toggle:hover { background: var(--bg-section); color: var(--text-main); border-color: transparent; }
-        [data-theme="dark"] .sun-icon { display: none; } [data-theme="light"] .moon-icon { display: none; }
+        .share-btn { display: flex; align-items: center; gap: 6px; background: transparent; color: var(--text-main); border: 1px solid transparent; padding: 6px 12px; height: 36px; border-radius: var(--radius-btn); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; white-space: nowrap; }
+        .share-btn:hover { background: rgba(0,0,0,0.05); } 
+        [data-theme="dark"] .share-btn:hover { background: rgba(255,255,255,0.05); }
+        
+        .theme-toggle { background: transparent; border: 1px solid transparent; color: var(--text-muted); width: 36px; height: 36px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; font-size: 1.25em; }
+        .theme-toggle:hover { background: rgba(0,0,0,0.05); color: var(--text-main); }
+        [data-theme="dark"] .theme-toggle:hover { background: rgba(255,255,255,0.05); }
+        [data-theme="dark"] .ph-sun { display: none; } [data-theme="light"] .ph-moon { display: none; }
 
         /* HERO BANNERS */
-        .hero { padding: 80px 5% 40px; text-align: center; max-width: 900px; margin: 0 auto; }
-        .hero h1 { font-size: 48px; font-weight: 800; line-height: 1.1; margin: 0 0 16px 0; letter-spacing: -1.5px; }
-        .hero p { font-size: 18px; color: var(--text-muted); font-weight: 500; margin: 0 0 32px 0; }
+        .hero { padding: 100px 5% 60px; text-align: center; max-width: 900px; margin: 0 auto; }
+        .hero p { font-size: 20px; color: var(--text-muted); font-weight: 500; margin: 0 auto 40px auto; max-width: 700px; line-height: 1.5; letter-spacing: -0.125px;}
         
-        .discover-link { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 40px; transition: 0.2s; padding: 8px 16px; border-radius: 99px; background: rgba(0, 117, 222, 0.08); }
-        .discover-link:hover { background: rgba(0, 117, 222, 0.15); transform: translateY(-1px); }
+        .discover-link { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 48px; transition: 0.2s; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border-light); background: transparent; }
+        .discover-link:hover { background: rgba(0,0,0,0.02); transform: translateY(-1px); }
+        [data-theme="dark"] .discover-link:hover { background: rgba(255,255,255,0.03); }
 
         .stores-container { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
-        .store-card { background: var(--card-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border-light); border-radius: var(--radius-card); padding: 24px 32px; display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow-card); transition: 0.3s; text-decoration: none; color: var(--text-main); min-width: 260px; }
-        .store-card:hover { transform: translateY(-4px); border-color: var(--text-muted); }
+        .store-card { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: var(--radius-card); padding: 24px 32px; display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow-card); transition: all 0.3s ease; text-decoration: none; color: var(--text-main); min-width: 280px; }
+        .store-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
         .store-icon { width: 48px; height: 48px; flex-shrink: 0; }
         .store-info { display: flex; flex-direction: column; align-items: flex-start; }
         
         .store-microcopy { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
-        .store-title { font-size: 18px; font-weight: 800; margin: 0 0 6px 0; letter-spacing: -0.3px; }
+        .store-title { font-size: 18px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.3px; }
         
-        .store-version { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 99px; display: flex; align-items: center; gap: 6px; }
+        .store-version { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill); display: flex; align-items: center; gap: 6px; }
         .version-chrome { background: rgba(0, 117, 222, 0.1); color: var(--primary); }
         .version-firefox { background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); }
         
@@ -113,55 +152,64 @@
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,0,0, 0.2); } 70% { box-shadow: 0 0 0 6px rgba(0,0,0, 0); } 100% { box-shadow: 0 0 0 0 rgba(0,0,0, 0); } }
 
         /* UPDATE SECTION */
-        .update-section { padding: 60px 5% 100px; max-width: 1200px; margin: 0 auto; scroll-margin-top: 100px; }
-        .update-header { text-align: center; margin-bottom: 56px; }
-        .update-header h2 { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+        .update-section { padding: 60px 5% 100px; max-width: 1100px; margin: 0 auto; scroll-margin-top: 100px; }
+        .update-header { text-align: center; margin-bottom: 64px; }
         .update-header p { font-size: 18px; color: var(--text-muted); max-width: 800px; margin: 0 auto; font-weight: 500; }
 
-        /* NOVO BLOCO DE HIGHLIGHT v45.9 */
-        .feature-highlight { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-light); border-radius: var(--radius-card); padding: 40px; margin-bottom: 40px; box-shadow: var(--shadow-card); position: relative; overflow: hidden; }
-        .feature-highlight::before { content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--zen-red); opacity: 0.8; }
-        .highlight-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(217, 48, 37, 0.1); color: var(--zen-red); padding: 6px 12px; border-radius: 99px; font-size: 12px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 16px; }
-        .feature-highlight h3 { font-size: 28px; font-weight: 800; margin: 0 0 16px 0; letter-spacing: -0.5px; color: var(--text-main); line-height: 1.2; }
-        .feature-highlight > p { font-size: 16px; color: var(--text-muted); margin: 0 0 32px 0; max-width: 850px; line-height: 1.6; }
-        .highlight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
-        .highlight-item strong { display: block; font-size: 16px; color: var(--text-main); margin-bottom: 6px; }
-        .highlight-item p { font-size: 14.5px; color: var(--text-muted); margin: 0; line-height: 1.5; }
-
-        .update-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-        .update-card { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); transition: 0.3s; display: flex; flex-direction: column; }
-        .update-card:hover { transform: translateY(-4px); border-color: var(--primary); }
+        /* DESTAQUE v45.x (Notion Callout Style) */
+        .feature-highlight { background: var(--bg-section); border: 1px solid var(--border-light); border-left: 4px solid var(--zen-red); border-radius: var(--radius-card); padding: 48px; margin-bottom: 48px; box-shadow: var(--shadow-card); transition: box-shadow 0.3s; }
+        .feature-highlight:hover { box-shadow: var(--shadow-hover); }
         
-        .notion-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: var(--bg-page); border: 1px solid var(--border-light); border-radius: 12px; font-size: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .update-card h3 { font-size: 18px; font-weight: 800; margin: 0 0 12px 0; letter-spacing: -0.3px; line-height: 1.3;}
+        .highlight-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(217, 48, 37, 0.1); color: var(--zen-red); padding: 6px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 700; letter-spacing: 0.125px; margin-bottom: 24px; }
+        .feature-highlight h3 { font-size: 28px; font-weight: 800; margin: 0 0 16px 0; letter-spacing: -0.5px; color: var(--text-main); line-height: 1.2; text-align: left;}
+        .feature-highlight > p { font-size: 16px; color: var(--text-muted); margin: 0 0 32px 0; max-width: 850px; line-height: 1.6; text-align: left;}
+        
+        .feature-highlight .highlight-term { color: var(--text-main) !important; text-decoration: underline; text-decoration-color: var(--primary); text-decoration-thickness: 3px; text-underline-offset: 2px; font-weight: 700; transition: all 0.3s ease; }
+        [data-theme="dark"] .feature-highlight .highlight-term { color: var(--text-main) !important; text-decoration-color: var(--primary); }
+
+        .highlight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; }
+        .highlight-item strong { display: flex; align-items: center; gap: 8px; font-size: 16px; color: var(--text-main); margin-bottom: 8px; font-weight: 700;}
+        .highlight-item p { font-size: 15px; color: var(--text-muted); margin: 0; line-height: 1.5; }
+
+        /* GRID MENOR */
+        .update-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .update-card { background: var(--card-bg); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); transition: all 0.3s ease; display: flex; flex-direction: column; }
+        .update-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+        
+        .notion-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: var(--bg-page); border: 1px solid var(--border-light); border-radius: 12px; font-size: 24px; margin-bottom: 24px; box-shadow: rgba(0,0,0,0.04) 0px 2px 8px; color: var(--primary);}
+        .update-card h3 { font-size: 18px; font-weight: 700; margin: 0 0 12px 0; letter-spacing: -0.25px; line-height: 1.3;}
         .update-card p { font-size: 15px; color: var(--text-muted); margin: 0; line-height: 1.6; }
 
-        /* FEATURE MATRIX (TABELA) */
+        /* MATRIX (TABELA DE FEATURES) */
         .matrix-section { padding: 0 5% 100px; max-width: 1000px; margin: 0 auto; }
-        .matrix-header { text-align: center; margin-bottom: 40px; }
-        .matrix-header h2 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px;}
-        .matrix-table { width: 100%; border-collapse: collapse; background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--border-light); box-shadow: var(--shadow-card); }
+        .matrix-header { text-align: center; margin-bottom: 48px; }
+        
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); background: var(--card-bg);}
+        .matrix-table { width: 100%; border-collapse: collapse; min-width: 600px; }
         .matrix-table th, .matrix-table td { padding: 20px 24px; text-align: center; border-bottom: 1px solid var(--border-light); font-size: 15px; }
-        .matrix-table th { background: var(--bg-section); font-weight: 800; font-size: 16px; color: var(--text-main); }
-        .matrix-table td.feature-name { text-align: left; font-weight: 600; color: var(--text-main); width: 50%; }
+        .matrix-table th { background: var(--bg-section); font-weight: 700; font-size: 15px; color: var(--text-main); }
+        .matrix-table td.feature-name { text-align: left; font-weight: 500; color: var(--text-main); width: 50%; }
         .matrix-table tr:last-child td { border-bottom: none; }
         
-        .matrix-table td.category-row { background: var(--bg-page); font-weight: 800; font-size: 14px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; padding: 32px 24px 12px; border-bottom: 2px solid var(--border-light); text-align: left; }
+        .matrix-table td.category-row { background: var(--bg-page); font-weight: 700; font-size: 13px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; padding: 32px 24px 12px; border-bottom: 1px solid var(--border-light); text-align: left; }
 
-        /* ÍCONES DA TABELA - FIXADOS PARA MANTER SUTILEZA */
-        .check-icon { color: var(--zen-green); width: 20px; height: 20px; display: inline-block; vertical-align: middle; stroke-width: 2px !important; }
-        .cross-icon { color: var(--text-placeholder); width: 18px; height: 18px; display: inline-block; vertical-align: middle; stroke-width: 1.5px !important; opacity: 0.6; }
-        
         .chrome-col { background: rgba(0, 117, 222, 0.02); }
         .firefox-col { background: rgba(221, 91, 0, 0.02); }
         .browser-header { display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-        footer { padding: 40px 20px; text-align: center; border-top: 1px solid var(--border-light); font-size: 14px; color: var(--text-muted); } 
+        footer { padding: 60px 20px; text-align: center; border-top: 1px solid var(--border-light); font-size: 14px; color: var(--text-placeholder); background: var(--bg-page); transition: background-color 0.3s;} 
+        .footer-links { margin-bottom: 16px; font-weight: 600; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--primary); }
+
+        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; }
+        .fade-in-section.is-visible { opacity: 1; transform: none; }
+
         @media (max-width: 768px) { 
             .matrix-table th, .matrix-table td { padding: 16px 12px; font-size: 14px; }
-            .hero h1 { font-size: 36px; }
+            .hero h1 { font-size: 40px; }
             .header-nav { display: none; }
-            .feature-highlight { padding: 24px; }
+            .feature-highlight { padding: 32px 24px; border-left-width: 3px;}
         }
     </style>
 </head>
@@ -171,219 +219,270 @@
         <a href="index.html" class="brand">
             <img src="djen-128.png" alt="Logo Buscador DJEN">
             Buscador DJEN
-                    </a>
+        </a>
         
-        <div class="header-nav">
+        <nav class="header-nav" aria-label="Navegação principal">
             <a href="busca.html" class="nav-link">Busca & Tags</a>
             <a href="prazos.html" class="nav-link">Prazos & Agenda</a>
             <a href="exportacao.html" class="nav-link">Relatórios PDF</a>
             <a href="radar.html" class="nav-link">Radar</a>
-        </div>
+        </nav>
 
        <div class="header-actions">
             <button id="btn-compartilhar" class="share-btn" aria-label="Compartilhar site">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                <i class="ph ph-share-network"></i>
                 <span class="share-text">Compartilhar</span>
             </button>
+
             <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
-                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <i class="ph ph-sun"></i>
+                <i class="ph ph-moon"></i>
             </button>
         </div>
     </header>
 
-    <section class="hero">
-        <h1>Atualização e Versões</h1>
-        <p>A ferramenta já está homologada e atualizada nas lojas oficiais. Instale agora e tenha o controle absoluto da sua pauta.</p>
+    <main>
+        <section class="hero fade-in-section">
+            <h1>Changelog e Distribuição</h1>
+            <p>O ecossistema do Buscador DJEN está homologado e atualizado nas lojas oficiais. Instale agora e transfira a carga operacional da sua banca para o algoritmo.</p>
 
-        <a href="#novidades" class="discover-link">Descubra o que mudou ↓</a>
+            <a href="#novidades" class="discover-link"><i class="ph ph-arrow-down"></i> Detalhamento da versão</a>
 
-        <div class="stores-container">
-            <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="store-card" style="border-color: rgba(0, 117, 222, 0.3);">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" class="store-icon">
-                <div class="store-info">
-                    <span class="store-microcopy">Adicionar ao Navegador</span>
-                    <span class="store-title">Google Chrome</span>
-                    <span class="store-version version-chrome">
-                        <span class="pulse-dot dot-chrome"></span> 
-                        <span id="chrome-version">Buscando versão...</span>
-                    </span>
+            <div class="stores-container">
+                <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="store-card" style="border-color: rgba(0, 117, 222, 0.3);">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" class="store-icon">
+                    <div class="store-info">
+                        <span class="store-microcopy">Instalação Nativa</span>
+                        <span class="store-title">Google Chrome</span>
+                        <span class="store-version version-chrome">
+                            <span class="pulse-dot dot-chrome"></span> 
+                            <span id="chrome-version">Sincronizando...</span>
+                        </span>
+                    </div>
+                </a>
+
+                <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="store-card" style="border-color: rgba(221, 91, 0, 0.3);">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" class="store-icon">
+                    <div class="store-info">
+                        <span class="store-microcopy">Instalação Nativa</span>
+                        <span class="store-title">Mozilla Firefox</span>
+                        <span class="store-version version-firefox">
+                            <span class="pulse-dot dot-firefox"></span> 
+                            <span id="firefox-version">Sincronizando...</span>
+                        </span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section id="novidades" class="update-section">
+            <div class="update-header fade-in-section">
+                <h2><i class="ph ph-rocket-launch"></i> Arquitetura Otimizada: Estabilidade e Precisão</h2>
+                <p>O motor do Buscador DJEN foi reescrito para garantir latência mínima e processamento confiável, permitindo que você foque exclusivamente na estratégia jurídica.</p>
+            </div>
+
+            <div class="feature-highlight fade-in-section">
+                <div class="highlight-badge">
+                    <i class="ph ph-sparkle"></i> ATUALIZAÇÃO CRÍTICA v45.x
                 </div>
-            </a>
-
-            <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="store-card" style="border-color: rgba(221, 91, 0, 0.3);">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" class="store-icon">
-                <div class="store-info">
-                    <span class="store-microcopy">Adicionar ao Navegador</span>
-                    <span class="store-title">Mozilla Firefox</span>
-                    <span class="store-version version-firefox">
-                        <span class="pulse-dot dot-firefox"></span> 
-                        <span id="firefox-version">Buscando versão...</span>
-                    </span>
-                </div>
-            </a>
-        </div>
-    </section>
-
-    <section id="novidades" class="update-section">
-        <div class="update-header">
-            <h2>🚀 A Nova Atualização: Mais Ágil, Segura e Direto ao Ponto</h2>
-            <p>Reescrevemos a interface e o motor do Buscador DJEN para garantir que você gaste menos tempo gerenciando abas e mais tempo focando no que realmente importa.</p>
-        </div>
-
-        <<div class="feature-highlight">
-    <div class="highlight-badge">
-        ✨ NOVIDADE NA v45.9
-    </div>
-    <h3>Auditoria de Feriados Locais: Prevenção inteligente contra a intempestividade.</h3>
-    <p>Um feriado municipal ignorado pode custar seu recurso no <span class="highlight-term">STJ</span>. Além da contagem precisa, o Buscador DJEN agora <span class="highlight-term">emite alertas automáticos</span> sempre que seu prazo cruzar com <span class="highlight-term">suspensões locais</span>, garantindo que você lembre de comprovar o Art. 1.003, § 6º do CPC.</p>            
-    <div class="highlight-grid">
-                <div class="highlight-item">
-                    <strong>🚨 Alerta Visual Inteligente</strong>
-                    <p>Se a calculadora detectar um feriado local, um aviso de destaque é exibido imediatamente abaixo da data fatal. Sem surpresas na hora de protocolar.</p>
-                </div>
-                <div class="highlight-item">
-                    <strong>📅 Google Agenda</strong>
-                    <p>Ao exportar o prazo, o lembrete para anexar o decreto de suspensão de expediente é inserido automaticamente na descrição do seu evento.</p>
-                </div>
-                <div class="highlight-item">
-                    <strong>📲 Delegação Segura</strong>
-                    <p>Vai enviar o prazo para a equipe? O alerta de jurisprudência acompanha o texto formatado para o WhatsApp, garantindo que ninguém esqueça a certidão.</p>
+                <h3>Auditoria de Feriados Locais: Blindagem contra a intempestividade.</h3>
+                <p>Uma suspensão de expediente ignorada no município compromete todo o recurso. O motor do Buscador DJEN agora <span class="highlight-term">emite alertas obstrutivos</span> sempre que a data fatal cruzar com <span class="highlight-term">feriados locais</span>, garantindo a documentação exigida pelo Art. 1.003, § 6º do CPC perante os tribunais superiores.</p>            
+                
+                <div class="highlight-grid">
+                    <div class="highlight-item">
+                        <strong><i class="ph ph-warning" style="color: var(--zen-red);"></i> Notificação Visual Restritiva</strong>
+                        <p>Se o algoritmo constatar colisão com um feriado municipal (IBGE), uma etiqueta de risco é acoplada imediatamente abaixo do termo fatal.</p>
+                    </div>
+                    <div class="highlight-item">
+                        <strong><i class="ph ph-calendar-plus" style="color: var(--primary);"></i> Injeção no Google Agenda</strong>
+                        <p>Ao sincronizar a pauta, a ressalva para anexação obrigatória do decreto de suspensão é injetada automaticamente nos metadados do evento.</p>
+                    </div>
+                    <div class="highlight-item">
+                        <strong><i class="ph ph-share-network" style="color: var(--zen-green);"></i> Compartilhamento Seguro</strong>
+                        <p>Ao delegar o andamento via WhatsApp, o alerta jurisprudencial acompanha a ementa formatada, mitigando falhas de comunicação interna.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="update-grid">
-            <div class="update-card">
-                <div class="notion-icon">📊</div>
-                <h3>Seus dados, sob seu controle</h3>
-                <p>Diga adeus às planilhas manuais. Com um clique, utilize a <strong>Exportação Nativa</strong> para enviar toda a sua pauta de processos, status e prazos fatais diretamente para o Excel. Um relatório limpo, formatado e pronto para envio ao cliente ou reunião de equipe.</p>
+
+            <div class="update-grid">
+                <div class="update-card fade-in-section">
+                    <div class="notion-icon"><i class="ph ph-table"></i></div>
+                    <h3>Exportação Estruturada de Dados</h3>
+                    <p>Substitua preenchimentos manuais por processos escaláveis. Utilize a <strong>Exportação Nativa (CSV)</strong> para consolidar toda a sua base histórica de intimações e prazos no Excel, viabilizando análises de jurimetria imediatas.</p>
+                </div>
+
+                <div class="update-card fade-in-section">
+                    <div class="notion-icon"><i class="ph ph-gavel"></i></div>
+                    <h3>Comprovação Documental de Prazos</h3>
+                    <p>Precisa lastrear um protocolo? O sistema renderiza uma matriz visual (Visual Law) do termo fatal, evidenciando matematicamente o desvio de suspensões e feriados. Extraia em imagem e acople à sua petição.</p>
+                </div>
+
+                <div class="update-card fade-in-section">
+                    <div class="notion-icon" style="color: var(--zen-orange);"><i class="ph ph-shield-check"></i></div>
+                    <h3>Preservação de Metadados Local</h3>
+                    <p>A <strong>Exclusão Inteligente</strong> opera de forma contextual: ao descartar um prazo cumprido, o sistema apaga apenas o cálculo do radar de pendências, preservando o inteiro teor da publicação arquivado no seu banco local.</p>
+                </div>
+
+                <div class="update-card fade-in-section">
+                    <div class="notion-icon" style="color: var(--zen-purple);"><i class="ph ph-paint-brush"></i></div>
+                    <h3>Design System Focado na Leitura</h3>
+                    <p>Migramos a interface para a estética "Soft UI", inspirada em ecossistemas limpos. Contrastes ajustados, tipografia de alta legibilidade e elementos translúcidos entregam uma experiência cognitiva superior.</p>
+                </div>
+
+                <div class="update-card fade-in-section">
+                    <div class="notion-icon" style="color: var(--zen-green);"><i class="ph ph-lightning"></i></div>
+                    <h3>Redução de Atrito Operacional</h3>
+                    <p>Fluxos otimizados. Salvar um prazo manualmente aciona o painel principal; processar uma comunicação para WhatsApp já embute a higienização do texto e a rotulagem de urgências. Tudo em uma fração de segundo.</p>
+                </div>
             </div>
+        </section>
 
-            <div class="update-card">
-                <div class="notion-icon">⚖️</div>
-                <h3>Comprove a tempestividade visualmente</h3>
-                <p>Precisa justificar um prazo no tribunal? O sistema agora gera automaticamente uma linha do tempo em <strong>Visual Law</strong> do seu prazo — descontando fins de semana, feriados e suspensões. Baixe em formato de imagem e anexe direto na petição.</p>
+        <section class="matrix-section fade-in-section">
+            <div class="matrix-header">
+                <h2>Matriz de Funcionalidades</h2>
+                <p style="color: var(--text-muted);">Verifique o escopo de suporte técnico ativo para cada navegador.</p>
             </div>
+            
+            <div class="table-responsive">
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Recurso Operacional</th>
+                            <th class="chrome-col">
+                                <div class="browser-header">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Chrome" style="width: 20px; height: 20px;">
+                                    Google Chrome
+                                </div>
+                            </th>
+                            <th class="firefox-col">
+                                <div class="browser-header">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Firefox" style="width: 20px; height: 20px;">
+                                    Mozilla Firefox
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="3" class="category-row">Pesquisa e Organização</td></tr>
+                        <tr>
+                            <td class="feature-name">Extração Direta (DJEN/CNJ)</td>
+                            <td class="chrome-col"><i class="ph ph-check-circle check-icon"></i></td>
+                            <td class="firefox-col"><i class="ph ph-check-circle check-icon"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Tagueamento e Metadados Internos</td>
+                            <td class="chrome-col"><i class="ph ph-check-circle check-icon"></i></td>
+                            <td class="firefox-col"><i class="ph ph-check-circle check-icon"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Modo Foco (Leitura Imersiva)</td>
+                            <td class="chrome-col"><i class="ph ph-check-circle check-icon"></i></td>
+                            <td class="firefox-col"><i class="ph ph-check-circle check-icon"></i></td>
+                        </tr>
 
-            <div class="update-card">
-                <div class="notion-icon">🛡️</div>
-                <h3>Histórico protegido</h3>
-                <p>Um esbarrão no mouse não vai mais apagar seus dados importantes. A <strong>Exclusão Inteligente</strong> agora lê o contexto: ela limpa apenas os cálculos do prazo encerrado, mas mantém o teor da publicação salvo em segurança no seu histórico local.</p>
+                        <tr><td colspan="3" class="category-row">Prazos e Controladoria</td></tr>
+                        <tr>
+                            <td class="feature-name">Motor Algorítmico de Prazos (Dias Úteis)</td>
+                            <td class="chrome-col"><i class="ph ph-check-circle check-icon"></i></td>
+                            <td class="firefox-col"><i class="ph ph-check-circle check-icon"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Gestão Mensal de Pauta</td>
+                            <td class="chrome-col"><i class="ph ph-check-circle check-icon"></i></td>
+                            <td class="firefox-col"><i class="ph ph-check-circle check-icon"></i></td>
+                        </tr>
+
+                        <tr><td colspan="3" class="category-row">Módulos Avançados</td></tr>
+                        <tr>
+                            <td class="feature-name">Radar Semântico de Urgências</td>
+                            <td class="chrome-col"><i class="ph ph-check-circle check-icon"></i></td>
+                            <td class="firefox-col"><i class="ph ph-check-circle check-icon"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Emissão de Relatórios PDF (Visual Law)</td>
+                            <td class="chrome-col"><i class="ph ph-x cross-icon"></i></td>
+                            <td class="firefox-col"><i class="ph ph-check-circle check-icon"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Exportação de Base Excel (CSV)</td>
+                            <td class="chrome-col"><i class="ph ph-x cross-icon"></i></td>
+                            <td class="firefox-col"><i class="ph ph-check-circle check-icon"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-
-            <div class="update-card">
-                <div class="notion-icon">✨</div>
-                <h3>Foco total (Design Minimalista)</h3>
-                <p>Uma interface de luxo, inspirada na filosofia de design do macOS. Aplicamos um contraste mais suave, efeito de vidro translúcido (frosted glass) e sombras dinâmicas. O resultado? Leitura extremamente confortável e livre de poluição visual.</p>
-            </div>
-
-            <div class="update-card">
-                <div class="notion-icon">⚡</div>
-                <h3>Fluxo sem interrupções</h3>
-                <p>Eliminamos os cliques desnecessários. Salvou um prazo manual? A calculadora abre sozinha. Vai compartilhar a publicação no WhatsApp? O texto já vai limpo e com as palavras de urgência destacadas com etiquetas visuais (ex: 🏷️ Penhora).</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="matrix-section">
-        <div class="matrix-header">
-            <h2>Comparativo de Plataformas</h2>
-            <p style="color: var(--text-muted);">Suporte técnico e funcionalidades ativas em cada navegador.</p>
-        </div>
-        <table class="matrix-table">
-            <thead>
-                <tr>
-                    <th>Funcionalidade</th>
-                    <th class="chrome-col">
-                        <div class="browser-header">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Chrome" style="width: 20px; height: 20px;">
-                            Chrome
-                        </div>
-                    </th>
-                    <th class="firefox-col">
-                        <div class="browser-header">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Firefox" style="width: 20px; height: 20px;">
-                            Firefox
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td colspan="3" class="category-row">Pesquisa e Organização</td></tr>
-                <tr>
-                    <td class="feature-name">Busca rápida de intimações (DJEN/CNJ)</td>
-                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                </tr>
-                <tr>
-                    <td class="feature-name">Criação de Apelidos e Anotações no Processo</td>
-                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                </tr>
-                <tr>
-                    <td class="feature-name">Leitura Imersiva (Modo Foco)</td>
-                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                </tr>
-
-                <tr><td colspan="3" class="category-row">Prazos e Controladoria</td></tr>
-                <tr>
-                    <td class="feature-name">Calculadora de Prazos (Dias Úteis) com Feriados</td>
-                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                </tr>
-                <tr>
-                    <td class="feature-name">Calendário Mensal de Pauta</td>
-                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                </tr>
-
-                <tr><td colspan="3" class="category-row">Automação Avançada</td></tr>
-                <tr>
-                    <td class="feature-name">Radar Automático de Urgências (Penhora, Liminar)</td>
-                    <td class="chrome-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                </tr>
-                <tr>
-                    <td class="feature-name">Geração de Relatórios PDF (Visual Law)</td>
-                    <td class="chrome-col"><svg class="cross-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="8" x2="8" y2="16"></line><line x1="8" y1="8" x2="16" y2="16"></line></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                </tr>
-                <tr>
-                    <td class="feature-name">Exportação de Base Excel (Nativa)</td>
-                    <td class="chrome-col"><svg class="cross-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="8" x2="8" y2="16"></line><line x1="8" y1="8" x2="16" y2="16"></line></svg></td>
-                    <td class="firefox-col"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+        </section>
+    </main>
 
     <footer>
-        <div style="margin-bottom: 12px; font-weight: 600;"><a href="index.html" style="color: var(--text-muted); margin-right: 16px;">Voltar ao Início</a><a href="calculadora.html" style="color: var(--primary);">Calculadora de Prazos</a></div>
-        &copy; 2026 Buscador DJEN. Feito por Amilcar Moreira.
+        <div class="footer-links">
+            <a href="index.html">Página Inicial</a>
+            <a href="calculadora.html" style="color: var(--primary);">Calculadora de Prazos</a>
+            <a href="exportacao.html">Relatórios e Exportação</a>
+        </div>
+        &copy; 2026 Buscador DJEN. Arquitetura para a advocacia.
     </footer>
     
     <script>
         // Sombra do Menu ao Rolar
-        const header = document.getElementById('mainHeader'); window.addEventListener('scroll', () => { if (window.scrollY > 10) header.classList.add('scrolled'); else header.classList.remove('scrolled'); });
+        const header = document.getElementById('mainHeader'); 
+        window.addEventListener('scroll', () => { 
+            if (window.scrollY > 10) header.classList.add('scrolled'); 
+            else header.classList.remove('scrolled'); 
+        });
         
         // Dark Mode Manual
-        const themeToggleBtn = document.getElementById('themeToggle'); themeToggleBtn.addEventListener('click', () => { const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', newTheme); localStorage.setItem('theme', newTheme); });
+        const themeToggleBtn = document.getElementById('themeToggle'); 
+        themeToggleBtn.addEventListener('click', () => { 
+            const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; 
+            document.documentElement.setAttribute('data-theme', newTheme); 
+            localStorage.setItem('theme', newTheme); 
+        });
         if(localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
         
         // Compartilhamento
-        document.addEventListener('DOMContentLoaded', () => { const btnCompartilhar = document.getElementById('btn-compartilhar'); if (btnCompartilhar) { btnCompartilhar.addEventListener('click', async () => { try { if (navigator.share) { await navigator.share({ title: 'Novidades DJEN', text: 'Veja as novidades do Buscador DJEN.', url: window.location.href }); } else { await navigator.clipboard.writeText(window.location.href); const iconSvg = btnCompartilhar.innerHTML; btnCompartilhar.innerHTML = '<span style="font-size: 13px;">Copiado!</span>'; setTimeout(() => { btnCompartilhar.innerHTML = iconSvg; }, 2000); } } catch (err) { console.error(err); } }); } });
+        document.addEventListener('DOMContentLoaded', () => { 
+            const btnCompartilhar = document.getElementById('btn-compartilhar'); 
+            if (btnCompartilhar) { 
+                btnCompartilhar.addEventListener('click', async () => { 
+                    try { 
+                        if (navigator.share) { 
+                            await navigator.share({ title: 'Changelog DJEN', text: 'Veja as atualizações técnicas do Buscador DJEN.', url: window.location.href }); 
+                        } else { 
+                            await navigator.clipboard.writeText(window.location.href); 
+                            const textSpan = btnCompartilhar.querySelector('.share-text');
+                            const originalText = textSpan.innerText;
+                            textSpan.innerText = 'Copiado!';
+                            setTimeout(() => { textSpan.innerText = originalText; }, 2000); 
+                        } 
+                    } catch (err) { 
+                        if (err.name !== 'AbortError') console.error(err); 
+                    } 
+                }); 
+            } 
 
-        // API Versões
+            // Intersection Observer (Fade-in)
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            document.querySelectorAll('.fade-in-section').forEach(sec => observer.observe(sec));
+        });
+
+        // Shields API - Controle de Versões
         fetch('https://img.shields.io/chrome-web-store/v/ambfdmjdhikdhmbojljaebkipeahmfab.json')
             .then(response => response.json())
             .then(data => { document.getElementById('chrome-version').textContent = 'Versão ' + data.value; })
-            .catch(() => { document.getElementById('chrome-version').textContent = 'Instalar Chrome'; });
+            .catch(() => { document.getElementById('chrome-version').textContent = 'Disponível na Store'; });
 
         fetch('https://img.shields.io/amo/v/buscador-djen-advogado.json')
             .then(response => response.json())
             .then(data => { document.getElementById('firefox-version').textContent = 'Versão ' + data.value; })
-            .catch(() => { document.getElementById('firefox-version').textContent = 'Instalar Firefox'; });
+            .catch(() => { document.getElementById('firefox-version').textContent = 'Disponível na Store'; });
     </script>
 </body>
 </html>
