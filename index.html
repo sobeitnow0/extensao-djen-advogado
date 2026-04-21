@@ -135,7 +135,6 @@
         
         section { scroll-margin-top: 80px; }
 
-        /* Estilo base para ícones Phosphor */
         .ph { font-size: 1.25em; display: inline-flex; align-items: center; justify-content: center; }
 
         /* Typography */
@@ -184,24 +183,29 @@
         .hero h1 span { color: var(--primary); }
         .hero p { font-size: 20px; color: var(--text-muted); margin-bottom: 48px; max-width: 800px; margin-left: auto; margin-right: auto; font-weight: 600; line-height: 1.40; letter-spacing: -0.125px;}
 
-        /* BUTTONS - BOX-SIZING APLICADO AQUI! */
+        /* BUTTONS */
         .btn-browser { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background-color: transparent; color: var(--text-main); padding: 12px 24px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--border-light); transition: all 0.2s ease; line-height: 1.33; cursor: pointer; box-sizing: border-box; }
         .btn-browser:hover { background-color: rgba(0,0,0,0.05); }
         [data-theme="dark"] .btn-browser:hover { background-color: rgba(255,255,255,0.05); }
         .btn-browser.primary { background-color: var(--primary); color: white; border: 1px solid transparent; }
         .btn-browser.primary:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
-        
-        @keyframes pulseGlowBtn { 0% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(0, 117, 222, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 117, 222, 0); } }
-        .btn-glow { animation: pulseGlowBtn 2s infinite; }
-        .btn-glow:hover { animation: none; }
 
         /* DOWNLOAD STORE BUTTONS */
         .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
-        .btn-store { position: relative; display: flex; align-items: center; justify-content: center; gap: 14px; background-color: var(--card-bg); color: var(--text-main); padding: 12px 24px; border-radius: var(--radius-card); text-decoration: none; border: 1px solid var(--border-light); transition: all 0.2s ease; overflow: visible; box-shadow: var(--shadow-card); }
-        .btn-store:hover { background-color: rgba(0,0,0,0.02); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
-        [data-theme="dark"] .btn-store:hover { background-color: rgba(255,255,255,0.03); }
+        
+        .btn-store { position: relative; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 12px 24px; border-radius: var(--radius-btn); text-decoration: none; transition: all 0.2s ease; box-sizing: border-box; }
+        
+        .btn-store.primary { background-color: var(--primary); color: #ffffff; border: 1px solid transparent; box-shadow: var(--shadow-card); }
+        .btn-store.primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        .btn-store.primary .store-text small { color: rgba(255, 255, 255, 0.8); }
+        
+        .btn-store.secondary { background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); }
+        .btn-store.secondary:hover { background-color: rgba(0,0,0,0.02); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        [data-theme="dark"] .btn-store.secondary:hover { background-color: rgba(255,255,255,0.03); }
+        .btn-store.secondary .store-text small { color: var(--text-muted); }
+
         .btn-store .store-text { display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.2; }
-        .btn-store .store-text small { font-size: 12px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.125px; }
+        .btn-store .store-text small { font-size: 12px; font-weight: 500; letter-spacing: 0.125px; }
         .btn-store .store-text strong { font-size: 16px; font-weight: 700; letter-spacing: normal; }
         
         .rating-stars { display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--zen-orange); margin-top: 8px; opacity: 0; transition: opacity 0.3s; }
@@ -219,22 +223,22 @@
         .trust-badges span { display: flex; align-items: center; gap: 6px; }
         .microcopy { color: var(--text-muted); font-size: 14px; font-weight: 400; line-height: 1.43; }
 
-        /* BENTO BOX TOOLS (UX Technical Highlight) */
-        .bento-tools { background-color: #1e1d1c; padding: 120px 5%; color: #fff; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); }
+        /* BENTO BOX TOOLS */
+        .bento-tools { background-color: var(--bg-section); padding: 120px 5%; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); transition: background-color 0.3s; }
         .bento-header { text-align: center; margin-bottom: 64px; }
-        .bento-header h2 { color: #fff; font-size: 40px; letter-spacing: -1px; margin-bottom: 16px;}
-        .bento-header p { color: rgba(255,255,255,0.6); font-size: 20px; max-width: 800px; margin: 0 auto; font-weight: 500; letter-spacing: -0.125px;}
+        .bento-header h2 { color: var(--text-main); font-size: 40px; letter-spacing: -1px; margin-bottom: 16px;}
+        .bento-header p { color: var(--text-muted); font-size: 20px; max-width: 800px; margin: 0 auto; font-weight: 500; letter-spacing: -0.125px;}
         
         .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; max-width: 1000px; margin: 0 auto; }
         
-        .bento-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 48px; border-radius: var(--radius-card); display: flex; flex-direction: column; transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease; box-shadow: 0 4px 24px rgba(0,0,0,0.2); }
-        .bento-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
-        .bento-card h3 { color: #fff; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin: 0 0 16px 0; line-height: 1.2;}
-        .bento-card p { color: rgba(255,255,255,0.6); font-size: 16px; line-height: 1.6; margin: 0 0 40px 0; flex-grow: 1; }
+        .bento-card { background: var(--card-bg); border: 1px solid var(--border-light); padding: 48px; border-radius: var(--radius-card); display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: var(--shadow-card); }
+        .bento-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+        .bento-card h3 { color: var(--text-main); font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin: 0 0 16px 0; line-height: 1.2;}
+        .bento-card p { color: var(--text-muted); font-size: 16px; line-height: 1.6; margin: 0 0 40px 0; flex-grow: 1; }
         
         .bento-icon-wrapper { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
-        .bento-icon { width: 56px; height: 56px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center; border: 1px solid rgba(255,255,255,0.1); color: var(--primary); font-size: 24px; }
-        .bento-limit { font-size: 12px; font-weight: 700; background: rgba(255,255,255,0.1); color: #fff; padding: 6px 12px; border-radius: var(--radius-pill); letter-spacing: 0.125px; }
+        .bento-icon { width: 56px; height: 56px; border-radius: 12px; background: var(--bg-page); display: flex; justify-content: center; align-items: center; border: 1px solid var(--border-light); font-size: 24px; }
+        .bento-limit { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-pill); letter-spacing: 0.125px; }
 
         /* FEATURES SECTION */
         .features-container { padding: 120px 5% 80px; background: var(--bg-page); transition: background-color 0.3s; }
@@ -254,18 +258,22 @@
 
         /* GALLERY CAROUSEL */
         .gallery-section { padding: 0 0 120px 0; background: var(--bg-page); width: 100%; overflow: hidden; transition: background-color 0.3s; }
-        .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 24px; padding: 20px 5%; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; }
+        .gallery-header { display: flex; justify-content: space-between; align-items: flex-end; max-width: 1400px; margin: 0 auto 24px auto; padding: 0 5%; }
+        .gallery-title { font-size: 26px; font-weight: 700; letter-spacing: -0.625px; color: var(--text-main); margin: 0; }
+        
+        .carousel-controls { display: flex; gap: 8px; }
+        .carousel-btn { width: 36px; height: 36px; background: transparent; border: 1px solid var(--border-light); border-radius: var(--radius-btn); color: var(--text-main); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: background 0.2s; font-size: 1.2em; }
+        .carousel-btn:hover { background: rgba(0,0,0,0.05); }
+        [data-theme="dark"] .carousel-btn:hover { background: rgba(255,255,255,0.05); }
+
+        .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 24px; padding: 0 5% 20px 5%; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; }
         .carousel::-webkit-scrollbar { display: none; }
         .carousel-item { scroll-snap-align: center; flex: 0 0 auto; width: 85%; max-width: 400px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); background: var(--card-bg); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; }
         @media (min-width: 1024px) { .carousel-item { width: calc(33.333% - 16px); max-width: none; scroll-snap-align: start; } }
         @media (min-width: 768px) and (max-width: 1023px) { .carousel-item { width: calc(50% - 12px); max-width: none; scroll-snap-align: start; } }
         .carousel-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-        .carousel-item img { width: 100%; height: auto; display: block; cursor: zoom-in; object-fit: cover; border-bottom: 1px solid var(--border-light); }
-        .carousel-caption { padding: 16px; font-size: 14px; text-align: center; color: var(--text-muted); font-weight: 500; background: var(--bg-section); transition: background-color 0.3s, color 0.3s; line-height: 1.43;}
-        .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; background: var(--bg-header); backdrop-filter: blur(4px); border: 1px solid var(--border-light); border-radius: 50%; box-shadow: var(--shadow-card); color: var(--text-main); display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 10; transition: all 0.2s ease; font-size: 1.2em; }
-        .carousel-btn:hover { background: var(--card-bg); transform: translateY(-50%) scale(1.05); box-shadow: var(--shadow-hover); }
-        .prev-btn { left: 2%; } 
-        .next-btn { right: 2%; } 
+        .carousel-item img { width: 100%; height: auto; display: block; cursor: zoom-in; object-fit: cover; border-bottom: 1px solid var(--border-light); border-radius: 12px 12px 0 0; }
+        .carousel-caption { padding: 16px; font-size: 14px; text-align: left; color: var(--text-muted); font-weight: 500; background: transparent; line-height: 1.43; }
 
         /* AUTHORITY & FAQ */
         .info-container { background: var(--bg-section); padding: 100px 20px; border-top: 1px solid var(--border-light); transition: background-color 0.3s; }
@@ -315,7 +323,6 @@
             h2 { font-size: 32px;}
             .mobile-sticky-cta { display: block; }
             body { padding-bottom: 80px; } 
-            .carousel-btn { display: none; }
             .share-text { display: none; }
             .share-btn { padding: 6px; width: 36px; justify-content: center;}
             .hero { padding-top: 60px; }
@@ -333,8 +340,7 @@
         <a href="index.html" class="brand">
             <img src="djen-128.png" alt="Logo Buscador DJEN">
             Buscador DJEN
-            <span class="badge-cortesia-site">CORTESIA</span>
-        </a>
+                    </a>
         
         <nav class="header-nav" aria-label="Navegação principal">
             <a href="busca.html" class="nav-link">Busca & Tags</a>
@@ -379,17 +385,9 @@
                 
                <div style="display: flex; flex-direction: column; align-items: center;">
                     
-                    <div class="trust-badges fade-in-section">
-                        <span>Compatível com:</span>
-                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> PJe</span>
-                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> e-SAJ</span>
-                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> eproc</span>
-                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> Projudi</span>
-                    </div>
-
                     <div class="hero-buttons fade-in-section">
                         <div style="display: flex; flex-direction: column; align-items: center;">
-                            <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store">
+                            <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store primary">
                                 <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" style="width: 28px; height: 28px; flex-shrink: 0;">
                                 <div class="store-text">
@@ -401,7 +399,7 @@
                         </div>
 
                         <div style="display: flex; flex-direction: column; align-items: center;">
-                            <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store">
+                            <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store secondary">
                                 <span class="version-tooltip firefox-tooltip">Buscando versão...</span>
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" style="width: 28px; height: 28px; flex-shrink: 0;">
                                 <div class="store-text">
@@ -411,6 +409,14 @@
                             </a>
                             <div class="rating-stars firefox-rating">★★★★★ <span>5.0</span></div>
                         </div>
+                    </div>
+
+                    <div class="trust-badges fade-in-section">
+                        <span>Compatível com:</span>
+                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> PJe</span>
+                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> e-SAJ</span>
+                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> eproc</span>
+                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> Projudi</span>
                     </div>
                     
                     <div class="microcopy fade-in-section">Gratuito e de código aberto. Instale em segundos, sem necessidade de cadastro ou senhas.</div>
@@ -428,31 +434,31 @@
             <div class="bento-grid">
                 <div class="bento-card">
                     <div class="bento-icon-wrapper">
-                        <div class="bento-icon" style="color: #ff64c8; background: rgba(255, 100, 200, 0.1); border-color: rgba(255, 100, 200, 0.2);">
+                        <div class="bento-icon" style="color: var(--zen-red);">
                             <i class="ph ph-calendar-blank"></i>
                         </div>
-                        <span class="bento-limit">Limite: 3 consultas/dia</span>
+                        <span class="bento-limit" style="background: rgba(255, 100, 200, 0.1); color: var(--zen-red);">Limite: 3 consultas/dia</span>
                     </div>
                     <h3>Motor Algorítmico de Prazos</h3>
                     <p>Contagem exata em dias úteis com desvio automático de feriados locais, recesso forense e suspensões confirmadas. Gera um log completo para sua auditoria visual da pauta.</p>
-                    <a href="calculadora.html" class="btn-browser primary btn-glow" style="width: 100%;">Auditar prazo online <i class="ph ph-arrow-right"></i></a>
+                    <a href="calculadora.html" class="btn-browser primary" style="width: 100%;">Auditar prazo online <i class="ph ph-arrow-right"></i></a>
                 </div>
 
                 <div class="bento-card">
                     <div class="bento-icon-wrapper">
-                        <div class="bento-icon" style="color: #62aef0; background: rgba(0, 117, 222, 0.15); border-color: rgba(0, 117, 222, 0.25);">
+                        <div class="bento-icon" style="color: var(--primary);">
                             <i class="ph ph-magnifying-glass"></i>
                         </div>
-                        <span class="bento-limit" style="background: rgba(0, 117, 222, 0.15); color: #62aef0;">Versão Web</span>
+                        <span class="bento-limit" style="background: var(--badge-bg); color: var(--badge-text);">Versão Web</span>
                     </div>
                     <h3>Extração Direta DJEN e CNJ</h3>
                     <p>Pesquise e extraia publicações ativas e dados judiciais por OAB ou UF instantaneamente. Sem bloqueios de captchas ou lentidão institucional.</p>
-                    <a href="busca.html" class="btn-browser" style="width: 100%; border-color: rgba(255,255,255,0.2); color: #fff;">Iniciar análise <i class="ph ph-arrow-right"></i></a>
+                    <a href="busca.html" class="btn-browser" style="width: 100%;">Iniciar análise <i class="ph ph-arrow-right"></i></a>
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 40px; font-size: 14px; font-weight: 500; color: #a39e98;">
-                Dica técnica: A <a href="#top" onclick="window.scrollTo(0,0);" style="color: #62aef0; text-decoration: underline;">extensão de navegador</a> processa os cálculos e buscas <strong style="color: #fff;">localmente e sem limites</strong>.
+            <div style="text-align: center; margin-top: 40px; font-size: 14px; font-weight: 500; color: var(--text-placeholder);">
+                Dica técnica: A <a href="#top" onclick="window.scrollTo(0,0);" style="color: var(--primary); text-decoration: underline;">extensão de navegador</a> processa os cálculos e buscas <strong style="color: var(--text-main);">localmente e sem limites</strong>.
             </div>
         </section>
 
@@ -528,11 +534,19 @@
         </section>
 
         <section class="gallery-section fade-in-section">
-            <div class="carousel-wrapper" style="position: relative; max-width: 1400px; margin: 0 auto;">
-                <button class="carousel-btn prev-btn" aria-label="Imagem Anterior">
-                    <i class="ph ph-caret-left"></i>
-                </button>
+            <div class="gallery-header">
+                <h2 class="gallery-title">Mostruário de Funcionalidades</h2>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn" aria-label="Imagem Anterior">
+                        <i class="ph ph-caret-left"></i>
+                    </button>
+                    <button class="carousel-btn next-btn" aria-label="Próxima Imagem">
+                        <i class="ph ph-caret-right"></i>
+                    </button>
+                </div>
+            </div>
 
+            <div class="carousel-wrapper" style="position: relative; max-width: 1400px; margin: 0 auto;">
                 <div class="carousel">
                     <div class="carousel-item">
                         <img src="1.png" alt="Interface da extensão Buscador DJEN realizando consulta de atos judiciais" loading="lazy">
@@ -563,10 +577,6 @@
                         <div class="carousel-caption">Relatórios estruturados e CSV para Jurimetria</div>
                     </div>
                 </div>
-
-                <button class="carousel-btn next-btn" aria-label="Próxima Imagem">
-                    <i class="ph ph-caret-right"></i>
-                </button>
             </div>
         </section>
 
@@ -610,12 +620,12 @@
         </section>
 
         <section class="bottom-cta fade-in-section">
-            <h2>Auditoria de prazos. A um clique.</h2>
+            <h2>Auditoria de prazos (PNG).</h2>
             <p>Sem lentidão. Sem implantações complexas. Instale e otimize sua rotina.</p>
             
             <div style="display: flex; flex-direction: column; align-items: center;">
                 <div class="hero-buttons">
-                    <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store">
+                    <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store primary">
                         <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
                         <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" style="width: 28px; height: 28px; flex-shrink: 0;">
                         <div class="store-text">
@@ -624,7 +634,7 @@
                         </div>
                     </a>
 
-                    <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store">
+                    <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store secondary">
                         <span class="version-tooltip firefox-tooltip">Buscando versão...</span>
                         <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" style="width: 28px; height: 28px; flex-shrink: 0;">
                         <div class="store-text">
@@ -742,23 +752,8 @@
             document.querySelectorAll('.fade-in-section').forEach(sec => observer.observe(sec));
         });
 
-        // Carousel Autoplay
+        // Carousel Manual Controls
         const carousel = document.querySelector('.carousel');
-        let autoPlayInterval;
-        function startAutoPlay() {
-            autoPlayInterval = setInterval(() => {
-                const item = carousel.querySelector('.carousel-item');
-                if(!item) return;
-                const itemWidth = item.offsetWidth + 24; 
-                if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 20) {
-                    carousel.scrollTo({ left: 0, behavior: 'smooth' });
-                } else {
-                    carousel.scrollBy({ left: itemWidth, behavior: 'smooth' }); 
-                }
-            }, 4000);
-        }
-        function stopAutoPlay() { clearInterval(autoPlayInterval); }
-        
         const prevBtn = document.querySelector('.prev-btn');
         const nextBtn = document.querySelector('.next-btn');
 
@@ -766,20 +761,13 @@
             prevBtn.addEventListener('click', () => {
                 const itemWidth = carousel.querySelector('.carousel-item').offsetWidth + 24;
                 carousel.scrollBy({ left: -itemWidth, behavior: 'smooth' });
-                stopAutoPlay(); startAutoPlay(); 
             });
 
             nextBtn.addEventListener('click', () => {
                 const itemWidth = carousel.querySelector('.carousel-item').offsetWidth + 24;
                 carousel.scrollBy({ left: itemWidth, behavior: 'smooth' });
-                stopAutoPlay(); startAutoPlay();
             });
         }
-        startAutoPlay();
-        carousel.addEventListener('mouseenter', stopAutoPlay);
-        carousel.addEventListener('mouseleave', startAutoPlay);
-        carousel.addEventListener('touchstart', stopAutoPlay, {passive: true});
-        carousel.addEventListener('touchend', startAutoPlay);
 
         // Image Modal
         const modal = document.createElement('div');
@@ -791,23 +779,20 @@
             img.addEventListener('click', () => {
                 document.getElementById('modalImg').src = img.src;
                 modal.style.display = 'flex';
-                stopAutoPlay();
             });
         });
         
         modal.addEventListener('click', () => {
             modal.style.display = 'none';
-            startAutoPlay();
         });
         
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && modal.style.display === 'flex') {
                 modal.style.display = 'none';
-                startAutoPlay();
             }
         });
 
-        // Web Share API & Dynamic Store Badges Fix
+        // Web Share API & Dynamic Store Badges
         document.addEventListener('DOMContentLoaded', () => {
             const btnCompartilhar = document.getElementById('btn-compartilhar');
             if (btnCompartilhar) {
