@@ -121,17 +121,18 @@
         .input-group { display: flex; flex-direction: column; gap: 8px; flex: 1; }
         .input-group label { font-size: 14px; font-weight: 600; color: var(--text-main); }
         
-        input, select { width: 100%; padding: 12px 16px; background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-light); border-radius: var(--radius-btn); font-size: 15px; font-family: 'Inter', sans-serif; box-sizing: border-box; outline: none; transition: all 0.2s ease; box-shadow: var(--shadow-card);}
+        /* Refinamento de Inputs: Remoção da sombra pesada */
+        input, select { width: 100%; padding: 12px 16px; background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-light); border-radius: var(--radius-btn); font-size: 15px; font-family: 'Inter', sans-serif; box-sizing: border-box; outline: none; transition: all 0.2s ease;}
         input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(0, 117, 222, 0.15); }
         input::placeholder { color: var(--text-placeholder); }
         input[type="date"] { cursor: pointer; }
 
         .btn-browser { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--primary); color: white; padding: 16px 24px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 16px; border: 1px solid transparent; cursor: pointer; transition: all 0.2s ease; width: 100%; margin-top: 8px; font-family: inherit;}
-        .btn-browser:hover { background: var(--primary-hover); transform: translateY(-1px); }
-        .btn-browser:disabled { background-color: var(--text-placeholder); cursor: not-allowed; transform: none; }
+        .btn-browser:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: var(--shadow-hover); }
+        .btn-browser:disabled { background-color: var(--text-placeholder); cursor: not-allowed; transform: none; box-shadow: none; }
 
         .btn-pill { width: 100%; padding: 14px 16px; background-color: transparent; color: var(--text-muted); border: 1px solid var(--border-light); border-radius: var(--radius-btn); font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; margin-top: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit;}
-        .btn-pill:hover { background-color: rgba(0,0,0,0.03); color: var(--text-main);}
+        .btn-pill:hover { background-color: rgba(0,0,0,0.03); color: var(--text-main); transform: translateY(-1px);}
         [data-theme="dark"] .btn-pill:hover { background-color: rgba(255,255,255,0.05); }
 
         /* TELA DE RESULTADO */
@@ -141,7 +142,8 @@
         /* AUDITORIA VISUAL (TIMELINE) */
         .audit-flow { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 10px; margin-top: 24px; padding: 20px; background: var(--bg-section); border-radius: var(--radius-card); border: 1px solid var(--border-light);}
         .audit-day { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 14px 6px; border-radius: 8px; border: 1px solid var(--border-light); background: var(--card-bg); transition: all 0.2s ease; cursor: default; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
-        .audit-day:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.15); z-index: 2;}
+        /* Refinamento de Hover: Sombras dentro do limite do sistema (< 0.05) */
+        .audit-day:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: rgba(0,0,0,0.15); z-index: 2;}
         .audit-day.is-fatal { background: rgba(217, 48, 37, 0.05); border-color: rgba(217, 48, 37, 0.3); }
         .audit-day.is-fatal .day-num { color: var(--zen-red); }
         .audit-day.is-pulo { opacity: 0.6; background: transparent; box-shadow: none; border-style: dashed;}
@@ -243,7 +245,7 @@
                     <button class="btn-browser" id="btn-voltar-calc" style="margin-top: 0;">
                         <i class="ph ph-arrow-counter-clockwise"></i> Nova Simulação
                     </button>
-                    <button class="btn-pill btn-exportar-png" style="color: var(--text-main); border-color: var(--border-light); margin-top: 0;">
+                    <button class="btn-pill btn-exportar-png" style="margin-top: 0;">
                         <i class="ph ph-download-simple"></i> Baixar Relatório (PNG)
                     </button>
                 </div>
@@ -265,8 +267,12 @@
                 A ferramenta web possui um limite de 3 simulações diárias. Para auditar prazos de forma <strong style="color: var(--text-main); font-weight: 600;">ilimitada e nativa</strong>, utilize a extensão do navegador.
             </p>
             <div style="display: flex; flex-direction: column; gap: 12px;">
-                <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser"><i class="ph ph-download-simple"></i> Baixar Extensão Chrome</a>
-                <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-browser" style="background: var(--bg-section); color: var(--text-main); border: 1px solid var(--border-light);"><i class="ph ph-download-simple"></i> Baixar Extensão Firefox</a>
+                <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser">
+                    <i class="ph ph-download-simple"></i> Baixar Extensão Chrome
+                </a>
+                <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-pill" style="margin-top: 0;">
+                    <i class="ph ph-download-simple"></i> Baixar Extensão Firefox
+                </a>
             </div>
             <button onclick="closeModal()" style="margin-top: 24px; background: none; border: none; color: var(--text-placeholder); font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 8px;">Voltar à calculadora</button>
         </div>
@@ -632,7 +638,6 @@
                     const d = document.createElement('div');
                     d.className = `audit-day is-${t.tipo}`;
                     
-                    // Lógica para renderizar Phosphor na Web, mas garantir o Export Canvas via Emojis nativos
                     let iconClass = "ph-calendar-blank"; let canvasEmoji = "🗓️";
                     if (t.desc.includes("Nacional")) { iconClass = "ph-flag"; canvasEmoji = "🇧🇷"; }
                     else if (t.desc.includes("Estadual")) { iconClass = "ph-map-trifold"; canvasEmoji = "🚩"; }
@@ -646,7 +651,7 @@
                     let corNum = (t.tipo === "pulo" || t.tipo === "info") ? "var(--text-muted)" : "var(--text-main)";
 
                     d.setAttribute('data-tooltip', t.desc);
-                    d.setAttribute('data-canvas-emoji', canvasEmoji); // Guarda o Emoji para o Canvas
+                    d.setAttribute('data-canvas-emoji', canvasEmoji); 
                     d.innerHTML = `
                         <div class="day-icon"><i class="ph ${iconClass}"></i></div>
                         <div class="day-num" style="color: ${corNum};">${t.numero}</div>
@@ -727,14 +732,14 @@
                 const isFatal = box.className.includes('is-fatal');
                 const isPulo = box.className.includes('is-pulo');
                 const tooltipText = box.getAttribute('data-tooltip') || '';
-                const canvasEmoji = box.getAttribute('data-canvas-emoji') || '🗓️'; // Resgate do fallback emoji
+                const canvasEmoji = box.getAttribute('data-canvas-emoji') || '🗓️';
                 
                 ctx.fillStyle = isFatal ? 'rgba(217, 48, 37, 0.05)' : '#ffffff'; 
                 ctx.beginPath(); ctx.roundRect(x, y, itemW, itemH, 12); ctx.fill();
                 
                 ctx.strokeStyle = isFatal ? 'rgba(217, 48, 37, 0.3)' : (isPulo ? 'rgba(0,0,0,0.05)' : 'rgba(0,0,0,0.1)'); 
                 if (isPulo) ctx.setLineDash([5, 5]); else ctx.setLineDash([]);
-                ctx.lineWidth = 1; ctx.stroke(); ctx.setLineDash([]); // Reset dash
+                ctx.lineWidth = 1; ctx.stroke(); ctx.setLineDash([]); 
 
                 ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
                 
@@ -765,7 +770,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // Adiciona CSS para spin animation global
         const styleSheet = document.createElement("style");
         styleSheet.innerText = "@keyframes spin { 100% { transform: rotate(360deg); } }";
         document.head.appendChild(styleSheet);
