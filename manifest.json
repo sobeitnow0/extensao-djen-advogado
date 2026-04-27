@@ -1,0 +1,21 @@
+{
+  "name": "Buscador DJEN - Prazos e Intimações Judiciais",
+  "short_name": "Buscador DJEN",
+  "description": "Buscador de Intimações com Motor de Prazos Avançado.",
+  "start_url": "/sidebar.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "djen-48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "djen-128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }
+  ]
+}

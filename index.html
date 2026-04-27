@@ -2,853 +2,1186 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador DJEN: Publicações e Prazos</title>
     
-    <title>Buscador DJEN | Extensão para Prazos e Publicações Judiciais</title>
-    <meta name="description" content="Gestão algorítmica de publicações no DJEN e CNJ. Calcule prazos processuais com precisão e automatize a controladoria do PJe, eproc e e-SAJ no navegador.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ffffff">
     
-    <link rel="canonical" href="https://www.buscadordjen.com.br/">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="djen-128.png">
     
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Buscador DJEN - Extensão para Advogados">
-    <meta property="og:description" content="Gestão inteligente de publicações e prazos judiciais direto no seu navegador. Gratuito e open-source.">
-    <meta property="og:image" content="https://www.buscadordjen.com.br/djen-128.png"> 
-    <meta property="og:url" content="https://www.buscadordjen.com.br/">
-    
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Buscador DJEN | Controle sua Pauta">
-    <meta name="twitter:description" content="A extensão que o seu sistema judiciário não oferece. Automatize o DJEN e seus prazos no navegador.">
-    <meta name="twitter:image" content="https://www.buscadordjen.com.br/djen-128.png">
-
-    <link rel="icon" type="image/png" href="djen-128.png">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Buscador DJEN",
-      "operatingSystem": "Chrome OS, Windows, macOS, Linux",
-      "applicationCategory": "BusinessApplication",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "BRL"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5.0",
-        "ratingCount": "120"
-      }
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [{
-        "@type": "Question",
-        "name": "Preciso fornecer meu token ou senhas do PJe/e-SAJ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Não. A extensão funciona de forma totalmente passiva, apenas lendo as informações públicas da tela do Diário Oficial que você já está acessando."
-        }
-      }, {
-        "@type": "Question",
-        "name": "Onde os meus processos e anotações ficam salvos?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "100% no seu próprio computador. O Buscador DJEN não utiliza servidores externos, garantindo sigilo absoluto e conformidade com a LGPD."
-        }
-      }]
-    }
-    </script>
+    <script src="sidebar.js"></script>
 
     <style>
-        /* DESIGN SYSTEM - NOTION INSPIRATION */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
         :root {
-            --bg-page: #ffffff;
-            --bg-header: rgba(255, 255, 255, 0.85); 
-            --bg-section: #f6f5f4; 
-            --card-bg: #ffffff;
+            /* ========================================== */
+            /* 1. CORES BASE (Claro)                      */
+            /* ========================================== */
+            --bg-body: #e8e6e1; 
+            --bg-panel: #ffffff; 
+            --bg-card: #ffffff;
+            --bg-hover: rgba(0, 0, 0, 0.05); 
             --text-main: rgba(0, 0, 0, 0.95); 
-            --text-muted: #615d59; 
+            --text-muted: #5e5a56; 
             --text-placeholder: #a39e98;
+            --border-light: rgba(0, 0, 0, 0.12); 
+            --border-focus: #0075de;
+            --card-inner: #f6f5f4; 
+            --input-bg: #ffffff; 
+            --btn-bg: rgba(0, 0, 0, 0.05); 
+            
+            /* Identidade Visual */
             --primary: #0075de; 
-            --primary-hover: #005bab; 
+            --primary-hover: #005bab;
             --primary-text: #ffffff;
-            --badge-bg: #f2f9ff;
-            --badge-text: #097fe8;
-            --border-light: rgba(0, 0, 0, 0.1); 
-            --zen-orange: #dd5b00;
-            --zen-green: #1aae39;
-            --zen-purple: #391c57;
-            --zen-red: #ff64c8; 
-            --zen-blue: #0075de;
-            --zen-gold: #523410; 
-            --radius-btn: 4px; 
-            --radius-card: 12px; 
-            --radius-pill: 9999px; 
-            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.8468px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04px;
-            --shadow-hover: rgba(0,0,0,0.05) 0px 10px 30px, rgba(0,0,0,0.03) 0px 4px 12px;
+            --primary-light: #f2f9ff;
+
+            /* Cores Semânticas (Zen Colors - Contraste Ajustado) */
+            --zen-green: #1aae39; --zen-green-bg: #ebf5ed;
+            --zen-orange: #dd5b00; --zen-orange-bg: #fdf3eb;
+            --zen-red: #d44c47; --zen-red-bg: #fbe4e4;
+            --zen-gray: #615d59; --zen-gray-bg: rgba(0, 0, 0, 0.05);
+            --zen-blue: #097fe8; --zen-blue-bg: #f2f9ff;
+
+            /* ========================================== */
+            /* 2. ESPAÇAMENTOS (8pt Grid System)          */
+            /* ========================================== */
+            --space-2: 2px;
+            --space-4: 4px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-24: 24px;
+            --space-32: 32px;
+
+            /* ========================================== */
+            /* 3. BORDAS E RAIOS (Border Radius)          */
+            /* ========================================== */
+            --radius-sm: 4px;    /* Badges e Tags */
+            --radius-btn: 6px;   /* Inputs, Selects e Botões (Padronizado) */
+            --radius-md: 8px;    /* Elementos internos maiores */
+            --radius-lg: 12px;   /* Cards Principais */
+            --radius-xl: 16px;   /* Modais */
+            --radius-pill: 9999px;
+
+            /* ========================================== */
+            /* 4. ANIMAÇÕES E TRANSIÇÕES                  */
+            /* ========================================== */
+            --trans-fast: 150ms ease;
+            --trans-normal: 250ms ease;
+
+            /* ========================================== */
+            /* 5. Z-INDEX SYSTEM                          */
+            /* ========================================== */
+            --z-base: 1;
+            --z-sticky: 100;
+            --z-dropdown: 200;
+            --z-overlay: 300;
+            --z-modal: 400;
+            --z-toast: 500;
+            --z-tooltip: 1000;
+            --z-max: 9999; /* NOVO: O limite absoluto da aplicação */
+
+            /* ========================================== */
+            /* 6. SOMBRAS (Elevations)                    */
+            /* ========================================== */
+            --bg-overlay: rgba(15, 15, 15, 0.4);
+            --blur-fx: blur(12px);
+            --shadow-sm: rgba(0, 0, 0, 0.04) 0px 1px 2px;
+            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2px 7.8px, rgba(0,0,0,0.02) 0px 0.8px 2.9px, rgba(0,0,0,0.01) 0px 0.17px 1px;
+            --shadow-hover: rgba(0,0,0,0.05) 0px 6px 24px, rgba(0,0,0,0.03) 0px 3px 10px;
             --shadow-modal: rgba(0,0,0,0.01) 0px 1px 3px, rgba(0,0,0,0.02) 0px 3px 7px, rgba(0,0,0,0.02) 0px 7px 15px, rgba(0,0,0,0.04) 0px 14px 28px, rgba(0,0,0,0.05) 0px 23px 52px;
+
+            /* ========================================== */
+       
+
+            /* Tags & Dashboards (Mantidos) */
+            --stat-hoje-txt: #dd5b00;   --stat-hoje-bg: #fdf3eb;   --stat-hoje-brd: rgba(221, 91, 0, 0.2);
+            --stat-5dias-txt: #0075de;  --stat-5dias-bg: #f2f9ff;  --stat-5dias-brd: rgba(0, 117, 222, 0.2);
+            --stat-futuro-txt: #1aae39; --stat-futuro-bg: #ebf5ed; --stat-futuro-brd: rgba(26, 174, 57, 0.2);
+            --stat-cump-txt: #615d59;   --stat-cump-bg: rgba(0, 0, 0, 0.05);   --stat-cump-brd: rgba(0, 0, 0, 0.1);
+            --tag-1-txt: #0056a3; --tag-1-bg: rgba(0, 86, 163, 0.1); 
+            --tag-2-txt: #4b2373; --tag-2-bg: rgba(75, 35, 115, 0.1); 
+            --tag-3-txt: #0f766e; --tag-3-bg: rgba(15, 118, 110, 0.1); 
+            --tag-4-txt: #9d2b6b; --tag-4-bg: rgba(157, 43, 107, 0.1); 
+            --tag-5-txt: #3730a3; --tag-5-bg: rgba(55, 48, 163, 0.1); 
+            --tag-6-txt: #523410; --tag-6-bg: rgba(82, 52, 16, 0.1); 
+            --tag-7-txt: #615d59; --tag-7-bg: rgba(97, 93, 89, 0.1);
         }
 
-        /* DARK THEME VARIABLES */
-        [data-theme="dark"] {
-            --bg-page: #31302e;
-            --bg-header: rgba(49, 48, 46, 0.85);
-            --bg-section: #2a2927; 
-            --card-bg: #31302e;
-            --text-main: rgba(255, 255, 255, 0.95);
-            --text-muted: #a39e98;
-            --text-placeholder: #615d59;
-            --primary: #62aef0; 
-            --primary-hover: #0075de;
-            --primary-text: #191919;
-            --badge-bg: rgba(98, 174, 240, 0.15);
-            --badge-text: #62aef0;
-            --border-light: rgba(255, 255, 255, 0.1); 
-            --zen-orange: #ffa344;
-            --zen-green: #2a9d99; 
-            --zen-purple: #b992e6;
-            --zen-red: #ff85d4;
-            --zen-gold: #8c5a24;
-            --shadow-card: rgba(0,0,0,0.2) 0px 4px 18px; 
-            --shadow-hover: rgba(0,0,0,0.3) 0px 12px 32px;
-            --shadow-modal: rgba(0,0,0,0.4) 0px 23px 52px;
+        /* Balão de Onboarding Flutuante */
+.onboarding-tip {
+    position: absolute;
+    background: var(--primary);
+    color: #ffffff;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(0, 117, 222, 0.3);
+    z-index: var(--z-max);
+    animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    pointer-events: none; /* Para não atrapalhar o clique embaixo */
+}
+.onboarding-tip::after {
+    content: ''; position: absolute;
+    border-width: 6px; border-style: solid;
+}
+.onboarding-tip.top::after { top: 100%; left: 20px; border-color: var(--primary) transparent transparent transparent; }
+.onboarding-tip.bottom::after { bottom: 100%; left: 20px; border-color: transparent transparent var(--primary) transparent; }
+.onboarding-tip.right::after { right: 100%; top: 50%; transform: translateY(-50%); border-color: transparent var(--primary) transparent transparent; }
+
+@keyframes bounceIn {
+    0% { transform: scale(0.8) translateY(10px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+        html.tema-escuro {
+            --bg-body: #191919; --bg-panel: #202020; --bg-card: #202020;
+            --bg-hover: rgba(255, 255, 255, 0.05); 
+            --text-main: rgba(255, 255, 255, 0.9); --text-muted: rgba(255, 255, 255, 0.5); --text-placeholder: rgba(255, 255, 255, 0.3);
+            --border-light: rgba(255, 255, 255, 0.1); --border-focus: #62aef0;
+            --card-inner: #252525; --input-bg: #191919; --btn-bg: rgba(255, 255, 255, 0.05); 
+            --primary: #62aef0; --primary-hover: #52a8ff; --primary-text: #191919; --primary-light: rgba(98, 174, 240, 0.15);
+            --zen-green: #4dabb6; --zen-green-bg: rgba(77, 171, 182, 0.15);
+            --zen-orange: #ffa344; --zen-orange-bg: rgba(255, 163, 68, 0.15);
+            --zen-red: #ff7369; --zen-red-bg: rgba(255, 115, 105, 0.15);
+            --zen-gray: rgba(255,255,255,0.7); --zen-gray-bg: rgba(255, 255, 255, 0.1);
+            --zen-blue: #62aef0; --zen-blue-bg: rgba(98, 174, 240, 0.15);
+            --stat-hoje-txt: #ffa344;   --stat-hoje-bg: rgba(255, 163, 68, 0.15); --stat-hoje-brd: rgba(255, 163, 68, 0.3);
+            --stat-5dias-txt: #8aa4ff;  --stat-5dias-bg: rgba(33, 49, 131, 0.4);  --stat-5dias-brd: rgba(138, 164, 255, 0.3); 
+            --stat-futuro-txt: #4dabb6; --stat-futuro-bg: rgba(77, 171, 182, 0.15); --stat-futuro-brd: rgba(77, 171, 182, 0.3);
+            --stat-cump-txt: rgba(255,255,255,0.5);   --stat-cump-bg: rgba(255,255,255,0.05);  --stat-cump-brd: rgba(255,255,255,0.1);
+            --tag-1-txt: #62aef0; --tag-1-bg: rgba(98, 174, 240, 0.15);
+            --tag-2-txt: #b992e6; --tag-2-bg: rgba(185, 146, 230, 0.15);
+            --tag-3-txt: #2dd4bf; --tag-3-bg: rgba(45, 212, 191, 0.15);
+            --tag-4-txt: #f472b6; --tag-4-bg: rgba(244, 114, 182, 0.15);
+            --tag-5-txt: #818cf8; --tag-5-bg: rgba(129, 140, 248, 0.15);
+            --tag-6-txt: #d6a87c; --tag-6-bg: rgba(214, 168, 124, 0.15);
+            --tag-7-txt: #cbd5e1; --tag-7-bg: rgba(203, 213, 225, 0.15);
+            --bg-overlay: rgba(0, 0, 0, 0.7);
+            --shadow-sm: rgba(0,0,0,0.5) 0px 1px 3px;
+            --shadow-card: rgba(0,0,0,0.4) 0px 4px 18px, rgba(0,0,0,0.3) 0px 2px 7.8px;
+            --shadow-hover: rgba(0,0,0,0.5) 0px 8px 24px, rgba(0,0,0,0.4) 0px 4px 12px;
+            --shadow-modal: rgba(0,0,0,0.5) 0px 23px 52px, rgba(0,0,0,0.4) 0px 14px 28px;
         }
 
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
-        ::-webkit-scrollbar-track { background: var(--bg-page); }
-        ::-webkit-scrollbar-thumb { background: rgba(163, 158, 152, 0.3); border-radius: 10px; border: 2px solid var(--bg-page); }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(163, 158, 152, 0.6); }
-        ::selection { background: rgba(0, 117, 222, 0.2); color: var(--text-main); }
-
-        body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; font-weight: 400; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; font-feature-settings: "lnum" 1, "locl" 1; transition: background-color 0.3s, color 0.3s; scroll-behavior: smooth; }
-        
-        section { scroll-margin-top: 80px; }
-
-        .ph { font-size: 1.25em; display: inline-flex; align-items: center; justify-content: center; }
-
-        /* Typography */
-        h1 { font-size: 64px; font-weight: 700; line-height: 1.00; letter-spacing: -2.125px; margin-bottom: 24px; }
-        h2 { font-size: 48px; font-weight: 700; line-height: 1.00; letter-spacing: -1.5px; margin-bottom: 16px; }
-        h3 { font-size: 22px; font-weight: 700; line-height: 1.27; letter-spacing: -0.25px; margin: 0 0 12px 0; }
-        
-        *:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--radius-btn); }
-
-        .progress-container { width: 100%; height: 3px; background: transparent; position: fixed; top: 0; left: 0; z-index: 1001; }
-        .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.15s ease-out; border-radius: 0 2px 2px 0; }
-
-        /* HEADER */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s; }
-        header.scrolled { box-shadow: var(--shadow-card); } 
-        
-        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); text-decoration: none; white-space: nowrap; } 
-        .brand img { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; border: 1px solid var(--border-light); }
-        .badge-cortesia-site { font-size: 10px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 3px 8px; border-radius: 999px; font-weight: 700; border: none; letter-spacing: 0.5px; white-space: nowrap; }
-        
-        .header-nav { display: flex; gap: 24px; margin: 0 auto; padding: 0 24px; } 
-        .nav-link { font-size: 15px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; white-space: nowrap; line-height: 1.33;} 
-        .nav-link:hover, .nav-link.active { color: var(--text-main); } 
-        
-        .header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-        .share-btn { display: flex; align-items: center; gap: 6px; background: transparent; color: var(--text-main); border: 1px solid transparent; padding: 6px 12px; height: 36px; border-radius: var(--radius-btn); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; white-space: nowrap; }
-        .share-btn:hover { background: rgba(0,0,0,0.05); } 
-        [data-theme="dark"] .share-btn:hover { background: rgba(255,255,255,0.05); }
-        
-        .theme-toggle { background: transparent; border: 1px solid transparent; color: var(--text-muted); width: 36px; height: 36px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; font-size: 1.25em; }
-        .theme-toggle:hover { background: rgba(0,0,0,0.05); color: var(--text-main); }
-        [data-theme="dark"] .theme-toggle:hover { background: rgba(255,255,255,0.05); }
-        [data-theme="dark"] .ph-sun { display: none; } [data-theme="light"] .ph-moon { display: none; }
-
-        /* HERO ALERTS & BADGES */
-        .hero-alert-badge { display: inline-flex; align-items: center; gap: 12px; background: var(--badge-bg); border: 1px solid var(--border-light); padding: 4px 16px 4px 6px; border-radius: var(--radius-pill); text-decoration: none; margin-bottom: 32px; transition: all 0.2s ease; }
-        .hero-alert-badge:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); }
-        .hero-alert-badge .badge-new { background: var(--primary); color: white; font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: var(--radius-pill); letter-spacing: 0.125px; }
-        .hero-alert-badge .alert-text { font-size: 14px; font-weight: 600; color: var(--badge-text); }
-        .hero-alert-badge .alert-icon { color: var(--badge-text); transition: transform 0.2s ease; font-size: 1em;}
-        .hero-alert-badge:hover .alert-icon { transform: translateX(4px); }
-
-        /* HERO DOT GRID */
-        .hero { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 120px 20px 100px; margin: 0 auto; background-image: radial-gradient(var(--border-light) 1px, transparent 1px); background-size: 32px 32px; background-position: center top; }
-        .hero-content { position: relative; z-index: 2; max-width: 900px; display: flex; flex-direction: column; align-items: center; }
-        .hero h1 span { color: var(--primary); }
-        .hero p { font-size: 20px; color: var(--text-muted); margin-bottom: 48px; max-width: 800px; margin-left: auto; margin-right: auto; font-weight: 600; line-height: 1.40; letter-spacing: -0.125px;}
-
-        /* BUTTONS */
-        .btn-browser { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background-color: transparent; color: var(--text-main); padding: 12px 24px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--border-light); transition: all 0.2s ease; line-height: 1.33; cursor: pointer; box-sizing: border-box; }
-        .btn-browser:hover { background-color: rgba(0,0,0,0.05); }
-        [data-theme="dark"] .btn-browser:hover { background-color: rgba(255,255,255,0.05); }
-        .btn-browser.primary { background-color: var(--primary); color: white; border: 1px solid transparent; }
-        .btn-browser.primary:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
-
-        /* DOWNLOAD STORE BUTTONS */
-        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
-        
-        .btn-store { position: relative; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 12px 24px; border-radius: var(--radius-btn); text-decoration: none; transition: all 0.2s ease; box-sizing: border-box; }
-        
-        .btn-store.primary { background-color: var(--primary); color: #ffffff; border: 1px solid transparent; box-shadow: var(--shadow-card); }
-        .btn-store.primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
-        .btn-store.primary .store-text small { color: rgba(255, 255, 255, 0.8); }
-        
-        .btn-store.secondary { background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); }
-        .btn-store.secondary:hover { background-color: rgba(0,0,0,0.02); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
-        [data-theme="dark"] .btn-store.secondary:hover { background-color: rgba(255,255,255,0.03); }
-        .btn-store.secondary .store-text small { color: var(--text-muted); }
-
-        .btn-store .store-text { display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.2; }
-        .btn-store .store-text small { font-size: 12px; font-weight: 500; letter-spacing: 0.125px; }
-        .btn-store .store-text strong { font-size: 16px; font-weight: 700; letter-spacing: normal; }
-        
-        .rating-stars { display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--zen-orange); margin-top: 8px; opacity: 0; transition: opacity 0.3s; }
-        .rating-stars.visible { opacity: 1; }
-
-        /* TOOLTIP */
-        .version-tooltip { position: absolute; top: -38px; left: 50%; transform: translateX(-50%) translateY(5px); background: #31302e; color: #ffffff; font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: var(--radius-btn); opacity: 0; visibility: hidden; transition: all 0.2s ease; white-space: nowrap; letter-spacing: 0.125px; box-shadow: var(--shadow-card); z-index: 10; pointer-events: none; }
-        .version-tooltip::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); border-width: 5px 5px 0; border-style: solid; border-color: #31302e transparent transparent transparent; }
-        .btn-store:hover .version-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-
-        .compare-link { font-size: 15px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 24px; margin-top: 12px; line-height: 1.33;}
-        .compare-link:hover { color: var(--primary); text-decoration: underline; }
-
-        .trust-badges { display: flex; align-items: center; justify-content: center; gap: 24px; color: var(--text-placeholder); font-size: 14px; font-weight: 500; margin-bottom: 16px; flex-wrap: wrap; }
-        .trust-badges span { display: flex; align-items: center; gap: 6px; }
-        .microcopy { color: var(--text-muted); font-size: 14px; font-weight: 400; line-height: 1.43; }
-
-        /* BENTO BOX TOOLS */
-        .bento-tools { background-color: var(--bg-section); padding: 120px 5%; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); transition: background-color 0.3s; }
-        .bento-header { text-align: center; margin-bottom: 64px; }
-        .bento-header h2 { color: var(--text-main); font-size: 40px; letter-spacing: -1px; margin-bottom: 16px;}
-        .bento-header p { color: var(--text-muted); font-size: 20px; max-width: 800px; margin: 0 auto; font-weight: 500; letter-spacing: -0.125px;}
-        
-        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; max-width: 1000px; margin: 0 auto; }
-        
-        .bento-card { background: var(--card-bg); border: 1px solid var(--border-light); padding: 48px; border-radius: var(--radius-card); display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: var(--shadow-card); }
-        .bento-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-        .bento-card h3 { color: var(--text-main); font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin: 0 0 16px 0; line-height: 1.2;}
-        .bento-card p { color: var(--text-muted); font-size: 16px; line-height: 1.6; margin: 0 0 40px 0; flex-grow: 1; }
-        
-        .bento-icon-wrapper { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
-        .bento-icon { width: 56px; height: 56px; border-radius: 12px; background: var(--bg-page); display: flex; justify-content: center; align-items: center; border: 1px solid var(--border-light); font-size: 24px; }
-        .bento-limit { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-pill); letter-spacing: 0.125px; }
-
-        /* FEATURES SECTION */
-        .features-container { padding: 120px 5% 80px; background: var(--bg-page); transition: background-color 0.3s; }
-        .features-header { text-align: center; margin-bottom: 80px; }
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; max-width: 1200px; margin: 0 auto; justify-content: center; }
-        
-        .feature-card { background: var(--card-bg); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); transition: all 0.3s ease; display: flex; flex-direction: column; }
-        .feature-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-4px); }
-        .feature-icon { margin-bottom: 24px; width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; border-radius: 8px; background: var(--bg-page); border: 1px solid var(--border-light); font-size: 1.5em; }
-        .feature-card p { color: var(--text-muted); margin: 0; font-size: 16px; font-weight: 400; line-height: 1.50; transition: color 0.3s; }
-        
-        .highlight-term { background-color: rgba(255, 100, 200, 0.15); padding: 0 4px; border-radius: 4px; font-weight: 500; color: var(--text-main); transition: background-color 0.3s; }
-        [data-theme="dark"] .highlight-term { background-color: rgba(255, 133, 212, 0.25); }
-
-        .feature-link { margin-top: auto; padding-top: 24px; font-size: 15px; font-weight: 600; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: gap 0.2s ease; line-height: 1.33;}
-        .feature-link:hover { gap: 10px; text-decoration: underline; }
-
-        /* GALLERY CAROUSEL */
-        .gallery-section { padding: 0 0 120px 0; background: var(--bg-page); width: 100%; overflow: hidden; transition: background-color 0.3s; }
-        .gallery-header { display: flex; justify-content: space-between; align-items: flex-end; max-width: 1400px; margin: 0 auto 24px auto; padding: 0 5%; }
-        .gallery-title { font-size: 26px; font-weight: 700; letter-spacing: -0.625px; color: var(--text-main); margin: 0; }
-        
-        .carousel-controls { display: flex; gap: 8px; }
-        .carousel-btn { width: 36px; height: 36px; background: transparent; border: 1px solid var(--border-light); border-radius: var(--radius-btn); color: var(--text-main); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: background 0.2s; font-size: 1.2em; }
-        .carousel-btn:hover { background: rgba(0,0,0,0.05); }
-        [data-theme="dark"] .carousel-btn:hover { background: rgba(255,255,255,0.05); }
-
-        .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 24px; padding: 0 5% 20px 5%; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; }
-        .carousel::-webkit-scrollbar { display: none; }
-        .carousel-item { scroll-snap-align: center; flex: 0 0 auto; width: 85%; max-width: 400px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); background: var(--card-bg); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; }
-        @media (min-width: 1024px) { .carousel-item { width: calc(33.333% - 16px); max-width: none; scroll-snap-align: start; } }
-        @media (min-width: 768px) and (max-width: 1023px) { .carousel-item { width: calc(50% - 12px); max-width: none; scroll-snap-align: start; } }
-        .carousel-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-        .carousel-item img { width: 100%; height: auto; display: block; cursor: zoom-in; object-fit: cover; border-bottom: 1px solid var(--border-light); border-radius: 12px 12px 0 0; }
-        .carousel-caption { padding: 16px; font-size: 14px; text-align: left; color: var(--text-muted); font-weight: 500; background: transparent; line-height: 1.43; }
-
-        /* AUTHORITY & FAQ */
-        .info-container { background: var(--bg-section); padding: 100px 20px; border-top: 1px solid var(--border-light); transition: background-color 0.3s; }
-        .authority-box { max-width: 800px; margin: 0 auto; text-align: center; }
-        .authority-box p { color: var(--text-main); font-size: 20px; line-height: 1.6; margin-bottom: 0; font-weight: 400; transition: color 0.3s; letter-spacing: -0.125px;}
-
-        .faq-item { background: var(--card-bg); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); transition: 0.3s; box-shadow: var(--shadow-card); margin-bottom: 24px; }
-        .faq-item:hover { box-shadow: var(--shadow-hover); }
-        .faq-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-        .faq-header i { font-size: 1.5em; }
-
-        /* FOOTER CTA & COFFEE */
-        .bottom-cta { text-align: center; padding: 120px 20px; background: var(--bg-page); border-top: 1px solid var(--border-light); transition: background-color 0.3s;}
-        .bottom-cta p { color: var(--text-muted); font-size: 20px; font-weight: 600; margin-bottom: 40px; transition: color 0.3s; letter-spacing: -0.125px;}
-
-        footer { padding: 80px 20px 40px; border-top: 1px solid var(--border-light); background: var(--bg-page); display: flex; flex-direction: column; align-items: center; transition: background-color 0.3s; }
-        .footer-content { max-width: 500px; width: 100%; display: flex; flex-direction: column; gap: 32px; }
-        
-        .coffee-container { border: 1px solid var(--border-light); border-radius: var(--radius-card); background: var(--card-bg); overflow: hidden; transition: background-color 0.3s; box-shadow: var(--shadow-card); }
-        .coffee-btn { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; color: var(--text-main); font-size: 16px; font-weight: 600; background: transparent; border: none; width: 100%; cursor: pointer; transition: background 0.2s ease, color 0.3s; }
-        .coffee-btn:hover { background: rgba(0,0,0,0.02); }
-        [data-theme="dark"] .coffee-btn:hover { background: rgba(255,255,255,0.03); }
-        .coffee-btn i { transition: transform 0.3s ease; }
-        .coffee-btn.active i { transform: rotate(180deg); }
-        .coffee-content { display: none; padding: 0 24px 24px 24px; border-top: 1px solid var(--border-light); text-align: center; }
-        .coffee-content.show { display: block; animation: slideDown 0.3s ease; }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .pix-code-container { display: flex; gap: 8px; margin-top: 16px;}
-        .pix-code-container input { flex: 1; padding: 8px 12px; background: var(--bg-section); border: 1px solid var(--border-light); color: var(--text-muted); border-radius: var(--radius-btn); font-size: 14px; outline: none; transition: background-color 0.3s, color 0.3s; font-family: monospace;}
-        .pix-code-container button { background: var(--text-main); color: var(--bg-page); border: none; padding: 0 16px; border-radius: var(--radius-btn); font-weight: 600; font-size: 15px; cursor: pointer; transition: 0.2s; }
-        .pix-code-container button:hover { opacity: 0.85; transform: translateY(-1px); }
-        
-        .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 24px; }
-        .footer-links a { color: var(--text-muted); font-size: 15px; font-weight: 500; text-decoration: none; transition: color 0.2s; }
-        .footer-links a:hover { color: var(--primary); text-decoration: underline; }
-        .footer-copy { text-align: center; color: var(--text-placeholder); font-size: 14px; font-weight: 400; margin-top: 8px; }
-
-        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; }
-        .fade-in-section.is-visible { opacity: 1; transform: none; }
-
-        .mobile-sticky-cta { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-header); backdrop-filter: blur(10px); border-top: 1px solid var(--border-light); padding: 16px 20px; z-index: 100; box-shadow: 0 -4px 20px rgba(0,0,0,0.08); text-align: center; box-sizing: border-box; transition: background-color 0.3s; }
-
-        @media (max-width: 900px) { .header-nav { display: none; } }
-        @media (max-width: 768px) { 
-            h1 { font-size: 40px; letter-spacing: -0.625px;} 
-            h2 { font-size: 32px;}
-            .mobile-sticky-cta { display: block; }
-            body { padding-bottom: 80px; } 
-            .share-text { display: none; }
-            .share-btn { padding: 6px; width: 36px; justify-content: center;}
-            .hero { padding-top: 60px; }
-            .bento-card { padding: 32px; }
+        html.tema-sepia {
+            --bg-body: #e6dfd3; --bg-panel: #fcfbf8; --bg-card: #fcfbf8; 
+            --bg-hover: rgba(82, 52, 16, 0.06); 
+            --text-main: #2b2a28; --text-muted: #5e5a56; --text-placeholder: #9c9791;
+            --border-light: rgba(82, 52, 16, 0.1); --border-focus: #523410;
+            --card-inner: #f2eadc; --input-bg: #ffffff; --btn-bg: rgba(82, 52, 16, 0.05); 
+            --primary: #523410; --primary-hover: #3d260b; --primary-text: #ffffff; --primary-light: #f2ede9;
+            --zen-green: #1b5e20; --zen-green-bg: #e3ebd6;
+            --zen-orange: #a64d00; --zen-orange-bg: #fceadc;
+            --zen-red: #8f2d29; --zen-red-bg: #f5e4e4;
+            --zen-gray: #4d4a47; --zen-gray-bg: rgba(82, 52, 16, 0.08);
+            --zen-blue: #1c456b; --zen-blue-bg: #e1ebf5;
+            --stat-hoje-txt: #a64d00;   --stat-hoje-bg: #fceadc;   --stat-hoje-brd: rgba(166, 77, 0, 0.25);
+            --stat-5dias-txt: #523410;  --stat-5dias-bg: #f2ede9;  --stat-5dias-brd: rgba(82, 52, 16, 0.25);
+            --stat-futuro-txt: #1b5e20; --stat-futuro-bg: #e3ebd6; --stat-futuro-brd: rgba(27, 94, 32, 0.25);
+            --stat-cump-txt: #5e5a56;   --stat-cump-bg: rgba(82, 52, 16, 0.05); --stat-cump-brd: rgba(82, 52, 16, 0.15);
+            --tag-1-txt: #1c456b; --tag-1-bg: rgba(28, 69, 107, 0.1); 
+            --tag-2-txt: #4b2373; --tag-2-bg: rgba(75, 35, 115, 0.1); 
+            --tag-3-txt: #0f766e; --tag-3-bg: rgba(15, 118, 110, 0.1); 
+            --tag-4-txt: #9d2b6b; --tag-4-bg: rgba(157, 43, 107, 0.1); 
+            --tag-5-txt: #3730a3; --tag-5-bg: rgba(55, 48, 163, 0.1); 
+            --tag-6-txt: #472c0b; --tag-6-bg: rgba(71, 44, 11, 0.1); 
+            --tag-7-txt: #5e5a56; --tag-7-bg: rgba(94, 90, 86, 0.1);
+            --bg-overlay: rgba(43, 42, 40, 0.4);
+            --shadow-sm: rgba(82, 52, 16, 0.04) 0px 1px 2px;
+            --shadow-card: rgba(82, 52, 16, 0.04) 0px 4px 18px, rgba(82, 52, 16, 0.027) 0px 2px 7.8px;
+            --shadow-hover: rgba(82, 52, 16, 0.06) 0px 6px 24px, rgba(82, 52, 16, 0.04) 0px 3px 10px;
+            --shadow-modal: rgba(82, 52, 16, 0.1) 0px 23px 52px, rgba(82, 52, 16, 0.05) 0px 14px 28px;
         }
+
+       
+        @media (prefers-reduced-motion: reduce) { *, ::before, ::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+        
+       body { 
+            font-family: 'Inter', -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px; 
+            line-height: 1.5; 
+            width: 100%; 
+            
+            /* --- INÍCIO DA MÁGICA PARA DESKTOP --- */
+            max-width: 600px; /* Trava a largura máxima para não esticar no PC */
+            margin: 0 auto; /* Centraliza o app no meio da tela do monitor */
+            min-height: 100vh; /* Garante que o fundo cubra a tela toda */
+            /* --- FIM DA MÁGICA --- */
+            
+            box-sizing: border-box; 
+            padding: 12px 16px 24px 16px; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            -webkit-font-smoothing: antialiased; 
+            transition: background-color 0.2s ease, color 0.2s ease; 
+            overflow-x: hidden; 
+            color-scheme: light dark;
+        }
+
+        input, select, textarea { 
+            font-family: inherit; width: 100%; box-sizing: border-box;
+            padding: var(--space-8) var(--space-12); 
+            background-color: var(--input-bg); color: var(--text-main); 
+            border: 1px solid var(--border-light); border-radius: var(--radius-btn); 
+            font-size: 14px; outline: none; 
+            transition: border-color var(--trans-fast), box-shadow var(--trans-fast), background-color var(--trans-fast); 
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.02); 
+        }
+
+        .btn-main, .btn-pill.c-blue.solid { 
+            width: 100%; 
+            padding: var(--space-8) var(--space-16); 
+            background-color: var(--primary); color: #ffffff; 
+            border: 1px solid transparent; border-radius: var(--radius-btn); 
+            font-size: 14px; font-weight: 500; cursor: pointer; 
+            transition: background-color var(--trans-fast), transform var(--trans-fast); 
+            box-shadow: var(--shadow-sm); 
+        }
+
+        .btn-pill { 
+            background: transparent; color: var(--text-main); 
+            border: 1px solid var(--border-light); border-radius: var(--radius-btn); 
+            padding: var(--space-8) var(--space-12); 
+            font-size: 14px; font-weight: 500; cursor: pointer; 
+            display: flex; justify-content: center; align-items: center; gap: var(--space-8); 
+            transition: background-color var(--trans-fast), color var(--trans-fast); 
+        }
+
+        .intimacao-card { 
+            background-color: var(--bg-card); 
+            border: 1px solid var(--border-light); border-radius: var(--radius-lg); 
+            padding: var(--space-16); 
+            margin-bottom: var(--space-16); 
+            transition: box-shadow var(--trans-normal), transform var(--trans-normal), margin var(--trans-normal); 
+            position: relative; box-shadow: var(--shadow-card); scroll-margin-top: 140px; 
+        }
+
+        .intimacao-card.compact { 
+            padding: var(--space-12) var(--space-16); 
+        }
+
+        .modal-content { 
+            background: var(--bg-panel); width: 90%; max-width: 400px; max-height: 90vh; 
+            overflow-y: auto; border-radius: var(--radius-xl); 
+            padding: var(--space-24); 
+            position: relative; border: 1px solid var(--border-light); 
+            box-shadow: var(--shadow-modal); transform: scale(0.98); 
+            transition: transform var(--trans-normal); display: flex; flex-direction: column; align-items: flex-start;
+        }
+
+        h1, h2, h3, .proc-apelido, .proc-numero-principal, .app-title, .focus-proc { font-weight: 700; color: var(--text-main); margin: 0; line-height: 1.2; }
+        .app-title { font-size: 16px; font-weight: 600; cursor: pointer; letter-spacing: -0.125px; }
+        .proc-apelido, .proc-numero-principal { font-size: 16px; letter-spacing: -0.25px; }
+        .focus-proc { font-size: calc(var(--font-focus) + 16px); color: var(--text-main); margin: 0; word-break: break-word; white-space: pre-wrap; font-weight: 700; line-height: 1.1; letter-spacing: -1px;}
+        .badge-oab, .badge-trib, .badge-lido, .badge-salvo, .cal-day-header { letter-spacing: 0.125px; }
+
+        *:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 1px; border-radius: var(--radius-btn); }
+        svg { flex-shrink: 0; pointer-events: none; }
+        
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.1); border-radius: 10px; border: 2px solid var(--bg-body); background-clip: padding-box; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.25); }
+        html.tema-escuro ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-color: var(--bg-body); }
+        html.tema-escuro ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); }
+
+        [data-tooltip] { position: relative; cursor: pointer; }
+        [data-tooltip]:hover { z-index: var(--z-max); }
+        [data-tooltip]::before, [data-tooltip]::after { position: absolute; visibility: hidden; opacity: 0; transition: 0.1s ease; z-index: var(--z-max) !important; pointer-events: none; }
+        [data-tooltip]::before { content: attr(data-tooltip); padding: 4px 8px; background-color: var(--text-main); color: var(--bg-panel); font-size: 12px; font-weight: 500; border-radius: var(--radius-btn); white-space: normal; max-width: 200px; width: max-content; text-align: center; box-shadow: var(--shadow-sm); bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); box-sizing: border-box; word-break: break-word; }
+        [data-tooltip]::after { content: ''; bottom: calc(100% + 2px); left: 50%; transform: translateX(-50%); border-width: 4px; border-style: solid; border-color: var(--text-main) transparent transparent transparent; }
+        [data-tooltip]:hover::before, [data-tooltip]:hover::after { visibility: visible; opacity: 1; }
+        .tooltip-left[data-tooltip]::before { left: auto; right: 0; transform: none; }
+        .tooltip-left[data-tooltip]::after { left: auto; right: 10px; transform: none; }
+        .tooltip-right[data-tooltip]::before { left: 0; transform: none; }
+        .tooltip-right[data-tooltip]::after { left: 10px; transform: none; }
+        .tooltip-bottom[data-tooltip]::before { bottom: auto; top: calc(100% + 6px); }
+        .tooltip-bottom[data-tooltip]::after { bottom: auto; top: calc(100% + 2px); border-color: transparent transparent var(--text-main) transparent; }
+        .tooltip-bottom.tooltip-left[data-tooltip]::after { right: 10px; left: auto; transform: none; }
+        .tooltip-bottom.tooltip-right[data-tooltip]::after { left: 10px; right: auto; transform: none; }
+
+        .top-bar-fixed { position: sticky; top: -12px; z-index: var(--z-sticky); background: rgba(255, 255, 255, 0.50); backdrop-filter: blur(12px) saturate(160%); -webkit-backdrop-filter: blur(12px) saturate(160%); margin: -12px -16px 16px -16px; padding: 12px 16px; border-bottom: 1px solid var(--border-light); }
+        html.tema-escuro .top-bar-fixed { background: rgba(32, 32, 32, 0.60); backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%); }
+        html.tema-sepia .top-bar-fixed { background: rgba(230, 223, 211, 0.85); backdrop-filter: blur(12px) saturate(120%); -webkit-backdrop-filter: blur(12px) saturate(120%); }
+        
+        .app-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .app-brand-wrapper { display: flex; align-items: center; gap: 8px; }
+        .app-brand-wrapper img { width: 24px; height: 24px; border-radius: 4px; object-fit: contain; }
+        
+        .header-menu-container { position: relative; display: flex; align-items: center; }
+        .btn-header-menu { background: transparent; border: none; color: var(--text-muted); width: 32px; height: 32px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.1s;}
+        .btn-header-menu:hover, .btn-header-menu.active { background: var(--bg-hover); color: var(--text-main); }
+        
+        @keyframes pulseAlert { 0% { box-shadow: 0 0 0 0 rgba(212, 76, 71, 0.4); } 70% { box-shadow: 0 0 0 4px rgba(212, 76, 71, 0); } 100% { box-shadow: 0 0 0 0 rgba(212, 76, 71, 0); } }
+        .btn-header-menu.needs-backup::after { content: ''; position: absolute; top: 4px; right: 4px; width: 6px; height: 6px; background-color: var(--zen-red); border-radius: 50%; animation: pulseAlert 1.5s infinite; }
+        .btn-backup-pulse, .btn-backup-pulse svg { color: var(--zen-red) !important; }
+        
+        .dropdown-menu, .card-dropdown { position: absolute; top: calc(100% + 4px); right: 0; background: var(--bg-panel) !important; border: 1px solid var(--border-light) !important; border-radius: var(--radius-card); box-shadow: var(--shadow-card); display: none; flex-direction: column; min-width: 220px; z-index: var(--z-dropdown); padding: 6px; transform-origin: top right; }
+        .dropdown-menu.show, .card-dropdown.show { display: flex !important; }
+        .dropdown-menu button, .card-dropdown button { background: transparent; border: none; padding: var(--space-8) var(--space-12); text-align: left; font-size: 14px; font-weight: 500; color: var(--text-main); border-radius: var(--radius-btn); cursor: pointer; display: flex; align-items: center; gap: 8px; width: 100%; transition: 0.1s;}
+        .dropdown-menu button:hover, .card-dropdown button:hover { background: var(--bg-hover); color: var(--primary); }
+        .dropdown-menu hr, .card-dropdown hr { border: 0; border-top: 1px solid var(--border-light); margin: 4px 0; width: 100%; }
+
+        #toastNativo, #toastGenerico, #toastDesfazer { position: fixed; left: 50%; background: var(--text-main); color: var(--bg-panel); border-radius: var(--radius-btn); font-size: 14px; font-weight: 500; box-shadow: var(--shadow-modal); z-index: var(--z-toast); pointer-events: none; opacity: 0; transition: all 0.3s; }
+        #toastNativo { top: 24px; padding: 10px 16px; transform: translate(-50%, -10px); }
+        #toastGenerico { bottom: 24px; padding: 8px 14px; display: flex; align-items: center; gap: 8px; transform: translate(-50%, 10px); }
+        #toastDesfazer { bottom: 24px; padding: 8px 12px 8px 14px; display: flex; align-items: center; gap: 16px; transform: translate(-50%, 10px); }
+        #toastNativo.show, #toastGenerico.show, #toastDesfazer.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+        #toastNativo .toast-title { display: flex; align-items: center; justify-content: center; gap: 8px;}
+        #btnAcaoDesfazer { background: transparent; border: none; color: var(--bg-panel); font-weight: 600; font-size: 12px; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-btn); text-decoration: underline;}
+        #btnAcaoDesfazer:hover { background: rgba(255,255,255,0.1); }
+
+        .view-switcher { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px;}
+        .view-switcher button { border: none; background: transparent; padding: 6px 12px; font-size: 14px; font-weight: 500; border-radius: var(--radius-btn); cursor: pointer; color: var(--text-muted); transition: 0.1s ease; display: flex; align-items: center; gap: 6px;}
+        .view-switcher button:hover { background: var(--bg-hover); color: var(--text-main); }
+        .view-switcher button.active { color: var(--text-main); font-weight: 600; position: relative; }
+        .view-switcher button.active::after { content: ''; position: absolute; bottom: -9px; left: 0; width: 100%; height: 2px; background: var(--text-main); }
+        
+        #viewBusca { display: block; } #viewSalvos, #viewCalendario, #viewCalculadora { display: none; }
+
+@keyframes slideDownForm {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+        .segmented-control { display: flex; background: var(--btn-bg); padding: 3px; border-radius: 6px; margin-bottom: 12px; gap: 2px; }
+        .segmented-control button { flex: 1; border: none; background: transparent; padding: 6px; font-size: 14px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-radius: 4px; transition: all 0.2s ease; }
+        .segmented-control button.active { background: var(--bg-panel); color: var(--text-main); box-shadow: var(--shadow-sm); }
+        .segmented-control button:hover:not(.active) { color: var(--text-main); background: var(--bg-hover); }
+
+        #areaBusca { padding: 0 0 12px 0; margin-bottom: 12px; }
+        .form-row { display: flex; gap: 12px; margin-bottom: 12px; }
+        .input-group { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+        .input-group label { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+        
+        input, select, textarea { font-family: inherit; width: 100%; padding: 8px 12px; background-color: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-light); border-radius: var(--radius-btn); font-size: 14px; outline: none; transition: all 0.2s ease; box-sizing: border-box; box-shadow: inset 0 1px 2px rgba(0,0,0,0.02); }
+        input:focus, select:focus, textarea:focus { border-color: var(--border-focus); box-shadow: 0 0 0 1px var(--border-focus); background-color: var(--bg-panel);}
+        select { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23787774' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+        html.tema-escuro select { background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a39e98' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); }
+        
+        .btn-group { display: flex; gap: 8px; margin-top: 4px; margin-bottom: 16px; flex-wrap: wrap; }
+        .btn-group button { flex: 1; padding: var(--space-8) var(--space-12); font-size: 14px; font-weight: 500; background-color: var(--btn-bg); color: var(--text-main); border: 1px solid transparent; border-radius: var(--radius-btn); cursor: pointer; transition: 0.1s;}
+        .btn-group button:hover { background-color: var(--bg-hover); border-color: var(--border-light); }
+        
+        .btn-main, .btn-pill.c-blue.solid { width: 100%; padding: 8px 16px; background-color: var(--primary); color: #ffffff; border: 1px solid transparent; border-radius: var(--radius-btn); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.1s ease; box-shadow: var(--shadow-sm); }
+        .btn-main:hover, .btn-pill.c-blue.solid:hover { background-color: var(--primary-hover); transform: none; }
+        .btn-main:active, .btn-pill.c-blue.solid:active { transform: scale(0.97); }
+        html.tema-escuro .btn-main, html.tema-escuro .btn-pill.c-blue.solid { color: #191919; }
+        
+        .btn-pill { background: transparent; color: var(--text-main); border: 1px solid var(--border-light); border-radius: var(--radius-btn); padding: var(--space-8) var(--space-12); font-size: 14px; font-weight: 500; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px; transition: 0.1s; }
+        .btn-pill:hover { background: var(--bg-hover); }
+        .btn-pill.c-gray { color: var(--text-muted); }
+
+        #resumoBusca { width: 100%; display: flex; align-items: center; justify-content: space-between; background-color: var(--bg-panel); border: 1px solid var(--border-light); border-radius: var(--radius-btn); padding: 10px 14px; margin-bottom: 16px; box-shadow: var(--shadow-sm); cursor: pointer; transition: 0.1s; color: var(--text-main); }
+        #resumoBusca:hover { background-color: var(--bg-hover); }
+        .resumo-icone { color: var(--text-muted); display: flex; align-items: center; margin-right: 12px; }
+        .resumo-texto { flex: 1; font-size: 14px; font-weight: 500; text-align: left; }
+        .resumo-icone-edit { color: var(--text-muted); display: flex; align-items: center; opacity: 0.6; }
+
+        .progress-wrapper { display: none; margin-bottom: 12px; padding: 0;}
+        .progress-track { width: 100%; height: 4px; background: var(--border-light); border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s ease; }
+        .progress-text { font-size: 12px; color: var(--text-muted); text-align: right; }
+
+        .calendar-wrapper { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-card); padding: 12px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+        .cal-day-header { font-size: 11px; font-weight: 600; color: var(--text-placeholder); text-transform: uppercase; padding-bottom: 8px; }
+        .cal-cell { position: relative; height: 44px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 8px; font-size: 14px; font-weight: 500; color: var(--text-main); border-radius: var(--radius-btn); cursor: pointer; transition: background 0.1s; border: 1px solid transparent; }
+        .cal-cell:hover { background: var(--bg-hover); }
+        .cal-cell.is-today { background: var(--primary-light); color: var(--primary); font-weight: 700; border-color: var(--primary-light); }
+        .cal-cell.is-selected { border-color: var(--border-light); background: var(--bg-body); box-shadow: var(--shadow-sm); }
+        .cal-cell.is-muted { color: var(--text-placeholder); }
+        .cal-dots { display: flex; gap: 3px; justify-content: center; margin-top: 4px; height: 4px;}
+        .cal-dot { width: 4px; height: 4px; border-radius: 50%; }
+        .cal-dot.d-red { background: var(--zen-red); }
+        .cal-dot.d-orange { background: var(--zen-orange); }
+        .cal-dot.d-green { background: var(--zen-green); }
+        .cal-dot.d-gray { background: var(--text-muted); }
+
+        .intimacao-card { background-color: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-card); padding: 18px 16px; margin-bottom: 14px; transition: all 0.2s ease; position: relative; box-shadow: var(--shadow-card); scroll-margin-top: 80px; }
+        .intimacao-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px);}
+        .intimacao-card.aberto { background-color: var(--bg-card); border-color: var(--border-light); box-shadow: var(--shadow-modal); z-index: 2; margin-top: 16px; margin-bottom: 16px;}
+        
+        #viewBusca:has(.intimacao-card.aberto) .intimacao-card:not(.aberto),
+        #viewSalvos:has(.intimacao-card.aberto) .intimacao-card:not(.aberto),
+        #calSelectedDateItems:has(.intimacao-card.aberto) .intimacao-card:not(.aberto) { opacity: 0.5; filter: blur(2px) grayscale(0.2); transform: scale(0.99); }
+        
+        .intimacao-card.lido:not(.aberto), .intimacao-card.is-cumprido:not(.aberto) { opacity: 0.6; box-shadow: var(--shadow-sm); }
+        .intimacao-card.is-cumprido { background-color: var(--bg-body); border-color: transparent; }
+        .intimacao-card.is-cumprido .card-top-info, .intimacao-card.is-cumprido .proc-header, .intimacao-card.is-cumprido .teor-inner-box { filter: grayscale(100%); opacity: 0.7; }
+        .card-click-area { cursor: pointer; border-radius: var(--radius-btn); margin: -4px; padding: 4px; transition: 0.1s;}
+        .card-click-area:hover { background: var(--bg-hover); }
+        .card-top-info { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+        .badge-oab, .badge-trib, .badge-lido { padding: 2px 8px; border-radius: var(--radius-pill); background: var(--zen-gray-bg); color: var(--zen-gray); border: none; display: inline-flex; align-items: center; }
+        .badge-oab { background: var(--zen-blue-bg); color: var(--zen-blue); }
+
+        .tag-pill { 
+    font-size: 11px; 
+    font-weight: 600; 
+    padding: 2px 8px 2px 0; /* Zera o padding esquerdo para alinhar com o texto */
+    display: inline-flex; 
+    align-items: center; 
+    gap: 4px; 
+    letter-spacing: 0.2px; 
+    background: transparent !important; /* Remove o fundo de todas as tags */
+    border: none !important; /* Remove a borda */
+}
+
+        .badge-salvo { display: flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: var(--radius-pill); font-weight: 600; font-size: 12px;}
+        .badge-salvo.s-green { color: var(--zen-green); background-color: var(--zen-green-bg); }
+        .badge-salvo.s-orange { color: var(--zen-orange); background-color: var(--zen-orange-bg); }
+        .badge-salvo.s-red { color: var(--zen-red); background-color: var(--zen-red-bg); }
+        .badge-salvo.s-gray { color: var(--text-muted); background: var(--bg-hover); }
+
+        .proc-header { display: flex; flex-direction: column; width: 100%; gap: 6px; }
+        .hint-apelido { color: var(--text-placeholder); font-size: 14px; cursor: pointer; font-style: italic;}
+        .hint-apelido:hover { color: var(--text-main); text-decoration: underline;}
+        .proc-apelido, .proc-numero-principal { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px;}
+        .proc-apelido::before, .proc-numero-principal::before { content: '📄'; font-size: 16px; } 
+        .proc-numero-secundario { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .proc-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; pointer-events: none;}
+
+        .icone-seta { width: 7px; height: 7px; border-right: 1.5px solid var(--text-placeholder); border-bottom: 1.5px solid var(--text-placeholder); transform: rotate(45deg); transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1); margin-top: 6px; }
+        .intimacao-card.aberto .icone-seta { transform: rotate(-135deg); margin-top: 10px; }
+        .intimacao-card.compact { padding: 12px 16px; }
+        
+        .teor-wrapper { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.2s ease, opacity 0.2s ease; }
+        .intimacao-card.aberto .teor-wrapper { grid-template-rows: 1fr; opacity: 1; margin-top: 12px;}
+        .teor-inner-overflow { overflow: hidden; min-height: 0; } 
+        .intimacao-card.aberto .teor-inner-overflow { overflow: visible; }
+        
+        .nota-input { margin-bottom: 12px; background: transparent; border: none; box-shadow: none; border-left: 2px solid var(--border-light); border-radius: 0; padding: 4px 12px; font-size: 14px; font-style: italic; color: var(--text-muted);}
+        .nota-input:focus { border-color: var(--border-focus); background: transparent; box-shadow: none; color: var(--text-main); font-style: normal;}
+
+        .todo-container { margin-bottom: 12px; border-top: 1px solid var(--border-light); padding-top: 12px; }
+        .todo-header { font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .todo-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+        .todo-item { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: var(--text-main); line-height: 1.5; padding: 2px 4px; border-radius: var(--radius-btn); transition: 0.1s;}
+        .todo-item:hover { background: var(--bg-hover); }
+        .todo-item input[type="checkbox"] { width: 16px; height: 16px; margin-top: 3px; cursor: pointer; accent-color: var(--primary); flex-shrink: 0; border: 1px solid var(--border-light); border-radius: 3px;}
+        .todo-item.is-done span { text-decoration: line-through; color: var(--text-muted); opacity: 0.8; }
+        .todo-input-row { display: flex; align-items: center; gap: 8px; padding-left: 4px;}
+        .todo-input-row input { flex: 1; padding: 4px 0; font-size: 14px; background: transparent; border: none; box-shadow: none; border-radius: 0; color: var(--text-main); }
+        .todo-input-row input:focus { box-shadow: none; border-bottom: 1px solid var(--border-focus); }
+        .btn-del-todo { background: transparent; border: none; color: var(--text-muted); opacity: 0; cursor: pointer; padding: 0 4px; font-size: 14px; font-weight: bold; border-radius: 4px;}
+        .todo-item:hover .btn-del-todo { opacity: 0.5; } .btn-del-todo:hover { opacity: 1; background: var(--border-light); color: var(--zen-red);}
+        .intimacao-card.is-cumprido .todo-container { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+
+        .btn-toggle-teor { display: flex; align-items: center; gap: 6px; padding: 4px 8px; background: transparent; border: none; color: var(--text-muted); font-size: 13px; font-weight: 500; border-radius: var(--radius-sm); cursor: pointer; transition: 0.1s; margin-bottom: 8px; }
+        .btn-toggle-teor:hover { background: var(--bg-hover); color: var(--text-main); }
+        .btn-foco-mini { position: absolute; top: 8px; right: 8px; background: var(--bg-panel); border: 1px solid var(--border-light); color: var(--text-muted); border-radius: var(--radius-sm); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: all 0.1s ease; z-index: 10; box-shadow: var(--shadow-sm);}
+        .teor-box-container:hover .btn-foco-mini { opacity: 1; }
+        .btn-foco-mini:hover { background: var(--bg-hover); color: var(--text-main); }
+
+        .teor-box-container { position: relative; margin-bottom: 12px; }
+        .teor-inner-box { background-color: var(--card-inner); padding: 16px; border-radius: var(--radius-md); font-size: 14px; font-family: ui-sans-serif, system-ui; line-height: 1.6; color: var(--text-main); text-align: justify; max-height: 160px; overflow-y: auto; border: 1px solid var(--border-light); } 
+        .teor-inner-box::-webkit-scrollbar { width: 4px; }
+        .teor-inner-box::-webkit-scrollbar-track { background: transparent; }
+        .teor-fade-overlay { position: absolute; bottom: 1px; left: 1px; right: 1px; height: 40px; background: linear-gradient(transparent, var(--card-inner)); pointer-events: none; border-bottom-left-radius: var(--radius-md); border-bottom-right-radius: var(--radius-md); }
+
+        mark, .marca-texto { background-color: var(--zen-orange-bg); color: var(--zen-orange); padding: 0 4px; border-radius: 3px; font-weight: inherit; cursor: pointer; transition: 0.1s; }
+        mark:hover, .marca-texto:hover { filter: brightness(0.9); text-decoration: line-through; }
+
+        .card-acoes-pills { display: flex; gap: 4px; justify-content: flex-start; align-items: center; flex-wrap: wrap; margin-top: 8px; border-top: 1px solid var(--border-light); padding-top: 12px;}
+        .btn-acao-square { background-color: transparent; border: none; color: var(--text-muted); width: 32px; height: 32px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; transition: all 0.1s ease; cursor: pointer; flex-shrink: 0; }
+        .btn-acao-square:hover { background: var(--bg-hover); color: var(--text-main); }
+        .btn-acao-square.h-orange:hover { color: var(--zen-orange); background-color: var(--zen-orange-bg); }
+        .btn-acao-square.h-green:hover { color: var(--zen-green); background-color: var(--zen-green-bg); }
+        .btn-acao-square.h-blue:hover { color: var(--primary); background-color: var(--primary-light); }
+        
+        .btn-cumprir-quadrado { background: var(--primary); color: var(--primary-text); border: none; width: auto; padding: 0 12px; height: 32px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.1s ease; cursor: pointer; flex-shrink: 0; font-weight: 500; font-size: 14px; box-shadow: var(--shadow-sm); }
+        .btn-cumprir-quadrado:hover { background: var(--primary-hover); }
+        .btn-cumprir-quadrado svg { width: 16px; height: 16px; }
+        .btn-cumprir-quadrado.is-cumprido { background: transparent; color: var(--text-muted); box-shadow: none; border: 1px solid var(--border-light); }
+        .btn-cumprir-quadrado.is-cumprido:hover { background: var(--bg-hover); color: var(--text-main); }
+        .card-menu-container { position: relative; display: flex; align-items: center; }
+        
+        #focusModeOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-overlay); backdrop-filter: var(--blur-fx); -webkit-backdrop-filter: var(--blur-fx); z-index: var(--z-overlay); display: none; flex-direction: column; overflow-y: auto; padding: 40px 10%; box-sizing: border-box; }
+        #focusModeOverlay.show { display: flex; }
+.focus-header { 
+    position: sticky; /* Torna o cabeçalho pegajoso */
+    top: -40px; /* Compensa o padding do overlay */
+    background: var(--bg-overlay); 
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); /* Mantém a elegância translúcida */
+    z-index: 10;
+    display: flex; flex-direction: column; gap: 8px; 
+    margin-bottom: 24px; padding-top: 40px; padding-bottom: 16px; 
+    border-bottom: 1px solid var(--border-light); 
+    max-width: 800px; margin-left: auto; margin-right: auto; width: 100%;
+}        .focus-title-group { display: flex; flex-direction: column; gap: 4px; width: 100%; padding-right: 50px; }
+        .focus-proc { font-size: calc(var(--font-focus) + 16px); color: var(--text-main); margin: 0; word-break: break-word; white-space: pre-wrap; font-weight: 700; line-height: 1.1; letter-spacing: -1px;}
+        .focus-apelido { font-size: var(--font-focus); font-weight: 500; color: var(--text-muted); }
+        .focus-tribunal { font-size: 14px; font-weight: 500; color: var(--text-placeholder); text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-close-focus { background: transparent; border: none; color: var(--text-muted); width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; justify-content: center; align-items: center; cursor: pointer; flex-shrink: 0; position: absolute; top: 0; right: 0; margin: 0; font-size: 24px; font-weight: 300;}
+        .btn-close-focus:hover { background: var(--bg-hover); color: var(--text-main); }
+        #focusTeorContent { font-size: var(--font-focus); line-height: 1.7; color: var(--text-main); text-align: left; max-width: 800px; margin: 0 auto; width: 100%; white-space: pre-wrap; padding-bottom: 60px; font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; }
+
+        /* Grid de 5 colunas bem encaixado */
+        .stats-container { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 20px; }
+        
+        .stat-box { display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; background: var(--bg-card); border: 1px solid var(--border-light); padding: 10px 2px; border-radius: var(--radius-md); transition: all 0.2s ease; box-shadow: var(--shadow-sm); }
+        .stat-box:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        
+        .stat-squircle { font-size: 20px; font-weight: 800; font-family: 'JetBrains Mono', ui-monospace, monospace; line-height: 1; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; background: transparent !important; border: none !important; padding: 0; transition: 0.2s; }
+        .stat-label { font-size: 9.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.2px; text-align: center; transition: 0.2s; }
+        
+        .stat-box.is-zero { opacity: 0.6; box-shadow: none; background: transparent; border-style: dashed; }
+        .stat-box.is-zero:hover { opacity: 1; background: var(--bg-card); border-style: solid; border-color: var(--border-focus); }
+        
+        .stat-hoje .stat-squircle { color: var(--stat-hoje-txt); }
+        .stat-dias .stat-squircle { color: var(--stat-5dias-txt); }
+        .stat-pendentes .stat-squircle { color: var(--stat-futuro-txt); }
+        .stat-espera .stat-squircle { color: var(--text-muted); } /* Cor neutra para Espera */
+        .stat-cumpridos .stat-squircle { color: var(--stat-cump-txt); }
+
+        .stat-hoje.active { background: var(--stat-hoje-bg); border-color: var(--stat-hoje-txt); }
+        .stat-hoje.active .stat-squircle, .stat-hoje.active .stat-label { color: var(--stat-hoje-txt); }
+        
+        .stat-dias.active { background: var(--stat-5dias-bg); border-color: var(--stat-5dias-txt); }
+        .stat-dias.active .stat-squircle, .stat-dias.active .stat-label { color: var(--stat-5dias-txt); }
+        
+        .stat-pendentes.active { background: var(--stat-futuro-bg); border-color: var(--stat-futuro-txt); }
+        .stat-pendentes.active .stat-squircle, .stat-pendentes.active .stat-label { color: var(--stat-futuro-txt); }
+
+        .stat-espera.active { background: var(--zen-gray-bg); border-color: var(--text-muted); }
+        .stat-espera.active .stat-squircle, .stat-espera.active .stat-label { color: var(--text-main); }
+        
+        .stat-cumpridos.active { background: var(--stat-cump-bg); border-color: var(--stat-cump-txt); }
+        .stat-cumpridos.active .stat-squircle, .stat-cumpridos.active .stat-label { color: var(--stat-cump-txt); }
+
+        .switch { position: relative; display: inline-block; width: 36px; height: 20px; flex-shrink: 0;}
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-light); transition: .2s; border-radius: 20px;}
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition: .2s; border-radius: 50%; box-shadow: rgba(15, 15, 15, 0.1) 0px 1px 2px;}
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(16px); }
+
+        .btn-exportar-todos { background: transparent; border: 1px solid transparent; color: var(--text-muted); cursor: pointer; border-radius: var(--radius-btn); display: flex; align-items: center; justify-content: center; transition: 0.15s ease; width: 36px; height: 36px; flex-shrink: 0; }
+        .btn-exportar-todos:hover { background: var(--bg-hover); color: var(--text-main); }
+
+       .footer-cafe-banner { margin-top: 24px; padding: 12px 16px; background: transparent; border-radius: var(--radius-md); display: flex; flex-direction: column; cursor: pointer; transition: all 0.2s ease; border: 1px solid var(--border-light); }
+        .footer-cafe-banner:hover { background: var(--bg-hover); border-color: var(--border-focus); }
+        .footer-cafe-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .cafe-chevron { color: var(--text-muted); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .footer-cafe-banner.expanded .cafe-chevron { transform: rotate(180deg); color: var(--primary); }
+        .cafe-accordion-content { display: grid; grid-template-rows: 0fr; opacity: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; }
+        .footer-cafe-banner.expanded .cafe-accordion-content { grid-template-rows: 1fr; opacity: 1; margin-top: 12px; }
+        .cafe-inner { overflow: hidden; display: flex; flex-direction: column; align-items: center; } /* Margens vazadas corrigidas! */
+        
+        .modal-qr-white { background: white; padding: 8px; border-radius: var(--radius-lg); border: 1px solid #e9e9e7; margin-bottom: 12px;}
+        .modal-qr-white img { width: 140px; height: 140px; object-fit: contain; }
+        .pix-copy-row { display: flex; align-items: center; background-color: var(--input-bg); border-radius: var(--radius-sm); width: 100%; padding: 4px; box-sizing: border-box; border: 1px solid var(--border-light);}
+        .pix-code { flex: 1; font-size: 14px; font-family: ui-monospace, monospace; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 8px; }
+        .pix-btn-copy { background-color: var(--primary-light); border: none; color: var(--primary); font-size: 12px; font-weight: 500; padding: 6px 12px; cursor: pointer; border-radius: 4px;}
+
+        .modal-overlay { position: fixed; inset: 0; background: var(--bg-overlay); backdrop-filter: var(--blur-fx); -webkit-backdrop-filter: var(--blur-fx); display: none; justify-content: center; align-items: center; z-index: var(--z-modal); opacity: 0; transition: opacity 0.2s ease; }
+        .modal-overlay.show { display: flex; opacity: 1; }
+        .modal-content { background: var(--bg-panel); width: 90%; max-width: 400px; max-height: 90vh; overflow-y: auto; border-radius: var(--radius-lg); padding: 24px; position: relative; border: 1px solid var(--border-light); box-shadow: var(--shadow-modal); transform: scale(0.98); transition: transform 0.2s; display: flex; flex-direction: column; align-items: flex-start;}
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        
+        .modal-close { position: absolute; top: 12px; right: 12px; background: transparent; border: none !important; outline: none !important; color: var(--text-muted); width: 32px; height: 32px; border-radius: var(--radius-sm); cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.1s; font-size: 24px; font-weight: 300; padding: 0; margin: 0; line-height: 1; }
+        .modal-close:hover { background: var(--bg-hover); color: var(--text-main); }
+        
+              
+        .audit-flow { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; margin-top: 16px; padding: 12px; background: var(--card-inner); border-radius: var(--radius-md); border: 1px solid var(--border-light);}
+        .audit-day { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 4px; border-radius: 8px; border: 1px solid var(--border-light); background: var(--bg-card); transition: all 0.2s ease; cursor: default; box-shadow: var(--shadow-sm); }
+        .audit-day:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        .audit-day.is-fatal { background: var(--zen-red-bg); border-color: rgba(212, 76, 71, 0.3); }
+        .audit-day.is-fatal .day-num { color: var(--zen-red); }
+        .audit-day.is-pulo { opacity: 0.7; background: transparent; box-shadow: none; }
+        .audit-day .day-icon { font-size: 16px; margin-bottom: 6px; line-height: 1; }
+        .audit-day .day-num { font-size: 16px; font-weight: 700; color: var(--text-main); line-height: 1; letter-spacing: -0.5px; }
+        .audit-day .day-date { font-size: 10px; font-weight: 500; color: var(--text-muted); margin-top: 4px; line-height: 1; }
+
+        .calculadora-prazo { padding: 20px; background-color: var(--card-inner); border-radius: var(--radius-md); display: none; margin-top: 12px; border: 1px solid var(--border-light); scroll-margin-top: 140px; }        
+        .calculadora-prazo.ativa { display: block; animation: fadeIn 0.2s; }
+        .calc-title { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: var(--text-main); display: flex; align-items: center; gap: 6px;}
+
+        .skeleton-card { height: 100px; background-color: var(--bg-card); border-radius: var(--radius-md); margin-bottom: 12px; animation: pulse 1.5s infinite; border: 1px solid var(--border-light); }
+        @keyframes pulse { 0%, 100% { opacity: 0.8; } 50% { opacity: 0.5; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        #btnIrTopo { position: fixed; bottom: 24px; right: 24px; width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--bg-panel); color: var(--text-main); border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); cursor: pointer; display: none; z-index: var(--z-sticky); justify-content: center; align-items: center; transition: all 0.2s;}
+        #btnIrTopo:hover { background: var(--bg-hover); }
+        #btnIrTopo.show { display: flex; animation: fadeIn 0.2s; }
+
+    
+        /* ========================================== */
+/* ESTILOS DA WIKI DJEN (ACCORDION SOFT UI)   */
+/* ========================================== */
+.wiki-container { padding: 24px 20px; display: flex; flex-direction: column; gap: 12px; }
+.wiki-intro { font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 8px; line-height: 1.5; padding: 0 10px; }
+.wiki-section { background: var(--bg-panel); border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden; transition: all 0.2s ease; }
+.wiki-section[open] { border-color: var(--border-focus); box-shadow: 0 4px 16px rgba(0,0,0,0.06); background: var(--bg-body); }
+.wiki-section summary { padding: 16px; font-size: 14px; font-weight: 600; color: var(--text-main); cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; user-select: none; transition: background 0.2s ease; }
+.wiki-section summary:hover { background: var(--bg-hover); }
+.wiki-section summary::-webkit-details-marker { display: none; }
+.wiki-section summary::after { content: '+'; font-size: 20px; font-weight: 400; color: var(--text-muted); transition: transform 0.3s ease, color 0.3s ease; }
+.wiki-section[open] summary::after { content: '−'; transform: rotate(180deg); color: var(--zen-blue); }
+.wiki-content { padding: 0 16px 16px 16px; font-size: 13px; color: var(--text-main); line-height: 1.6; animation: fadeInDown 0.3s ease; }
+.wiki-content ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; }
+.wiki-content li::marker { color: var(--zen-blue); }
+.wiki-content b { color: var(--text-main); font-weight: 700; }
+.wiki-content kbd { background: var(--bg-body); border: 1px solid var(--border-light); border-radius: 6px; padding: 3px 8px; font-family: ui-monospace, monospace; font-size: 11px; font-weight: 600; color: var(--text-main); box-shadow: 0 2px 0 rgba(0,0,0,0.05); }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+
+        .btn-share-option { background: var(--bg-body); border: 1px solid var(--border-light); padding: 12px 16px; border-radius: var(--radius-md); font-size: 14px; font-weight: 500; color: var(--text-main); cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.1s ease; width: 100%; box-shadow: rgba(15, 15, 15, 0.02) 0px 1px 2px;}
+        .btn-share-option:hover { background: var(--bg-hover); }
+        .btn-share-option svg { opacity: 0.8; }
+
     </style>
 </head>
 <body>
 
-    <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
+    <div id="toastNativo" aria-live="polite"><div class="toast-title"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg> 🎉 <span id="toastCount">50</span> Prazos Cumpridos!</div></div>
+    <div id="toastGenerico" aria-live="polite"><span id="toastIcone" aria-hidden="true">✅</span> <span id="toastMensagem">Ação realizada</span></div>
+    <div id="toastDesfazer" aria-live="polite"><span>Prazo removido.</span><button id="btnAcaoDesfazer" aria-label="Desfazer remoção">Desfazer</button></div>
 
-    <header id="mainHeader">
-        <a href="index.html" class="brand">
-            <img src="djen-128.png" alt="Logo Buscador DJEN">
-            Buscador DJEN
-                    </a>
-        
-        <nav class="header-nav" aria-label="Navegação principal">
-            <a href="busca.html" class="nav-link">Busca & Tags</a>
-            <a href="prazos.html" class="nav-link">Prazos & Agenda</a>
-            <a href="exportacao.html" class="nav-link">Relatórios PDF</a>
-            <a href="radar.html" class="nav-link">Radar</a>
-        </nav>
-
-       <div class="header-actions">
-            <a href="#footer-coffee" onclick="document.getElementById('contentCoffee').classList.add('show'); document.getElementById('btnToggleCoffee').classList.add('active');" class="share-btn" style="color: var(--zen-orange); border-color: rgba(221, 91, 0, 0.2); background: rgba(221, 91, 0, 0.05);">
-                <i class="ph ph-coffee"></i> <span class="share-text" style="margin-left: 4px;">Apoiar</span>
-            </a>
-
-            <button id="btn-compartilhar" class="share-btn" aria-label="Compartilhar site">
-                <i class="ph ph-share-network"></i>
-                <span class="share-text">Compartilhar</span>
-            </button>
-
-            <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; white-space: nowrap;">
-                por Amilcar
-            </a>
-
-            <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
-                <i class="ph ph-sun"></i>
-                <i class="ph ph-moon"></i>
-            </button>
-        </div>
-    </header>
-
-    <main>
-        <section class="hero">
-            <div class="hero-content">
-                
-                <a href="versoes.html" class="hero-alert-badge fade-in-section">
-                    <span class="badge-new">Novo</span>
-                    <span class="alert-text">Alertas automáticos de suspensões locais</span>
-                    <i class="ph ph-arrow-right alert-icon"></i>
-                </a>
-                
-                <h1 class="fade-in-section">O controle absoluto da sua pauta, direto no navegador.</h1>
-                <p class="fade-in-section">O painel de controle que o seu sistema judiciário não oferece. Gestão inteligente de publicações do DJEN, cálculo algorítmico de prazos e integração nativa com PJe, eproc e e-SAJ.</p>
-                
-               <div style="display: flex; flex-direction: column; align-items: center;">
-                    
-                    <div class="hero-buttons fade-in-section">
-                        <div style="display: flex; flex-direction: column; align-items: center;">
-                            <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store primary">
-                                <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" style="width: 28px; height: 28px; flex-shrink: 0;">
-                                <div class="store-text">
-                                    <small>Baixar para</small>
-                                    <strong>Google Chrome</strong>
-                                </div>
-                            </a>
-                            <div class="rating-stars chrome-rating">★★★★★ <span>5.0</span></div>
-                        </div>
-
-                        <div style="display: flex; flex-direction: column; align-items: center;">
-                            <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store secondary">
-                                <span class="version-tooltip firefox-tooltip">Buscando versão...</span>
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" style="width: 28px; height: 28px; flex-shrink: 0;">
-                                <div class="store-text">
-                                    <small>Baixar para</small>
-                                    <strong>Mozilla Firefox</strong>
-                                </div>
-                            </a>
-                            <div class="rating-stars firefox-rating">★★★★★ <span>5.0</span></div>
-                        </div>
-                    </div>
-
-                    <div class="trust-badges fade-in-section">
-                        <span>Compatível com:</span>
-                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> PJe</span>
-                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> e-SAJ</span>
-                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> eproc</span>
-                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> Projudi</span>
-                    </div>
-                    
-                    <div class="microcopy fade-in-section">Gratuito e de código aberto. Instale em segundos, sem necessidade de cadastro ou senhas.</div>
-                    <a href="versoes.html" class="compare-link fade-in-section">Ver comparativo das versões <i class="ph ph-arrow-right"></i></a>
-                </div>
+    <div id="focusModeOverlay">
+        <div class="focus-header">
+            <button class="btn-close-focus" id="btnCloseFocus" aria-label="Fechar Modo Foco" title="Fechar (Esc)">&times;</button>
+            <div class="focus-title-group">
+                <div id="focusTribunal">TRIBUNAL</div>
+                <h2 id="focusProcesso" class="focus-proc">0000000-00.0000.0.00.0000</h2>
+                <div id="focusApelido" class="focus-apelido"></div>
             </div>
-        </section>
-
-        <section id="ferramentas-web" class="bento-tools fade-in-section">
-            <div class="bento-header">
-                <h2>Análise preliminar em tempo real. Sem instalação.</h2>
-                <p>Acesse o motor algorítmico do Buscador DJEN via web. Ferramentas gratuitas para uso avulso e execução de análises rápidas no navegador.</p>
-            </div>
-
-            <div class="bento-grid">
-                <div class="bento-card">
-                    <div class="bento-icon-wrapper">
-                        <div class="bento-icon" style="color: var(--zen-red);">
-                            <i class="ph ph-calendar-blank"></i>
-                        </div>
-                        <span class="bento-limit" style="background: rgba(255, 100, 200, 0.1); color: var(--zen-red);">Limite: 3 consultas/dia</span>
-                    </div>
-                    <h3>Motor Algorítmico de Prazos</h3>
-                    <p>Contagem exata em dias úteis com desvio automático de feriados locais, recesso forense e suspensões confirmadas. Gera um log completo para sua auditoria visual da pauta.</p>
-                    <a href="calculadora.html" class="btn-browser primary" style="width: 100%;">Auditar prazo online <i class="ph ph-arrow-right"></i></a>
-                </div>
-
-                <div class="bento-card">
-                    <div class="bento-icon-wrapper">
-                        <div class="bento-icon" style="color: var(--primary);">
-                            <i class="ph ph-magnifying-glass"></i>
-                        </div>
-                        <span class="bento-limit" style="background: var(--badge-bg); color: var(--badge-text);">Versão Web</span>
-                    </div>
-                    <h3>Extração Direta DJEN e CNJ</h3>
-                    <p>Pesquise e extraia publicações ativas e dados judiciais por OAB ou UF instantaneamente. Sem bloqueios de captchas ou lentidão institucional.</p>
-                    <a href="busca.html" class="btn-browser" style="width: 100%;">Iniciar análise <i class="ph ph-arrow-right"></i></a>
-                </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 40px; font-size: 14px; font-weight: 500; color: var(--text-placeholder);">
-                Dica técnica: A <a href="#top" onclick="window.scrollTo(0,0);" style="color: var(--primary); text-decoration: underline;">extensão de navegador</a> processa os cálculos e buscas <strong style="color: var(--text-main);">localmente e sem limites</strong>.
-            </div>
-        </section>
-
-        <section class="features-container">
-            <div class="features-header fade-in-section">
-                <h2>Como otimizar sua controladoria jurídica.</h2>
-            </div>
-
-            <div class="features">
-                <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--primary);"><i class="ph ph-magnifying-glass"></i></div>
-                    <h3>Consulta Direta (DJEN e CNJ)</h3>
-                    <p>Extraia dados e publicações <span class="highlight-term">instantaneamente</span>, sem bloqueios de captchas ou a lentidão dos portais oficiais.</p>
-                    <a href="busca.html" class="feature-link">Conhecer a Busca <i class="ph ph-arrow-right"></i></a>
-                </div>
-
-                <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--zen-red);"><i class="ph ph-calendar-check"></i></div>
-                    <h3>Cálculo Algorítmico</h3>
-                    <p>O algoritmo desvia <span class="highlight-term">automaticamente</span> de suspensões e recesso forense, garantindo segurança matemática na pauta.</p>
-                    <a href="prazos.html" class="feature-link">Conhecer Prazos <i class="ph ph-arrow-right"></i></a>
-                </div>
-
-                <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--zen-green);"><i class="ph ph-crosshair"></i></div>
-                    <h3>Modo Foco e Triagem</h3>
-                    <p>Ative o Modo Foco para analisar despachos complexos em um ambiente de leitura <span class="highlight-term">imersivo</span> e livre de ruídos visuais.</p>
-                    <a href="busca.html" class="feature-link">Ver Modo Foco <i class="ph ph-arrow-right"></i></a>
-                </div>
-
-                <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--zen-purple);"><i class="ph ph-target"></i></div>
-                    <h3>Radar de Urgências</h3>
-                    <p>Configure palavras-chave para emitir <span class="highlight-term">alertas imediatos</span> sempre que o sistema identificar termos críticos nos despachos.</p>
-                    <a href="radar.html" class="feature-link">Conhecer o Radar <i class="ph ph-arrow-right"></i></a>
-                </div>
-
-                <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--zen-orange);"><i class="ph ph-tag"></i></div>
-                    <h3>Tags e Metadados Internos</h3>
-                    <p>Atribua <span class="highlight-term">apelidos práticos</span> e adicione anotações estratégicas para facilitar a identificação sem depender de números longos.</p>
-                    <a href="busca.html" class="feature-link">Descobrir como organizar <i class="ph ph-arrow-right"></i></a>
-                </div>
-
-                <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--zen-gold);"><i class="ph ph-squares-four"></i></div>
-                    <h3>Visão Panorâmica</h3>
-                    <p>Visualize o fluxo de intimações e o estrangulamento semanal. Antecipe a controladoria antes que o prazo se torne <span class="highlight-term">fatal</span>.</p>
-                    <a href="prazos.html" class="feature-link">Ver Calendário <i class="ph ph-arrow-right"></i></a>
-                </div>
-
-                <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--zen-blue);"><i class="ph ph-chart-bar"></i></div>
-                    <h3>Jurimetria e Relatórios</h3>
-                    <p>Emita relatórios de auditoria em Visual Law. Exporte sua base para CSV e aplique Jurimetria para extrair <span class="highlight-term">métricas de desempenho</span>.</p>
-                    <a href="exportacao.html" class="feature-link">Conhecer Relatórios <i class="ph ph-arrow-right"></i></a>
-                </div>
-
-                <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--primary);"><i class="ph ph-share-network"></i></div>
-                    <h3>Sincronização Ativa</h3>
-                    <p>Conecte seus prazos diretamente ao <span class="highlight-term">Google Agenda</span>. Compartilhe rapidamente o andamento com clientes via WhatsApp.</p>
-                    <a href="exportacao.html" class="feature-link">Ver integrações <i class="ph ph-arrow-right"></i></a>
-                </div>
-
-                </div>
-        </section>
-
-        <section class="gallery-section fade-in-section">
-            <div class="gallery-header">
-                <h2 class="gallery-title">Mostruário de Funcionalidades</h2>
-                <div class="carousel-controls">
-                    <button class="carousel-btn prev-btn" aria-label="Imagem Anterior">
-                        <i class="ph ph-caret-left"></i>
-                    </button>
-                    <button class="carousel-btn next-btn" aria-label="Próxima Imagem">
-                        <i class="ph ph-caret-right"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="carousel-wrapper" style="position: relative; max-width: 1400px; margin: 0 auto;">
-                <div class="carousel">
-                    <div class="carousel-item">
-                        <img src="1.png" alt="Interface da extensão Buscador DJEN realizando consulta de atos judiciais" loading="lazy">
-                        <div class="carousel-caption">Consulta direta de atos judiciais no DJEN e CNJ</div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="2.png" alt="Gestão de publicações judiciais e tarefas" loading="lazy">
-                        <div class="carousel-caption">Acesso à intimação com gestão de tarefas</div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="3.png" alt="Modo Foco para leitura imersiva" loading="lazy">
-                        <div class="carousel-caption">Leitura imersiva no modo Foco e tags</div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="4.png" alt="Calculadora de prazo processual com auditoria" loading="lazy">
-                        <div class="carousel-caption">Auditoria visual de cálculo de prazos processuais</div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="5.png" alt="Painel de controladoria jurídica" loading="lazy">
-                        <div class="carousel-caption">Gestão visual do andamento de publicações</div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="6.png" alt="Calendário integrado para controle de prazos" loading="lazy">
-                        <div class="carousel-caption">Calendário mensal de controle e estrangulamento</div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="11.png" alt="Geração de Relatórios em PDF e Planilhas CSV para jurimetria" loading="lazy">
-                        <div class="carousel-caption">Relatórios estruturados e CSV para Jurimetria</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="info-container fade-in-section">
-           <div class="authority-box">
-                <h3>Da trincheira do contencioso para o seu navegador.</h3>
-                <p>Sou Amilcar Moreira — advogado e desenvolvedor especialista em Direito Digital e Propriedade Intelectual. O Buscador DJEN nasceu da exaustão real no contencioso. Ao unir <strong style="font-weight: 600;">Jurimetria</strong> e <strong style="font-weight: 600;">Legal Design</strong>, criei uma arquitetura limpa para eliminar o trabalho braçal de monitorar Painéis Eletrônicos. É uma solução <em>legaltech</em> 100% independente, com foco em precisão algorítmica e UX fluida, arquitetada para devolver a você a auditoria total da sua pauta.</p>
-            </div>
-        </section>
-
-        <section class="features-container fade-in-section" style="padding-top: 0; padding-bottom: 40px;">
-            <div style="max-width: 800px; margin: 0 auto;">
-                <h2 style="text-align: center; margin-bottom: 48px; font-size: 48px; letter-spacing: -1.5px;">Perguntas Frequentes</h2>
-                
-                <div style="display: flex; flex-direction: column; gap: 24px;">
-                    <div class="faq-item">
-                        <div class="faq-header">
-                            <i class="ph ph-shield-check" style="color: var(--zen-green);"></i>
-                            <h3 style="font-size: 22px; margin: 0; letter-spacing: -0.25px;">Preciso fornecer meu token ou senhas do PJe/e-SAJ?</h3>
-                        </div>
-                        <p style="color: var(--text-muted); margin: 0; font-size: 16px; line-height: 1.50; margin-left: 36px;"><strong style="font-weight: 600; color: var(--text-main);">Não.</strong> A extensão opera de forma totalmente passiva. Ela apenas executa a extração das informações públicas da tela do Diário Oficial que o seu navegador já está processando. Não solicitamos ou armazenamos credenciais institucionais.</p>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <div class="faq-header">
-                            <i class="ph ph-database" style="color: var(--primary);"></i>
-                            <h3 style="font-size: 22px; margin: 0; letter-spacing: -0.25px;">Onde os meus dados e metadados ficam salvos?</h3>
-                        </div>
-                        <p style="color: var(--text-muted); margin: 0; font-size: 16px; line-height: 1.50; margin-left: 36px;"><strong style="font-weight: 600; color: var(--text-main);">100% no seu próprio hardware</strong> (armazenamento local via <em>IndexedDB</em> do navegador). O Buscador DJEN não transmite seus processos para servidores externos, garantindo sigilo contratual e conformidade irrestrita com a LGPD.</p>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-header">
-                            <i class="ph ph-lock-open" style="color: var(--zen-orange);"></i>
-                            <h3 style="font-size: 22px; margin: 0; letter-spacing: -0.25px;">O código é realmente gratuito?</h3>
-                        </div>
-                        <p style="color: var(--text-muted); margin: 0; font-size: 16px; line-height: 1.50; margin-left: 36px;"><strong style="font-weight: 600; color: var(--text-main);">Sim, open-source e sem licenças abusivas.</strong> O projeto atua como um controle de qualidade independente. Se o algoritmo mitigar riscos de perda de prazo na sua banca, você pode optar por contribuir voluntariamente com a manutenção da infraestrutura através do rodapé.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="bottom-cta fade-in-section">
-            <h2>Auditoria de prazos (PNG).</h2>
-            <p>Sem lentidão. Sem implantações complexas. Instale e otimize sua rotina.</p>
             
-            <div style="display: flex; flex-direction: column; align-items: center;">
-                <div class="hero-buttons">
-                    <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store primary">
-                        <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" style="width: 28px; height: 28px; flex-shrink: 0;">
-                        <div class="store-text">
-                            <small>Instalar no</small>
-                            <strong>Google Chrome</strong>
-                        </div>
-                    </a>
-
-                    <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store secondary">
-                        <span class="version-tooltip firefox-tooltip">Buscando versão...</span>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" style="width: 28px; height: 28px; flex-shrink: 0;">
-                        <div class="store-text">
-                            <small>Instalar no</small>
-                            <strong>Mozilla Firefox</strong>
-                        </div>
-                    </a>
-                </div>
-                <a href="versoes.html" class="compare-link">Ver documentação e versões <i class="ph ph-arrow-right"></i></a>
-            </div>
-        </section>
-    </main>
-
-    <footer id="footer-coffee">
-        <div class="footer-content">
-            <div class="coffee-container fade-in-section">
-                <button class="coffee-btn" id="btnToggleCoffee">
-                    <span>Apoie a Infraestrutura</span>
-                    <i class="ph ph-caret-down" id="coffee-chevron"></i>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; width: 100%; margin-top: 12px; border-top: 1px solid var(--border-light); padding-top: 12px;">
+                <button id="btnMarcarTextoFoco" class="btn-pill tooltip-bottom" aria-label="Marca Texto" data-tooltip="Destacar texto selecionado" style="color: var(--zen-orange); border-color: transparent; background: var(--zen-orange-bg);">
+                    🖌️ Marcar Texto
                 </button>
-                <div class="coffee-content" id="contentCoffee">
-                    <p style="color: var(--text-muted); font-size: 16px; font-weight: 400; margin-bottom: 16px; line-height: 1.50;">
-                        Desenvolvido de forma independente, sem as amarras das grandes <em>LegalTechs</em>. Se o Buscador garantiu segurança na sua pauta hoje, considere apoiar a manutenção dos servidores e das APIs.
-                    </p>
-                    <div class="pix-code-container">
-                        <input type="text" id="pixKey" value="50f781e2-9d94-4624-8f08-a9938bb0c4dc" readonly>
-                        <button id="btnCopyPix" onclick="copyPixCode()">Copiar Pix</button>
-                    </div>
+                <button id="btnCriarTagFoco" class="btn-pill tooltip-bottom" aria-label="Criar Tag" data-tooltip="Criar #tag curta" style="color: var(--primary); border-color: transparent; background: rgba(35, 131, 226, 0.1);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> Criar Tag
+                </button>
+                <div style="display: flex; gap: 4px; margin-left: auto;">
+                    <button id="btnFontMinus" class="btn-acao-square tooltip-bottom" aria-label="Diminuir Fonte" data-tooltip="A-" style="border: 1px solid var(--border-light); background: var(--bg-body);">A-</button>
+                    <button id="btnFontPlus" class="btn-acao-square tooltip-bottom" aria-label="Aumentar Fonte" data-tooltip="A+" style="border: 1px solid var(--border-light); background: var(--bg-body);">A+</button>
+                </div>
+            </div>
+        </div>
+        <div id="focusTeorContent"></div>
+    </div>
+
+    <button id="btnIrTopo" aria-label="Ir para o topo" title="Ir para o topo"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
+
+    <div class="top-bar-fixed">
+        <div class="app-header">
+            <div class="app-brand-wrapper">
+                <img src="djen-48.png" alt="Buscador DJEN Logo" aria-hidden="true" onerror="this.style.display='none'">
+                <h1 class="app-title tooltip-right tooltip-bottom" id="appTitleVersion" data-tooltip="v...">
+                    Buscador DJEN
+                </h1>
+            </div>
+            <div class="header-menu-container">
+                <button class="btn-header-menu tooltip-left tooltip-bottom" id="btnHeaderMenu" aria-label="Opções Gerais" data-tooltip="Opções">
+                    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.5"></circle><circle cx="12" cy="5" r="1.5"></circle><circle cx="12" cy="19" r="1.5"></circle></svg>
+                </button>
+                <div class="dropdown-menu" id="headerDropdown">
+                    <button id="btnVerNivel" aria-label="Relatório de Produtividade">📊 Relatório de Produtividade</button>
+                    <button id="btnExportarCSV" aria-label="Exportar para Excel/CSV">📈 Baixar Planilha (CSV)</button>
+                    <button id="btnExportarPDFBase" aria-label="Exportar para PDF">📄 Baixar Relatório (PDF)</button>
+                    <button id="btnGerenciarTermos" aria-label="Gerenciar Radar">🏷️ Configurar Radar</button>
+                    <button id="btnAbrirTutorial" aria-label="Guia Rápido e Atalhos">📖 Central de Ajuda</button>
+                    <hr>
+                    <button id="btnToggleTheme" aria-label="Alternar Tema"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> <span id="themeBtnText">Tema: Automático</span></button>
+                    <hr>
+                    <button id="btnSalvarBackupMenu" aria-label="Salvar Dados (Backup)"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Fazer Backup</button>
+                    <button id="btnRestaurarBackupMenu" aria-label="Restaurar Dados"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Restaurar Backup</button>
+                    <hr>
+                    <button id="btnIndicarColega" aria-label="Indicar a um Colega"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Indicar a um Colega</button>
+                </div>
+                <input type="file" id="inputRestaurar" accept=".json" style="display: none;" aria-hidden="true">
+            </div>
+        </div>
+
+        <div class="view-switcher" role="tablist">
+            <button id="tabBusca" class="active" role="tab" aria-selected="true" aria-controls="viewBusca">Buscar</button>
+            <button id="tabSalvos" role="tab" aria-selected="false" aria-controls="viewSalvos">Prazos</button>
+            <button id="tabCalendario" role="tab" aria-selected="false" aria-controls="viewCalendario">Calendário</button>
+            <button id="tabCalculadora" role="tab" aria-selected="false" aria-controls="viewCalculadora">Calculadora</button>
+        </div>
+    </div>
+
+    <div id="viewBusca" role="tabpanel">
+        <div id="areaBusca">
+            <div class="segmented-control">
+                <button id="btnSearchTypeOab" class="active" aria-label="Buscar por OAB">Por OAB</button>
+                <button id="btnSearchTypeProc" aria-label="Buscar por Processo">Por Processo</button>
+            </div>
+
+            <div id="camposOAB">
+                <div class="form-row">
+                    <div class="input-group" style="flex: 3;"><label for="oabNum">N.º da OAB</label><input type="text" id="oabNum" placeholder="Ex: 123456, 654321" autocomplete="off"></div>
+                    <div class="input-group" style="flex: 1;"><label for="oabUf">UF</label><input type="text" id="oabUf" placeholder="UF" maxlength="2"></div>
                 </div>
             </div>
 
-            <div class="footer-links fade-in-section">
-                <a href="calculadora.html" style="color: var(--primary); font-weight: 600;">Auditoria de Prazos</a> 
-                <a href="versoes.html">Changelog & Versões</a>
-                <a href="termos.html">Termos de Uso</a>
-                <a href="privacidade.html">Privacidade</a>
-                <a href="mailto:contato@buscadordjen.com.br">Contato Técnico</a>
+            <div id="camposProcesso" style="display: none; margin-bottom: 12px;">
+                <div class="input-group">
+                    <label for="procNumBusca">N.º do Processo</label>
+                    <input type="text" id="procNumBusca" placeholder="0000000-00.0000.0.00.0000" maxlength="25" autocomplete="off">
+                </div>
+            </div>
+
+            <div id="historicoBusca" style="display: none; margin-bottom: 16px;">
+                <div style="font-size: 11px; font-weight: 600; color: var(--text-placeholder); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">Consultas Recentes</div>
+                <div id="chipsRecentes" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group"><label for="dataInicio">De</label><input type="date" id="dataInicio"></div>
+                <div class="input-group"><label for="dataFim">Até</label><input type="date" id="dataFim"></div>
             </div>
             
-            <div class="footer-copy fade-in-section">
-                &copy; 2026 Buscador DJEN. Arquitetura para a advocacia.
+            <div class="btn-group">
+                <button id="btnOntem" type="button">Ontem</button>
+                <button id="btn7DiasBusca" type="button">7 Dias</button>
+                <button id="btn15DiasBusca" type="button">15 Dias</button>
+            </div>
+            <button id="btnBuscar" class="btn-main" type="button">Buscar</button>
+        </div>
+
+        <div id="resumoBusca" style="display: none; width: 100%; align-items: center; justify-content: space-between; background-color: var(--bg-panel); border: 1px solid var(--border-light); border-radius: var(--radius-btn); padding: 10px 14px; margin-bottom: 16px; box-shadow: var(--shadow-sm); transition: 0.1s; color: var(--text-main);">
+            <div style="display: flex; align-items: center; cursor: pointer; flex: 1;" id="btnEditarResumo" aria-label="Editar Busca">
+                <div class="resumo-icone"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+                <div class="resumo-texto" id="textoResumoBusca">Resumo da busca</div>
+                <div class="resumo-icone-edit" style="margin-right: 12px; font-size: 12px;">Editar</div>
+            </div>
+            <button id="btnLimparBusca" class="btn-acao-square tooltip-left" style="border: 1px solid var(--border-light); background: var(--bg-body); color: var(--zen-red);" aria-label="Nova Busca" data-tooltip="Limpar e Nova Busca">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+
+        <div id="containerFiltro" style="display: none; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+            <select id="filtroTribunal" style="flex: 1; min-width: 100px;" aria-label="Filtrar por Tribunal"><option value="">Tribunal</option></select>
+            <input type="text" id="filtroRapido" placeholder="Filtrar processos..." style="flex: 2; min-width: 140px;" aria-label="Filtro de Processos">
+        </div>
+        
+        <div id="progressWrapper" class="progress-wrapper">
+            <div class="progress-track" aria-hidden="true"><div id="progressFill" class="progress-fill"></div></div>
+            <div id="progressText" class="progress-text" aria-live="polite">0 de 0 publicações verificadas</div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <span id="contadorResultados" style="font-size: 12px; font-weight: 500; color: var(--text-muted);"></span>
+            <div id="acoesBuscaLote" style="display: none; gap: 4px;">
+                <button id="btnCopiarBuscaLote" class="btn-exportar-todos tooltip-left icon-only" aria-label="Copiar Resultados" data-tooltip="Copiar">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> 
+                </button>
+                <button id="btnShareBuscaLote" class="btn-exportar-todos tooltip-left icon-only" aria-label="Compartilhar Lote" data-tooltip="Compartilhar">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                </button>
+                          </div>
+        </div>
+
+        <div id="skeletonLoader" style="display:none" aria-hidden="true"><div class="skeleton-card"></div><div class="skeleton-card"></div></div>
+
+        <div id="resultados" aria-live="polite">
+            <div id="welcomeState" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0; text-align: center;">
+                <div style="font-size: 28px; margin-bottom: 8px; opacity: 0.8;">🔍</div>
+                <div style="font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 12px;">Pronto para buscar</div>
+                
+                <div style="text-align: left; font-size: 12.5px; color: var(--text-muted); margin-bottom: 16px; background: var(--bg-body); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--border-light); width: 100%; box-sizing: border-box; box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);">
+                    <div style="margin-bottom: 6px;"><b>1.</b> Insira a OAB ou Processo.</div>
+                    <div style="margin-bottom: 6px;"><b>2.</b> A extensão analisa as publicações.</div>
+                    <div><b>3.</b> Calcule os prazos e exporte para a agenda!</div>
+                </div>
+            </div> </div> </div> 
+            
+           <div id="viewSalvos" role="tabpanel">
+        <div class="stats-container">
+            <div class="stat-box stat-hoje">
+                <div class="stat-squircle" id="countHoje">0</div>
+                <div class="stat-label">Hoje</div>
+            </div>
+            <div class="stat-box stat-dias">
+                <div class="stat-squircle" id="count7Dias">0</div>
+                <div class="stat-label">5 Dias</div>
+            </div>
+            <div class="stat-box stat-pendentes">
+                <div class="stat-squircle" id="countTotal">0</div>
+                <div class="stat-label">+5 Dias</div>
+            </div>
+            <div class="stat-box stat-espera">
+                <div class="stat-squircle" id="countEsperaBox">0</div>
+                <div class="stat-label">Espera</div>
+            </div>
+            <div class="stat-box stat-cumpridos">
+                <div class="stat-squircle" id="countCumpridos">0</div>
+                <div class="stat-label">Cumpridos</div>
             </div>
         </div>
-    </footer>
 
-    <div class="mobile-sticky-cta">
-        <a href="#top" onclick="window.scrollTo(0,0);" class="btn-browser primary" style="width: 100%; justify-content: center; box-sizing: border-box;">Baixar Extensão</a>
+        <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 16px; width: 100%; position: relative; z-index: 20;">
+            <div style="flex: 1;">
+                <input type="text" id="filtroPrazos" placeholder="Filtrar processos..." aria-label="Filtro de Prazos Salvos" style="margin-bottom: 0; width: 100%;">
+            </div>
+                           
+            <button id="btnNovoPrazoManual" class="btn-exportar-todos tooltip-left icon-only" aria-label="Novo Prazo Manual" data-tooltip="Adicionar Prazo">
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+
+            <div style="display: flex; gap: 4px; align-items: center; flex-shrink: 0;">
+                <button id="btnCopiarSalvosLote" class="btn-exportar-todos tooltip-left icon-only" aria-label="Copiar Tudo" data-tooltip="Copiar Tudo">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> 
+                </button>
+                <button id="btnShareSalvosLote" class="btn-exportar-todos tooltip-left icon-only" aria-label="Exportar" data-tooltip="Exportar">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                </button>
+                <button id="btnPDFSalvosLote" class="btn-exportar-todos tooltip-left icon-only" aria-label="Gerar PDF" data-tooltip="Gerar PDF">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="listaSalvos" aria-live="polite"></div>
     </div>
 
-    <script>
-        // Header Scroll
-        const header = document.getElementById('mainHeader');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 10) { header.classList.add('scrolled'); } 
-            else { header.classList.remove('scrolled'); }
-        });
-
-        // Theme Toggle
-        const themeToggleBtn = document.getElementById('themeToggle');
-        themeToggleBtn.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        });
-
-        if(localStorage.getItem('theme') === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
-
-        // Progress Bar
-        window.addEventListener('scroll', () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById("progressBar").style.width = scrolled + "%";
-        });
-
-        // Coffee Section
-        const btnToggleCoffee = document.getElementById('btnToggleCoffee');
-        const contentCoffee = document.getElementById('contentCoffee');
-        btnToggleCoffee.addEventListener('click', (e) => {
-            e.preventDefault();
-            btnToggleCoffee.classList.toggle('active');
-            contentCoffee.classList.toggle('show');
-            const chevron = document.getElementById('coffee-chevron');
-            if (btnToggleCoffee.classList.contains('active')) {
-                chevron.style.transform = 'rotate(180deg)';
-            } else {
-                chevron.style.transform = 'rotate(0deg)';
-            }
-        });
-
-        function copyPixCode() {
-            const pixInput = document.getElementById('pixKey');
-            const btnCopy = document.getElementById('btnCopyPix');
-            pixInput.select();
-            navigator.clipboard.writeText(pixInput.value).then(() => {
-                const textOriginal = btnCopy.innerText;
-                btnCopy.innerText = 'Copiado!';
-                setTimeout(() => btnCopy.innerText = textOriginal, 2000);
-            });
-        }
-
-        // Intersection Observer (Fade-in)
-        document.addEventListener("DOMContentLoaded", function() {
-            const observer = new IntersectionObserver((entries, obs) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        obs.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.15 });
-            document.querySelectorAll('.fade-in-section').forEach(sec => observer.observe(sec));
-        });
-
-        // Carousel Manual Controls
-        const carousel = document.querySelector('.carousel');
-        const prevBtn = document.querySelector('.prev-btn');
-        const nextBtn = document.querySelector('.next-btn');
-
-        if (prevBtn && nextBtn) {
-            prevBtn.addEventListener('click', () => {
-                const itemWidth = carousel.querySelector('.carousel-item').offsetWidth + 24;
-                carousel.scrollBy({ left: -itemWidth, behavior: 'smooth' });
-            });
-
-            nextBtn.addEventListener('click', () => {
-                const itemWidth = carousel.querySelector('.carousel-item').offsetWidth + 24;
-                carousel.scrollBy({ left: itemWidth, behavior: 'smooth' });
-            });
-        }
-
-        // Image Modal
-        const modal = document.createElement('div');
-        modal.style.cssText = 'display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; cursor: zoom-out; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);';
-        modal.innerHTML = '<img id="modalImg" style="max-width: 90%; max-height: 90%; border-radius: 12px; box-shadow: var(--shadow-modal); object-fit: contain;">';
-        document.body.appendChild(modal);
-
-        document.querySelectorAll('.carousel-item img').forEach(img => {
-            img.addEventListener('click', () => {
-                document.getElementById('modalImg').src = img.src;
-                modal.style.display = 'flex';
-            });
-        });
-        
-        modal.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.style.display === 'flex') {
-                modal.style.display = 'none';
-            }
-        });
-
-        // Web Share API & Dynamic Store Badges
-        document.addEventListener('DOMContentLoaded', () => {
-            const btnCompartilhar = document.getElementById('btn-compartilhar');
-            if (btnCompartilhar) {
-                btnCompartilhar.addEventListener('click', async () => {
-                    const shareData = {
-                        title: 'Buscador DJEN',
-                        text: 'Acesse o Buscador DJEN: auditoria algorítmica de prazos e consulta direta ao CNJ.',
-                        url: window.location.href
-                    };
-
-                    try {
-                        if (navigator.share) {
-                            await navigator.share(shareData);
-                        } else {
-                            await navigator.clipboard.writeText(shareData.url);
-                            const textSpan = btnCompartilhar.querySelector('.share-text');
-                            const originalText = textSpan.innerText;
-                            textSpan.innerText = 'Copiado!';
-                            setTimeout(() => { textSpan.innerText = originalText; }, 2000);
-                        }
-                    } catch (err) {
-                        if (err.name !== 'AbortError') { console.error('Erro ao compartilhar:', err); }
-                    }
-                });
-            }
-            
-            // Lógica para Buscar e Injetar Versão e Notas (Chrome)
-            fetch('https://img.shields.io/chrome-web-store/v/ambfdmjdhikdhmbojljaebkipeahmfab.json')
-                .then(res => res.json())
-                .then(data => { document.querySelectorAll('.chrome-tooltip').forEach(el => el.textContent = 'Versão ' + data.value); })
-                .catch(() => { document.querySelectorAll('.chrome-tooltip').forEach(el => el.textContent = 'Disponível na Store'); });
-
-            fetch('https://img.shields.io/chrome-web-store/rating/ambfdmjdhikdhmbojljaebkipeahmfab.json')
-                .then(res => res.json())
-                .then(data => { 
-                    const ratingVal = parseFloat(data.value);
-                    if(!isNaN(ratingVal) && ratingVal >= 4.0) { 
-                        document.querySelectorAll('.chrome-rating').forEach(el => {
-                            el.querySelector('span').textContent = ratingVal.toFixed(1); 
-                            el.classList.add('visible');
-                        });
-                    }
-                }).catch(e => console.log('Rating Chrome Indisponível'));
-
-            // Lógica para Buscar e Injetar Versão e Notas (Firefox)
-            fetch('https://img.shields.io/amo/v/buscador-djen-advogado.json')
-                .then(res => res.json())
-                .then(data => { document.querySelectorAll('.firefox-tooltip').forEach(el => el.textContent = 'Versão ' + data.value); })
-                .catch(() => { document.querySelectorAll('.firefox-tooltip').forEach(el => el.textContent = 'Disponível na Store'); });
+    <div id="viewCalendario" role="tabpanel">
+        <div class="calendar-wrapper">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <button id="btnCalPrev" class="btn-acao-square tooltip-right" aria-label="Mês Anterior" data-tooltip="Mês Anterior" style="border: 1px solid var(--border-light);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
                 
-            fetch('https://img.shields.io/amo/rating/buscador-djen-advogado.json')
-                .then(res => res.json())
-                .then(data => { 
-                    const ratingVal = parseFloat(data.value);
-                    if(!isNaN(ratingVal) && ratingVal >= 4.0) { 
-                        document.querySelectorAll('.firefox-rating').forEach(el => {
-                            el.querySelector('span').textContent = ratingVal.toFixed(1);
-                            el.classList.add('visible');
-                        });
-                    }
-                }).catch(e => console.log('Rating Firefox Indisponível'));
-        });
-    </script>
+                <h2 id="calMonthYear" style="font-size: 15px; margin: 0; font-weight: 600;">--</h2>
+                
+                <div style="display: flex; gap: 8px;">
+                    <button id="btnPDFCalendario" class="btn-acao-square h-blue tooltip-left" aria-label="Imprimir PDF" data-tooltip="Imprimir Calendário" style="border: 1px solid var(--border-light); background: var(--bg-body);">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    </button>
+                    <button id="btnCalNext" class="btn-acao-square tooltip-left" aria-label="Próximo Mês" data-tooltip="Próximo Mês" style="border: 1px solid var(--border-light);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="calendar-grid">
+                <div class="cal-day-header">Dom</div>
+                <div class="cal-day-header">Seg</div>
+                <div class="cal-day-header">Ter</div>
+                <div class="cal-day-header">Qua</div>
+                <div class="cal-day-header">Qui</div>
+                <div class="cal-day-header">Sex</div>
+                <div class="cal-day-header">Sáb</div>
+                <div id="calDaysContainer" style="display: contents;"></div>
+            </div>
+        </div>
+
+        <div id="calSelectedDateItems" aria-live="polite"></div>
+    </div>
+
+    <div id="viewCalculadora" role="tabpanel">
+        <div id="containerCalcAvulsa" style="padding-bottom: 24px;"></div>
+    </div>
+
+    <div class="footer-cafe-banner" role="button" tabindex="0" aria-expanded="false" aria-label="Apoiar o projeto">
+        <div class="footer-cafe-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 16px; filter: grayscale(0.5);">🚀</span>
+                <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Apoiar desenvolvimento contínuo</span>
+            </div>
+            <svg class="cafe-chevron" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        
+        <div class="cafe-accordion-content">
+            <div class="cafe-inner">
+                <div style="width: 100%; height: 1px; background: var(--border-light); margin-bottom: 16px;"></div>
+                <div class="modal-qr-white" style="width: 120px; height: 120px; padding: 6px; margin-bottom: 12px;">
+                    <img src="qrcode-pix.png" alt="QR Code PIX" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'">
+                </div>
+                <div style="width: 100%; text-align: center; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Chave PIX (Copia e Cola)</div>
+                <div class="pix-copy-row" style="padding: 4px; background: var(--bg-body); max-width: 260px;">
+                    <span class="pix-code" style="font-size: 11px; font-family: 'JetBrains Mono', monospace;">50f781e2-9d94-4624-8f08-a9938bb0c4dc</span>
+                    <button class="pix-btn-copy" style="padding: 5px 12px; font-size: 11px;">Copiar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="rankModal">
+        <div class="modal-content" style="max-width: 480px; width: 90%;">
+            <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+                <h2 style="font-size: 18px; margin-bottom: 4px; margin-top: 0;">📊 Relatório de Produtividade</h2>
+                <p style="font-size: 13px; color: var(--text-muted); margin-top: 0;">O impacto da automação na sua rotina.</p>
+                <button class="modal-close" id="btnFecharRank" aria-label="Fechar">&times;</button>
+            </div>
+
+            <div class="modal-body" style="padding-top: 16px;">
+                
+                <div style="background: var(--bg-body); border-radius: var(--radius-md); padding: 24px; text-align: center; margin-bottom: 20px; border: 1px solid transparent;">
+                    <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Tempo Poupado Estimado</div>
+                    <div id="modalTempoGasto" style="font-size: 38px; font-weight: 800; color: var(--primary); margin: 8px 0; line-height: 1;">0h 0m</div>
+                    <div style="font-size: 11px; color: var(--text-placeholder);">Horas de trabalho manual convertidas em tempo livre.</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                    <div style="background: var(--bg-body); border-radius: var(--radius-md); padding: 16px; display: flex; flex-direction: column; justify-content: center; border: 1px solid transparent;">
+                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 4px;">Publicações Triadas</div>
+                        <div style="display: flex; align-items: baseline; gap: 8px;">
+                            <div id="statLidos" style="font-size: 24px; font-weight: 700; color: var(--text-main); line-height: 1;">0</div>
+                            <div style="font-size: 12px; color: var(--text-placeholder);">lidas</div>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-body); border-radius: var(--radius-md); padding: 16px; display: flex; flex-direction: column; justify-content: center; border: 1px solid transparent;">
+                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 4px;">Prazos Cumpridos</div>
+                        <div style="display: flex; align-items: baseline; gap: 8px;">
+                            <div id="statCumpridos" style="font-size: 24px; font-weight: 700; color: var(--zen-green); line-height: 1;">0</div>
+                            <div style="font-size: 12px; color: var(--text-placeholder);">concluídos</div>
+                        </div>
+                    </div>
+                </div>
+
+    <div style="background: var(--bg-body); border-radius: var(--radius-md); padding: 16px; display: flex; flex-direction: column; justify-content: center; border: 1px solid transparent;">
+                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 4px;">Prazos Cumpridos</div>
+                        <div style="display: flex; align-items: baseline; gap: 8px;">
+                            <div id="statCumpridos" style="font-size: 24px; font-weight: 700; color: var(--zen-green); line-height: 1;">0</div>
+                            <div style="font-size: 12px; color: var(--text-placeholder);">concluídos</div>
+                        </div>
+                    </div>
+                </div>
+            </div> </div> </div> <div id="novoPrazoModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="btnFecharModalNovoPrazo" aria-label="Fechar Modal">&times;</button>
+            <h2 style="font-size: 18px; margin-bottom: 24px; margin-top:0;">Adicionar Prazo</h2>
+            <div style="width: 100%; display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+                <div class="input-group">
+                    <label>Identificação</label>
+                    <input type="text" id="inputManualProcesso" placeholder="0000000-00.0000.0.00.0000">
+                </div>
+                <div class="input-group">
+                    <label>Teor da Intimação</label>
+                    <textarea id="inputManualTeor" placeholder="Cole o teor aqui..." style="height: 100px; resize: none;"></textarea>
+                </div>
+            </div>
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <button id="btnCancelarNovoPrazo" class="btn-pill" style="flex:1;">Cancelar</button>
+                <button id="btnSalvarNovoPrazo" class="btn-main" style="flex:2;">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="apelidoModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 320px;">
+            <button class="modal-close" id="btnFecharModalApelido" aria-label="Fechar Modal">&times;</button>
+            <h2 style="font-size: 18px; margin-bottom: 16px; margin-top:0;">Identificação</h2>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; margin-top:0;">Adicione um nome ao caso.</p>
+            <input type="text" id="inputApelidoModal" placeholder="Ex: João x Empresa" style="margin-bottom: 20px;">
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <button id="btnCancelarApelido" class="btn-pill" style="flex:1;">Cancelar</button>
+                <button id="btnSalvarApelido" class="btn-main" style="flex:1;">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+   
+    <div id="termosModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Fechar Modal">&times;</button>
+            <h2 style="font-size: 18px; margin-bottom: 12px; margin-top:0;">Radar</h2>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px; margin-top:0;">Palavras para etiquetas automáticas (separadas por vírgula).</p>
+            <textarea id="inputTermosRadar" style="height: 80px; width: 100%; box-sizing: border-box; resize: none;" placeholder="Ex: penhora, bloqueio, revelia..."></textarea>
+            <button id="btnSalvarTermos" class="btn-main" style="width: 100%; margin-top: 12px;">Salvar</button>
+        </div>
+    </div>
+
+    <div id="reviewModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 340px; text-align: center; align-items: center;">
+            <button class="modal-close" id="btnFecharReview" aria-label="Fechar Modal">&times;</button>
+            <div style="font-size: 40px; margin-bottom: 12px;">⭐</div>
+            <h2 style="font-size: 18px; margin-bottom: 8px; margin-top:0;">50 Prazos Cumpridos! 🎯</h2>
+            <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5;">
+                Excelente ritmo! Se o <b>Buscador DJEN</b> está poupando o seu tempo, a sua avaliação de 5 estrelas é fundamental para manter o projeto vivo e gratuito.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                <button id="btnAvaliarLoja" class="btn-main" style="background: var(--zen-orange); color: #fff; font-weight: 700; border: none; box-shadow: var(--shadow-sm);">
+                    🌟 Avaliar Extensão
+                </button>
+                <button id="btnAvaliarDepois" class="btn-pill c-gray" style="border: transparent;">Agora não</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="tutorialModal">
+    <div class="modal-content" style="max-width: 520px; width: 90%;">
+        <div class="modal-header">
+            <h2>📚 Guia Rápido</h2>
+            <button class="modal-close" id="btnFecharTutorial">&times;</button>
+        </div>
+        
+        <div class="modal-body" style="padding: 0; max-height: 65vh; overflow-y: auto;">
+            <div class="wiki-container">
+                <div class="wiki-intro">
+                    Tudo o que você precisa saber para dominar a automação da sua rotina jurídica e extrair o máximo do Buscador DJEN.
+                </div>
+
+                <details class="wiki-section" name="wiki-accordion">
+                    <summary>🚀 Primeiros Passos & Buscas</summary>
+                    <div class="wiki-content">
+                        <ul>
+                            <li><b>Configuração OAB:</b> Insira sua OAB e Estado nas configurações (Menu) para otimizar as buscas oficiais.</li>
+                            <li><b>Busca Inteligente:</b> Pode colar o processo com ou sem pontos, o sistema formata automaticamente para o padrão CNJ (20 dígitos).</li>
+                            <li><b>Modo Foco:</b> Nos resultados, clique no ícone do quadrado (<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>) para ler publicações extensas em tela cheia, sem distrações.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="wiki-section" name="wiki-accordion">
+                    <summary>⏱️ Calculadora & Auditoria Avançada</summary>
+                    <div class="wiki-content">
+                        <ul>
+                            <li><b>Motor Híbrido:</b> Selecione "Cível" para contagem em dias úteis (CPC) ou "Criminal" para dias corridos (CPP).</li>
+                            <li><b>Integração IBGE e GitHub:</b> A calculadora detecta feriados nacionais, estaduais e <b>municipais</b> automaticamente, bastando informar a comarca.</li>
+                            <li><b>Prova de Tempestividade:</b> Ao calcular um prazo, clique no resultado para expandir a "Grelha de Dias". Exporte a auditoria em PNG para anexar nas suas petições.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="wiki-section" name="wiki-accordion">
+                    <summary>🎯 Radar de Urgências & Tags</summary>
+                    <div class="wiki-content">
+                        <ul>
+                            <li><b>Radar Automático:</b> Termos vitais (como "Penhora", "Revelia", "Liminar") geram alertas coloridos na tela. Você pode personalizar estas palavras-chave no Menu de Opções.</li>
+                            <li><b>Tags Manuais:</b> Selecione qualquer texto dentro do teor de uma publicação. Isso criará automaticamente uma <span class="tag-badge">#tag_personalizada</span> nas anotações do processo.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="wiki-section" name="wiki-accordion">
+                    <summary>⌨️ Atalhos de Teclado</summary>
+                    <div class="wiki-content">
+                        <ul>
+                            <li><kbd>ESC</kbd> — É o seu botão de pânico. Fecha abas, sai do modo foco, recolhe modais e reseta calculadoras, tudo de forma progressiva.</li>
+                            <li><kbd>Enter</kbd> — Expande ou recolhe o cartão de intimação quando ele está selecionado.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="wiki-section" name="wiki-accordion">
+                    <summary>🛡️ Privacidade & Base Offline</summary>
+                    <div class="wiki-content">
+                        <p><b>Sigilo Absoluto:</b> O DJEN funciona 100% no seu navegador. Nenhuma intimação, nota de cliente ou prazo é enviado para os nossos servidores.</p>
+                        <p><b>Portabilidade:</b> Use a opção "Salvar Backup" no Menu para baixar toda a sua base de dados num ficheiro seguro. Use "Restaurar Backup" para transferir o seu escritório para outro computador num piscar de olhos.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div class="modal-footer" style="justify-content: center; padding-top: 16px;">
+            <button class="btn-exec" id="btnEntendiTutorial" style="width: 100%;">Começar a usar</button>
+        </div>
+    </div>
+</div>
+
+     <template id="calcTemplate">
+        <div class="calculadora-prazo">
+            <div class="calc-title">
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line></svg>
+                Contagem
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+                <input type="hidden" class="c-dir" value="futuro">
+<div class="input-group"><label>Tribunal (Sigla)</label><input type="text" class="c-trib" list="listaTribunais" placeholder="Digite para buscar (Ex: TJSP)" autocomplete="off" style="text-transform: uppercase;"></div>                <div style="display: flex; gap: 8px; width: 100%;">
+                    <div class="input-group" style="flex: 0 0 70px;">
+                        <label>UF</label>
+                        <select class="c-uf" style="padding: 8px;">
+                            <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option><option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option><option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option><option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option><option value="SP" selected>SP</option><option value="SE">SE</option><option value="TO">TO</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="flex: 1;"><label>Município</label><input type="text" class="c-mun" placeholder="Auto..." autocomplete="off"></div>
+                </div>
+                <div style="display: flex; gap: 8px; width: 100%;">
+                    <div class="input-group" style="flex: 1;"><label>Matéria</label><select class="c-mat" style="padding: 8px;"><option value="Cível">Cível (Úteis)</option><option value="Criminal">Criminal (Corr.)</option></select></div>
+                    <div class="input-group" style="flex: 0 0 70px;"><label>Dias</label><input type="number" class="c-dias" min="1" value="15" style="text-align:center;"></div>
+                </div>
+                <div style="display: flex; flex-direction: column;">
+    <label style="font-weight: 600; color: var(--text-main); font-size: 12px; margin-bottom: 4px;">Data de Disponibilização</label>
+    <input type="date" class="c-data" style="padding: var(--space-8); border: 1px solid var(--border-light); border-radius: var(--radius-btn); background: var(--input-bg); color: var(--text-main);">
+    <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block; line-height: 1.2;">
+        *Publicação no dia útil seguinte (D+1)
+    </span>
+</div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; padding-top: 10px; border-top: 1px dashed var(--border-light);">
+                    <input type="checkbox" class="c-espera" style="width: 16px; height: 16px; cursor: pointer; accent-color: var(--text-muted);">
+                    <label style="font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer;" onclick="this.previousElementSibling.click()">Prazo de Terceiros (Aguardar manifestação)</label>
+                </div>
+            
+            <div class="calc-result-box" style="display: none; padding: 16px; background: var(--bg-body); border-radius: var(--radius-sm); margin-bottom: 20px; border: 1px solid var(--border-light); cursor: pointer;">
+                <div style="text-align: center;">
+                    <div style="font-size: 12px; font-weight: 500; color: var(--text-muted);">Fatal</div>
+                    <div class="resultado-data-fatal" style="font-size: 24px; font-weight: 700; color: var(--text-main); margin: 4px 0; font-family: ui-monospace, monospace;">--/--/----</div>
+                    <div class="resultado-alertas" style="display:flex; gap:4px; justify-content:center;"></div>
+                </div>
+                <div class="calc-preview audit-flow" style="display:none; margin-top: 16px;"></div>
+                
+                <div class="container-btn-png" style="display:none; margin-top: 16px;">
+                    <button class="btn-pill c-blue btn-exportar-png" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; font-weight: 600;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> 
+                        Baixar Imagem da Auditoria
+                    </button>
+                </div>
+            </div>
+            
+            <div class="calc-acoes-iniciais" style="display: flex; gap: 8px;">
+                <button class="btn-pill c-gray btn-cancelar" style="flex:1;">Cancelar</button>
+                <button class="btn-main btn-exec" style="flex:2;">Calcular</button>
+            </div>
+            <div class="calc-acoes-finais" style="display: none; gap: 8px;">
+                <button class="btn-pill c-gray btn-voltar-calc" style="flex: 1;">Editar</button>
+                <button class="btn-main btn-salvar" style="flex:2;">Salvar</button>
+            </div>
+            <div class="form-identificacao-avulsa" style="display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-light); animation: slideDownForm 0.3s ease;">
+                <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">
+                    Identificação do Prazo (Preencha pelo menos um)
+                </div>
+                <div class="input-group" style="margin-bottom: 10px;">
+                    <label>Número do Processo</label>
+                    <input type="text" class="calc-avulsa-proc" placeholder="Ex: 1234567-89.2026.8.26.0000" autocomplete="off">
+                </div>
+                <div class="input-group" style="margin-bottom: 16px;">
+                    <label>Nome do Cliente ou Identificador</label>
+                    <input type="text" class="calc-avulsa-apelido" placeholder="Ex: Sr. João - Contestação" autocomplete="off">
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-pill c-gray btn-cancelar-avulsa" style="flex: 1;">Cancelar</button>
+                    <button class="btn-main btn-salvar-avulsa" style="flex: 2;">💾 Salvar Prazo</button>
+                </div>
+            </div>
+            <div class="calc-acoes-pos-salvo" style="display: none; flex-direction: column; gap: 8px; margin-top: 12px;">
+                <div style="color: var(--zen-green-txt); font-size: 13px; font-weight: 500; text-align: center;">✅ Guardado!</div>
+                <button class="btn-pill c-blue solid btn-salvar-gcal-pos" style="width: 100%;">📅 Exportar Google Agenda</button>
+                <button class="btn-pill c-gray btn-fechar-calc" style="border:none; width: 100%;">Fechar e continuar</button>
+            </div>
+        </div>
+    </template>
+
+<datalist id="listaTribunais">
+        <option value="STF"></option><option value="STJ"></option><option value="TST"></option><option value="TSE"></option><option value="STM"></option>
+        <option value="TRF1"></option><option value="TRF2"></option><option value="TRF3"></option><option value="TRF4"></option><option value="TRF5"></option><option value="TRF6"></option>
+        <option value="TJAC"></option><option value="TJAL"></option><option value="TJAP"></option><option value="TJAM"></option><option value="TJBA"></option><option value="TJCE"></option><option value="TJDFT"></option><option value="TJES"></option><option value="TJGO"></option><option value="TJMA"></option><option value="TJMT"></option><option value="TJMS"></option><option value="TJMG"></option><option value="TJPA"></option><option value="TJPB"></option><option value="TJPR"></option><option value="TJPE"></option><option value="TJPI"></option><option value="TJRJ"></option><option value="TJRN"></option><option value="TJRS"></option><option value="TJRO"></option><option value="TJRR"></option><option value="TJSC"></option><option value="TJSP"></option><option value="TJSE"></option><option value="TJTO"></option>
+        <option value="TRT1"></option><option value="TRT2"></option><option value="TRT3"></option><option value="TRT4"></option><option value="TRT5"></option><option value="TRT6"></option><option value="TRT7"></option><option value="TRT8"></option><option value="TRT9"></option><option value="TRT10"></option><option value="TRT11"></option><option value="TRT12"></option><option value="TRT13"></option><option value="TRT14"></option><option value="TRT15"></option><option value="TRT16"></option><option value="TRT17"></option><option value="TRT18"></option><option value="TRT19"></option><option value="TRT20"></option><option value="TRT21"></option><option value="TRT22"></option><option value="TRT23"></option><option value="TRT24"></option>
+    </datalist>
+
+    <div id="shareModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 320px;">
+            <button class="modal-close" aria-label="Fechar Modal">&times;</button>
+            <h2 id="shareModalTitle" style="font-size: 18px; margin-bottom: 20px; margin-top:0;">Compartilhar</h2>
+            <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                <button id="shareWpp" class="btn-share-option">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--zen-green)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.446-.272.371-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp
+                </button>
+                <button id="shareEmail" class="btn-share-option">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--zen-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> E-mail
+                </button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
