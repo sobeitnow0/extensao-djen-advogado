@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiki & Documentação | Buscador DJEN</title>
+    <meta name="description" content="Documentação completa do Buscador DJEN. Aprenda a usar a busca por OAB, calculadora de prazos, radar de urgências, tags, exportação CSV e relatórios PDF.">
+    <link rel="canonical" href="https://www.buscadordjen.com.br/wiki.html">
+    <link rel="icon" type="image/png" href="djen-128.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    </script>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .wiki-layout {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 5% 80px;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+        .wiki-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+        .wiki-nav-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-placeholder);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .wiki-nav-group {
+            margin-bottom: 24px;
+        }
+        .wiki-nav-group-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-placeholder);
+            margin-bottom: 6px;
+            margin-top: 16px;
+        }
+        .wiki-nav a {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            transition: all 0.15s;
+            border-left: 2px solid transparent;
+        }
+        .wiki-nav a:hover {
+            color: var(--text-main);
+            background: var(--primary-light);
+        }
+        .wiki-nav a.active {
+            color: var(--primary);
+            border-left-color: var(--primary);
+            background: var(--primary-light);
+            font-weight: 600;
+        }
+        .wiki-content {
+            min-width: 0;
+        }
+        .wiki-section {
+            margin-bottom: 72px;
+            scroll-margin-top: 100px;
+        }
+        .wiki-section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .wiki-section-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+        .wiki-section h2 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin: 0;
+        }
+        .wiki-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.25px;
+            margin: 32px 0 12px;
+            color: var(--text-main);
+        }
+        .wiki-section p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+        .wiki-section strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+        .wiki-callout {
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 20px 0;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .wiki-callout.tip {
+            background: var(--zen-green-bg);
+            border: 1px solid rgba(46, 133, 85, 0.2);
+            color: var(--zen-green);
+        }
+        .wiki-callout.warning {
+            background: var(--zen-orange-bg);
+            border: 1px solid rgba(194, 84, 0, 0.2);
+            color: var(--zen-orange);
+        }
+        .wiki-callout.info {
+            background: var(--zen-blue-bg);
+            border: 1px solid rgba(35, 104, 196, 0.2);
+            color: var(--zen-blue);
+        }
+        .wiki-callout .callout-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .wiki-callout p {
+            margin: 0;
+            color: inherit;
+            font-size: 14px;
+        }
+        .wiki-step-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            counter-reset: step-counter;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .wiki-step-list li {
+            counter-increment: step-counter;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .wiki-step-list li::before {
+            content: counter(step-counter);
+            min-width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: var(--primary-text);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .wiki-badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 16px 0;
+        }
+        .wiki-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid;
+        }
+        .wiki-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin: 16px 0 24px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+        }
+        .wiki-table th {
+            background: var(--primary-light);
+            color: var(--text-main);
+            font-weight: 600;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .wiki-table td {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-light);
+            color: var(--text-muted);
+            vertical-align: top;
+            line-height: 1.5;
+        }
+        .wiki-table tr:hover td {
+            background: var(--primary-light);
+        }
+        .wiki-code {
+            background: var(--primary-light);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            padding: 2px 8px;
+            font-family: ui-monospace, monospace;
+            font-size: 13px;
+            color: var(--primary);
+        }
+        .wiki-hero {
+            margin-bottom: 56px;
+        }
+        .wiki-hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin-bottom: 12px;
+        }
+        .wiki-hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 640px;
+            margin-bottom: 24px;
+        }
+        .wiki-quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 48px;
+        }
+        .wiki-quick-card {
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: 16px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.2s;
+            background: var(--card-bg);
+        }
+        .wiki-quick-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+        .wiki-quick-card .card-icon {
+            font-size: 22px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .wiki-quick-card .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .wiki-quick-card .card-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .separator {
+            border: none;
+            border-top: 1px solid var(--border-light);
+            margin: 48px 0;
+        }
+        @media (max-width: 900px) {
+            .wiki-layout {
+                grid-template-columns: 1fr;
+                padding: 100px 5% 60px;
+            }
+            .wiki-sidebar {
+                position: static;
+                display: none;
+            }
+            .wiki-hero h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="mainHeader">
+        <a href="index.html" class="brand">
+            <img src="djen-128.png" alt="Logo Buscador DJEN">
+            Buscador DJEN
+        </a>
+
+        <nav class="header-nav" aria-label="Navegação principal">
+            <a href="busca.html" class="nav-link">Pesquisa DJEN</a>
+            <a href="calculadora.html" class="nav-link">Calculadora de Prazos</a>
+            <a href="wiki.html" class="nav-link active">Wiki</a>
+            <a href="/webapp/" class="nav-link">Web App</a>
+        </nav>
+
+        <div class="header-actions">
+            <a href="#footer-coffee" onclick="openApoio(event)" class="nav-btn-apoio" style="margin-right: 12px;">
+                <i class="ph ph-hand-heart"></i>
+                <span>Apoiar</span>
+            </a>
+            <a href="https://www.instagram.com/amilcarmoreira.juridico" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; white-space: nowrap;">
+                por Amilcar Moreira
+            </a>
+            <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
+                <i class="ph ph-sun"></i>
+                <i class="ph ph-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="wiki-layout">
+
+        <!-- Sidebar de Navegação -->
+        <aside class="wiki-sidebar">
+            <nav class="wiki-nav">
+                <div class="wiki-nav-title">Documentação</div>
+
+                <div class="wiki-nav-group">
+                    <div class="wiki-nav-group-label">Início</div>
+                    <a href="#introducao">Introdução</a>
+                    <a href="#instalacao">Instalação</a>
+                    <a href="#interface">Interface Geral</a>
+                </div>
+
+                <div class="wiki-nav-group">
+                    <div class="wiki-nav-group-label">Funcionalidades</div>
+                    <a href="#busca">Busca & Pesquisa</a>
+                    <a href="#prazos">Prazos & Agenda</a>
+                    <a href="#calculadora">Calculadora</a>
+                    <a href="#calendario">Calendário</a>
+                    <a href="#radar">Radar de Urgências</a>
+                    <a href="#tags">Tags & Notas</a>
+                    <a href="#modo-foco">Modo Foco</a>
+                    <a href="#tarefas">Tarefas do Prazo</a>
+                </div>
+
+                <div class="wiki-nav-group">
+                    <div class="wiki-nav-group-label">Exportação</div>
+                    <a href="#exportar-csv">Exportar CSV</a>
+                    <a href="#relatorio-pdf">Relatório PDF</a>
+                    <a href="#google-agenda">Google Agenda</a>
+                    <a href="#compartilhar">Compartilhar</a>
+                </div>
+
+                <div class="wiki-nav-group">
+                    <div class="wiki-nav-group-label">Dados & Segurança</div>
+                    <a href="#backup">Backup & Restauração</a>
+                    <a href="#privacidade">Privacidade & LGPD</a>
+                    <a href="#configuracoes">Configurações</a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="wiki-content">
+
+            <div class="wiki-hero">
+                <h1>Wiki & Documentação</h1>
+                <p>Guia completo do Buscador DJEN v50.1. Todas as funcionalidades documentadas diretamente a partir do código-fonte da extensão.</p>
+            </div>
+
+            <div class="wiki-quick-links">
+                <a href="#busca" class="wiki-quick-card">
+                    <span class="card-icon"><i class="ph ph-magnifying-glass"></i></span>
+                    <div class="card-title">Busca & Pesquisa</div>
+                    <div class="card-desc">Consultar publicações por OAB ou NPU</div>
+                </a>
+                <a href="#calculadora" class="wiki-quick-card">
+                    <span class="card-icon"><i class="ph ph-calculator"></i></span>
+                    <div class="card-title">Calculadora de Prazos</div>
+                    <div class="card-desc">Contagem em dias úteis com auditoria</div>
+                </a>
+                <a href="#radar" class="wiki-quick-card">
+                    <span class="card-icon"><i class="ph ph-target"></i></span>
+                    <div class="card-title">Radar de Urgências</div>
+                    <div class="card-desc">Alertas automáticos por palavras-chave</div>
+                </a>
+                <a href="#backup" class="wiki-quick-card">
+                    <span class="card-icon"><i class="ph ph-floppy-disk"></i></span>
+                    <div class="card-title">Backup & Restauração</div>
+                    <div class="card-desc">Proteja e migre seus dados</div>
+                </a>
+                <a href="#relatorio-pdf" class="wiki-quick-card">
+                    <span class="card-icon"><i class="ph ph-file-pdf"></i></span>
+                    <div class="card-title">Relatório PDF</div>
+                    <div class="card-desc">Exportar pauta em Visual Law</div>
+                </a>
+                <a href="#google-agenda" class="wiki-quick-card">
+                    <span class="card-icon"><i class="ph ph-calendar-plus"></i></span>
+                    <div class="card-title">Google Agenda</div>
+                    <div class="card-desc">Integrar prazos ao calendário</div>
+                </a>
+            </div>
+
+            <hr class="separator">
+
+            <!-- INTRODUÇÃO -->
+            <section id="introducao" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-blue-bg);">📖</div>
+                    <h2>Introdução</h2>
+                </div>
+                <p>O <strong>Buscador DJEN</strong> é uma extensão para Chrome e Firefox que funciona como um painel de controle jurídico integrado ao navegador. Ele permite que advogados monitorem publicações do Diário da Justiça Eletrônico (DJEN) e do CNJ, calculem prazos processuais com precisão algorítmica e organizem sua pauta — tudo sem depender de servidores externos.</p>
+
+                <div class="wiki-callout info">
+                    <span class="callout-icon"><i class="ph ph-shield-check"></i></span>
+                    <p><strong>Privacidade absoluta:</strong> Todos os seus dados (processos, prazos, notas) ficam armazenados <em>exclusivamente no seu navegador</em> via IndexedDB. Nenhuma informação é transmitida para servidores externos.</p>
+                </div>
+
+                <h3>Compatibilidade</h3>
+                <table class="wiki-table">
+                    <thead><tr><th>Sistema Judicial</th><th>Tipo de Integração</th></tr></thead>
+                    <tbody>
+                        <tr><td>PJe (Processo Judicial Eletrônico)</td><td>Leitura passiva de publicações no painel do usuário</td></tr>
+                        <tr><td>e-SAJ</td><td>Leitura passiva de publicações e despachos</td></tr>
+                        <tr><td>eproc</td><td>Leitura passiva de publicações</td></tr>
+                        <tr><td>Projudi</td><td>Leitura passiva de publicações</td></tr>
+                        <tr><td>DJEN / CNJ</td><td>Busca ativa via API pública oficial</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- INSTALAÇÃO -->
+            <section id="instalacao" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-green-bg);">⬇️</div>
+                    <h2>Instalação</h2>
+                </div>
+                <p>A extensão está disponível gratuitamente nas principais lojas de extensões. Não requer cadastro, criação de conta ou fornecimento de qualquer credencial.</p>
+
+                <ol class="wiki-step-list">
+                    <li>Acesse a <a href="https://chromewebstore.google.com/detail/buscador-djen-prazos-e-in/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" style="color: var(--primary);">Chrome Web Store</a> ou <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" style="color: var(--primary);">Firefox Add-ons</a></li>
+                    <li>Clique em <strong>Adicionar ao Chrome</strong> (ou <strong>Adicionar ao Firefox</strong>)</li>
+                    <li>Confirme as permissões solicitadas — a extensão só lê páginas que você já está visitando</li>
+                    <li>Fixe o ícone na barra de ferramentas para acesso rápido</li>
+                    <li>Clique no ícone <strong>DJ</strong> azul para abrir o painel lateral</li>
+                </ol>
+
+                <div class="wiki-callout tip">
+                    <span class="callout-icon"><i class="ph ph-lightbulb"></i></span>
+                    <p>Na primeira abertura, insira seu número de <strong>OAB</strong> e <strong>UF</strong> na aba Busca. Esses dados são salvos localmente para agilizar as próximas consultas.</p>
+                </div>
+            </section>
+
+            <!-- INTERFACE -->
+            <section id="interface" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-purple-bg);">🖥️</div>
+                    <h2>Interface Geral</h2>
+                </div>
+                <p>A extensão é organizada em <strong>4 abas principais</strong> acessíveis pelo menu superior:</p>
+
+                <table class="wiki-table">
+                    <thead><tr><th>Aba</th><th>Função</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Buscar</strong></td><td>Consultar publicações no DJEN/CNJ por OAB ou número de processo</td></tr>
+                        <tr><td><strong>Prazos</strong></td><td>Agenda de prazos salvos com filtros de urgência e status</td></tr>
+                        <tr><td><strong>Calendário</strong></td><td>Visão mensal dos prazos, com destaques por densidade</td></tr>
+                        <tr><td><strong>Calculadora</strong></td><td>Motor matemático de prazos com auditoria dia a dia</td></tr>
+                    </tbody>
+                </table>
+
+                <p>O botão <strong>☰ Menu</strong> no canto superior direito abre um painel com opções avançadas: Radar, Backup, Exportação, Relatórios, Tema e Google Agenda.</p>
+            </section>
+
+            <hr class="separator">
+
+            <!-- BUSCA -->
+            <section id="busca" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-blue-bg);">🔍</div>
+                    <h2>Busca & Pesquisa</h2>
+                </div>
+                <p>A aba <strong>Buscar</strong> permite consultar publicações diretamente nas APIs públicas do DJEN e CNJ, retornando resultados em tempo real sem depender dos portais oficiais.</p>
+
+                <h3>Modos de Busca</h3>
+                <div class="wiki-badge-row">
+                    <span class="wiki-badge" style="background: var(--zen-blue-bg); color: var(--zen-blue); border-color: rgba(35,104,196,0.2);">Por OAB</span>
+                    <span class="wiki-badge" style="background: var(--zen-purple-bg); color: var(--zen-purple); border-color: rgba(106,64,191,0.2);">Por NPU (Número do Processo)</span>
+                </div>
+
+                <h3>Busca por OAB</h3>
+                <ol class="wiki-step-list">
+                    <li>Selecione o botão <strong>OAB</strong> no seletor de modo</li>
+                    <li>Insira o número da OAB (somente números)</li>
+                    <li>Selecione a <strong>UF</strong> (estado)</li>
+                    <li>Clique em <strong>Buscar</strong> ou pressione Enter</li>
+                </ol>
+
+                <h3>Busca por Processo (NPU)</h3>
+                <ol class="wiki-step-list">
+                    <li>Selecione o botão <strong>Processo</strong> no seletor de modo</li>
+                    <li>Digite o número do processo — o campo formata automaticamente no padrão CNJ (<span class="wiki-code">0000000-00.0000.0.00.0000</span>)</li>
+                    <li>Clique em <strong>Buscar</strong></li>
+                </ol>
+
+                <div class="wiki-callout tip">
+                    <span class="callout-icon"><i class="ph ph-clock-counter-clockwise"></i></span>
+                    <p><strong>Histórico de Buscas:</strong> As últimas consultas são salvas automaticamente como chips clicáveis abaixo do campo de busca, permitindo repetir consultas com um clique.</p>
+                </div>
+
+                <h3>Filtros de Resultado</h3>
+                <p>Após a busca, é possível filtrar os resultados por:</p>
+                <ul style="padding-left: 20px; color: var(--text-muted); font-size: 15px; line-height: 2;">
+                    <li><strong>Tribunal</strong> (TJSP, STJ, TRF, etc.)</li>
+                    <li><strong>Radar</strong> — exibe apenas publicações com palavras-chave urgentes detectadas</li>
+                    <li><strong>Barra de pesquisa livre</strong> — filtra pelo texto da publicação</li>
+                </ul>
+
+                <h3>Ações por Publicação</h3>
+                <p>Cada publicação encontrada oferece um conjunto de ações via menu <strong>⋮</strong>:</p>
+                <table class="wiki-table">
+                    <thead><tr><th>Ação</th><th>O que faz</th></tr></thead>
+                    <tbody>
+                        <tr><td>💾 Salvar na Agenda</td><td>Salva a publicação na aba Prazos com cálculo automático do prazo</td></tr>
+                        <tr><td>📋 Copiar Texto</td><td>Copia o teor da publicação para a área de transferência</td></tr>
+                        <tr><td>🔍 Modo Foco</td><td>Abre o texto em tela cheia para leitura imersiva</td></tr>
+                        <tr><td>🏷️ Adicionar Apelido</td><td>Define um nome amigável para o processo</td></tr>
+                        <tr><td>🗑️ Remover</td><td>Remove a publicação da lista atual (com opção de desfazer)</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="wiki-callout warning">
+                    <span class="callout-icon"><i class="ph ph-warning"></i></span>
+                    <p>A versão Web (sem a extensão instalada) tem um <strong>limite de 3 consultas por dia</strong>. Com a extensão instalada no navegador, as buscas são ilimitadas.</p>
+                </div>
+            </section>
+
+            <!-- PRAZOS & AGENDA -->
+            <section id="prazos" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-red-bg);">⏰</div>
+                    <h2>Prazos & Agenda</h2>
+                </div>
+                <p>A aba <strong>Prazos</strong> é o painel central de controle tático. Exibe todos os processos salvos com seus prazos calculados, status de urgência e ferramentas de gestão.</p>
+
+                <h3>Painel de Estatísticas</h3>
+                <p>No topo da aba, quatro contadores mostram em tempo real:</p>
+                <table class="wiki-table">
+                    <thead><tr><th>Contador</th><th>Significa</th></tr></thead>
+                    <tbody>
+                        <tr><td>🔴 Hoje</td><td>Prazos com data fatal hoje ou já vencidos</td></tr>
+                        <tr><td>🟡 +5 Dias</td><td>Prazos que vencem nos próximos 5 dias úteis</td></tr>
+                        <tr><td>🟢 Futuros</td><td>Prazos com mais de 5 dias restantes</td></tr>
+                        <tr><td>✅ Cumpridos</td><td>Processos marcados como cumpridos</td></tr>
+                    </tbody>
+                </table>
+
+                <p>Clicar em qualquer contador filtra a lista para exibir apenas aquele grupo.</p>
+
+                <h3>Adicionar Prazo Manual</h3>
+                <p>Além das publicações capturadas automaticamente, é possível adicionar prazos manualmente:</p>
+                <ol class="wiki-step-list">
+                    <li>Clique no botão <strong>+ Novo Prazo</strong></li>
+                    <li>Informe o número do processo ou um nome descritivo</li>
+                    <li>Cole o texto da intimação (opcional) para ativar o Radar automaticamente</li>
+                    <li>Escolha entre <strong>Calcular prazo</strong> (abre a Calculadora) ou <strong>Salvar direto</strong> (informe a data de vencimento)</li>
+                </ol>
+
+                <h3>Prazo de Terceiros (Aguardar Manifestação)</h3>
+                <p>Ao salvar um prazo, é possível marcar a opção <strong>"Prazo de Terceiros"</strong>. Isso move o processo para a fila de espera, sinalizando que você aguarda a manifestação da outra parte antes de agir.</p>
+
+                <h3>Marcar como Cumprido</h3>
+                <p>Clique no checkbox ao lado do processo para marcá-lo como cumprido. O sistema registra a data de cumprimento e calcula automaticamente a <strong>velocidade média</strong> do seu escritório (quantos dias em média para cumprir um prazo após a publicação).</p>
+
+                <div class="wiki-callout tip">
+                    <span class="callout-icon"><i class="ph ph-trophy"></i></span>
+                    <p>Ao atingir <strong>50 prazos cumpridos</strong>, a extensão exibe um convite para avaliar a ferramenta na loja.</p>
+                </div>
+            </section>
+
+            <!-- CALCULADORA -->
+            <section id="calculadora" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-gold-bg);">🧮</div>
+                    <h2>Calculadora de Prazos</h2>
+                </div>
+                <p>O motor matemático do Buscador DJEN é o núcleo da extensão. Ele calcula prazos processuais com precisão algorítmica, considerando feriados nacionais, estaduais, municipais, recessos forenses e suspensões de tribunal.</p>
+
+                <h3>Campos de Entrada</h3>
+                <table class="wiki-table">
+                    <thead><tr><th>Campo</th><th>Descrição</th></tr></thead>
+                    <tbody>
+                        <tr><td>Tribunal (Sigla)</td><td>Ex: TJSP, STJ, TRF3, TRT2. Usado para buscar o calendário específico do tribunal</td></tr>
+                        <tr><td>UF</td><td>Estado do processo. Usado para feriados estaduais</td></tr>
+                        <tr><td>Município</td><td>Cidade do foro. Usado para feriados municipais via IBGE</td></tr>
+                        <tr><td>Matéria</td><td>Define o regime de contagem: <strong>Cível (Úteis)</strong> = CPC, <strong>Criminal</strong> = dias corridos</td></tr>
+                        <tr><td>Dias</td><td>Quantidade de dias do prazo</td></tr>
+                        <tr><td>Data de Disponibilização</td><td>Data em que o ato foi publicado no DJe</td></tr>
+                        <tr><td>Prazo de Terceiros</td><td>Marca que o prazo é para a outra parte aguardar manifestação</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Como o Algoritmo Funciona</h3>
+                <p>O motor segue rigorosamente as regras do CPC e do CPP:</p>
+                <ol class="wiki-step-list">
+                    <li><strong>Data de Disponibilização (Disp.)</strong> — o ato foi disponibilizado no DJe</li>
+                    <li><strong>Data de Publicação (Pub.)</strong> — primeiro dia útil seguinte ao da disponibilização (art. 224, §2º, CPC)</li>
+                    <li><strong>Início do Prazo</strong> — primeiro dia útil após a publicação</li>
+                    <li><strong>Contagem em Dias Úteis</strong> — cada dia é verificado contra feriados nacionais, estaduais, municipais e do tribunal</li>
+                    <li><strong>Prazo Fatal</strong> — último dia da contagem. Se cair em dia não útil (CPP), é automaticamente prorrogado para o próximo dia útil</li>
+                </ol>
+
+                <h3>Fontes de Dados de Feriados</h3>
+                <table class="wiki-table">
+                    <thead><tr><th>Tipo de Feriado</th><th>Fonte</th></tr></thead>
+                    <tbody>
+                        <tr><td>Nacionais Fixos</td><td>Calculados internamente (1/jan, 21/abr, 1/mai, 7/set, 12/out, 2/nov, 15/nov, 20/nov, 25/dez)</td></tr>
+                        <tr><td>Páscoa e Móveis</td><td>Algoritmo de Meeus/Jones/Butcher (Sexta Santa, Carnaval, Corpus Christi)</td></tr>
+                        <tr><td>Feriados do Tribunal</td><td>Base JSON do GitHub (<span class="wiki-code">sobeitnow0/prazos-judiciais-api</span>)</td></tr>
+                        <tr><td>Recesso Forense</td><td>20/dez a 20/jan (art. 220, CPC) — calculado automaticamente</td></tr>
+                        <tr><td>Feriados Municipais</td><td>API IBGE + base JSON por código de município</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Auditoria Visual (Linha do Tempo)</h3>
+                <p>Após o cálculo, a extensão gera uma <strong>auditoria dia a dia</strong> onde cada quadrado representa um dia na linha do tempo. As cores e ícones indicam:</p>
+                <div class="wiki-badge-row">
+                    <span class="wiki-badge" style="background: var(--zen-blue-bg); color: var(--zen-blue); border-color: rgba(35,104,196,0.2);">📥 Disponibilizado</span>
+                    <span class="wiki-badge" style="background: var(--zen-green-bg); color: var(--zen-green); border-color: rgba(46,133,85,0.2);">🗓️ Dia Útil</span>
+                    <span class="wiki-badge" style="background: var(--zen-orange-bg); color: var(--zen-orange); border-color: rgba(194,84,0,0.2);">🇧🇷 Feriado Nacional</span>
+                    <span class="wiki-badge" style="background: var(--zen-orange-bg); color: var(--zen-orange); border-color: rgba(194,84,0,0.2);">🏘️ Feriado Municipal</span>
+                    <span class="wiki-badge" style="background: var(--zen-purple-bg); color: var(--zen-purple); border-color: rgba(106,64,191,0.2);">🏛️ Recesso/Tribunal</span>
+                    <span class="wiki-badge" style="background: var(--zen-red-bg); color: var(--zen-red); border-color: rgba(209,58,58,0.2);">🚨 Prazo Fatal</span>
+                </div>
+
+                <div class="wiki-callout warning">
+                    <span class="callout-icon"><i class="ph ph-warning-circle"></i></span>
+                    <p><strong>Alerta STJ — Feriado Municipal:</strong> Quando o prazo fatal coincide com um feriado municipal, a extensão emite um alerta específico recomendando anexar a certidão ou decreto local para comprovar a tempestividade (art. 1.003, §6º, CPC).</p>
+                </div>
+
+                <h3>Baixar Imagem da Auditoria</h3>
+                <p>O botão <strong>"Baixar Imagem da Auditoria"</strong> gera uma imagem PNG da linha do tempo completa — pronta para anexar ao processo ou compartilhar com o cliente como comprovação do cálculo.</p>
+            </section>
+
+            <!-- CALENDÁRIO -->
+            <section id="calendario" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-blue-bg);">📅</div>
+                    <h2>Calendário</h2>
+                </div>
+                <p>A aba <strong>Calendário</strong> exibe uma visão mensal de todos os prazos fatais salvos. Cada dia com prazo é marcado com um ponto — quanto mais prazos naquele dia, mais destaque visual.</p>
+
+                <h3>Interação com o Calendário</h3>
+                <ul style="padding-left: 20px; color: var(--text-muted); font-size: 15px; line-height: 2;">
+                    <li>Clique em um dia para ver os processos com prazo naquela data</li>
+                    <li>O botão <strong>+ Novo Prazo</strong> no calendário pré-preenche automaticamente a data selecionada</li>
+                    <li>Navegue entre meses com as setas ◀ ▶</li>
+                    <li>O botão do documento imprime a <strong>Agenda do Mês em PDF</strong> com os prazos do mês selecionado</li>
+                </ul>
+            </section>
+
+            <!-- RADAR -->
+            <section id="radar" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-red-bg);">🎯</div>
+                    <h2>Radar de Urgências</h2>
+                </div>
+                <p>O Radar é um sistema de triagem automática que escaneia o texto de todas as publicações em busca de palavras-chave configuradas pelo usuário. Quando uma palavra é detectada, a publicação recebe uma <strong>tag colorida de alerta</strong>.</p>
+
+                <h3>Palavras-chave Padrão</h3>
+                <p>Por padrão, o sistema monitora: <span class="wiki-code">penhora</span>, <span class="wiki-code">bloqueio</span>, <span class="wiki-code">revelia</span>, <span class="wiki-code">liminar</span>, <span class="wiki-code">audiência</span>, <span class="wiki-code">audiencia</span></p>
+
+                <h3>Configurar o Radar</h3>
+                <ol class="wiki-step-list">
+                    <li>Abra o <strong>Menu ☰</strong> e clique em <strong>Gerenciar Termos do Radar</strong></li>
+                    <li>Insira as palavras-chave separadas por vírgula</li>
+                    <li>Clique em <strong>Salvar</strong></li>
+                </ol>
+
+                <div class="wiki-callout tip">
+                    <span class="callout-icon"><i class="ph ph-lightbulb"></i></span>
+                    <p>O Radar usa correspondência sem acento e sem diferenciação de maiúsculas/minúsculas. Você pode adicionar termos como: <span class="wiki-code">penhora, execução, arresto, tutela, medida cautelar</span></p>
+                </div>
+
+                <h3>Filtro Radar na Busca</h3>
+                <p>Após uma busca, o botão <strong>🎯 Radar</strong> na barra de filtros exibe apenas as publicações que contêm pelo menos um dos termos configurados — permitindo triagem imediata das publicações críticas.</p>
+
+                <h3>Radar no Relatório PDF</h3>
+                <p>As tags detectadas pelo Radar aparecem automaticamente nos relatórios PDF e CSV, identificadas como <strong>#Penhora</strong>, <strong>#Liminar</strong>, etc.</p>
+            </section>
+
+            <!-- TAGS & NOTAS -->
+            <section id="tags" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-orange-bg);">🏷️</div>
+                    <h2>Tags & Notas</h2>
+                </div>
+                <p>O sistema de tags permite categorizar e organizar processos de forma livre, criando uma taxonomia personalizada para o seu escritório.</p>
+
+                <h3>Como Criar Tags</h3>
+                <p>No campo de notas de qualquer processo, use o símbolo <span class="wiki-code">#</span> seguido do nome da tag:</p>
+                <p style="font-family: ui-monospace, monospace; background: var(--primary-light); padding: 12px 16px; border-radius: 8px; font-size: 14px;">Aguardando juntada. <strong>#urgente #recurso #cliente_vip</strong></p>
+
+                <h3>Autocompletar de Tags</h3>
+                <p>Ao digitar <span class="wiki-code">#</span> no campo de notas, o sistema exibe automaticamente sugestões das tags já existentes nos seus processos. Até 5 sugestões são exibidas.</p>
+
+                <h3>Criar Tag a partir do Texto</h3>
+                <ol class="wiki-step-list">
+                    <li>No Modo Foco, selecione uma palavra ou trecho do texto da publicação</li>
+                    <li>Clique em <strong>🏷️ Criar Tag</strong> na barra de ferramentas do Foco</li>
+                    <li>A palavra é convertida automaticamente em tag (espaços viram <span class="wiki-code">_</span>) e adicionada às notas</li>
+                </ol>
+
+                <h3>Apelidos de Processo</h3>
+                <p>Além das tags nas notas, cada processo pode ter um <strong>Apelido</strong> — um nome amigável que substitui o número longo na exibição.</p>
+                <p>O apelido é <strong>compartilhado entre todas as publicações do mesmo processo</strong>. Se você renomear um processo em uma publicação, todas as outras do mesmo número serão atualizadas automaticamente.</p>
+
+                <ol class="wiki-step-list">
+                    <li>Clique em <strong>+ Adicionar Apelido</strong> abaixo do número do processo</li>
+                    <li>Ou acesse o menu <strong>⋮</strong> → <strong>Editar Apelido</strong></li>
+                    <li>Digite o nome e pressione Enter ou clique em Salvar</li>
+                </ol>
+            </section>
+
+            <!-- MODO FOCO -->
+            <section id="modo-foco" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-green-bg);">🔭</div>
+                    <h2>Modo Foco</h2>
+                </div>
+                <p>O Modo Foco abre o texto integral de uma publicação em tela cheia, em um ambiente de leitura minimalista, sem distrações visuais.</p>
+
+                <h3>Ativando o Modo Foco</h3>
+                <p>Clique no ícone <strong>⛶ Expandir</strong> em qualquer publicação da lista de busca ou da agenda.</p>
+
+                <h3>Ferramentas Disponíveis no Foco</h3>
+                <table class="wiki-table">
+                    <thead><tr><th>Ferramenta</th><th>Função</th></tr></thead>
+                    <tbody>
+                        <tr><td>🖌️ Marcar Texto</td><td>Selecione um trecho e clique para destacá-lo em amarelo. O destaque é salvo permanentemente.</td></tr>
+                        <tr><td>🏷️ Criar Tag</td><td>Selecione uma palavra para convertê-la em tag automática nas notas</td></tr>
+                        <tr><td>A– / A+</td><td>Ajusta o tamanho da fonte do texto (12px a 26px), salvo para próximas sessões</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="wiki-callout tip">
+                    <span class="callout-icon"><i class="ph ph-lightbulb"></i></span>
+                    <p>Clique em um trecho destacado em amarelo para <strong>remover o destaque</strong>. As marcações são persistidas no IndexedDB junto com o processo.</p>
+                </div>
+            </section>
+
+            <!-- TAREFAS -->
+            <section id="tarefas" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-purple-bg);">☑️</div>
+                    <h2>Tarefas do Prazo</h2>
+                </div>
+                <p>Cada processo na agenda pode ter uma lista de tarefas checklist vinculada ao prazo — um mini to-do list por processo.</p>
+
+                <h3>Adicionar Tarefas</h3>
+                <ol class="wiki-step-list">
+                    <li>Expanda um processo na aba Prazos</li>
+                    <li>Clique em <strong>+ Adicionar tarefa (Pressione Enter)</strong></li>
+                    <li>Digite a tarefa e pressione Enter para salvar</li>
+                </ol>
+
+                <h3>Gerenciar Tarefas</h3>
+                <ul style="padding-left: 20px; color: var(--text-muted); font-size: 15px; line-height: 2;">
+                    <li>Clique no checkbox para marcar uma tarefa como concluída (aparece riscada)</li>
+                    <li>Clique no ícone de lixeira para remover uma tarefa</li>
+                    <li>O badge <span class="wiki-code">☑ 2/3</span> no cabeçalho do processo mostra o progresso</li>
+                </ul>
+
+                <p>As tarefas aparecem nos <strong>Relatórios PDF e CSV</strong>, permitindo acompanhamento do checklist processual na exportação.</p>
+            </section>
+
+            <hr class="separator">
+
+            <!-- EXPORTAR CSV -->
+            <section id="exportar-csv" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-green-bg);">📊</div>
+                    <h2>Exportar CSV (Jurimetria)</h2>
+                </div>
+                <p>A extensão exporta a base de dados completa em formato <strong>CSV (separado por ponto-e-vírgula)</strong>, compatível com Excel, Google Sheets e qualquer software de Jurimetria.</p>
+
+                <h3>Colunas Exportadas</h3>
+                <p>O arquivo CSV contém 21 colunas:</p>
+                <div class="wiki-badge-row">
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Processo</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Apelido</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Tribunal</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">UF</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Status</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Prazo_Fatal</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Tarefas_Pendentes</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Tarefas_Concluidas</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Anotações</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Texto_Publicação</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Município</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Feriados_Detectados</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Matéria</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Tipo_Contagem</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Inicio_Prazo</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Disponibilização</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Publicação</span>
+                    <span class="wiki-badge" style="background: var(--primary-light); color: var(--primary); border-color: var(--border-light);">Houve_Prorrogação</span>
+                </div>
+
+                <h3>Dois Modos de Exportação</h3>
+                <table class="wiki-table">
+                    <thead><tr><th>Modo</th><th>Conteúdo</th><th>Acesso</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Controle Tático</strong></td><td>Apenas os prazos visíveis com o filtro atual (ex: só os pendentes)</td><td>Menu ☰ → Exportar CSV (Filtro Atual)</td></tr>
+                        <tr><td><strong>Base Jurimetria</strong></td><td>Todos os prazos da base, incluindo cumpridos e arquivados</td><td>Menu ☰ → Exportar Base Completa (Jurimetria)</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="wiki-callout info">
+                    <span class="callout-icon"><i class="ph ph-info"></i></span>
+                    <p>O arquivo é exportado com <strong>BOM (Byte Order Mark)</strong> para garantir a leitura correta de caracteres especiais (acentos, cedilha) no Excel sem necessidade de configuração adicional.</p>
+                </div>
+            </section>
+
+            <!-- RELATÓRIO PDF -->
+            <section id="relatorio-pdf" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-red-bg);">📄</div>
+                    <h2>Relatório PDF</h2>
+                </div>
+                <p>A extensão gera relatórios em HTML formatados para impressão/PDF, com visual profissional no estilo <strong>Visual Law</strong>.</p>
+
+                <h3>Tipos de Relatório</h3>
+                <table class="wiki-table">
+                    <thead><tr><th>Relatório</th><th>Conteúdo</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Relatório de Controle Tático</strong></td><td>Todos os prazos da base, ordenados por urgência. Inclui KPIs: total, pendentes, cumpridos e taxa de eficiência</td></tr>
+                        <tr><td><strong>Agenda do Mês</strong></td><td>Prazos de um mês específico. Acessível pelo ícone de impressão no Calendário</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Conteúdo do Relatório</h3>
+                <ul style="padding-left: 20px; color: var(--text-muted); font-size: 15px; line-height: 2;">
+                    <li>Cabeçalho com logo DJEN, nome do advogado (OAB) e data/hora de extração</li>
+                    <li>Painel de KPIs com indicador visual de eficiência (verde/amarelo/vermelho)</li>
+                    <li>Tabela completa com: processo, tribunal, prazo fatal, status, anotações, tags do Radar, checklist de tarefas</li>
+                    <li>Rodapé com aviso legal de caráter referencial</li>
+                </ul>
+
+                <div class="wiki-callout tip">
+                    <span class="callout-icon"><i class="ph ph-printer"></i></span>
+                    <p>O relatório abre em uma nova aba e dispara automaticamente o diálogo de impressão do navegador após 500ms. Salve como PDF usando a opção "Salvar como PDF" da impressora.</p>
+                </div>
+            </section>
+
+            <!-- GOOGLE AGENDA -->
+            <section id="google-agenda" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-blue-bg);">📆</div>
+                    <h2>Google Agenda</h2>
+                </div>
+                <p>Cada prazo calculado pode ser enviado diretamente para o Google Agenda com um clique, criando um evento com todas as informações do processo.</p>
+
+                <h3>Configurar a Conta</h3>
+                <ol class="wiki-step-list">
+                    <li>Abra o <strong>Menu ☰</strong> e clique em <strong>Configurar Google Agenda</strong></li>
+                    <li>Insira o e-mail da conta Google desejada</li>
+                    <li>Clique em <strong>Salvar</strong></li>
+                </ol>
+
+                <h3>Informações do Evento Criado</h3>
+                <p>O evento gerado inclui:</p>
+                <ul style="padding-left: 20px; color: var(--text-muted); font-size: 15px; line-height: 2;">
+                    <li>Título: <span class="wiki-code">🚨 PRAZO FATAL: [Apelido] Número do Processo</span></li>
+                    <li>Data/hora configurável (padrão: 08:30, duração 1h)</li>
+                    <li>Descrição: datas do ciclo (Disp./Pub./Início/Fatal)</li>
+                    <li>Tags do Radar detectadas automaticamente</li>
+                    <li>Notas manuais do processo</li>
+                    <li>Alertas de feriado municipal (quando detectado)</li>
+                </ul>
+
+                <p>Se não houver e-mail configurado, o evento abre na conta Google padrão do navegador.</p>
+            </section>
+
+            <!-- COMPARTILHAR -->
+            <section id="compartilhar" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-green-bg);">📤</div>
+                    <h2>Compartilhar via WhatsApp</h2>
+                </div>
+                <p>A extensão gera um texto formatado para envio via WhatsApp com as informações do processo ou de um lote de prazos.</p>
+
+                <h3>Copiar Lote</h3>
+                <p>No menu <strong>☰ → Copiar Prazos (Lote)</strong>, o sistema gera um texto com resumo de todos os prazos do filtro atual, formatado em Markdown do WhatsApp, incluindo: número do processo, tribunal, prazo fatal, status, tarefas pendentes e anotações.</p>
+            </section>
+
+            <hr class="separator">
+
+            <!-- BACKUP -->
+            <section id="backup" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-gold-bg);">💾</div>
+                    <h2>Backup & Restauração</h2>
+                </div>
+                <p>O Buscador DJEN gera arquivos de backup em formato <strong>JSON</strong> que podem ser usados para migrar dados entre computadores ou navegar em segurança.</p>
+
+                <h3>O que o Backup Contém</h3>
+                <table class="wiki-table">
+                    <thead><tr><th>Dado</th><th>Incluído?</th></tr></thead>
+                    <tbody>
+                        <tr><td>Todos os prazos e publicações salvas</td><td>✅ Sim</td></tr>
+                        <tr><td>Apelidos e notas dos processos</td><td>✅ Sim</td></tr>
+                        <tr><td>Tarefas de cada processo</td><td>✅ Sim</td></tr>
+                        <tr><td>Configurações (OAB, tema, termos do Radar)</td><td>✅ Sim</td></tr>
+                        <tr><td>Histórico de buscas</td><td>✅ Sim</td></tr>
+                        <tr><td>Estatísticas (total cumpridos, buscas realizadas)</td><td>✅ Sim</td></tr>
+                        <tr><td>Prazos arquivados (cumpridos há mais de 30 dias)</td><td>✅ Sim</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Nome do Arquivo</h3>
+                <p>O backup é nomeado automaticamente no formato: <span class="wiki-code">DJEN_Backup_OAB{UF}{número}_{data}_{hora}.json</span></p>
+
+                <h3>Alerta de Backup Atrasado</h3>
+                <p>Se você não fizer backup por mais de <strong>30 dias</strong> e tiver processos na agenda, o botão do Menu ☰ ficará pulsando com um aviso visual.</p>
+
+                <h3>Restauração</h3>
+                <div class="wiki-callout warning">
+                    <span class="callout-icon"><i class="ph ph-warning"></i></span>
+                    <p><strong>Atenção:</strong> A restauração <em>substitui</em> todos os dados atuais pelos do arquivo. A ação não pode ser desfeita. A extensão exige uma confirmação de 2 segundos antes de liberar o botão para evitar cliques acidentais.</p>
+                </div>
+                <ol class="wiki-step-list">
+                    <li>Acesse <strong>Menu ☰ → Restaurar Backup</strong></li>
+                    <li>Selecione o arquivo <span class="wiki-code">.json</span> do backup</li>
+                    <li>Revise o resumo comparativo (dados do arquivo vs. dados atuais)</li>
+                    <li>Aguarde 2 segundos e clique em <strong>Restaurar</strong></li>
+                </ol>
+            </section>
+
+            <!-- PRIVACIDADE -->
+            <section id="privacidade" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-green-bg);">🔒</div>
+                    <h2>Privacidade & LGPD</h2>
+                </div>
+
+                <div class="wiki-callout info">
+                    <span class="callout-icon"><i class="ph ph-shield-check"></i></span>
+                    <p><strong>Arquitetura Privacy First:</strong> O Buscador DJEN não possui servidor de banco de dados próprio. Todos os seus dados processuais ficam armazenados exclusivamente no <strong>IndexedDB do seu navegador</strong>, no seu computador.</p>
+                </div>
+
+                <h3>Quais dados saem do dispositivo?</h3>
+                <table class="wiki-table">
+                    <thead><tr><th>Operação</th><th>Dado Enviado</th><th>Destino</th></tr></thead>
+                    <tbody>
+                        <tr><td>Busca por OAB/NPU</td><td>Número de OAB ou NPU</td><td>API pública do CNJ/DJEN</td></tr>
+                        <tr><td>Cálculo de Prazos</td><td>Sigla do tribunal e município</td><td>GitHub (base de feriados JSON)</td></tr>
+                        <tr><td>Feriados Municipais</td><td>UF e nome do município</td><td>API pública do IBGE</td></tr>
+                        <tr><td>Seus processos e notas</td><td>Nenhum</td><td>Ficam no seu dispositivo</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Senhas e Credenciais</h3>
+                <p>A extensão <strong>não solicita, não armazena e não transmite</strong> senhas, tokens de acesso, credenciais do PJe, e-SAJ, eproc ou qualquer outro sistema judicial. A leitura de publicações é feita de forma passiva, acessando apenas o conteúdo público já exibido na tela do navegador.</p>
+            </section>
+
+            <!-- CONFIGURAÇÕES -->
+            <section id="configuracoes" class="wiki-section">
+                <div class="wiki-section-header">
+                    <div class="wiki-section-icon" style="background: var(--zen-purple-bg);">⚙️</div>
+                    <h2>Configurações</h2>
+                </div>
+
+                <table class="wiki-table">
+                    <thead><tr><th>Configuração</th><th>Acesso</th><th>Descrição</th></tr></thead>
+                    <tbody>
+                        <tr><td>Tema Claro/Escuro</td><td>Menu ☰ → Mudar Tema</td><td>Alterna entre modo claro e escuro. Respeita preferência do sistema por padrão.</td></tr>
+                        <tr><td>OAB Padrão</td><td>Campo OAB na aba Busca</td><td>Salvo automaticamente para a próxima sessão</td></tr>
+                        <tr><td>Termos do Radar</td><td>Menu ☰ → Gerenciar Termos do Radar</td><td>Palavras-chave de alerta automático</td></tr>
+                        <tr><td>Google Agenda</td><td>Menu ☰ → Configurar Google Agenda</td><td>E-mail e horário dos eventos</td></tr>
+                        <tr><td>Dias de Controle Interno</td><td>Configurações avançadas</td><td>Quantos dias antes do fatal gerar o alerta de controle interno (padrão: 3)</td></tr>
+                        <tr><td>Tamanho da Fonte (Foco)</td><td>Botões A– / A+ no Modo Foco</td><td>Ajuste de 12px a 26px, salvo persistentemente</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Limpar Dados Automaticamente</h3>
+                <p>Processos com prazo fatal há mais de <strong>30 dias</strong> são removidos automaticamente da agenda na inicialização, para manter a base limpa e evitar acúmulo de dados obsoletos.</p>
+            </section>
+
+        </main>
+    </div>
+
+    <footer id="footer-coffee">
+        <div class="footer-content">
+            <div class="coffee-container fade-in-section">
+                <button class="coffee-btn" id="btnToggleCoffee">
+                    <span>Apoie a Infraestrutura</span>
+                    <i class="ph ph-caret-down" id="coffee-chevron"></i>
+                </button>
+                <div class="coffee-content" id="contentCoffee">
+                    <p style="color: var(--text-muted); font-size: 16px; font-weight: 400; margin-bottom: 16px; line-height: 1.50;">
+                        Desenvolvido de forma independente, sem as amarras das grandes <em>LegalTechs</em>. Se o Buscador garantiu segurança na sua pauta hoje, considere apoiar a manutenção dos servidores e das APIs.
+                    </p>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 16px;">
+                        <img src="qrcode-pix.png" alt="QR Code Pix para apoio ao Buscador DJEN" style="width: 180px; height: 180px; border-radius: 12px;">
+                    </div>
+                    <div class="pix-code-container">
+                        <input type="text" id="pixKey" value="50f781e2-9d94-4624-8f08-a9938bb0c4dc" readonly>
+                        <button id="btnCopyPix" onclick="copyPixCode()">Copiar Pix</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-links fade-in-section">
+                <a href="index.html">Página Inicial</a>
+                <a href="calculadora.html" style="color: var(--primary); font-weight: 600;">Calculadora de Prazos</a>
+                <a href="wiki.html" style="color: var(--primary); font-weight: 600;">Wiki & Documentação</a>
+                <a href="busca.html">Pesquisa DJEN</a>
+                <a href="versoes.html">Changelog & Versões</a>
+                <a href="termos.html">Termos de Uso</a>
+                <a href="privacidade.html">Privacidade</a>
+                <a href="mailto:contato@buscadordjen.com.br">Contato Técnico</a>
+            </div>
+            <div class="footer-copy fade-in-section">
+                &copy; 2026 Buscador DJEN. Arquitetura para a advocacia.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('themeToggle');
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Coffee Section
+        const btnToggleCoffee = document.getElementById('btnToggleCoffee');
+        const contentCoffee = document.getElementById('contentCoffee');
+        if (btnToggleCoffee) {
+            btnToggleCoffee.addEventListener('click', (e) => {
+                e.preventDefault();
+                btnToggleCoffee.classList.toggle('active');
+                contentCoffee.classList.toggle('show');
+                const chevron = document.getElementById('coffee-chevron');
+                if (btnToggleCoffee.classList.contains('active')) {
+                    chevron.style.transform = 'rotate(180deg)';
+                } else {
+                    chevron.style.transform = 'rotate(0deg)';
+                }
+            });
+        }
+
+        function openApoio(e) {
+            e.preventDefault();
+            const btnToggleCoffee = document.getElementById('btnToggleCoffee');
+            const contentCoffee = document.getElementById('contentCoffee');
+            const container = document.querySelector('.coffee-container');
+            if (btnToggleCoffee && contentCoffee) {
+                btnToggleCoffee.classList.add('active');
+                contentCoffee.classList.add('show');
+                const chevron = document.getElementById('coffee-chevron');
+                if (chevron) {
+                    chevron.style.transform = 'rotate(180deg)';
+                }
+                
+                document.getElementById('footer-coffee').scrollIntoView({ behavior: 'smooth' });
+                
+                container.classList.add('highlight-glow');
+                setTimeout(() => {
+                    container.classList.remove('highlight-glow');
+                }, 2000);
+            }
+        }
+
+        function copyPixCode() {
+            const pixInput = document.getElementById('pixKey');
+            const btnCopy = document.getElementById('btnCopyPix');
+            pixInput.select();
+            navigator.clipboard.writeText(pixInput.value).then(() => {
+                const textOriginal = btnCopy.innerText;
+                btnCopy.innerText = 'Copiado!';
+                setTimeout(() => btnCopy.innerText = textOriginal, 2000);
+            });
+        }
+
+        // Auto open Pix support drawer if loaded with hash
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash === '#footer-coffee') {
+                setTimeout(() => {
+                    const btnToggleCoffee = document.getElementById('btnToggleCoffee');
+                    const contentCoffee = document.getElementById('contentCoffee');
+                    const container = document.querySelector('.coffee-container');
+                    if (btnToggleCoffee && contentCoffee) {
+                        btnToggleCoffee.classList.add('active');
+                        contentCoffee.classList.add('show');
+                        const chevron = document.getElementById('coffee-chevron');
+                        if (chevron) { chevron.style.transform = 'rotate(180deg)'; }
+                        
+                        document.getElementById('footer-coffee').scrollIntoView({ behavior: 'smooth' });
+                        
+                        container.classList.add('highlight-glow');
+                        setTimeout(() => { container.classList.remove('highlight-glow'); }, 2000);
+                    }
+                }, 500);
+            }
+        });
+
+        // Header scroll
+        const header = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 10);
+        });
+
+        // Active nav highlight on scroll
+        const sections = document.querySelectorAll('.wiki-section');
+        const navLinks = document.querySelectorAll('.wiki-nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(a => a.classList.remove('active'));
+                    const activeLink = document.querySelector(`.wiki-nav a[href="#${entry.target.id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+    </script>
+
+</body>
+</html>

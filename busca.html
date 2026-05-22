@@ -3,111 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Busca Web DJEN | Buscador DJEN</title>
-    <link rel="canonical" href="https://www.buscadordjen.com.br/prazos.html">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Busca Web DJEN | Consulta de Publicações CNJ</title>
+    <meta name="description" content="Consulte publicações judiciais do DJEN e CNJ de forma instantânea por OAB ou número do processo, com destaque de palavras-chave no Radar de Urgências.">
+    <link rel="canonical" href="https://www.buscadordjen.com.br/busca.html">
     
-    <style>
-        /* DESIGN SYSTEM - NOTION INSPIRATION */
-        :root {
-            --bg-page: #ffffff;
-            --bg-header: rgba(255, 255, 255, 0.85); 
-            --bg-section: #f6f5f4; 
-            --card-bg: #ffffff;
-            --text-main: rgba(0, 0, 0, 0.95); 
-            --text-muted: #615d59; 
-            --text-placeholder: #a39e98;
-            --primary: #0075de; 
-            --primary-hover: #005bab; 
-            --primary-text: #ffffff;
-            --badge-bg: #f2f9ff;
-            --badge-text: #097fe8;
-            --border-light: rgba(0, 0, 0, 0.1); 
-            --zen-orange: #dd5b00;
-            --zen-green: #1aae39;
-            --zen-red: #d93025;
-            --radius-btn: 4px; 
-            --radius-card: 12px; 
-            --radius-pill: 9999px; 
-            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.8468px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04px;
-            --shadow-modal: rgba(0,0,0,0.01) 0px 1px 3px, rgba(0,0,0,0.02) 0px 3px 7px, rgba(0,0,0,0.02) 0px 7px 15px, rgba(0,0,0,0.04) 0px 14px 28px, rgba(0,0,0,0.05) 0px 23px 52px;
+    <link rel="icon" type="image/png" href="djen-128.png">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
         }
-
-        [data-theme="dark"] {
-            --bg-page: #1e1d1c;
-            --bg-header: rgba(30, 29, 28, 0.85);
-            --bg-section: #252423;
-            --card-bg: #2b2a29;
-            --text-main: rgba(255, 255, 255, 0.95);
-            --text-muted: rgba(255, 255, 255, 0.6);
-            --text-placeholder: rgba(255, 255, 255, 0.3);
-            --border-light: rgba(255, 255, 255, 0.08);
-            --shadow-card: rgba(0,0,0,0.4) 0px 4px 18px;
-            --shadow-modal: rgba(0,0,0,0.8) 0px 23px 52px;
-        }
-
-        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); line-height: 1.5; transition: 0.3s; }
-        
-        header { display: flex; justify-content: space-between; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
-        .brand { font-weight: 700; color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 8px;}
-        .brand img { width: 32px; height: 32px; border-radius: 8px;}
-        .btn-browser { display: inline-flex; align-items: center; justify-content: center; background: var(--primary); color: var(--primary-text); padding: 12px 20px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: none; cursor: pointer; transition: 0.2s;}
-        .btn-browser:hover { background: var(--primary-hover); transform: translateY(-1px);}
-
-        /* LAYOUT DA BUSCA */
-        .search-container { max-width: 900px; margin: 60px auto; padding: 0 20px; }
-        .search-panel { background: var(--bg-section); border: 1px solid var(--border-light); border-radius: var(--radius-card); padding: 32px; margin-bottom: 40px; }
-        .search-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-        .search-header h1 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
-        .limit-badge { background: rgba(217, 48, 37, 0.1); color: var(--zen-red); padding: 6px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        .input-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
-        .input-grid-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-        
-        .input-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
-        .input-group input { width: 100%; padding: 12px; background: var(--card-bg); border: 1px solid var(--border-light); border-radius: var(--radius-btn); color: var(--text-main); font-size: 15px; font-family: 'Inter', sans-serif; outline: none; box-sizing: border-box; transition: 0.2s; }
-        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(0, 117, 222, 0.15); }
-        .input-group input[type="date"] { color: var(--text-main); }
-
-        .radar-panel { background: var(--card-bg); padding: 20px; border-radius: 8px; border: 1px dashed var(--border-light); margin-bottom: 24px; }
-        .radar-panel label { color: var(--zen-orange); display: flex; align-items: center; gap: 6px; font-weight: 700;}
-
-        /* RESULTADOS */
-        .results-area { display: flex; flex-direction: column; gap: 24px; }
-        .result-card { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: var(--radius-card); padding: 24px; box-shadow: var(--shadow-card); transition: 0.2s; }
-        .result-card:hover { border-color: rgba(0,0,0,0.15); box-shadow: var(--shadow-modal); }
-        
-        .result-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border-light); }
-        .tribunal-badge { background: var(--badge-bg); color: var(--badge-text); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill); }
-        .date-text { font-size: 13px; color: var(--text-muted); font-weight: 500; }
-        
-        .process-number { font-size: 18px; font-weight: 700; color: var(--primary); margin: 0 0 16px 0; font-feature-settings: "lnum" 1; }
-        
-        /* MODO FOCO */
-        .publication-text { font-size: 15px; line-height: 1.6; color: var(--text-muted); max-height: 150px; overflow: hidden; position: relative; transition: max-height 0.3s ease; }
-        .publication-text.expanded { max-height: 5000px; }
-        .publication-text::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 60px; background: linear-gradient(transparent, var(--card-bg)); pointer-events: none; }
-        .publication-text.expanded::after { display: none; }
-        
-        .read-more-btn { background: transparent; border: none; color: var(--primary); font-size: 14px; font-weight: 600; padding: 8px 0 0 0; cursor: pointer; margin-top: 8px; }
-        .read-more-btn:hover { text-decoration: underline; }
-
-        /* HIGHLIGHT RADAR */
-        .mark-radar { background-color: rgba(255, 100, 200, 0.15); padding: 0 4px; border-radius: 3px; font-weight: 700; color: var(--text-main); border-bottom: 2px solid var(--zen-orange); }
-        [data-theme="dark"] .mark-radar { background-color: rgba(255, 100, 200, 0.25); }
-
-        .loader { display: none; text-align: center; padding: 40px; color: var(--text-muted); font-weight: 600; }
-    </style>
+    </script>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
-    <header>
-        <a href="index.html" class="brand"><img src="djen-128.png" alt="Logo">Buscador DJEN</a>
-        <a href="index.html" style="color: var(--text-muted); font-size: 14px; font-weight: 600; text-decoration: none;">Voltar ao site</a>
+    <header id="mainHeader">
+        <a href="index.html" class="brand">
+            <img src="djen-128.png" alt="Logo Buscador DJEN">
+            Buscador DJEN
+        </a>
+        
+        <nav class="header-nav" aria-label="Navegação principal">
+            <a href="busca.html" class="nav-link active">Pesquisa DJEN</a>
+            <a href="calculadora.html" class="nav-link">Calculadora de Prazos</a>
+            <a href="wiki.html" class="nav-link">Wiki</a>
+            <a href="/webapp/" class="nav-link">Web App</a>
+        </nav>
+
+       <div class="header-actions">
+            <a href="wiki.html#footer-coffee" class="nav-btn-apoio">
+                <i class="ph ph-hand-heart"></i>
+                <span>Apoiar</span>
+            </a>
+
+            <a href="https://www.instagram.com/amilcarmoreira.juridico" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; white-space: nowrap;">
+                por Amilcar Moreira
+            </a>
+
+            <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
+                <i class="ph ph-sun"></i>
+                <i class="ph ph-moon"></i>
+            </button>
+        </div>
     </header>
 
-    <div class="search-container">
-        <div class="search-panel">
+    <div style="padding: 120px 5% 60px; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px;">
+        <div class="bento-card" style="display: flex; flex-direction: column; gap: 24px; padding: 40px; background: var(--card-bg); border-radius: var(--radius-card); box-shadow: var(--shadow-card);">
             <div class="search-header">
                 <h1>Consulta DJEN & CNJ</h1>
                 <span class="limit-badge" id="limitDisplay">Buscas Restantes: 3/3</span>
@@ -160,7 +106,7 @@
                 A versão web é limitada a 3 buscas por dia. Para continuar rastreando processos e prazos de forma <strong style="color: var(--text-main);">ilimitada e gratuita</strong>, instale a extensão direto no seu navegador.
             </p>
             <div style="display: flex; flex-direction: column; gap: 12px;">
-                <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser">Baixar para Chrome</a>
+                <a href="https://chromewebstore.google.com/detail/buscador-djen-prazos-e-in/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser">Baixar para Chrome</a>
                 <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-browser" style="background: var(--bg-section); color: var(--text-main); border: 1px solid var(--border-light);">Baixar para Firefox</a>
             </div>
             <button onclick="window.location.href='index.html'" style="margin-top: 24px; background: none; border: none; color: var(--text-placeholder); font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: underline;">Voltar para o site</button>
@@ -306,6 +252,25 @@
                 btn.innerText = "Recolher texto ⬆";
             }
         };
+
+        // Header Scroll
+        const header = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) { header.classList.add('scrolled'); } 
+            else { header.classList.remove('scrolled'); }
+        });
+
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('themeToggle');
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        }
+
     </script>
 </body>
 </html>

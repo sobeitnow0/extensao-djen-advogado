@@ -17,8 +17,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
@@ -37,144 +36,45 @@
     }
     </script>
     
-    <style>
-        /* DESIGN SYSTEM - NOTION INSPIRATION */
-        :root {
-            --bg-page: #ffffff;
-            --bg-header: rgba(255, 255, 255, 0.85); 
-            --bg-section: #f6f5f4; 
-            --card-bg: #ffffff;
-            --text-main: rgba(0, 0, 0, 0.95); 
-            --text-muted: #615d59; 
-            --text-placeholder: #a39e98;
-            --primary: #0075de; 
-            --primary-hover: #005bab; 
-            --primary-text: #ffffff;
-            --badge-bg: #f2f9ff;
-            --badge-text: #097fe8;
-            --border-light: rgba(0, 0, 0, 0.1); 
-            --zen-orange: #dd5b00;
-            --zen-green: #1aae39;
-            --zen-red: #d93025; 
-            --radius-btn: 4px; 
-            --radius-card: 12px; 
-            --radius-pill: 9999px; 
-            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.8468px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04px;
-            --shadow-hover: rgba(0,0,0,0.05) 0px 10px 30px, rgba(0,0,0,0.03) 0px 4px 12px;
-            --shadow-modal: rgba(0,0,0,0.01) 0px 1px 3px, rgba(0,0,0,0.02) 0px 3px 7px, rgba(0,0,0,0.02) 0px 7px 15px, rgba(0,0,0,0.04) 0px 14px 28px, rgba(0,0,0,0.05) 0px 23px 52px;
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
         }
-
-        [data-theme="dark"] {
-            --bg-page: #31302e;
-            --bg-header: rgba(49, 48, 46, 0.85);
-            --bg-section: #2a2927; 
-            --card-bg: #31302e;
-            --text-main: rgba(255, 255, 255, 0.95);
-            --text-muted: #a39e98;
-            --text-placeholder: #615d59;
-            --primary: #62aef0; 
-            --primary-hover: #0075de;
-            --primary-text: #191919;
-            --badge-bg: rgba(98, 174, 240, 0.15);
-            --badge-text: #62aef0;
-            --border-light: rgba(255, 255, 255, 0.1); 
-            --zen-orange: #ffa344;
-            --zen-green: #2a9d99; 
-            --zen-red: #ff85d4;
-            --shadow-card: rgba(0,0,0,0.2) 0px 4px 18px; 
-            --shadow-hover: rgba(0,0,0,0.3) 0px 12px 32px;
-            --shadow-modal: rgba(0,0,0,0.4) 0px 23px 52px;
-        }
-
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
-        ::-webkit-scrollbar-track { background: var(--bg-page); }
-        ::-webkit-scrollbar-thumb { background: rgba(163, 158, 152, 0.3); border-radius: 10px; border: 2px solid var(--bg-page); }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(163, 158, 152, 0.6); }
-        ::selection { background: rgba(0, 117, 222, 0.2); color: var(--text-main); }
-
-        body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; font-feature-settings: "lnum" 1, "locl" 1; transition: background-color 0.3s, color 0.3s; }
-
-        h1 { font-size: 32px; font-weight: 700; line-height: 1.1; letter-spacing: -1.0px; margin: 0; display: flex; align-items: center; gap: 12px; }
-        
-        *:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--radius-btn); }
-
-        .ph { font-size: 1.25em; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;}
-
-        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-        .brand { font-size: 16px; font-weight: 700; color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 12px;}
-        .brand img { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border-light);}
-        .back-link { font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
-        .back-link:hover { color: var(--text-main); }
-
-        .calc-wrapper { max-width: 680px; margin: 60px auto 100px; padding: 0 20px; }
-        .search-panel { background: var(--bg-section); border: 1px solid var(--border-light); border-radius: var(--radius-card); padding: 40px; margin-bottom: 24px; box-shadow: var(--shadow-card); transition: background-color 0.3s; }
-        
-        .search-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; flex-wrap: wrap; gap: 16px;}
-        .limit-badge { background: rgba(26, 174, 57, 0.1); color: var(--zen-green); padding: 6px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 700; letter-spacing: 0.125px; display: inline-flex; align-items: center; gap: 6px;}
-
-        .input-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 24px; }
-        .input-row { display: flex; gap: 24px; margin-bottom: 24px; }
-        @media (max-width: 600px) {
-            .input-row { flex-direction: column; gap: 24px; }
-        }
-        
-        .input-group { display: flex; flex-direction: column; gap: 8px; flex: 1; }
-        .input-group label { font-size: 14px; font-weight: 600; color: var(--text-main); }
-        
-        /* Refinamento de Inputs: Remoção da sombra pesada */
-        input, select { width: 100%; padding: 12px 16px; background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-light); border-radius: var(--radius-btn); font-size: 15px; font-family: 'Inter', sans-serif; box-sizing: border-box; outline: none; transition: all 0.2s ease;}
-        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(0, 117, 222, 0.15); }
-        input::placeholder { color: var(--text-placeholder); }
-        input[type="date"] { cursor: pointer; }
-
-        .btn-browser { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--primary); color: white; padding: 16px 24px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 16px; border: 1px solid transparent; cursor: pointer; transition: all 0.2s ease; width: 100%; margin-top: 8px; font-family: inherit;}
-        .btn-browser:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: var(--shadow-hover); }
-        .btn-browser:disabled { background-color: var(--text-placeholder); cursor: not-allowed; transform: none; box-shadow: none; }
-
-        .btn-pill { width: 100%; padding: 14px 16px; background-color: transparent; color: var(--text-muted); border: 1px solid var(--border-light); border-radius: var(--radius-btn); font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; margin-top: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit;}
-        .btn-pill:hover { background-color: rgba(0,0,0,0.03); color: var(--text-main); transform: translateY(-1px);}
-        [data-theme="dark"] .btn-pill:hover { background-color: rgba(255,255,255,0.05); }
-
-        /* TELA DE RESULTADO */
-        .calc-result-box { display: none; text-align: center; padding: 40px; background: var(--card-bg); border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);}
-        .resultado-data-fatal { font-size: 48px; font-weight: 800; color: var(--primary); margin: 8px 0 24px; letter-spacing: -2px; font-feature-settings: "lnum" 1; }
-        
-        /* AUDITORIA VISUAL (TIMELINE) */
-        .audit-flow { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 10px; margin-top: 24px; padding: 20px; background: var(--bg-section); border-radius: var(--radius-card); border: 1px solid var(--border-light);}
-        .audit-day { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 14px 6px; border-radius: 8px; border: 1px solid var(--border-light); background: var(--card-bg); transition: all 0.2s ease; cursor: default; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
-        /* Refinamento de Hover: Sombras dentro do limite do sistema (< 0.05) */
-        .audit-day:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: rgba(0,0,0,0.15); z-index: 2;}
-        .audit-day.is-fatal { background: rgba(217, 48, 37, 0.05); border-color: rgba(217, 48, 37, 0.3); }
-        .audit-day.is-fatal .day-num { color: var(--zen-red); }
-        .audit-day.is-pulo { opacity: 0.6; background: transparent; box-shadow: none; border-style: dashed;}
-        
-        .audit-day .day-icon { font-size: 20px; margin-bottom: 8px; line-height: 1; color: var(--text-muted);}
-        .audit-day.is-fatal .day-icon { color: var(--zen-red); }
-        .audit-day .day-num { font-size: 18px; font-weight: 700; line-height: 1; letter-spacing: -0.5px; }
-        .audit-day .day-date { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-top: 8px; line-height: 1; letter-spacing: 0.2px;}
-        
-        [data-tooltip]::before { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); padding: 6px 12px; background: var(--text-main); color: var(--bg-page); font-size: 12px; font-weight: 600; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.2s; z-index: 10; letter-spacing: 0.125px;}
-        [data-tooltip]::after { content: ''; position: absolute; bottom: calc(100% - 4px); left: 50%; transform: translateX(-50%); border-width: 5px 5px 0; border-style: solid; border-color: var(--text-main) transparent transparent transparent; opacity: 0; transition: 0.2s; pointer-events: none;}
-        [data-tooltip]:hover::before { opacity: 1; bottom: calc(100% + 8px); }
-        [data-tooltip]:hover::after { opacity: 1; bottom: 100%; }
-
-        .helper-text { font-size: 13px; color: var(--text-muted); text-align: center; line-height: 1.5; font-weight: 500; margin-top: 24px;}
-        
-        /* MODAL PAYWALL / LIMIT */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: var(--bg-header); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.3s; }
-        .modal-overlay.show { opacity: 1; }
-        .modal-card { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 16px; box-shadow: var(--shadow-modal); max-width: 480px; width: 100%; padding: 48px 40px; text-align: center; transform: translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .modal-overlay.show .modal-card { transform: translateY(0); }
-
-        footer { padding: 40px 20px; border-top: 1px solid var(--border-light); text-align: center; color: var(--text-placeholder); font-size: 14px; background: var(--bg-page);}
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
+    </script>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
-    <header>
-        <a href="index.html" class="brand"><img src="djen-128.png" alt="Logo Buscador DJEN">Buscador DJEN</a>
-        <a href="index.html" class="back-link"><i class="ph ph-arrow-left"></i> Voltar ao site</a>
+    <header id="mainHeader">
+        <a href="index.html" class="brand">
+            <img src="djen-128.png" alt="Logo Buscador DJEN">
+            Buscador DJEN
+        </a>
+        
+        <nav class="header-nav" aria-label="Navegação principal">
+            <a href="busca.html" class="nav-link">Pesquisa DJEN</a>
+            <a href="calculadora.html" class="nav-link active">Calculadora de Prazos</a>
+            <a href="wiki.html" class="nav-link">Wiki</a>
+            <a href="/webapp/" class="nav-link">Web App</a>
+        </nav>
+
+       <div class="header-actions">
+            <a href="wiki.html#footer-coffee" class="nav-btn-apoio">
+                <i class="ph ph-hand-heart"></i>
+                <span>Apoiar</span>
+            </a>
+
+            <a href="https://www.instagram.com/amilcarmoreira.juridico" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; white-space: nowrap;">
+                por Amilcar Moreira
+            </a>
+
+            <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
+                <i class="ph ph-sun"></i>
+                <i class="ph ph-moon"></i>
+            </button>
+        </div>
     </header>
 
     <main class="calc-wrapper">
@@ -267,7 +167,7 @@
                 A ferramenta web possui um limite de 3 simulações diárias. Para auditar prazos de forma <strong style="color: var(--text-main); font-weight: 600;">ilimitada e nativa</strong>, utilize a extensão do navegador.
             </p>
             <div style="display: flex; flex-direction: column; gap: 12px;">
-                <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser">
+                <a href="https://chromewebstore.google.com/detail/buscador-djen-prazos-e-in/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser">
                     <i class="ph ph-download-simple"></i> Baixar Extensão Chrome
                 </a>
                 <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-pill" style="margin-top: 0;">
@@ -773,6 +673,24 @@
         const styleSheet = document.createElement("style");
         styleSheet.innerText = "@keyframes spin { 100% { transform: rotate(360deg); } }";
         document.head.appendChild(styleSheet);
+
+        // Header Scroll Effect
+        const header = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) { header.classList.add('scrolled'); } 
+            else { header.classList.remove('scrolled'); }
+        });
+
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('themeToggle');
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        }
     </script>
 </body>
 </html>

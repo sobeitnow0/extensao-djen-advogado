@@ -1,21 +1,30 @@
 {
+  "manifest_version": 3,
   "name": "Buscador DJEN - Prazos e Intimações Judiciais",
-  "short_name": "Buscador DJEN",
+  "version": "50.1",
   "description": "Buscador de Intimações com Motor de Prazos Avançado.",
-  "start_url": "/sidebar.html",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
-  "icons": [
-    {
-      "src": "djen-48.png",
-      "sizes": "48x48",
-      "type": "image/png"
-    },
-    {
-      "src": "djen-128.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    }
-  ]
+  "author": "Amilcar Moreira",
+  "permissions": [
+    "clipboardWrite",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "https://comunicaapi.pje.jus.br/*",
+    "https://raw.githubusercontent.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Abrir Buscador DJEN",
+    "default_icon": "djen-48.png"
+  },
+  "side_panel": {
+    "default_path": "sidebar.html"
+  },
+  "icons": {
+    "16": "djen-16.png",
+    "48": "djen-48.png",
+    "128": "djen-128.png"
+  }
 }

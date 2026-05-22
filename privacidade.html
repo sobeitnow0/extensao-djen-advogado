@@ -16,8 +16,8 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Fira+Code:wght@400;600&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
@@ -34,129 +34,14 @@
       }
     }
     </script>
-
-    <style>
-        /* DESIGN SYSTEM - NOTION INSPIRATION */
-        :root {
-            --bg-page: #ffffff;
-            --bg-header: rgba(255, 255, 255, 0.85); 
-            --bg-section: #f6f5f4; 
-            --card-bg: #ffffff;
-            --text-main: rgba(0, 0, 0, 0.95); 
-            --text-muted: #615d59; 
-            --text-placeholder: #a39e98;
-            --primary: #0075de; 
-            --primary-hover: #005bab; 
-            --primary-text: #ffffff;
-            --badge-bg: #f2f9ff;
-            --badge-text: #097fe8;
-            --border-light: rgba(0, 0, 0, 0.1); 
-            --zen-orange: #dd5b00;
-            --zen-green: #1aae39;
-            --zen-red: #d93025; 
-            --zen-purple: #391c57;
-            --radius-btn: 4px; 
-            --radius-card: 12px; 
-            --radius-pill: 9999px; 
-            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.8468px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04px;
-            --shadow-hover: rgba(0,0,0,0.05) 0px 10px 30px, rgba(0,0,0,0.03) 0px 4px 12px;
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
         }
-
-        [data-theme="dark"] {
-            --bg-page: #31302e;
-            --bg-header: rgba(49, 48, 46, 0.85);
-            --bg-section: #2a2927; 
-            --card-bg: #31302e;
-            --text-main: rgba(255, 255, 255, 0.95);
-            --text-muted: #a39e98;
-            --text-placeholder: #615d59;
-            --primary: #62aef0; 
-            --primary-hover: #0075de;
-            --primary-text: #191919;
-            --badge-bg: rgba(98, 174, 240, 0.15);
-            --badge-text: #62aef0;
-            --border-light: rgba(255, 255, 255, 0.1); 
-            --zen-orange: #ffa344;
-            --zen-green: #2a9d99; 
-            --zen-red: #ff85d4;
-            --zen-purple: #b992e6;
-            --shadow-card: rgba(0,0,0,0.2) 0px 4px 18px; 
-            --shadow-hover: rgba(0,0,0,0.3) 0px 12px 32px;
-        }
-
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
-        ::-webkit-scrollbar-track { background: var(--bg-page); }
-        ::-webkit-scrollbar-thumb { background: rgba(163, 158, 152, 0.3); border-radius: 10px; border: 2px solid var(--bg-page); }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(163, 158, 152, 0.6); }
-        ::selection { background: rgba(0, 117, 222, 0.2); color: var(--text-main); }
-
-        body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
-
-        *:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--radius-btn); }
-        .ph { font-size: 1.25em; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;}
-
-        /* HEADER */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s; }
-        header.scrolled { box-shadow: var(--shadow-card); } 
-        
-        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); text-decoration: none; white-space: nowrap; } 
-        .brand img { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; border: 1px solid var(--border-light); }
-        
-        .header-nav { display: flex; gap: 24px; margin: 0 auto; padding: 0 24px; } 
-        .nav-link { font-size: 15px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; white-space: nowrap; line-height: 1.33;} 
-        .nav-link:hover, .nav-link.active { color: var(--text-main); } 
-        
-        .header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-        .theme-toggle { background: transparent; border: 1px solid transparent; color: var(--text-muted); width: 36px; height: 36px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; font-size: 1.25em; }
-        .theme-toggle:hover { background: rgba(0,0,0,0.05); color: var(--text-main); }
-        [data-theme="dark"] .theme-toggle:hover { background: rgba(255,255,255,0.05); }
-        [data-theme="dark"] .ph-sun { display: none; } [data-theme="light"] .ph-moon { display: none; }
-
-        /* LEGAL CONTENT */
-        .legal-container { max-width: 800px; margin: 80px auto 120px; padding: 0 24px; }
-        
-        .legal-hero { margin-bottom: 56px; }
-        .legal-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(26, 174, 57, 0.1); color: var(--zen-green); padding: 4px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 24px; }
-        .legal-hero h1 { font-size: 48px; font-weight: 800; line-height: 1.04; letter-spacing: -1.5px; margin: 0 0 16px 0; }
-        .last-update { color: var(--text-muted); font-size: 15px; font-weight: 500; display: flex; align-items: center; gap: 6px;}
-        
-        .legal-intro { font-size: 18px; color: var(--text-muted); font-weight: 400; line-height: 1.6; margin-bottom: 48px; letter-spacing: -0.125px;}
-
-        /* SECTIONS / CARDS */
-        .policy-section { margin-bottom: 40px; }
-        .policy-section h2 { font-size: 24px; font-weight: 800; margin: 0 0 16px 0; color: var(--text-main); letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px;}
-        .policy-section p { font-size: 16px; color: var(--text-muted); margin: 0 0 16px 0; }
-        
-        .policy-section ul { padding-left: 20px; margin: 0 0 16px 0; }
-        .policy-section li { font-size: 16px; color: var(--text-muted); margin-bottom: 12px; padding-left: 8px;}
-        .policy-section li::marker { color: var(--primary); }
-        .policy-section strong { color: var(--text-main); font-weight: 600; }
-
-        .highlight-box { background: var(--bg-section); border: 1px solid var(--border-light); border-left: 4px solid var(--primary); padding: 32px; border-radius: var(--radius-card); margin: 40px 0; box-shadow: var(--shadow-card); transition: box-shadow 0.3s; }
-        .highlight-box:hover { box-shadow: var(--shadow-hover); }
-        .highlight-box h2 { font-size: 20px; margin-top: 0; }
-        .highlight-box p:last-child { margin-bottom: 0; }
-
-        .contact-box { background: var(--card-bg); border: 1px dashed var(--border-light); padding: 32px; border-radius: var(--radius-card); text-align: center; margin-top: 64px; }
-        .contact-box i { font-size: 32px; color: var(--primary); margin-bottom: 16px; }
-        .contact-box p { font-size: 16px; color: var(--text-muted); margin-bottom: 16px; }
-        .contact-link { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; color: var(--primary); text-decoration: none; transition: 0.2s; }
-        .contact-link:hover { text-decoration: underline; }
-
-        footer { padding: 40px 20px; text-align: center; border-top: 1px solid var(--border-light); font-size: 14px; color: var(--text-placeholder); background: var(--bg-page); transition: background-color 0.3s;} 
-        .footer-links { margin-bottom: 16px; font-weight: 600; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-        .footer-links a:hover { color: var(--primary); }
-
-        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; }
-        .fade-in-section.is-visible { opacity: 1; transform: none; }
-
-        @media (max-width: 768px) { 
-            .legal-hero h1 { font-size: 40px; }
-            .header-nav { display: none; }
-            .highlight-box { padding: 24px; }
-        }
-    </style>
+    </script>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
@@ -167,13 +52,22 @@
         </a>
         
         <nav class="header-nav" aria-label="Navegação principal">
-            <a href="busca.html" class="nav-link">Busca & Tags</a>
-            <a href="prazos.html" class="nav-link">Prazos & Agenda</a>
-            <a href="exportacao.html" class="nav-link">Relatórios PDF</a>
-            <a href="radar.html" class="nav-link">Radar</a>
+            <a href="busca.html" class="nav-link">Pesquisa DJEN</a>
+            <a href="calculadora.html" class="nav-link">Calculadora de Prazos</a>
+            <a href="wiki.html" class="nav-link">Wiki</a>
+            <a href="/webapp/" class="nav-link">Web App</a>
         </nav>
 
        <div class="header-actions">
+            <a href="wiki.html#footer-coffee" class="nav-btn-apoio">
+                <i class="ph ph-hand-heart"></i>
+                <span>Apoiar</span>
+            </a>
+
+            <a href="https://www.instagram.com/amilcarmoreira.juridico" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; white-space: nowrap;">
+                por Amilcar Moreira
+            </a>
+
             <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
                 <i class="ph ph-sun"></i>
                 <i class="ph ph-moon"></i>
@@ -246,14 +140,17 @@
             else header.classList.remove('scrolled'); 
         });
 
-        // Dark Mode Manual
+        // Theme Toggle
         const themeToggleBtn = document.getElementById('themeToggle'); 
-        themeToggleBtn.addEventListener('click', () => { 
-            const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; 
-            document.documentElement.setAttribute('data-theme', newTheme); 
-            localStorage.setItem('theme', newTheme); 
-        });
-        if(localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => { 
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark'; 
+                document.documentElement.setAttribute('data-theme', newTheme); 
+                localStorage.setItem('theme', newTheme); 
+            });
+        }
+        }
 
         // Intersection Observer (Fade-in)
         document.addEventListener('DOMContentLoaded', () => {

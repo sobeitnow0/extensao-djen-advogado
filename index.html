@@ -24,8 +24,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
@@ -70,265 +69,14 @@
     }
     </script>
 
-    <style>
-        /* DESIGN SYSTEM - NOTION INSPIRATION */
-        :root {
-            --bg-page: #ffffff;
-            --bg-header: rgba(255, 255, 255, 0.85); 
-            --bg-section: #f6f5f4; 
-            --card-bg: #ffffff;
-            --text-main: rgba(0, 0, 0, 0.95); 
-            --text-muted: #615d59; 
-            --text-placeholder: #a39e98;
-            --primary: #0075de; 
-            --primary-hover: #005bab; 
-            --primary-text: #ffffff;
-            --badge-bg: #f2f9ff;
-            --badge-text: #097fe8;
-            --border-light: rgba(0, 0, 0, 0.1); 
-            --zen-orange: #dd5b00;
-            --zen-green: #1aae39;
-            --zen-purple: #391c57;
-            --zen-red: #ff64c8; 
-            --zen-blue: #0075de;
-            --zen-gold: #523410; 
-            --radius-btn: 4px; 
-            --radius-card: 12px; 
-            --radius-pill: 9999px; 
-            --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.8468px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04px;
-            --shadow-hover: rgba(0,0,0,0.05) 0px 10px 30px, rgba(0,0,0,0.03) 0px 4px 12px;
-            --shadow-modal: rgba(0,0,0,0.01) 0px 1px 3px, rgba(0,0,0,0.02) 0px 3px 7px, rgba(0,0,0,0.02) 0px 7px 15px, rgba(0,0,0,0.04) 0px 14px 28px, rgba(0,0,0,0.05) 0px 23px 52px;
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
         }
-
-        /* DARK THEME VARIABLES */
-        [data-theme="dark"] {
-            --bg-page: #31302e;
-            --bg-header: rgba(49, 48, 46, 0.85);
-            --bg-section: #2a2927; 
-            --card-bg: #31302e;
-            --text-main: rgba(255, 255, 255, 0.95);
-            --text-muted: #a39e98;
-            --text-placeholder: #615d59;
-            --primary: #62aef0; 
-            --primary-hover: #0075de;
-            --primary-text: #191919;
-            --badge-bg: rgba(98, 174, 240, 0.15);
-            --badge-text: #62aef0;
-            --border-light: rgba(255, 255, 255, 0.1); 
-            --zen-orange: #ffa344;
-            --zen-green: #2a9d99; 
-            --zen-purple: #b992e6;
-            --zen-red: #ff85d4;
-            --zen-gold: #8c5a24;
-            --shadow-card: rgba(0,0,0,0.2) 0px 4px 18px; 
-            --shadow-hover: rgba(0,0,0,0.3) 0px 12px 32px;
-            --shadow-modal: rgba(0,0,0,0.4) 0px 23px 52px;
-        }
-
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
-        ::-webkit-scrollbar-track { background: var(--bg-page); }
-        ::-webkit-scrollbar-thumb { background: rgba(163, 158, 152, 0.3); border-radius: 10px; border: 2px solid var(--bg-page); }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(163, 158, 152, 0.6); }
-        ::selection { background: rgba(0, 117, 222, 0.2); color: var(--text-main); }
-
-        body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; font-weight: 400; background-color: var(--bg-page); color: var(--text-main); -webkit-font-smoothing: antialiased; line-height: 1.5; font-feature-settings: "lnum" 1, "locl" 1; transition: background-color 0.3s, color 0.3s; scroll-behavior: smooth; }
-        
-        section { scroll-margin-top: 80px; }
-
-        .ph { font-size: 1.25em; display: inline-flex; align-items: center; justify-content: center; }
-
-        /* Typography */
-        h1 { font-size: 64px; font-weight: 700; line-height: 1.00; letter-spacing: -2.125px; margin-bottom: 24px; }
-        h2 { font-size: 48px; font-weight: 700; line-height: 1.00; letter-spacing: -1.5px; margin-bottom: 16px; }
-        h3 { font-size: 22px; font-weight: 700; line-height: 1.27; letter-spacing: -0.25px; margin: 0 0 12px 0; }
-        
-        *:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--radius-btn); }
-
-        .progress-container { width: 100%; height: 3px; background: transparent; position: fixed; top: 0; left: 0; z-index: 1001; }
-        .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.15s ease-out; border-radius: 0 2px 2px 0; }
-
-        /* HEADER */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 5%; border-bottom: 1px solid var(--border-light); background: var(--bg-header); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s; }
-        header.scrolled { box-shadow: var(--shadow-card); } 
-        
-        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 700; color: var(--text-main); text-decoration: none; white-space: nowrap; } 
-        .brand img { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; border: 1px solid var(--border-light); }
-        .badge-cortesia-site { font-size: 10px; background: rgba(221, 91, 0, 0.1); color: var(--zen-orange); padding: 3px 8px; border-radius: 999px; font-weight: 700; border: none; letter-spacing: 0.5px; white-space: nowrap; }
-        
-        .header-nav { display: flex; gap: 24px; margin: 0 auto; padding: 0 24px; } 
-        .nav-link { font-size: 15px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; white-space: nowrap; line-height: 1.33;} 
-        .nav-link:hover, .nav-link.active { color: var(--text-main); } 
-        
-        .header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-        .share-btn { display: flex; align-items: center; gap: 6px; background: transparent; color: var(--text-main); border: 1px solid transparent; padding: 6px 12px; height: 36px; border-radius: var(--radius-btn); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-family: inherit; white-space: nowrap; }
-        .share-btn:hover { background: rgba(0,0,0,0.05); } 
-        [data-theme="dark"] .share-btn:hover { background: rgba(255,255,255,0.05); }
-        
-        .theme-toggle { background: transparent; border: 1px solid transparent; color: var(--text-muted); width: 36px; height: 36px; border-radius: var(--radius-btn); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; font-size: 1.25em; }
-        .theme-toggle:hover { background: rgba(0,0,0,0.05); color: var(--text-main); }
-        [data-theme="dark"] .theme-toggle:hover { background: rgba(255,255,255,0.05); }
-        [data-theme="dark"] .ph-sun { display: none; } [data-theme="light"] .ph-moon { display: none; }
-
-        /* HERO ALERTS & BADGES */
-        .hero-alert-badge { display: inline-flex; align-items: center; gap: 12px; background: var(--badge-bg); border: 1px solid var(--border-light); padding: 4px 16px 4px 6px; border-radius: var(--radius-pill); text-decoration: none; margin-bottom: 32px; transition: all 0.2s ease; }
-        .hero-alert-badge:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); }
-        .hero-alert-badge .badge-new { background: var(--primary); color: white; font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: var(--radius-pill); letter-spacing: 0.125px; }
-        .hero-alert-badge .alert-text { font-size: 14px; font-weight: 600; color: var(--badge-text); }
-        .hero-alert-badge .alert-icon { color: var(--badge-text); transition: transform 0.2s ease; font-size: 1em;}
-        .hero-alert-badge:hover .alert-icon { transform: translateX(4px); }
-
-        /* HERO DOT GRID */
-        .hero { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 120px 20px 100px; margin: 0 auto; background-image: radial-gradient(var(--border-light) 1px, transparent 1px); background-size: 32px 32px; background-position: center top; }
-        .hero-content { position: relative; z-index: 2; max-width: 900px; display: flex; flex-direction: column; align-items: center; }
-        .hero h1 span { color: var(--primary); }
-        .hero p { font-size: 20px; color: var(--text-muted); margin-bottom: 48px; max-width: 800px; margin-left: auto; margin-right: auto; font-weight: 600; line-height: 1.40; letter-spacing: -0.125px;}
-
-        /* BUTTONS */
-        .btn-browser { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background-color: transparent; color: var(--text-main); padding: 12px 24px; border-radius: var(--radius-btn); text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--border-light); transition: all 0.2s ease; line-height: 1.33; cursor: pointer; box-sizing: border-box; }
-        .btn-browser:hover { background-color: rgba(0,0,0,0.05); }
-        [data-theme="dark"] .btn-browser:hover { background-color: rgba(255,255,255,0.05); }
-        .btn-browser.primary { background-color: var(--primary); color: white; border: 1px solid transparent; }
-        .btn-browser.primary:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
-
-        /* DOWNLOAD STORE BUTTONS */
-        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
-        
-        .btn-store { position: relative; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 12px 24px; border-radius: var(--radius-btn); text-decoration: none; transition: all 0.2s ease; box-sizing: border-box; }
-        
-        .btn-store.primary { background-color: var(--primary); color: #ffffff; border: 1px solid transparent; box-shadow: var(--shadow-card); }
-        .btn-store.primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
-        .btn-store.primary .store-text small { color: rgba(255, 255, 255, 0.8); }
-        
-        .btn-store.secondary { background-color: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); }
-        .btn-store.secondary:hover { background-color: rgba(0,0,0,0.02); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
-        [data-theme="dark"] .btn-store.secondary:hover { background-color: rgba(255,255,255,0.03); }
-        .btn-store.secondary .store-text small { color: var(--text-muted); }
-
-        .btn-store .store-text { display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.2; }
-        .btn-store .store-text small { font-size: 12px; font-weight: 500; letter-spacing: 0.125px; }
-        .btn-store .store-text strong { font-size: 16px; font-weight: 700; letter-spacing: normal; }
-        
-        .rating-stars { display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--zen-orange); margin-top: 8px; opacity: 0; transition: opacity 0.3s; }
-        .rating-stars.visible { opacity: 1; }
-
-        /* TOOLTIP */
-        .version-tooltip { position: absolute; top: -38px; left: 50%; transform: translateX(-50%) translateY(5px); background: #31302e; color: #ffffff; font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: var(--radius-btn); opacity: 0; visibility: hidden; transition: all 0.2s ease; white-space: nowrap; letter-spacing: 0.125px; box-shadow: var(--shadow-card); z-index: 10; pointer-events: none; }
-        .version-tooltip::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); border-width: 5px 5px 0; border-style: solid; border-color: #31302e transparent transparent transparent; }
-        .btn-store:hover .version-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-
-        .compare-link { font-size: 15px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 24px; margin-top: 12px; line-height: 1.33;}
-        .compare-link:hover { color: var(--primary); text-decoration: underline; }
-
-        .trust-badges { display: flex; align-items: center; justify-content: center; gap: 24px; color: var(--text-placeholder); font-size: 14px; font-weight: 500; margin-bottom: 16px; flex-wrap: wrap; }
-        .trust-badges span { display: flex; align-items: center; gap: 6px; }
-        .microcopy { color: var(--text-muted); font-size: 14px; font-weight: 400; line-height: 1.43; }
-
-        /* BENTO BOX TOOLS */
-        .bento-tools { background-color: var(--bg-section); padding: 120px 5%; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); transition: background-color 0.3s; }
-        .bento-header { text-align: center; margin-bottom: 64px; }
-        .bento-header h2 { color: var(--text-main); font-size: 40px; letter-spacing: -1px; margin-bottom: 16px;}
-        .bento-header p { color: var(--text-muted); font-size: 20px; max-width: 800px; margin: 0 auto; font-weight: 500; letter-spacing: -0.125px;}
-        
-        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; max-width: 1000px; margin: 0 auto; }
-        
-        .bento-card { background: var(--card-bg); border: 1px solid var(--border-light); padding: 48px; border-radius: var(--radius-card); display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: var(--shadow-card); }
-        .bento-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-        .bento-card h3 { color: var(--text-main); font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin: 0 0 16px 0; line-height: 1.2;}
-        .bento-card p { color: var(--text-muted); font-size: 16px; line-height: 1.6; margin: 0 0 40px 0; flex-grow: 1; }
-        
-        .bento-icon-wrapper { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
-        .bento-icon { width: 56px; height: 56px; border-radius: 12px; background: var(--bg-page); display: flex; justify-content: center; align-items: center; border: 1px solid var(--border-light); font-size: 24px; }
-        .bento-limit { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-pill); letter-spacing: 0.125px; }
-
-        /* FEATURES SECTION */
-        .features-container { padding: 120px 5% 80px; background: var(--bg-page); transition: background-color 0.3s; }
-        .features-header { text-align: center; margin-bottom: 80px; }
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; max-width: 1200px; margin: 0 auto; justify-content: center; }
-        
-        .feature-card { background: var(--card-bg); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); transition: all 0.3s ease; display: flex; flex-direction: column; }
-        .feature-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-4px); }
-        .feature-icon { margin-bottom: 24px; width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; border-radius: 8px; background: var(--bg-page); border: 1px solid var(--border-light); font-size: 1.5em; }
-        .feature-card p { color: var(--text-muted); margin: 0; font-size: 16px; font-weight: 400; line-height: 1.50; transition: color 0.3s; }
-        
-        .highlight-term { background-color: rgba(255, 100, 200, 0.15); padding: 0 4px; border-radius: 4px; font-weight: 500; color: var(--text-main); transition: background-color 0.3s; }
-        [data-theme="dark"] .highlight-term { background-color: rgba(255, 133, 212, 0.25); }
-
-        .feature-link { margin-top: auto; padding-top: 24px; font-size: 15px; font-weight: 600; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: gap 0.2s ease; line-height: 1.33;}
-        .feature-link:hover { gap: 10px; text-decoration: underline; }
-
-        /* GALLERY CAROUSEL */
-        .gallery-section { padding: 0 0 120px 0; background: var(--bg-page); width: 100%; overflow: hidden; transition: background-color 0.3s; }
-        .gallery-header { display: flex; justify-content: space-between; align-items: flex-end; max-width: 1400px; margin: 0 auto 24px auto; padding: 0 5%; }
-        .gallery-title { font-size: 26px; font-weight: 700; letter-spacing: -0.625px; color: var(--text-main); margin: 0; }
-        
-        .carousel-controls { display: flex; gap: 8px; }
-        .carousel-btn { width: 36px; height: 36px; background: transparent; border: 1px solid var(--border-light); border-radius: var(--radius-btn); color: var(--text-main); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: background 0.2s; font-size: 1.2em; }
-        .carousel-btn:hover { background: rgba(0,0,0,0.05); }
-        [data-theme="dark"] .carousel-btn:hover { background: rgba(255,255,255,0.05); }
-
-        .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 24px; padding: 0 5% 20px 5%; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; }
-        .carousel::-webkit-scrollbar { display: none; }
-        .carousel-item { scroll-snap-align: center; flex: 0 0 auto; width: 85%; max-width: 400px; border-radius: var(--radius-card); border: 1px solid var(--border-light); box-shadow: var(--shadow-card); background: var(--card-bg); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; }
-        @media (min-width: 1024px) { .carousel-item { width: calc(33.333% - 16px); max-width: none; scroll-snap-align: start; } }
-        @media (min-width: 768px) and (max-width: 1023px) { .carousel-item { width: calc(50% - 12px); max-width: none; scroll-snap-align: start; } }
-        .carousel-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-        .carousel-item img { width: 100%; height: auto; display: block; cursor: zoom-in; object-fit: cover; border-bottom: 1px solid var(--border-light); border-radius: 12px 12px 0 0; }
-        .carousel-caption { padding: 16px; font-size: 14px; text-align: left; color: var(--text-muted); font-weight: 500; background: transparent; line-height: 1.43; }
-
-        /* AUTHORITY & FAQ */
-        .info-container { background: var(--bg-section); padding: 100px 20px; border-top: 1px solid var(--border-light); transition: background-color 0.3s; }
-        .authority-box { max-width: 800px; margin: 0 auto; text-align: center; }
-        .authority-box p { color: var(--text-main); font-size: 20px; line-height: 1.6; margin-bottom: 0; font-weight: 400; transition: color 0.3s; letter-spacing: -0.125px;}
-
-        .faq-item { background: var(--card-bg); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-light); transition: 0.3s; box-shadow: var(--shadow-card); margin-bottom: 24px; }
-        .faq-item:hover { box-shadow: var(--shadow-hover); }
-        .faq-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-        .faq-header i { font-size: 1.5em; }
-
-        /* FOOTER CTA & COFFEE */
-        .bottom-cta { text-align: center; padding: 120px 20px; background: var(--bg-page); border-top: 1px solid var(--border-light); transition: background-color 0.3s;}
-        .bottom-cta p { color: var(--text-muted); font-size: 20px; font-weight: 600; margin-bottom: 40px; transition: color 0.3s; letter-spacing: -0.125px;}
-
-        footer { padding: 80px 20px 40px; border-top: 1px solid var(--border-light); background: var(--bg-page); display: flex; flex-direction: column; align-items: center; transition: background-color 0.3s; }
-        .footer-content { max-width: 500px; width: 100%; display: flex; flex-direction: column; gap: 32px; }
-        
-        .coffee-container { border: 1px solid var(--border-light); border-radius: var(--radius-card); background: var(--card-bg); overflow: hidden; transition: background-color 0.3s; box-shadow: var(--shadow-card); }
-        .coffee-btn { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; color: var(--text-main); font-size: 16px; font-weight: 600; background: transparent; border: none; width: 100%; cursor: pointer; transition: background 0.2s ease, color 0.3s; }
-        .coffee-btn:hover { background: rgba(0,0,0,0.02); }
-        [data-theme="dark"] .coffee-btn:hover { background: rgba(255,255,255,0.03); }
-        .coffee-btn i { transition: transform 0.3s ease; }
-        .coffee-btn.active i { transform: rotate(180deg); }
-        .coffee-content { display: none; padding: 0 24px 24px 24px; border-top: 1px solid var(--border-light); text-align: center; }
-        .coffee-content.show { display: block; animation: slideDown 0.3s ease; }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .pix-code-container { display: flex; gap: 8px; margin-top: 16px;}
-        .pix-code-container input { flex: 1; padding: 8px 12px; background: var(--bg-section); border: 1px solid var(--border-light); color: var(--text-muted); border-radius: var(--radius-btn); font-size: 14px; outline: none; transition: background-color 0.3s, color 0.3s; font-family: monospace;}
-        .pix-code-container button { background: var(--text-main); color: var(--bg-page); border: none; padding: 0 16px; border-radius: var(--radius-btn); font-weight: 600; font-size: 15px; cursor: pointer; transition: 0.2s; }
-        .pix-code-container button:hover { opacity: 0.85; transform: translateY(-1px); }
-        
-        .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 24px; }
-        .footer-links a { color: var(--text-muted); font-size: 15px; font-weight: 500; text-decoration: none; transition: color 0.2s; }
-        .footer-links a:hover { color: var(--primary); text-decoration: underline; }
-        .footer-copy { text-align: center; color: var(--text-placeholder); font-size: 14px; font-weight: 400; margin-top: 8px; }
-
-        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; }
-        .fade-in-section.is-visible { opacity: 1; transform: none; }
-
-        .mobile-sticky-cta { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-header); backdrop-filter: blur(10px); border-top: 1px solid var(--border-light); padding: 16px 20px; z-index: 100; box-shadow: 0 -4px 20px rgba(0,0,0,0.08); text-align: center; box-sizing: border-box; transition: background-color 0.3s; }
-
-        @media (max-width: 900px) { .header-nav { display: none; } }
-        @media (max-width: 768px) { 
-            h1 { font-size: 40px; letter-spacing: -0.625px;} 
-            h2 { font-size: 32px;}
-            .mobile-sticky-cta { display: block; }
-            body { padding-bottom: 80px; } 
-            .share-text { display: none; }
-            .share-btn { padding: 6px; width: 36px; justify-content: center;}
-            .hero { padding-top: 60px; }
-            .bento-card { padding: 32px; }
-        }
-    </style>
+    </script>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
@@ -343,24 +91,20 @@
                     </a>
         
         <nav class="header-nav" aria-label="Navegação principal">
-            <a href="busca.html" class="nav-link">Busca & Tags</a>
-            <a href="prazos.html" class="nav-link">Prazos & Agenda</a>
-            <a href="exportacao.html" class="nav-link">Relatórios PDF</a>
-            <a href="radar.html" class="nav-link">Radar</a>
+            <a href="busca.html" class="nav-link">Pesquisa DJEN</a>
+            <a href="calculadora.html" class="nav-link">Calculadora de Prazos</a>
+            <a href="wiki.html" class="nav-link">Wiki</a>
+            <a href="/webapp/" class="nav-link">Web App</a>
         </nav>
 
        <div class="header-actions">
-            <a href="#footer-coffee" onclick="document.getElementById('contentCoffee').classList.add('show'); document.getElementById('btnToggleCoffee').classList.add('active');" class="share-btn" style="color: var(--zen-orange); border-color: rgba(221, 91, 0, 0.2); background: rgba(221, 91, 0, 0.05);">
-                <i class="ph ph-coffee"></i> <span class="share-text" style="margin-left: 4px;">Apoiar</span>
-            </a>
+             <a href="#footer-coffee" onclick="openApoio(event)" class="nav-btn-apoio">
+                 <i class="ph ph-hand-heart"></i>
+                 <span>Apoiar</span>
+             </a>
 
-            <button id="btn-compartilhar" class="share-btn" aria-label="Compartilhar site">
-                <i class="ph ph-share-network"></i>
-                <span class="share-text">Compartilhar</span>
-            </button>
-
-            <a href="https://linktr.ee/moreira_consultoriajuridica" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; white-space: nowrap;">
-                por Amilcar
+            <a href="https://www.instagram.com/amilcarmoreira.juridico" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: 600; color: var(--text-muted); text-decoration: none; white-space: nowrap;">
+                por Amilcar Moreira
             </a>
 
             <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
@@ -387,7 +131,7 @@
                     
                     <div class="hero-buttons fade-in-section">
                         <div style="display: flex; flex-direction: column; align-items: center;">
-                            <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store primary">
+                            <a href="https://chromewebstore.google.com/detail/buscador-djen-prazos-e-in/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store primary">
                                 <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" style="width: 28px; height: 28px; flex-shrink: 0;">
                                 <div class="store-text">
@@ -465,6 +209,18 @@
                     <p>Pesquise e extraia publicações ativas e dados judiciais por OAB ou UF instantaneamente. Sem bloqueios de captchas ou lentidão institucional.</p>
                     <a href="busca.html" class="btn-browser" style="width: 100%;">Iniciar análise <i class="ph ph-arrow-right"></i></a>
                 </div>
+
+                <div class="bento-card">
+                    <div class="bento-icon-wrapper">
+                        <div class="bento-icon" style="color: var(--zen-purple);">
+                            <i class="ph ph-books"></i>
+                        </div>
+                        <span class="bento-limit" style="background: var(--zen-purple-bg); color: var(--zen-purple);">Completa</span>
+                    </div>
+                    <h3>Wiki & Documentação Técnica</h3>
+                    <p>Acesse o manual de engenharia da extensão. Veja detalhes das APIs integradas, regras de contagem de prazos por tribunal e guia de segurança e privacidade.</p>
+                    <a href="wiki.html" class="btn-browser" style="width: 100%;">Explorar Wiki <i class="ph ph-arrow-right"></i></a>
+                </div>
             </div>
 
             <div style="text-align: center; margin-top: 40px; font-size: 14px; font-weight: 500; color: var(--text-placeholder);">
@@ -482,56 +238,48 @@
                     <div class="feature-icon" style="color: var(--primary);"><i class="ph ph-magnifying-glass"></i></div>
                     <h3>Consulta Direta (DJEN e CNJ)</h3>
                     <p>Extraia dados e publicações <span class="highlight-term">instantaneamente</span>, sem bloqueios de captchas ou a lentidão dos portais oficiais.</p>
-                    <a href="busca.html" class="feature-link">Conhecer a Busca <i class="ph ph-arrow-right"></i></a>
                 </div>
 
                 <div class="feature-card fade-in-section">
                     <div class="feature-icon" style="color: var(--zen-red);"><i class="ph ph-calendar-check"></i></div>
-                    <h3>Cálculo Algorítmico</h3>
+                    <h3>Cálculo Algorítmico de Prazos</h3>
                     <p>O algoritmo desvia <span class="highlight-term">automaticamente</span> de suspensões e recesso forense, garantindo segurança matemática na pauta.</p>
-                    <a href="prazos.html" class="feature-link">Conhecer Prazos <i class="ph ph-arrow-right"></i></a>
                 </div>
 
                 <div class="feature-card fade-in-section">
                     <div class="feature-icon" style="color: var(--zen-green);"><i class="ph ph-crosshair"></i></div>
                     <h3>Modo Foco e Triagem</h3>
                     <p>Ative o Modo Foco para analisar despachos complexos em um ambiente de leitura <span class="highlight-term">imersivo</span> e livre de ruídos visuais.</p>
-                    <a href="busca.html" class="feature-link">Ver Modo Foco <i class="ph ph-arrow-right"></i></a>
                 </div>
 
                 <div class="feature-card fade-in-section">
                     <div class="feature-icon" style="color: var(--zen-purple);"><i class="ph ph-target"></i></div>
                     <h3>Radar de Urgências</h3>
                     <p>Configure palavras-chave para emitir <span class="highlight-term">alertas imediatos</span> sempre que o sistema identificar termos críticos nos despachos.</p>
-                    <a href="radar.html" class="feature-link">Conhecer o Radar <i class="ph ph-arrow-right"></i></a>
                 </div>
 
                 <div class="feature-card fade-in-section">
                     <div class="feature-icon" style="color: var(--zen-orange);"><i class="ph ph-tag"></i></div>
                     <h3>Tags e Metadados Internos</h3>
                     <p>Atribua <span class="highlight-term">apelidos práticos</span> e adicione anotações estratégicas para facilitar a identificação sem depender de números longos.</p>
-                    <a href="busca.html" class="feature-link">Descobrir como organizar <i class="ph ph-arrow-right"></i></a>
                 </div>
 
                 <div class="feature-card fade-in-section">
                     <div class="feature-icon" style="color: var(--zen-gold);"><i class="ph ph-squares-four"></i></div>
                     <h3>Visão Panorâmica</h3>
                     <p>Visualize o fluxo de intimações e o estrangulamento semanal. Antecipe a controladoria antes que o prazo se torne <span class="highlight-term">fatal</span>.</p>
-                    <a href="prazos.html" class="feature-link">Ver Calendário <i class="ph ph-arrow-right"></i></a>
                 </div>
 
                 <div class="feature-card fade-in-section">
                     <div class="feature-icon" style="color: var(--zen-blue);"><i class="ph ph-chart-bar"></i></div>
                     <h3>Jurimetria e Relatórios</h3>
                     <p>Emita relatórios de auditoria em Visual Law. Exporte sua base para CSV e aplique Jurimetria para extrair <span class="highlight-term">métricas de desempenho</span>.</p>
-                    <a href="exportacao.html" class="feature-link">Conhecer Relatórios <i class="ph ph-arrow-right"></i></a>
                 </div>
 
                 <div class="feature-card fade-in-section">
                     <div class="feature-icon" style="color: var(--primary);"><i class="ph ph-share-network"></i></div>
                     <h3>Sincronização Ativa</h3>
                     <p>Conecte seus prazos diretamente ao <span class="highlight-term">Google Agenda</span>. Compartilhe rapidamente o andamento com clientes via WhatsApp.</p>
-                    <a href="exportacao.html" class="feature-link">Ver integrações <i class="ph ph-arrow-right"></i></a>
                 </div>
 
                 
@@ -554,32 +302,12 @@
             <div class="carousel-wrapper" style="position: relative; max-width: 1400px; margin: 0 auto;">
                 <div class="carousel">
                     <div class="carousel-item">
-                        <img src="1.png" alt="Interface da extensão Buscador DJEN realizando consulta de atos judiciais" loading="lazy">
-                        <div class="carousel-caption">Consulta direta de atos judiciais no DJEN e CNJ</div>
+                        <img src="2.png" alt="Formulário da Calculadora de Prazos do Buscador DJEN" loading="lazy">
+                        <div class="carousel-caption">Calculadora de prazos com tribunal, UF e município</div>
                     </div>
                     <div class="carousel-item">
-                        <img src="2.png" alt="Gestão de publicações judiciais e tarefas" loading="lazy">
-                        <div class="carousel-caption">Acesso à intimação com gestão de tarefas</div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="3.png" alt="Modo Foco para leitura imersiva" loading="lazy">
-                        <div class="carousel-caption">Leitura imersiva no modo Foco e tags</div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="4.png" alt="Calculadora de prazo processual com auditoria" loading="lazy">
-                        <div class="carousel-caption">Auditoria visual de cálculo de prazos processuais</div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="5.png" alt="Painel de controladoria jurídica" loading="lazy">
-                        <div class="carousel-caption">Gestão visual do andamento de publicações</div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="6.png" alt="Calendário integrado para controle de prazos" loading="lazy">
-                        <div class="carousel-caption">Calendário mensal de controle e estrangulamento</div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="11.png" alt="Geração de Relatórios em PDF e Planilhas CSV para jurimetria" loading="lazy">
-                        <div class="carousel-caption">Relatórios estruturados e CSV para Jurimetria</div>
+                        <img src="5.png" alt="Pesquisa de intimação judicial com tags e notas no Buscador DJEN" loading="lazy">
+                        <div class="carousel-caption">Pesquisa de intimação com tags, notas e tarefas do processo</div>
                     </div>
                 </div>
             </div>
@@ -624,33 +352,6 @@
             </div>
         </section>
 
-        <section class="bottom-cta fade-in-section">
-            <h2>Auditoria de prazos (PNG).</h2>
-            <p>Sem lentidão. Sem implantações complexas. Instale e otimize sua rotina.</p>
-            
-            <div style="display: flex; flex-direction: column; align-items: center;">
-                <div class="hero-buttons">
-                    <a href="https://chromewebstore.google.com/detail/buscador-djen-publica%C3%A7%C3%B5es/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store primary">
-                        <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" style="width: 28px; height: 28px; flex-shrink: 0;">
-                        <div class="store-text">
-                            <small>Instalar no</small>
-                            <strong>Google Chrome</strong>
-                        </div>
-                    </a>
-
-                    <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store secondary">
-                        <span class="version-tooltip firefox-tooltip">Buscando versão...</span>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" style="width: 28px; height: 28px; flex-shrink: 0;">
-                        <div class="store-text">
-                            <small>Instalar no</small>
-                            <strong>Mozilla Firefox</strong>
-                        </div>
-                    </a>
-                </div>
-                <a href="versoes.html" class="compare-link">Ver documentação e versões <i class="ph ph-arrow-right"></i></a>
-                            </div>
-        </section>
     </main>
 
     <footer id="footer-coffee">
@@ -664,6 +365,9 @@
                     <p style="color: var(--text-muted); font-size: 16px; font-weight: 400; margin-bottom: 16px; line-height: 1.50;">
                         Desenvolvido de forma independente, sem as amarras das grandes <em>LegalTechs</em>. Se o Buscador garantiu segurança na sua pauta hoje, considere apoiar a manutenção dos servidores e das APIs.
                     </p>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 16px;">
+                        <img src="qrcode-pix.png" alt="QR Code Pix para apoio ao Buscador DJEN" style="width: 180px; height: 180px; border-radius: 12px;">
+                    </div>
                     <div class="pix-code-container">
                         <input type="text" id="pixKey" value="50f781e2-9d94-4624-8f08-a9938bb0c4dc" readonly>
                         <button id="btnCopyPix" onclick="copyPixCode()">Copiar Pix</button>
@@ -672,7 +376,8 @@
             </div>
 
             <div class="footer-links fade-in-section">
-                <a href="calculadora.html" style="color: var(--primary); font-weight: 600;">Auditoria de Prazos</a> 
+                <a href="calculadora.html" style="color: var(--primary); font-weight: 600;">Calculadora de Prazos</a>
+                <a href="wiki.html" style="color: var(--primary); font-weight: 600;">Wiki & Documentação</a>
                 <a href="versoes.html">Changelog & Versões</a>
                 <a href="termos.html">Termos de Uso</a>
                 <a href="privacidade.html">Privacidade</a>
@@ -721,17 +426,41 @@
         // Coffee Section
         const btnToggleCoffee = document.getElementById('btnToggleCoffee');
         const contentCoffee = document.getElementById('contentCoffee');
-        btnToggleCoffee.addEventListener('click', (e) => {
+        if (btnToggleCoffee) {
+            btnToggleCoffee.addEventListener('click', (e) => {
+                e.preventDefault();
+                btnToggleCoffee.classList.toggle('active');
+                contentCoffee.classList.toggle('show');
+                const chevron = document.getElementById('coffee-chevron');
+                if (btnToggleCoffee.classList.contains('active')) {
+                    chevron.style.transform = 'rotate(180deg)';
+                } else {
+                    chevron.style.transform = 'rotate(0deg)';
+                }
+            });
+        }
+
+        function openApoio(e) {
             e.preventDefault();
-            btnToggleCoffee.classList.toggle('active');
-            contentCoffee.classList.toggle('show');
-            const chevron = document.getElementById('coffee-chevron');
-            if (btnToggleCoffee.classList.contains('active')) {
-                chevron.style.transform = 'rotate(180deg)';
-            } else {
-                chevron.style.transform = 'rotate(0deg)';
+            const btnToggleCoffee = document.getElementById('btnToggleCoffee');
+            const contentCoffee = document.getElementById('contentCoffee');
+            const container = document.querySelector('.coffee-container');
+            if (btnToggleCoffee && contentCoffee) {
+                btnToggleCoffee.classList.add('active');
+                contentCoffee.classList.add('show');
+                const chevron = document.getElementById('coffee-chevron');
+                if (chevron) {
+                    chevron.style.transform = 'rotate(180deg)';
+                }
+                
+                document.getElementById('footer-coffee').scrollIntoView({ behavior: 'smooth' });
+                
+                container.classList.add('highlight-glow');
+                setTimeout(() => {
+                    container.classList.remove('highlight-glow');
+                }, 2000);
             }
-        });
+        }
 
         function copyPixCode() {
             const pixInput = document.getElementById('pixKey');
