@@ -60,7 +60,7 @@
 
        <div class="header-actions">
             <a href="wiki.html#footer-coffee" class="nav-btn-apoio">
-                <i class="ph ph-hand-heart"></i>
+                <i class="ph-light ph-hand-heart"></i>
                 <span>Apoiar</span>
             </a>
 
@@ -69,17 +69,17 @@
             </a>
 
             <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
-                <i class="ph ph-sun"></i>
-                <i class="ph ph-moon"></i>
+                <i class="ph-light ph-sun"></i>
+                <i class="ph-light ph-moon"></i>
             </button>
         </div>
     </header>
 
     <main class="legal-container">
         <div class="legal-hero fade-in-section">
-            <div class="legal-badge"><i class="ph ph-shield-check"></i> Conformidade LGPD</div>
+            <div class="legal-badge"><i class="ph-light ph-shield-check"></i> Conformidade LGPD</div>
             <h1>Política de Privacidade</h1>
-            <span class="last-update"><i class="ph ph-clock-counter-clockwise"></i> Revisado em: Abril de 2026</span>
+            <span class="last-update"><i class="ph-light ph-clock-counter-clockwise"></i> Revisado em: Abril de 2026</span>
         </div>
 
         <p class="legal-intro fade-in-section">
@@ -87,19 +87,19 @@
         </p>
 
         <div class="highlight-box fade-in-section">
-            <h2><i class="ph ph-eye-slash" style="color: var(--primary);"></i> 1. Arquitetura Zero-Knowledge (Coleta de Dados)</h2>
+            <h2><i class="ph-light ph-eye-slash" style="color: var(--primary);"></i> 1. Arquitetura Zero-Knowledge (Coleta de Dados)</h2>
             <p>O desenvolvedor desta extensão <strong>não coleta, não rastreia, não processa em nuvem e não tem acesso</strong> a qualquer dado pessoal, histórico de navegação, números de OAB, senhas institucionais ou teor de processos pesquisados pelos usuários.</p>
             <p>A ferramenta opera como uma ponte passiva e cega: ela processa os dados exclusivamente na memória do seu próprio navegador.</p>
         </div>
 
         <div class="policy-section fade-in-section">
-            <h2><i class="ph ph-hard-drives"></i> 2. Armazenamento Local-First</h2>
+            <h2><i class="ph-light ph-hard-drives"></i> 2. Armazenamento Local-First</h2>
             <p>Todas as informações imputadas no ecossistema (como Número da OAB, configurações de comarca, apelidos de processos e o log da pauta de prazos salvos) são armazenadas de forma encriptada e estritamente local no hardware do usuário.</p>
             <p>Utilizamos tecnologias nativas de isolamento (API <code>chrome.storage.local</code> e <code>IndexedDB</code>), garantindo que os seus dados nunca saiam da sua máquina sem a sua ação voluntária (como uma exportação para PDF ou CSV).</p>
         </div>
 
         <div class="policy-section fade-in-section">
-            <h2><i class="ph ph-plugs-connected"></i> 3. Comunicação com APIs Oficiais</h2>
+            <h2><i class="ph-light ph-plugs-connected"></i> 3. Comunicação com APIs Oficiais</h2>
             <p>Para prover os cálculos e buscas, a ferramenta comunica-se de forma direta e criptografada (via protocolo HTTPS) exclusivamente com endpoints públicos homologados:</p>
             <ul>
                 <li><strong>API Pública do CNJ (comunicaapi.pje.jus.br):</strong> Requisitada para a extração do espelho de publicações do Diário da Justiça Eletrônico Nacional.</li>
@@ -108,13 +108,13 @@
         </div>
 
         <div class="policy-section fade-in-section">
-            <h2><i class="ph ph-lock-key"></i> 4. Compartilhamento e Sigilo</h2>
+            <h2><i class="ph-light ph-lock-key"></i> 4. Compartilhamento e Sigilo</h2>
             <p>Tendo em vista que nenhum dado processual cruza ou é retido em servidores de nossa propriedade, <strong>é matematicamente impossível</strong> que suas informações sejam vendidas, cedidas, alugadas ou compartilhadas com terceiros.</p>
             <p>O sigilo da relação advogado-cliente é preservado integralmente pela arquitetura do software.</p>
         </div>
 
         <div class="contact-box fade-in-section">
-            <i class="ph ph-envelope-simple"></i>
+            <i class="ph-light ph-envelope-simple"></i>
             <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 8px 0;">Contato Técnico e DPO</h2>
             <p>Em caso de dúvidas aprofundadas sobre esta arquitetura de segurança, auditoria de código ou diretrizes da LGPD, entre em contato direto com o desenvolvedor responsável:</p>
             <a href="mailto:contato@buscadordjen.com.br" class="contact-link">
@@ -129,7 +129,7 @@
             <a href="index.html">Página Inicial</a>
             <a href="termos.html">Termos de Uso</a>
         </div>
-        &copy; 2026 Buscador DJEN. Arquitetura para a advocacia.
+        &copy; 2024 Moreira Consultoria Jurídica — Todos os direitos reservados.
     </footer>
 
     <script>
@@ -149,7 +149,6 @@
                 document.documentElement.setAttribute('data-theme', newTheme); 
                 localStorage.setItem('theme', newTheme); 
             });
-        }
         }
 
         // Intersection Observer (Fade-in)

@@ -99,7 +99,7 @@
 
        <div class="header-actions">
              <a href="#footer-coffee" onclick="openApoio(event)" class="nav-btn-apoio">
-                 <i class="ph ph-hand-heart"></i>
+                 <i class="ph-light ph-hand-heart"></i>
                  <span>Apoiar</span>
              </a>
 
@@ -108,8 +108,8 @@
             </a>
 
             <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
-                <i class="ph ph-sun"></i>
-                <i class="ph ph-moon"></i>
+                <i class="ph-light ph-sun"></i>
+                <i class="ph-light ph-moon"></i>
             </button>
         </div>
     </header>
@@ -119,9 +119,9 @@
             <div class="hero-content">
                 
                 <a href="versoes.html" class="hero-alert-badge fade-in-section">
-                    <span class="badge-new">Novo</span>
-                    <span class="alert-text">Alertas automáticos de suspensões locais</span>
-                    <i class="ph ph-arrow-right alert-icon"></i>
+                    <span class="badge-new">v50.3</span>
+                    <span class="alert-text">Novo Histórico do Processo e Visualização em Calendário</span>
+                    <i class="ph-light ph-arrow-right alert-icon"></i>
                 </a>
                 
                 <h1 class="fade-in-section">O controle absoluto da sua pauta, direto no navegador.</h1>
@@ -129,52 +129,51 @@
                 
                <div style="display: flex; flex-direction: column; align-items: center;">
                     
-                    <div class="hero-buttons fade-in-section">
-                        <div style="display: flex; flex-direction: column; align-items: center;">
-                            <a href="https://chromewebstore.google.com/detail/buscador-djen-prazos-e-in/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-store primary">
-                                <span class="version-tooltip chrome-tooltip">Buscando versão...</span>
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" alt="Google Chrome" style="width: 28px; height: 28px; flex-shrink: 0;">
-                                <div class="store-text">
-                                    <small>Baixar para</small>
-                                    <strong>Google Chrome</strong>
-                                </div>
-                            </a>
-                            <div class="rating-stars chrome-rating">★★★★★ <span>5.0</span></div>
-                        </div>
+                    <div class="stores-container fade-in-section">
+                        <a href="https://chromewebstore.google.com/detail/buscador-djen-prazos-e-in/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="store-card" style="border-color: rgba(0, 117, 222, 0.3);">
+                            <div class="store-info">
+                                <span class="store-microcopy">Instalação Nativa</span>
+                                <span class="store-title">Google Chrome</span>
+                                <span class="store-version version-chrome">
+                                    <span class="pulse-dot dot-chrome"></span> 
+                                    <span id="chrome-version">Sincronizando...</span>
+                                </span>
+                            </div>
+                        </a>
 
-                        <div style="display: flex; flex-direction: column; align-items: center;">
-                            <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-store secondary">
-                                <span class="version-tooltip firefox-tooltip">Buscando versão...</span>
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" alt="Mozilla Firefox" style="width: 28px; height: 28px; flex-shrink: 0;">
-                                <div class="store-text">
-                                    <small>Baixar para</small>
-                                    <strong>Mozilla Firefox</strong>
-                                </div>
-                            </a>
-                            <div class="rating-stars firefox-rating">★★★★★ <span>5.0</span></div>
-                        </div>
-                        <div style="display: flex; flex-direction: column; align-items: center;">
-                            <a href="/webapp/" title="Acessar o Buscador DJEN Web App" class="btn-store secondary" style="border-color: var(--border-focus); background-color: var(--badge-bg);">
-                                <i class="ph ph-devices" style="font-size: 28px; color: var(--primary);"></i>
-                                <div class="store-text">
-                                    <small style="color: var(--primary);">Acessar online</small>
-                                    <strong style="color: var(--primary);">Web App (PWA)</strong>
-                                </div>
-                            </a>
-                            <div class="rating-stars visible" style="color: var(--text-muted); font-weight: 500;">PC e Celular</div>
-                        </div>
+                        <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="store-card" style="border-color: rgba(221, 91, 0, 0.3);">
+                            <div class="store-info">
+                                <span class="store-microcopy">Instalação Nativa</span>
+                                <span class="store-title">Mozilla Firefox</span>
+                                <span class="store-version version-firefox">
+                                    <span class="pulse-dot dot-firefox"></span> 
+                                    <span id="firefox-version">Sincronizando...</span>
+                                </span>
+                            </div>
+                        </a>
+
+                        <a href="/webapp/" class="store-card" style="border-color: rgba(106, 64, 191, 0.3);">
+                            <div class="store-info">
+                                <span class="store-microcopy">Plataforma Web (PWA)</span>
+                                <span class="store-title">Web App Oficial</span>
+                                <span class="store-version version-webapp">
+                                    <span class="pulse-dot dot-webapp"></span> 
+                                    <span id="webapp-version">Versão 50.3</span>
+                                </span>
+                            </div>
+                        </a>
                     </div>
 
                     <div class="trust-badges fade-in-section">
                         <span>Compatível com:</span>
-                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> PJe</span>
-                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> e-SAJ</span>
-                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> eproc</span>
-                        <span><i class="ph ph-check-circle" style="color: var(--zen-green);"></i> Projudi</span>
+                        <span><i class="ph-light ph-check-circle" style="color: var(--zen-green);"></i> PJe</span>
+                        <span><i class="ph-light ph-check-circle" style="color: var(--zen-green);"></i> e-SAJ</span>
+                        <span><i class="ph-light ph-check-circle" style="color: var(--zen-green);"></i> eproc</span>
+                        <span><i class="ph-light ph-check-circle" style="color: var(--zen-green);"></i> Projudi</span>
                     </div>
                     
                     <div class="microcopy fade-in-section">Gratuito e de código aberto. Instale em segundos, sem necessidade de cadastro ou senhas.</div>
-                    <a href="versoes.html" class="compare-link fade-in-section">Ver comparativo das versões <i class="ph ph-arrow-right"></i></a>
+                    <a href="versoes.html" class="compare-link fade-in-section">Ver comparativo das versões <i class="ph-light ph-arrow-right"></i></a>
                 </div>
             </div>
         </section>
@@ -189,37 +188,37 @@
                 <div class="bento-card">
                     <div class="bento-icon-wrapper">
                         <div class="bento-icon" style="color: var(--zen-red);">
-                            <i class="ph ph-calendar-blank"></i>
+                            <i class="ph-light ph-calendar-blank"></i>
                         </div>
                         <span class="bento-limit" style="background: rgba(255, 100, 200, 0.1); color: var(--zen-red);">Limite: 3 consultas/dia</span>
                     </div>
                     <h3>Motor Algorítmico de Prazos</h3>
                     <p>Contagem exata em dias úteis com desvio automático de feriados locais, recesso forense e suspensões confirmadas. Gera um log completo para sua auditoria visual da pauta.</p>
-                    <a href="calculadora.html" class="btn-browser primary" style="width: 100%;">Auditar prazo online <i class="ph ph-arrow-right"></i></a>
+                    <a href="calculadora.html" class="btn-browser primary" style="width: 100%;">Auditar prazo online <i class="ph-light ph-arrow-right"></i></a>
                 </div>
 
                 <div class="bento-card">
                     <div class="bento-icon-wrapper">
                         <div class="bento-icon" style="color: var(--primary);">
-                            <i class="ph ph-magnifying-glass"></i>
+                            <i class="ph-light ph-magnifying-glass"></i>
                         </div>
                         <span class="bento-limit" style="background: var(--badge-bg); color: var(--badge-text);">Versão Web</span>
                     </div>
                     <h3>Extração Direta DJEN e CNJ</h3>
                     <p>Pesquise e extraia publicações ativas e dados judiciais por OAB ou UF instantaneamente. Sem bloqueios de captchas ou lentidão institucional.</p>
-                    <a href="busca.html" class="btn-browser" style="width: 100%;">Iniciar análise <i class="ph ph-arrow-right"></i></a>
+                    <a href="busca.html" class="btn-browser" style="width: 100%;">Iniciar análise <i class="ph-light ph-arrow-right"></i></a>
                 </div>
 
                 <div class="bento-card">
                     <div class="bento-icon-wrapper">
                         <div class="bento-icon" style="color: var(--zen-purple);">
-                            <i class="ph ph-books"></i>
+                            <i class="ph-light ph-books"></i>
                         </div>
                         <span class="bento-limit" style="background: var(--zen-purple-bg); color: var(--zen-purple);">Completa</span>
                     </div>
                     <h3>Wiki & Documentação Técnica</h3>
                     <p>Acesse o manual de engenharia da extensão. Veja detalhes das APIs integradas, regras de contagem de prazos por tribunal e guia de segurança e privacidade.</p>
-                    <a href="wiki.html" class="btn-browser" style="width: 100%;">Explorar Wiki <i class="ph ph-arrow-right"></i></a>
+                    <a href="wiki.html" class="btn-browser" style="width: 100%;">Explorar Wiki <i class="ph-light ph-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -235,51 +234,73 @@
 
             <div class="features">
                 <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--primary);"><i class="ph ph-magnifying-glass"></i></div>
+                    <div class="feature-icon" style="color: var(--primary);"><i class="ph-light ph-magnifying-glass"></i></div>
                     <h3>Consulta Direta (DJEN e CNJ)</h3>
                     <p>Extraia dados e publicações <span class="highlight-term">instantaneamente</span>, sem bloqueios de captchas ou a lentidão dos portais oficiais.</p>
                 </div>
 
                 <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--zen-red);"><i class="ph ph-calendar-check"></i></div>
+                    <div class="feature-icon" style="color: var(--zen-red);"><i class="ph-light ph-calendar-check"></i></div>
                     <h3>Cálculo Algorítmico de Prazos</h3>
                     <p>O algoritmo desvia <span class="highlight-term">automaticamente</span> de suspensões e recesso forense, garantindo segurança matemática na pauta.</p>
                 </div>
 
                 <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--zen-green);"><i class="ph ph-crosshair"></i></div>
+                    <div class="feature-icon" style="color: var(--zen-green);"><i class="ph-light ph-corners-out"></i></div>
                     <h3>Modo Foco e Triagem</h3>
                     <p>Ative o Modo Foco para analisar despachos complexos em um ambiente de leitura <span class="highlight-term">imersivo</span> e livre de ruídos visuais.</p>
                 </div>
 
                 <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--zen-purple);"><i class="ph ph-target"></i></div>
+                    <div class="feature-icon" style="color: var(--zen-purple);"><i class="ph-light ph-siren"></i></div>
                     <h3>Radar de Urgências</h3>
                     <p>Configure palavras-chave para emitir <span class="highlight-term">alertas imediatos</span> sempre que o sistema identificar termos críticos nos despachos.</p>
                 </div>
 
                 <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--zen-orange);"><i class="ph ph-tag"></i></div>
+                    <div class="feature-icon" style="color: var(--zen-orange);"><i class="ph-light ph-tag"></i></div>
                     <h3>Tags e Metadados Internos</h3>
                     <p>Atribua <span class="highlight-term">apelidos práticos</span> e adicione anotações estratégicas para facilitar a identificação sem depender de números longos.</p>
                 </div>
 
                 <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--zen-gold);"><i class="ph ph-squares-four"></i></div>
-                    <h3>Visão Panorâmica</h3>
-                    <p>Visualize o fluxo de intimações e o estrangulamento semanal. Antecipe a controladoria antes que o prazo se torne <span class="highlight-term">fatal</span>.</p>
+                    <div class="feature-icon" style="color: var(--zen-gold);"><i class="ph-light ph-calendar"></i></div>
+                    <h3>Calendário e Visão Panorâmica</h3>
+                    <p>Acompanhe seus prazos em formato mensal ou em lista de controladoria integrada, ideal para organizar a pauta visualmente.</p>
                 </div>
 
                 <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--zen-blue);"><i class="ph ph-chart-bar"></i></div>
+                    <div class="feature-icon" style="color: var(--zen-blue);"><i class="ph-light ph-chart-bar"></i></div>
                     <h3>Jurimetria e Relatórios</h3>
                     <p>Emita relatórios de auditoria em Visual Law. Exporte sua base para CSV e aplique Jurimetria para extrair <span class="highlight-term">métricas de desempenho</span>.</p>
                 </div>
 
                 <div class="feature-card fade-in-section">
-                    <div class="feature-icon" style="color: var(--primary);"><i class="ph ph-share-network"></i></div>
+                    <div class="feature-icon" style="color: var(--primary);"><i class="ph-light ph-share-network"></i></div>
                     <h3>Sincronização Ativa</h3>
                     <p>Conecte seus prazos diretamente ao <span class="highlight-term">Google Agenda</span>. Compartilhe rapidamente o andamento com clientes via WhatsApp.</p>
+                </div>
+
+                <div class="feature-card fade-in-section">
+                    <div class="feature-icon" style="color: var(--zen-blue); display: inline-flex; align-items: center; justify-content: center;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
+                            <path d="M 4 12 h 16" />
+                            <path d="M 2 2 h 4 a 1 1 0 0 1 1 1 v 4 a 1 1 0 0 1 -1 1 H 5.2 L 4 10 L 2.8 8 H 2 a 1 1 0 0 1 -1 -1 V 3 a 1 1 0 0 1 1 -1 Z" />
+                            <path d="M 3.5 4.5 h 1.5" stroke-width="1.2" />
+                            <path d="M 3.5 6 h 1" stroke-width="1.2" />
+                            <circle cx="4" cy="12" r="1.5" fill="var(--card-bg, #fff)" stroke="currentColor" stroke-width="1.8" />
+                            <path d="M 10 16 h 1.2 L 12 14 L 12.8 16 H 14 a 1 1 0 0 1 1 1 v 4 a 1 1 0 0 1 -1 1 H 10 a 1 1 0 0 1 -1 -1 v -4 a 1 1 0 0 1 1 -1 Z" />
+                            <path d="M 11.5 18.5 h 1.5" stroke-width="1.2" />
+                            <path d="M 11.5 20 h 1" stroke-width="1.2" />
+                            <circle cx="12" cy="12" r="1.5" fill="var(--card-bg, #fff)" stroke="currentColor" stroke-width="1.8" />
+                            <path d="M 18 2 h 4 a 1 1 0 0 1 1 1 v 4 a 1 1 0 0 1 -1 1 H 21.2 L 20 10 L 18.8 8 H 18 a 1 1 0 0 1 -1 -1 V 3 a 1 1 0 0 1 1 -1 Z" />
+                            <path d="M 19.5 4.5 h 1.5" stroke-width="1.2" />
+                            <path d="M 19.5 6 h 1" stroke-width="1.2" />
+                            <circle cx="20" cy="12" r="1.5" fill="var(--card-bg, #fff)" stroke="currentColor" stroke-width="1.8" />
+                        </svg>
+                    </div>
+                    <h3>Histórico do Processo</h3>
+                    <p>Acompanhe a <span class="highlight-term">linha do tempo</span> e toda a evolução de movimentações e despachos do processo de forma unificada.</p>
                 </div>
 
                 
@@ -291,10 +312,10 @@
                 <h2 class="gallery-title">Mostruário de Funcionalidades</h2>
                 <div class="carousel-controls">
                     <button class="carousel-btn prev-btn" aria-label="Imagem Anterior">
-                        <i class="ph ph-caret-left"></i>
+                        <i class="ph-light ph-caret-left"></i>
                     </button>
                     <button class="carousel-btn next-btn" aria-label="Próxima Imagem">
-                        <i class="ph ph-caret-right"></i>
+                        <i class="ph-light ph-caret-right"></i>
                     </button>
                 </div>
             </div>
@@ -327,7 +348,7 @@
                 <div style="display: flex; flex-direction: column; gap: 24px;">
                     <div class="faq-item">
                         <div class="faq-header">
-                            <i class="ph ph-shield-check" style="color: var(--zen-green);"></i>
+                            <i class="ph-light ph-shield-check" style="color: var(--zen-green);"></i>
                             <h3 style="font-size: 22px; margin: 0; letter-spacing: -0.25px;">Preciso fornecer meu token ou senhas do PJe/e-SAJ?</h3>
                         </div>
                         <p style="color: var(--text-muted); margin: 0; font-size: 16px; line-height: 1.50; margin-left: 36px;"><strong style="font-weight: 600; color: var(--text-main);">Não.</strong> A extensão opera de forma totalmente passiva. Ela apenas executa a extração das informações públicas da tela do Diário Oficial que o seu navegador já está processando. Não solicitamos ou armazenamos credenciais institucionais.</p>
@@ -335,7 +356,7 @@
                     
                     <div class="faq-item">
                         <div class="faq-header">
-                            <i class="ph ph-database" style="color: var(--primary);"></i>
+                            <i class="ph-light ph-database" style="color: var(--primary);"></i>
                             <h3 style="font-size: 22px; margin: 0; letter-spacing: -0.25px;">Onde os meus dados e metadados ficam salvos?</h3>
                         </div>
                         <p style="color: var(--text-muted); margin: 0; font-size: 16px; line-height: 1.50; margin-left: 36px;"><strong style="font-weight: 600; color: var(--text-main);">100% no seu próprio hardware</strong> (armazenamento local via <em>IndexedDB</em> do navegador). O Buscador DJEN não transmite seus processos para servidores externos, garantindo sigilo contratual e conformidade irrestrita com a LGPD.</p>
@@ -343,7 +364,7 @@
 
                     <div class="faq-item">
                         <div class="faq-header">
-                            <i class="ph ph-lock-open" style="color: var(--zen-orange);"></i>
+                            <i class="ph-light ph-lock-open" style="color: var(--zen-orange);"></i>
                             <h3 style="font-size: 22px; margin: 0; letter-spacing: -0.25px;">O código é realmente gratuito?</h3>
                         </div>
                         <p style="color: var(--text-muted); margin: 0; font-size: 16px; line-height: 1.50; margin-left: 36px;"><strong style="font-weight: 600; color: var(--text-main);">Sim, open-source e sem licenças abusivas.</strong> O projeto atua como um controle de qualidade independente. Se o algoritmo mitigar riscos de perda de prazo na sua banca, você pode optar por contribuir voluntariamente com a manutenção da infraestrutura através do rodapé.</p>
@@ -359,7 +380,7 @@
             <div class="coffee-container fade-in-section">
                 <button class="coffee-btn" id="btnToggleCoffee">
                     <span>Apoie a Infraestrutura</span>
-                    <i class="ph ph-caret-down" id="coffee-chevron"></i>
+                    <i class="ph-light ph-caret-down" id="coffee-chevron"></i>
                 </button>
                 <div class="coffee-content" id="contentCoffee">
                     <p style="color: var(--text-muted); font-size: 16px; font-weight: 400; margin-bottom: 16px; line-height: 1.50;">
@@ -385,7 +406,7 @@
             </div>
             
             <div class="footer-copy fade-in-section">
-                &copy; 2026 Buscador DJEN. Arquitetura para a advocacia.
+                &copy; 2024 Moreira Consultoria Jurídica — Todos os direitos reservados.
             </div>
         </div>
     </footer>
@@ -553,41 +574,17 @@
                 });
             }
             
-            // Lógica para Buscar e Injetar Versão e Notas (Chrome)
+            // Lógica para Buscar e Injetar Versão (Chrome)
             fetch('https://img.shields.io/chrome-web-store/v/ambfdmjdhikdhmbojljaebkipeahmfab.json')
                 .then(res => res.json())
-                .then(data => { document.querySelectorAll('.chrome-tooltip').forEach(el => el.textContent = 'Versão ' + data.value); })
-                .catch(() => { document.querySelectorAll('.chrome-tooltip').forEach(el => el.textContent = 'Disponível na Store'); });
+                .then(data => { document.getElementById('chrome-version').textContent = 'Versão ' + data.value; })
+                .catch(() => { document.getElementById('chrome-version').textContent = 'Disponível na Store'; });
 
-            fetch('https://img.shields.io/chrome-web-store/rating/ambfdmjdhikdhmbojljaebkipeahmfab.json')
-                .then(res => res.json())
-                .then(data => { 
-                    const ratingVal = parseFloat(data.value);
-                    if(!isNaN(ratingVal) && ratingVal >= 4.0) { 
-                        document.querySelectorAll('.chrome-rating').forEach(el => {
-                            el.querySelector('span').textContent = ratingVal.toFixed(1); 
-                            el.classList.add('visible');
-                        });
-                    }
-                }).catch(e => console.log('Rating Chrome Indisponível'));
-
-            // Lógica para Buscar e Injetar Versão e Notas (Firefox)
+            // Lógica para Buscar e Injetar Versão (Firefox)
             fetch('https://img.shields.io/amo/v/buscador-djen-advogado.json')
                 .then(res => res.json())
-                .then(data => { document.querySelectorAll('.firefox-tooltip').forEach(el => el.textContent = 'Versão ' + data.value); })
-                .catch(() => { document.querySelectorAll('.firefox-tooltip').forEach(el => el.textContent = 'Disponível na Store'); });
-                
-            fetch('https://img.shields.io/amo/rating/buscador-djen-advogado.json')
-                .then(res => res.json())
-                .then(data => { 
-                    const ratingVal = parseFloat(data.value);
-                    if(!isNaN(ratingVal) && ratingVal >= 4.0) { 
-                        document.querySelectorAll('.firefox-rating').forEach(el => {
-                            el.querySelector('span').textContent = ratingVal.toFixed(1);
-                            el.classList.add('visible');
-                        });
-                    }
-                }).catch(e => console.log('Rating Firefox Indisponível'));
+                .then(data => { document.getElementById('firefox-version').textContent = 'Versão ' + data.value; })
+                .catch(() => { document.getElementById('firefox-version').textContent = 'Disponível na Store'; });
         });
     </script>
 </body>

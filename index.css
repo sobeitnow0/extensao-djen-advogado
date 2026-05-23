@@ -6,38 +6,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 :root {
-    /* --- COLOR PALETTE (LIGHT THEME) --- */
-    --bg-page: #fcfcfc;
-    --bg-header: rgba(252, 252, 252, 0.7);
-    --bg-section: #f7f7f5;
+    /* --- COLOR PALETTE (LIGHT THEME - Unified with Extension) --- */
+    --bg-page: #e2e5e9;
+    --bg-header: rgba(226, 229, 233, 0.8);
+    --bg-section: #f8f9fa;
     --card-bg: #ffffff;
-    --card-inner: #fcfcfc;
-    --text-main: #111111;
-    --text-muted: #555555;
-    --text-placeholder: #999999;
+    --card-inner: #f3f5f8;
+    --text-main: #1c1e21;
+    --text-muted: #4a4e54;
+    --text-placeholder: #6c727a;
     
-    --primary: #2a2a2a;
-    --primary-hover: #111111;
-    --primary-light: #f0f0f0;
+    --primary: #cc785c;
+    --primary-hover: #a9583e;
+    --primary-light: rgba(204, 120, 92, 0.15);
     --primary-text: #ffffff;
-    --primary-gradient: linear-gradient(135deg, #444444, #111111);
+    --primary-gradient: linear-gradient(135deg, #cc785c, #a9583e);
     
-    --border-light: rgba(0, 0, 0, 0.12);
-    --border-focus: #2a2a2a;
+    --border-light: #c1c7cf;
+    --border-focus: #cc785c;
     
-    /* Semantics & Zen Colors */
-    --zen-green: #2e8555;
-    --zen-green-bg: #eaf4ed;
-    --zen-orange: #c25400;
-    --zen-orange-bg: #f9efe8;
-    --zen-red: #d13a3a;
-    --zen-red-bg: #fbebeb;
-    --zen-purple: #6a40bf;
-    --zen-purple-bg: #f0ebf8;
-    --zen-blue: #2368c4;
-    --zen-blue-bg: #e9f0f8;
-    --zen-gold: #9e6804;
-    --zen-gold-bg: #fdf6e7;
+    /* Semantics & Zen Colors (Unified with Extension) */
+    --zen-green: #059669;
+    --zen-green-bg: rgba(5, 150, 105, 0.15);
+    --zen-orange: #b45309;
+    --zen-orange-bg: rgba(217, 119, 6, 0.15);
+    --zen-red: #b91c1c;
+    --zen-red-bg: rgba(220, 38, 38, 0.15);
+    --zen-purple: #7c3aed;
+    --zen-purple-bg: rgba(124, 58, 237, 0.12);
+    --zen-blue: #0075de;
+    --zen-blue-bg: rgba(0, 117, 222, 0.15);
+    --zen-gold: #b45309; /* Map gold to orange for visual simplicity */
+    --zen-gold-bg: rgba(217, 119, 6, 0.15);
     
     /* Radii & Shadows */
     --radius-btn: 6px;
@@ -45,46 +45,46 @@
     --radius-pill: 9999px;
     
     --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
-    --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.06), 0 5px 15px rgba(0, 0, 0, 0.03);
+    --shadow-hover: 0 15px 40px rgba(204, 120, 92, 0.06), 0 5px 15px rgba(204, 120, 92, 0.03);
     --shadow-modal: 0 30px 60px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.05);
     
-    --font-heading: 'Inter', -apple-system, sans-serif;
+    --font-heading: 'Google Sans Flex', 'Inter', -apple-system, sans-serif;
     --font-body: 'Inter', -apple-system, sans-serif;
 }
 
 [data-theme="dark"] {
-    /* --- COLOR PALETTE (DARK THEME) --- */
-    --bg-page: #121212;
-    --bg-header: rgba(18, 18, 18, 0.7);
-    --bg-section: #1a1a1a;
-    --card-bg: #1e1e1e;
-    --card-inner: #252525;
-    --text-main: #ededed;
-    --text-muted: #a0a0a0;
-    --text-placeholder: #666666;
+    /* --- COLOR PALETTE (DARK THEME - Unified with Extension) --- */
+    --bg-page: #181715;
+    --bg-header: rgba(24, 23, 21, 0.8);
+    --bg-section: #252320;
+    --card-bg: #252320;
+    --card-inner: #1f1e1b;
+    --text-main: #e5e5e5;
+    --text-muted: #a09d96;
+    --text-placeholder: #595e63;
     
-    --primary: #e0e0e0;
-    --primary-hover: #ffffff;
-    --primary-light: rgba(255, 255, 255, 0.1);
-    --primary-text: #121212;
-    --primary-gradient: linear-gradient(135deg, #e0e0e0, #ffffff);
+    --primary: #cc785c;
+    --primary-hover: #a9583e;
+    --primary-light: rgba(204, 120, 92, 0.15);
+    --primary-text: #ffffff; /* Crisp white text on bright coral in dark mode */
+    --primary-gradient: linear-gradient(135deg, #cc785c, #a9583e);
     
-    --border-light: rgba(255, 255, 255, 0.08);
-    --border-focus: #e0e0e0;
+    --border-light: rgba(250, 249, 245, 0.1);
+    --border-focus: #cc785c;
     
-    /* Semantics & Zen Colors (Dark) */
-    --zen-green: #3ab070;
-    --zen-green-bg: rgba(58, 176, 112, 0.12);
-    --zen-orange: #e87b23;
-    --zen-orange-bg: rgba(232, 123, 35, 0.12);
-    --zen-red: #e65c5c;
-    --zen-red-bg: rgba(230, 92, 92, 0.12);
-    --zen-purple: #9673d9;
-    --zen-purple-bg: rgba(150, 115, 217, 0.12);
-    --zen-blue: #4d8ddb;
-    --zen-blue-bg: rgba(77, 141, 219, 0.12);
-    --zen-gold: #cca633;
-    --zen-gold-bg: rgba(204, 166, 51, 0.12);
+    /* Semantics & Zen Colors (Dark - Unified with Extension) */
+    --zen-green: #5db872;
+    --zen-green-bg: rgba(93, 184, 114, 0.15);
+    --zen-orange: #facc15;
+    --zen-orange-bg: rgba(250, 204, 21, 0.12);
+    --zen-red: #f87171;
+    --zen-red-bg: rgba(248, 113, 113, 0.15);
+    --zen-purple: #a78bfa;
+    --zen-purple-bg: rgba(167, 139, 250, 0.15);
+    --zen-blue: #5db8a6;
+    --zen-blue-bg: rgba(93, 184, 166, 0.15);
+    --zen-gold: #facc15;
+    --zen-gold-bg: rgba(250, 204, 21, 0.12);
     
     --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1);
     --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.3), 0 5px 15px rgba(0, 0, 0, 0.15);
@@ -252,7 +252,7 @@ header {
     background: var(--bg-section);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-pill);
-    color: var(--zen-orange) !important;
+    color: var(--primary) !important;
     font-size: 0.88rem;
     font-weight: 700;
     text-decoration: none;
@@ -266,10 +266,10 @@ header {
 }
 
 .nav-btn-apoio:hover {
-    background: var(--zen-orange-bg);
-    border-color: var(--zen-orange);
+    background: var(--primary-light);
+    border-color: var(--primary);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(232, 123, 35, 0.15);
+    box-shadow: 0 4px 12px var(--primary-light);
 }
 
 .nav-btn-apoio:active {
@@ -306,12 +306,12 @@ header {
     background: var(--primary-gradient);
     color: var(--primary-text);
     border: 1px solid transparent;
-    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+    box-shadow: 0 4px 12px rgba(204, 120, 92, 0.15);
 }
 
 .btn-browser.primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(2, 132, 199, 0.25);
+    box-shadow: 0 6px 16px rgba(204, 120, 92, 0.25);
     background: var(--primary-hover);
 }
 
@@ -338,7 +338,7 @@ header {
 
 .btn-store.primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(2, 132, 199, 0.25);
+    box-shadow: 0 8px 24px rgba(204, 120, 92, 0.25);
     background: var(--primary-hover);
 }
 
@@ -426,14 +426,14 @@ header {
 }
 
 .hero h1 span {
-    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    background: linear-gradient(135deg, #cc785c, #f97316);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 [data-theme="dark"] .hero h1 span {
-    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    background: linear-gradient(135deg, #e8987d, #cc785c);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -1712,9 +1712,111 @@ footer {
     }
 }
 
-/* Adjustments for Bento tools Grid */
 .bento-grid {
     max-width: 1200px !important;
+}
+
+/* =====================================================================
+   STORE CARDS & CHROME/FIREFOX/WEBAPP INDICATORS (versoes.html)
+   ===================================================================== */
+.stores-container {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.store-card {
+    display: flex;
+    align-items: center;
+    flex: 1 1 calc(33.333% - 16px);
+    min-width: 260px;
+    max-width: 320px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-card);
+    padding: 20px 24px;
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s, border-color 0.3s;
+    box-shadow: var(--shadow-card);
+}
+
+.store-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--border-focus);
+}
+
+.store-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+}
+
+.store-microcopy {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.store-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.store-version {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-placeholder);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.store-version.version-chrome {
+    color: #0ea5e9;
+}
+
+.store-version.version-firefox {
+    color: #f97316;
+}
+
+.store-version.version-webapp {
+    color: var(--zen-purple);
+}
+
+/* Pulsing Dot Indicator */
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    animation: pulseGlow 1.5s infinite;
+}
+
+.dot-chrome {
+    background-color: #0ea5e9;
+    box-shadow: 0 0 8px #0ea5e9;
+}
+
+.dot-firefox {
+    background-color: #f97316;
+    box-shadow: 0 0 8px #f97316;
+}
+
+.dot-webapp {
+    background-color: var(--zen-purple);
+    box-shadow: 0 0 8px var(--zen-purple);
 }
 
 @media (max-width: 768px) {
@@ -1725,4 +1827,24 @@ footer {
     .timeline { padding-left: 20px; }
     .timeline::before { left: 5px; }
     .timeline-badge { left: -20px; width: 26px; height: 26px; font-size: 0.65rem; }
+}
+
+/* Tooltip de versão flutuante nos botões da loja */
+.version-tooltip {
+    position: absolute;
+    top: -12px;
+    right: 12px;
+    background-color: var(--zen-orange);
+    color: #ffffff !important;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--border-light);
+    z-index: 10;
+}
+
+[data-theme="dark"] .version-tooltip {
+    color: #191919 !important; /* Em modo escuro, zen-orange é amarelo (#facc15), exigindo alto contraste escuro */
 }

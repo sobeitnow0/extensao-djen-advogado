@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Buscador DJEN - Prazos e Intimações Judiciais",
-  "version": "50.1",
+  "version": "50.3",
   "description": "Buscador de Intimações com Motor de Prazos Avançado.",
   "author": "Amilcar Moreira",
   "permissions": [

@@ -4,7 +4,10 @@ if (typeof browser !== 'undefined' && browser.action && browser.sidebarAction) {
     browser.action.onClicked.addListener(() => {
         browser.sidebarAction.toggle().catch(console.error);
     });
-} else if (typeof chrome !== 'undefined' && chrome.sidePanel) {
+} else if (typeof chrome !== 'undefined' && chrome['sidePanel']) {
     // Modo Chrome: Configuração nativa do SidePanel
-    chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch(console.error);
+    const sidePanelAPI = chrome['sidePanel'];
+    if (sidePanelAPI && typeof sidePanelAPI['setPanelBehavior'] === 'function') {
+        sidePanelAPI['setPanelBehavior']({ openPanelOnActionClick: true }).catch(console.error);
+    }
 }

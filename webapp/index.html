@@ -9,7 +9,7 @@
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="djen-64.png">
     <link rel="apple-touch-icon" href="djen-128.png">
-
+    
     <script src="djen_storage.js"></script>
     <script src="djen_utils.js"></script>
     <script src="sidebar.js"></script>
@@ -93,8 +93,11 @@
         Central de ajuda
     </button>
     <hr>
-    <button id="btnToggleTheme" aria-label="Alternar tema">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    <button id="btnToggleTheme" aria-label="Alternar tema" style="display: flex; align-items: center; gap: 8px;">
+        <span class="theme-icon-stack">
+            <svg class="theme-icon theme-icon-moon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg class="theme-icon theme-icon-sun" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </span>
         <span id="themeBtnText">Tema: Automático</span>
     </button>
     <hr>
@@ -130,7 +133,7 @@
 </div>
     </div>
 
-    <div id="viewBusca" role="tabpanel">
+    <div id="viewBusca" class="tab-panel-animated" role="tabpanel">
         <div id="areaBusca">
             <div class="segmented-control">
                 <button id="btnSearchTypeOab" class="active" aria-label="Buscar por OAB">Por OAB</button>
@@ -175,25 +178,17 @@
 </button>
         </div>
 
-        <div id="resumoBusca" style="display: none; width: 100%; box-sizing: border-box; align-items: center; justify-content: space-between; background-color: var(--bg-panel); border: 1px solid var(--border-light); border-radius: var(--radius-btn); padding: 10px 14px; margin-bottom: 16px; box-shadow: var(--shadow-sm); transition: 0.1s; color: var(--text-main);">
-            <div style="display: flex; align-items: center; cursor: pointer; flex: 1;" id="btnEditarResumo" aria-label="Editar Busca">
-                <div class="resumo-icone"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
-                <div class="resumo-texto" id="textoResumoBusca">Resumo da busca</div>
-                <div class="resumo-icone-edit" style="margin-right: 12px; font-size: 12px;">Editar</div>
+        <div id="resumoBusca" style="display: none; width: 100%; box-sizing: border-box; align-items: center; justify-content: space-between; padding: 6px 8px; margin-bottom: 12px; transition: 0.2s; margin-top: 4px; background-color: transparent; border: none; border-radius: 6px;">
+            <div style="display: flex; align-items: center; cursor: pointer; flex: 1; opacity: 0.8;" id="btnEditarResumo" aria-label="Editar Busca">
+                <div class="resumo-icone" style="color: var(--zen-purple); margin-right: 8px; display: flex;"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+                <div class="resumo-texto" id="textoResumoBusca" style="font-weight: 600; font-size: 12px; color: var(--text-main); letter-spacing: 0.1px;">Resumo da busca</div>
+                <div class="resumo-icone-edit" style="margin-left: auto; font-size: 10px; color: var(--text-placeholder); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Editar</div>
             </div>
-            <button id="btnLimparBusca" class="btn-acao-square tooltip-left" style="border: 1px solid var(--border-light); background: var(--bg-body); color: var(--zen-red);" aria-label="Nova Busca" data-tooltip="Limpar e Nova Busca">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
         </div>
 
-        <div id="containerFiltro" style="display: none; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
-            <select id="filtroTribunal" style="flex: 1; min-width: 100px;" aria-label="Filtrar por Tribunal"><option value="">Tribunal</option></select>
-            <input type="text" id="filtroRapido" placeholder="Filtrar processos..." style="flex: 2; min-width: 140px;" aria-label="Filtro de Processos">
-        </div>
-        
-        <div id="progressWrapper" class="progress-wrapper">
-            <div class="progress-track" aria-hidden="true"><div id="progressFill" class="progress-fill"></div></div>
-            <div id="progressText" class="progress-text" aria-live="polite">0 de 0 publicações verificadas</div>
+        <div id="containerFiltro" style="display: none; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;">
+            <select id="filtroTribunal" style="flex: 1; min-width: 100px; background-color: #1a1918; border: 1px solid #3d3a38; color: #fff; padding: 10px 12px; border-radius: 6px; outline: none; font-size: 13px;" aria-label="Filtrar por Tribunal"><option value="">Tribunal</option></select>
+            <input type="text" id="filtroRapido" placeholder="Filtrar processos..." style="flex: 2; min-width: 140px; background-color: #1a1918; border: 1px solid #3d3a38; color: #fff; padding: 10px 12px; border-radius: 6px; outline: none; font-size: 13px;" aria-label="Filtro de Processos">
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
@@ -223,7 +218,7 @@
 
     <div id="resultados" aria-live="polite"></div>
 
-</div> <div id="viewSalvos" role="tabpanel">
+</div> <div id="viewSalvos" class="tab-panel-animated" role="tabpanel">
         <div class="stats-container">
             <div class="stat-box stat-hoje">
                 <div class="stat-squircle" id="countHoje">0</div>
@@ -272,7 +267,13 @@
         <div id="listaSalvos" aria-live="polite"></div>
     </div>
 
-    <div id="viewCalendario" role="tabpanel">
+    <div id="viewCalendario" class="tab-panel-animated" role="tabpanel">
+        <!-- Alternador de Visualização (Mensal vs Lista) -->
+        <div class="segmented-control" style="margin-bottom: 16px; width: 100%;">
+            <button id="btnCalViewMonth" class="active" aria-label="Visualização Mensal" style="flex: 1;">Mensal</button>
+            <button id="btnCalViewList" aria-label="Visualização em Lista" style="flex: 1;">Lista de Prazos</button>
+        </div>
+
         <div class="calendar-wrapper">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                 <button id="btnCalPrev" class="btn-acao-square tooltip-right" aria-label="Mês Anterior" data-tooltip="Mês anterior" style="border: 1px solid var(--border-light);">
@@ -294,7 +295,7 @@
                 </div>
             </div>
             
-            <div class="calendar-grid">
+            <div class="calendar-grid" id="calendarGrid">
                 <div class="cal-day-header">Dom</div>
                 <div class="cal-day-header">Seg</div>
                 <div class="cal-day-header">Ter</div>
@@ -307,9 +308,11 @@
         </div>
 
         <div id="calSelectedDateItems" aria-live="polite"></div>
+        <!-- Visualização em Lista de Prazos -->
+        <div id="calDeadlinesListView" style="display: none; flex-direction: column; gap: 12px;" aria-live="polite"></div>
     </div>
 
-    <div id="viewCalculadora" role="tabpanel">
+    <div id="viewCalculadora" class="tab-panel-animated" role="tabpanel">
         <div id="containerCalcAvulsa" style="padding-bottom: 24px;"></div>
     </div>
 
@@ -689,8 +692,7 @@
             <div class="calc-acoes-pos-salvo" style="display: none; flex-direction: column; gap: 8px; margin-top: 12px;">
                 <div style="color: var(--zen-green-txt); font-size: 13px; font-weight: 500; text-align: center;">✅ Guardado!</div>
                 <button class="btn-pill c-blue solid btn-salvar-gcal-pos" style="width: 100%;">📅 Exportar google agenda</button>
-                <button class="btn-pill c-gray btn-fechar-calc" style="border:none; width: 100%;">Fechar e continuar</button>
-            </div>
+                <!-- removed btn-fechar-calc -->
         </div>
     </template>
 

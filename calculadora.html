@@ -62,7 +62,7 @@
 
        <div class="header-actions">
             <a href="wiki.html#footer-coffee" class="nav-btn-apoio">
-                <i class="ph ph-hand-heart"></i>
+                <i class="ph-light ph-hand-heart"></i>
                 <span>Apoiar</span>
             </a>
 
@@ -71,8 +71,8 @@
             </a>
 
             <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
-                <i class="ph ph-sun"></i>
-                <i class="ph ph-moon"></i>
+                <i class="ph-light ph-sun"></i>
+                <i class="ph-light ph-moon"></i>
             </button>
         </div>
     </header>
@@ -80,8 +80,8 @@
     <main class="calc-wrapper">
         <section class="search-panel" id="mainCalcPanel">
             <div class="search-header">
-                <h1><i class="ph ph-calendar-check"></i> Auditoria de Prazo</h1>
-                <span class="limit-badge" id="limitDisplay"><i class="ph ph-shield-check"></i> Simulações: 3/3</span>
+                <h1><i class="ph-light ph-calendar-check"></i> Auditoria de Prazo</h1>
+                <span class="limit-badge" id="limitDisplay"><i class="ph-light ph-shield-check"></i> Simulações: 3/3</span>
             </div>
             
             <div id="calc-inputs">
@@ -128,7 +128,7 @@
                     </div>
                 </div>
 
-                <button class="btn-browser" id="btn-exec"><i class="ph ph-cpu"></i> Executar Motor Algorítmico</button>
+                <button class="btn-browser" id="btn-exec"><i class="ph-light ph-cpu"></i> Executar Motor Algorítmico</button>
             </div>
 
             <div class="calc-result-box" id="calc-result">
@@ -137,16 +137,16 @@
                 <div id="containerAlertas" style="display:flex; gap:8px; flex-direction:column; align-items:center; margin-bottom: 32px;"></div>
                 
                 <div style="text-align: left; font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                    <i class="ph ph-calendar-dots"></i> Auditoria da Linha do Tempo:
+                    <i class="ph-light ph-calendar-dots"></i> Auditoria da Linha do Tempo:
                 </div>
                 <div class="audit-flow" id="previewContainer" aria-live="polite"></div>
                 
                 <div style="display: flex; gap: 16px; margin-top: 32px; flex-direction: column;">
                     <button class="btn-browser" id="btn-voltar-calc" style="margin-top: 0;">
-                        <i class="ph ph-arrow-counter-clockwise"></i> Nova Simulação
+                        <i class="ph-light ph-arrow-counter-clockwise"></i> Nova Simulação
                     </button>
                     <button class="btn-pill btn-exportar-png" style="margin-top: 0;">
-                        <i class="ph ph-download-simple"></i> Baixar Relatório (PNG)
+                        <i class="ph-light ph-download-simple"></i> Baixar Relatório (PNG)
                     </button>
                 </div>
             </div>
@@ -160,7 +160,7 @@
     <div id="paywall-modal" class="modal-overlay">
         <div class="modal-card">
             <div style="width: 56px; height: 56px; background: rgba(217, 48, 37, 0.1); color: var(--zen-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 28px;">
-                <i class="ph ph-hand-palm"></i>
+                <i class="ph-light ph-hand-palm"></i>
             </div>
             <h2 style="font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 12px; line-height: 1.2;">Cota de simulação atingida</h2>
             <p style="color: var(--text-muted); font-size: 16px; line-height: 1.6; margin-bottom: 32px;">
@@ -168,10 +168,10 @@
             </p>
             <div style="display: flex; flex-direction: column; gap: 12px;">
                 <a href="https://chromewebstore.google.com/detail/buscador-djen-prazos-e-in/ambfdmjdhikdhmbojljaebkipeahmfab" target="_blank" class="btn-browser">
-                    <i class="ph ph-download-simple"></i> Baixar Extensão Chrome
+                    <i class="ph-light ph-download-simple"></i> Baixar Extensão Chrome
                 </a>
                 <a href="https://addons.mozilla.org/pt-BR/firefox/addon/buscador-djen-advogado/" target="_blank" class="btn-pill" style="margin-top: 0;">
-                    <i class="ph ph-download-simple"></i> Baixar Extensão Firefox
+                    <i class="ph-light ph-download-simple"></i> Baixar Extensão Firefox
                 </a>
             </div>
             <button onclick="closeModal()" style="margin-top: 24px; background: none; border: none; color: var(--text-placeholder); font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 8px;">Voltar à calculadora</button>
@@ -179,7 +179,7 @@
     </div>
 
     <footer>
-        Buscador DJEN © 2026. Arquitetura para a advocacia.
+        &copy; 2024 Moreira Consultoria Jurídica — Todos os direitos reservados.
     </footer>
 
     <script>
@@ -200,7 +200,7 @@
             const restantes = Math.max(0, LIMITE_DIARIO - dados.usos);
             const display = document.getElementById('limitDisplay');
             
-            display.innerHTML = `<i class="ph ph-shield-${restantes === 0 ? 'warning' : 'check'}"></i> Simulações: ${restantes}/${LIMITE_DIARIO}`;
+            display.innerHTML = `<i class="ph-light ph-shield-${restantes === 0 ? 'warning' : 'check'}"></i> Simulações: ${restantes}/${LIMITE_DIARIO}`;
             
             if(restantes === 0) {
                 display.style.background = 'rgba(217, 48, 37, 0.1)';
@@ -270,7 +270,7 @@
         });
 
         // =====================================================================
-        // MOTOR DE FERIADOS V46 - VERSÃO WEB BLINDADA
+        // MOTOR DE FERIADOS V50.3 - VERSÃO WEB BLINDADA
         // =====================================================================
         let feriadosExtras = {};
         window.cacheFeriadosTribunaisJson = null;
@@ -431,7 +431,7 @@
                 return;
             }
 
-            btn.innerHTML = `<i class="ph ph-spinner-gap" style="animation: spin 1s linear infinite;"></i> Baixando base...`;
+            btn.innerHTML = `<i class="ph-light ph-spinner-gap" style="animation: spin 1s linear infinite;"></i> Baixando base...`;
             btn.disabled = true;
 
             try {
@@ -444,7 +444,7 @@
                     buscarFeriadosMunicipaisAnual(anoCalculo, uf, municipio)
                 ]);
 
-                btn.innerHTML = `<i class="ph ph-magnifying-glass"></i> Auditando Linha do Tempo...`;
+                btn.innerHTML = `<i class="ph-light ph-magnifying-glass"></i> Auditando Linha do Tempo...`;
 
                 let dataAtual = new Date(dataDispStr + 'T15:00:00');
                 let timeline = []; let totalFeriados = 0; let temFeriadoMun = false; let prorrogado = false;
@@ -520,14 +520,14 @@
                 alerts.innerHTML = "";
                 
                 let badgesHtml = "";
-                if (totalFeriados > 0) badgesHtml += `<span style="background:rgba(221,91,0,0.1);color:var(--zen-orange);padding:6px 10px;border-radius:6px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px;"><i class="ph ph-warning-circle"></i> ${totalFeriados} SUSPENSÕES</span>`;
-                if (prorrogado) badgesHtml += `<span style="background:rgba(217,48,37,0.1);color:var(--zen-red);padding:6px 10px;border-radius:6px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px;"><i class="ph ph-clock"></i> PRORROGADO</span>`;
+                if (totalFeriados > 0) badgesHtml += `<span style="background:rgba(221,91,0,0.1);color:var(--zen-orange);padding:6px 10px;border-radius:6px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px;"><i class="ph-light ph-warning-circle"></i> ${totalFeriados} SUSPENSÕES</span>`;
+                if (prorrogado) badgesHtml += `<span style="background:rgba(217,48,37,0.1);color:var(--zen-red);padding:6px 10px;border-radius:6px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px;"><i class="ph-light ph-clock"></i> PRORROGADO</span>`;
                 if (badgesHtml) alerts.innerHTML += `<div style="display:flex; gap:12px;">${badgesHtml}</div>`;
 
                 if (temFeriadoMun) {
                     alerts.innerHTML += `
                         <div style="width: 100%; box-sizing: border-box; background: rgba(217, 48, 37, 0.05); color: var(--zen-red); padding: 20px; border-radius: 12px; font-size: 14px; text-align: left; border: 1px solid rgba(217, 48, 37, 0.2); line-height: 1.5; margin-top: 12px;">
-                            <div style="font-weight: 700; font-size: 15px; margin-bottom: 6px; display:flex; align-items:center; gap:6px;"><i class="ph ph-gavel"></i> Jurisprudência (STJ)</div>
+                            <div style="font-weight: 700; font-size: 15px; margin-bottom: 6px; display:flex; align-items:center; gap:6px;"><i class="ph-light ph-gavel"></i> Jurisprudência (STJ)</div>
                             O prazo coincide com feriado local. Anexe legislação ou certidão municipal para comprovar a tempestividade (Art. 1.003, § 6º, CPC).
                         </div>`;
                 }
@@ -567,7 +567,7 @@
                 console.error("Erro na auditoria:", err);
                 alert("Erro ao executar motor: Verifique a conexão ou os dados informados.");
             } finally {
-                btn.innerHTML = `<i class="ph ph-cpu"></i> Executar Motor Algorítmico`;
+                btn.innerHTML = `<i class="ph-light ph-cpu"></i> Executar Motor Algorítmico`;
                 btn.disabled = false;
             }
         });

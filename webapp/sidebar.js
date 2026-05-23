@@ -1,5 +1,5 @@
 /**
- * Buscador DJEN v50.1 - Correção da Auditoria
+ * Buscador DJEN v50.3
  * 
  */
 
@@ -42,6 +42,103 @@ try {
 
 
 
+window.focarCardProcesso = (key, preferBusca = false, fromHistoryStack = false) => {
+    if (!fromHistoryStack) {
+        const openCard = document.querySelector('.intimacao-card.aberto');
+        if (openCard && openCard.getAttribute('data-key') !== key) {
+            const viewBusca = document.getElementById('viewBusca');
+            const abaAtiva = (viewBusca && viewBusca.style.display !== 'none') ? 'busca' : 'salvos';
+            window.historicoNavegacaoStack = window.historicoNavegacaoStack || [];
+            window.historicoNavegacaoStack.push({
+                key: openCard.getAttribute('data-key'),
+                filtro: window.obterFiltroAtual ? window.obterFiltroAtual() : null,
+                aba: abaAtiva
+            });
+        }
+    }
+
+    const applyFocus = (c) => {
+        if (!c) return;
+        c.classList.remove('so-historico');
+        const tw = c.querySelector('.timeline-wrapper');
+        if (tw) tw.style.display = 'none';
+        const bh = c.querySelector('.btn-historico-header');
+        if (bh) bh.classList.remove('active');
+
+        if (!fromHistoryStack) {
+            if (!c.classList.contains('aberto')) {
+                c.querySelector('.card-click-area')?.click();
+            }
+        } else {
+            if (c.classList.contains('aberto')) {
+                c.querySelector('.card-click-area')?.click();
+            }
+        }
+        c.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        c.style.outline = "2px dashed var(--zen-blue)";
+        c.style.outlineOffset = "2px";
+        setTimeout(() => { c.style.outline = "none"; }, 2000);
+    };
+
+    if (typeof window.garantirCardVisivel === 'function') window.garantirCardVisivel(key);
+    
+    const containerSelector = preferBusca ? '#viewBusca' : '#viewSalvos';
+    let card = document.querySelector(`${containerSelector} .intimacao-card[data-key="${key}"]`);
+    if (!card) {
+        if (preferBusca) {
+            document.getElementById('tabBusca')?.click();
+        } else {
+            document.getElementById('tabSalvos')?.click();
+        }
+        
+        setTimeout(() => {
+            if (typeof window.garantirCardVisivel === 'function') window.garantirCardVisivel(key);
+            card = document.querySelector(`${containerSelector} .intimacao-card[data-key="${key}"]`);
+            if (card) {
+                applyFocus(card);
+            } else {
+                if (!preferBusca) {
+                    document.getElementById('tabBusca')?.click();
+                } else {
+                    document.getElementById('tabSalvos')?.click();
+                }
+                setTimeout(() => {
+                    if (typeof window.garantirCardVisivel === 'function') window.garantirCardVisivel(key);
+                    card = document.querySelector(`${preferBusca ? '#viewSalvos' : '#viewBusca'} .intimacao-card[data-key="${key}"]`); // Fallback to other tab
+                    if (card) {
+                        applyFocus(card);
+                    } else {
+                        if (typeof showToast === 'function') showToast("Intimação não encontrada nas abas.", "⚠️");
+                    }
+                }, 200);
+            }
+        }, 200);
+        return;
+    }
+
+    applyFocus(card);
+};
+
+
+// --- FUNÇÕES DE SEGURANÇA DE INJEÇÃO HTML (Firefox Extension Compliant) ---
+function safeSetInnerHTML(element, htmlString) {
+    if (!element) return;
+    if (!htmlString || htmlString.trim() === '') {
+        element.replaceChildren();
+        return;
+    }
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
+    element.replaceChildren(...Array.from(doc.body.childNodes));
+}
+
+function safeAppendHTML(element, htmlString) {
+    if (!element) return;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
+    element.append(...Array.from(doc.body.childNodes));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     verificarLembreteBackup();
     setTimeout(moverLinhaLiquida, 100);
@@ -54,11 +151,61 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getManifest) {
             const manifestVersion = chrome.runtime.getManifest().version;
             appTitleEl.setAttribute('data-tooltip', 'v' + manifestVersion);
+        } else {
+            appTitleEl.setAttribute('data-tooltip', 'v50.3');
         }
     }
 
     let temaAtual = 'auto'; let fontSizeFocoAtual = 15;
     let resultadosGlobais = []; let resultadosExibidos = []; let prazosSalvos = {};
+    
+    window.obterFiltroAtual = () => {
+        return filtroAgendaAtivo;
+    };
+    
+    window.restaurarFiltroStack = (filtro) => {
+        if (filtroAgendaAtivo !== filtro) {
+            filtroAgendaAtivo = filtro;
+            document.querySelectorAll('.stat-box').forEach(b => b.classList.remove('active'));
+            if (filtro) {
+                const btnClass = filtro === '5dias' ? 'stat-dias' : 
+                                 filtro === 'futuros' ? 'stat-pendentes' : 
+                                 `stat-${filtro}`;
+                const btn = document.querySelector(`.${btnClass}`);
+                if (btn) btn.classList.add('active');
+            }
+            if (typeof renderAgenda === 'function') renderAgenda();
+        }
+    };
+
+    window.garantirCardVisivel = (key) => {
+        if (!prazosSalvos[key]) return;
+        let reRender = false;
+        const searchInput = document.getElementById('filtroPrazos');
+        if (searchInput && searchInput.value) {
+            searchInput.value = '';
+            reRender = true;
+        }
+        if (prazosSalvos[key].cumprido) {
+            if (filtroAgendaAtivo !== 'cumpridos') {
+                filtroAgendaAtivo = 'cumpridos';
+                document.querySelectorAll('.stat-box').forEach(b => b.classList.remove('active'));
+                const btn = document.querySelector('.stat-cumpridos');
+                if (btn) btn.classList.add('active');
+                reRender = true;
+            }
+        } else {
+            if (filtroAgendaAtivo === 'cumpridos') {
+                filtroAgendaAtivo = null;
+                document.querySelectorAll('.stat-box').forEach(b => b.classList.remove('active'));
+                reRender = true;
+            }
+        }
+        if (reRender && typeof renderAgenda === 'function') {
+            renderAgenda();
+        }
+    };
+
     let historicoBuscas = [];
     let multiOabSearch = false; let publicacoesLidas = new Set();
     let chartStatusInst = null; let chartTribunaisInst = null;
@@ -73,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentCalDate = new Date(); let selectedCalDateStr = null;
 
     let filtroAgendaAtivo = null;
+    let currentCalendarView = 'month';
     let totalCumpridosHistorico = 0; let totalBuscas = 0; let totalLidos = 0; let totalSalvos = 0;
 
     let textoParaCompartilhar = "";
@@ -85,9 +233,10 @@ document.addEventListener('DOMContentLoaded', () => {
         remover: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`,
         foco: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>`,
         retro: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="2" x2="14" y2="2"></line><line x1="12" y1="14" x2="15" y2="11"></line><circle cx="12" cy="14" r="8"></circle></svg>`,
-        maisOpcoes: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.5"></circle><circle cx="12" cy="5" r="1.5"></circle><circle cx="12" cy="19" r="1.5"></circle></svg>`,
+        maisOpcoes: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg>`,
         lapis: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>`,
-        eyeOff: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12z"></path><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`,
+        eyeOff: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" y1="2" x2="22" y2="22"></line></svg>`,
+        sirene: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--zen-red); filter: drop-shadow(0 2px 4px var(--zen-red-bg)); vertical-align: middle;"><path d="M12 2v3M4.93 4.93l2.12 2.12M19.07 4.93l-2.12 2.12"></path><path d="M12 8a6 6 0 0 0-6 6v6h12v-6a6 6 0 0 0-6-6z"></path><path d="M2 20h20"></path></svg>`,
         boxEmpty: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 56px; height: 56px; color: var(--border-light); margin-bottom: 16px;"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>`,
         tag: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>`,
         share: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>`
@@ -105,6 +254,31 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Erro ao salvar os prazos:", e);
             showToast("Falha ao salvar o registro. Tente novamente.", "❌");
         }
+    }
+
+    function adicionarEventoHistorico(key, tipo, descricao) {
+        if (!prazosSalvos[key]) return;
+        if (!prazosSalvos[key].historicoAcoes) {
+            prazosSalvos[key].historicoAcoes = [];
+            // Adiciona evento retroativo de criação
+            const dataOrigem = prazosSalvos[key].data_disponibilizacao || new Date().toISOString();
+            prazosSalvos[key].historicoAcoes.push({ data: dataOrigem, tipo: 'criacao', descricao: 'Processo adicionado ao Controle' });
+        }
+        
+        // Evita flood de anotações consecutivas da mesma hora
+        if (tipo === 'nota' && prazosSalvos[key].historicoAcoes.length > 0) {
+            const ultimo = prazosSalvos[key].historicoAcoes[0];
+            if (ultimo.tipo === 'nota' && (new Date() - new Date(ultimo.data)) < 60000) {
+                return; // Atualizado no último minuto, não cria novo log
+            }
+        }
+        
+        prazosSalvos[key].historicoAcoes.unshift({
+            data: new Date().toISOString(),
+            tipo: tipo,
+            descricao: descricao
+        });
+        savePrazosSalvos();
     }
 
     function aplicarTema(tema) {
@@ -292,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!container || !chips) return;
         if (historicoBuscas.length === 0) { container.style.display = 'none'; return; }
         container.style.display = 'block';
-        chips.innerHTML = '';
+        chips.replaceChildren();;
         historicoBuscas.forEach(b => {
             const btn = document.createElement('button');
             btn.className = 'tag-pill';
@@ -490,7 +664,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!badge) return;
             if (localTarefas.length > 0) {
                 const completas = localTarefas.filter(t => t.feita).length;
-                badge.innerHTML = `☑ ${completas}/${localTarefas.length}`;
+                safeSetInnerHTML(badge, `☑ ${completas}/${localTarefas.length}`);;
                 badge.style.display = 'inline-flex';
                 if (completas === localTarefas.length) badge.style.color = 'var(--zen-green)';
                 else badge.style.color = '';
@@ -500,13 +674,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function renderTarefasUI() {
-            tasksWrapper.innerHTML = '';
+            tasksWrapper.replaceChildren();;
             atualizarBadge();
             
             localTarefas.forEach((t, idx) => {
                 const row = document.createElement("div");
                 row.className = "task-item";
-                row.innerHTML = `
+                safeSetInnerHTML(row, `
                     <label class="custom-checkbox">
                         <input type="checkbox" ${t.feita ? 'checked' : ''}>
                         <span class="checkmark"></span>
@@ -515,9 +689,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button class="btn-del-task" title="Remover Tarefa">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                     </button>
-                `;
+                `);;
                 row.querySelector('input').onchange = (e) => {
                     localTarefas[idx].feita = e.target.checked;
+                    if (typeof adicionarEventoHistorico === 'function') adicionarEventoHistorico(itemKey, 'tarefa', `Tarefa '${localTarefas[idx].texto}' ${e.target.checked ? 'concluída' : 'reaberta'}`);
                     saveTarefasLocais();
                     renderTarefasUI();
                 };
@@ -531,13 +706,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const addRow = document.createElement("div");
             addRow.className = "task-add-row";
-            addRow.innerHTML = `<input type="text" placeholder="+ Adicionar tarefa..." autocomplete="off">`;
+            safeSetInnerHTML(addRow, `<input type="text" placeholder="+ Adicionar tarefa..." autocomplete="off">`);;
             addRow.querySelector('input').onkeydown = (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     const val = e.target.value.trim();
                     if (val) {
                         localTarefas.push({ feita: false, texto: val });
+                        if (typeof adicionarEventoHistorico === 'function') adicionarEventoHistorico(itemKey, 'tarefa', `Tarefa adicionada: '${val}'`);
                         saveTarefasLocais();
                         renderTarefasUI();
                     }
@@ -577,17 +753,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (apelido && apelido.trim() !== "") {
             identificadorHTML = `
-                <div class="proc-apelido" title="Proc: ${processo}">${apelido}</div>
-                <div class="proc-numero-secundario" style="font-size: 11px; font-family: ui-monospace, monospace; color: var(--text-placeholder); margin-top: 2px;">${processo}</div>
+                <div style="flex: 1; min-width: 0;">
+                    <div class="proc-apelido" title="Proc: ${processo}">${apelido}</div>
+                    <div class="proc-numero-secundario" style="font-size: 11px; font-family: ui-monospace, monospace; color: var(--text-placeholder); margin-top: 2px;">${processo}</div>
+                </div>
             `;
         } else {
             identificadorHTML = `
-                <div class="proc-numero-principal">${processo}</div>
-                <div class="hint-apelido">+ Adicionar Apelido</div>
+                <div style="flex: 1; min-width: 0;">
+                    <div class="proc-numero-principal">${processo}</div>
+                    <div class="hint-apelido" style="margin-top: 2px;">+ Adicionar Apelido</div>
+                </div>
             `;
         }
 
-        return identificadorHTML + tagsContainer + anotacaoContainer;
+        const btnHistoricoHeaderHTML = `
+            <button type="button" class="btn-historico-header tooltip-left" data-tooltip="Ver Histórico Completo" aria-label="Ver Histórico Completo" style="background: transparent; border: none; padding: 4px; border-radius: var(--radius-sm); color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--trans-micro); flex-shrink: 0; width: 28px; height: 28px; margin-left: 8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M 4 12 h 16" />
+                    <path d="M 2 2 h 4 a 1 1 0 0 1 1 1 v 4 a 1 1 0 0 1 -1 1 H 5.2 L 4 10 L 2.8 8 H 2 a 1 1 0 0 1 -1 -1 V 3 a 1 1 0 0 1 1 -1 Z" />
+                    <path d="M 3.5 4.5 h 1.5" stroke-width="1.2" />
+                    <path d="M 3.5 6 h 1" stroke-width="1.2" />
+                    <circle cx="4" cy="12" r="1.5" fill="var(--bg-card, #fff)" stroke="currentColor" stroke-width="1.8" />
+                    <path d="M 10 16 h 1.2 L 12 14 L 12.8 16 H 14 a 1 1 0 0 1 1 1 v 4 a 1 1 0 0 1 -1 1 H 10 a 1 1 0 0 1 -1 -1 v -4 a 1 1 0 0 1 1 -1 Z" />
+                    <path d="M 11.5 18.5 h 1.5" stroke-width="1.2" />
+                    <path d="M 11.5 20 h 1" stroke-width="1.2" />
+                    <circle cx="12" cy="12" r="1.5" fill="var(--bg-card, #fff)" stroke="currentColor" stroke-width="1.8" />
+                    <path d="M 18 2 h 4 a 1 1 0 0 1 1 1 v 4 a 1 1 0 0 1 -1 1 H 21.2 L 20 10 L 18.8 8 H 18 a 1 1 0 0 1 -1 -1 V 3 a 1 1 0 0 1 1 -1 Z" />
+                    <path d="M 19.5 4.5 h 1.5" stroke-width="1.2" />
+                    <path d="M 19.5 6 h 1" stroke-width="1.2" />
+                    <circle cx="20" cy="12" r="1.5" fill="var(--bg-card, #fff)" stroke="currentColor" stroke-width="1.8" />
+                </svg>
+            </button>
+        `;
+
+        const headerRowHTML = `
+            <div class="proc-header-row" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                ${identificadorHTML}
+                ${btnHistoricoHeaderHTML}
+            </div>
+        `;
+
+        return headerRowHTML + tagsContainer + anotacaoContainer;
     }
 
     function handleCriarTag(notaInputElement) {
@@ -599,7 +806,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleMarcarTexto() {
         const selection = window.getSelection(); if (!selection.rangeCount || selection.isCollapsed) { showToast("A marcação requer a seleção prévia de um trecho do texto.", "⚠️"); return; }
         const range = selection.getRangeAt(0); const mark = document.createElement('mark'); mark.className = 'marca-texto';
-        try { range.surroundContents(mark); selection.removeAllRanges(); showToast("Texto destacado!", "🖌️"); const activeKey = document.getElementById('focusModeOverlay').getAttribute('data-active-key'); if (activeKey && prazosSalvos[activeKey]) { prazosSalvos[activeKey].textoHtml = document.getElementById('focusTeorContent').innerHTML; savePrazosSalvos(); const teorBox = document.querySelector(`.intimacao-card[data-key="${activeKey}"] .teor-inner-box`); if (teorBox) teorBox.innerHTML = prazosSalvos[activeKey].textoHtml; } } catch (e) { showToast("O destaque não suporta seleções de texto muito extensas.", "⚠️"); }
+        try { range.surroundContents(mark); selection.removeAllRanges(); showToast("Texto destacado!", "🖌️"); const activeKey = document.getElementById('focusModeOverlay').getAttribute('data-active-key'); if (activeKey && prazosSalvos[activeKey]) { prazosSalvos[activeKey].textoHtml = document.getElementById('focusTeorContent').innerHTML; savePrazosSalvos(); const teorBox = document.querySelector(`.intimacao-card[data-key="${activeKey}"] .teor-inner-box`); if (teorBox) safeSetInnerHTML(teorBox, prazosSalvos[activeKey].textoHtml);; } } catch (e) { showToast("O destaque não suporta seleções de texto muito extensas.", "⚠️"); }
     }
 
     function getPdfStyles() {
@@ -675,7 +882,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const backupData = {
             versao: 4,
-            metadados: { data_geracao: agora.toISOString(), djen_versao_app: "46.0" },
+            metadados: { data_geracao: agora.toISOString(), djen_versao_app: "50.3" },
             prazosSalvos: prazosSalvos,
             estatisticas: {
                 totalBuscas: totalBuscas,
@@ -1199,7 +1406,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!cacheMunicipios[uf]) {
             try {
                 const r = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`);
-                const dados = await r.json(); cacheMunicipios[uf] = dados.map(m => m.nome); datalist.innerHTML = "";
+                const dados = await r.json(); cacheMunicipios[uf] = dados.map(m => m.nome); datalist.replaceChildren();;
                 cacheMunicipios[uf].forEach(nome => { const opt = document.createElement('option'); opt.value = nome; datalist.appendChild(opt); });
             } catch (e) { }
         } else if (datalist.children.length === 0) {
@@ -1525,11 +1732,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!timeline || !timeline.length) {
                 console.warn("DJEN: Timeline vazia ou inválida");
-                container.innerHTML = '<div class="audit-empty" style="text-align:center; padding:20px; color: var(--text-muted);">Nenhuma auditoria disponível para este prazo.</div>';
+                safeSetInnerHTML(container, '<div class="audit-empty" style="text-align:center; padding:20px; color: var(--text-muted);">Nenhuma auditoria disponível para este prazo.</div>');;
                 return;
             }
 
-            container.innerHTML = "";
+            container.replaceChildren();;
             container.className = "audit-flow";
             container.style.display = "grid";
             container.style.gridTemplateColumns = "repeat(auto-fill, minmax(72px, 1fr))";
@@ -1567,11 +1774,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                dia.innerHTML = `
+                safeSetInnerHTML(dia, `
                     <div class="day-icon" style="font-size: 18px; margin-bottom: 6px;">${icone}</div>
                     <div class="day-num" style="font-size: 16px; font-weight: 700; line-height: 1;">${numeroLimpo}</div>
                     <div class="day-date" style="font-size: 10px; font-weight: 500; color: var(--text-muted); margin-top: 4px;">${dataCurta}</div>
-                `;
+                `);;
 
                 dia.style.cssText = `
                     display: flex;
@@ -1603,7 +1810,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) {
             console.error("DJEN: Erro ao desenhar a grade:", e);
             if (container) {
-                container.innerHTML = '<div class="audit-error" style="text-align:center; padding:20px; color: var(--zen-red);">Erro ao carregar auditoria. Recalcule o prazo.</div>';
+                safeSetInnerHTML(container, '<div class="audit-error" style="text-align:center; padding:20px; color: var(--zen-red);">Erro ao carregar auditoria. Recalcule o prazo.</div>');;
             }
         }
     }
@@ -1671,13 +1878,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let timeoutCumprir;
     function alternarCumprimento(key, currentCardNode, isBuscaContext) {
         const item = prazosSalvos[key]; if (!item || !item.fatal) { showToast("É necessário calcular o prazo antes de marcá-lo como cumprido.", "⚠️"); return; }
-        const isCumprindo = !item.cumprido; 
+        const isCumprindo = !item.cumprido;
         item.cumprido = isCumprindo; 
         if (isCumprindo) item.dataCumprimento = new Date().toISOString(); else delete item.dataCumprimento;
+        adicionarEventoHistorico(key, 'cumprimento', isCumprindo ? 'Prazo marcado como cumprido' : 'Prazo reaberto para contagem');
         savePrazosSalvos(); processarCheckCumprido(isCumprindo, true);
         const shouldHide = !isBuscaContext && ((filtroAgendaAtivo !== null && filtroAgendaAtivo !== 'cumpridos' && isCumprindo) || (filtroAgendaAtivo === 'cumpridos' && !isCumprindo));
         if (shouldHide) { currentCardNode.classList.remove('aberto'); currentCardNode.style.opacity = '0'; currentCardNode.style.transform = 'scale(0.95)'; setTimeout(() => { currentCardNode.style.display = 'none'; renderCalendar(); }, 250); } else { if (isBuscaContext) applyFilters(); else { renderAgenda(); renderCalendar(); } }
-        atualizarEstatisticas(); const toast = document.getElementById('toastDesfazer'); if (toast) { const msgSpan = toast.querySelector('span'); msgSpan.innerHTML = isCumprindo ? `Prazo cumprido` : `Prazo reaberto`; toast.classList.add('show'); }
+        atualizarEstatisticas(); const toast = document.getElementById('toastDesfazer'); if (toast) { const msgSpan = toast.querySelector('span'); safeSetInnerHTML(msgSpan, isCumprindo ? `Prazo cumprido` : `Prazo reaberto`);; toast.classList.add('show'); }
         document.getElementById('btnAcaoDesfazer').onclick = () => { 
             item.cumprido = !isCumprindo; 
             if (item.cumprido) item.dataCumprimento = new Date().toISOString(); else delete item.dataCumprimento;
@@ -1781,6 +1989,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!e.target.closest('.card-menu-container') && !e.target.closest('.header-menu-container')) {
             document.querySelectorAll('.card-dropdown.show, #headerDropdown.show').forEach(drop => { drop.classList.remove('show'); });
+            document.querySelectorAll('.btn-opcoes-card.active').forEach(btn => { btn.classList.remove('active'); });
         }
         if (!e.target.closest('.intimacao-card') && !e.target.closest('.modal-overlay') && !e.target.closest('.top-bar-fixed') && !e.target.closest('#focusModeOverlay')) {
             const cardsAbertos = document.querySelectorAll('.intimacao-card.aberto');
@@ -1994,12 +2203,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('backupIcon').textContent = '💾';
             document.getElementById('backupTitle').textContent = 'Salvar Backup';
             document.getElementById('backupSubtitle').textContent = 'Seus dados serão salvos no computador';
-            document.getElementById('backupResumo').innerHTML = `
+            safeSetInnerHTML(document.getElementById('backupResumo'), `
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">📋 <b>${total}</b> prazos na base</div>
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">⏰ <b>${pendentes}</b> pendentes</div>
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">✅ <b>${cumpridos}</b> cumpridos</div>
             <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-light);">📄 <span style="font-size: 11px; opacity: 0.7;">${nomeArquivo}</span></div>
-        `;
+        `);;
             document.getElementById('backupAviso').style.display = 'none';
             document.getElementById('btnConfirmarBackup').textContent = '💾 Salvar Backup';
             document.getElementById('btnConfirmarBackup').style.background = 'var(--primary)';
@@ -2053,7 +2262,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         document.getElementById('backupIcon').textContent = icone;
                         document.getElementById('backupTitle').textContent = 'Restaurar Backup';
                         document.getElementById('backupSubtitle').textContent = dadosIdenticos ? 'Arquivo idêntico à base atual' : 'Seus dados atuais serão substituídos';
-                        document.getElementById('backupResumo').innerHTML = `
+                        safeSetInnerHTML(document.getElementById('backupResumo'), `
             <div style="margin-bottom: 8px; font-weight: 600; color: var(--primary);">📥 CONTEÚDO DO ARQUIVO:</div>
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">📋 <b>${totalBackup}</b> prazos</div>
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">⏰ <b>${pendentesBackup}</b> pendentes</div>
@@ -2062,7 +2271,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-light); font-weight: 600; color: var(--zen-red);">🗑️ SEUS DADOS ATUAIS:</div>
             <div style="display: flex; align-items: center; gap: 8px;">📋 <b>${totalAtual}</b> prazos serão perdidos</div>
             <div style="display: flex; align-items: center; gap: 8px;">⏰ <b>${pendentesAtual}</b> pendentes</div>
-            `;
+            `);;
                         document.getElementById('backupAviso').style.display = 'block';
                         document.getElementById('backupAviso').textContent = txtAviso;
                         document.getElementById('backupAviso').style.setProperty('background', bgAviso, 'important');
@@ -2126,7 +2335,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isCalBtn = !!e.target.closest('#btnNovoPrazoCal');
             
             const inpP = document.getElementById('inputManualProcesso'); if (inpP) inpP.value = '';
-            const inpT = document.getElementById('inputManualTeor'); if (inpT) inpT.innerHTML = '';
+            const inpT = document.getElementById('inputManualTeor'); if (inpT) inpT.replaceChildren();;
             const inpD = document.getElementById('inputManualDataVencimento'); 
             if (inpD) {
                 if (isCalBtn && typeof selectedCalDateStr !== 'undefined' && selectedCalDateStr) {
@@ -2138,7 +2347,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const tasksWrapper = document.getElementById('tasksWrapperManual');
             if (tasksWrapper) {
-                tasksWrapper.innerHTML = '';
+                tasksWrapper.replaceChildren();;
                 prazosSalvos['manual_temp_draft'] = { processo: "Rascunho", tarefas: [] };
                 const newTasksUI = createTasksWrapperUI('manual_temp_draft', 'Prazo Manual', '', document.getElementById('novoPrazoModal'));
                 tasksWrapper.appendChild(newTasksUI);
@@ -2214,7 +2423,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const inputTeor = document.getElementById('inputManualTeor');
             const inputProc = document.getElementById('inputManualProcesso');
             if (inputData) inputData.value = '';
-            if (inputTeor) inputTeor.innerHTML = '';
+            if (inputTeor) inputTeor.replaceChildren();;
             if (inputProc) inputProc.value = '';
             
             document.getElementById('novoPrazoModal')?.classList.remove('show');
@@ -2282,7 +2491,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const inputTeor = document.getElementById('inputManualTeor');
             const inputProc = document.getElementById('inputManualProcesso');
             if (inputData) inputData.value = '';
-            if (inputTeor) inputTeor.innerHTML = '';
+            if (inputTeor) inputTeor.replaceChildren();;
             if (inputProc) inputProc.value = '';
             
             document.getElementById('novoPrazoModal')?.classList.remove('show'); 
@@ -2320,12 +2529,12 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault(); e.stopPropagation();
             let activeKey = null; const focoOverlay = document.getElementById('focusModeOverlay');
             if (focoOverlay && focoOverlay.classList.contains('show')) activeKey = focoOverlay.getAttribute('data-active-key'); else { const card = e.target.closest('.intimacao-card'); if (card) activeKey = card.getAttribute('data-key'); }
-            e.target.outerHTML = e.target.innerHTML;
-            if (activeKey && prazosSalvos[activeKey]) { const novoHtml = focoOverlay.classList.contains('show') ? document.getElementById('focusTeorContent').innerHTML : document.querySelector(`.intimacao-card[data-key="${activeKey}"] .teor-inner-box`).innerHTML; prazosSalvos[activeKey].textoHtml = novoHtml; savePrazosSalvos(); const teorBox = document.querySelector(`.intimacao-card[data-key="${activeKey}"] .teor-inner-box`); if (teorBox && focoOverlay.classList.contains('show')) teorBox.innerHTML = novoHtml; }
+            e.target.replaceWith(...e.target.childNodes);;
+            if (activeKey && prazosSalvos[activeKey]) { const novoHtml = focoOverlay.classList.contains('show') ? document.getElementById('focusTeorContent').innerHTML : document.querySelector(`.intimacao-card[data-key="${activeKey}"] .teor-inner-box`).innerHTML; prazosSalvos[activeKey].textoHtml = novoHtml; savePrazosSalvos(); const teorBox = document.querySelector(`.intimacao-card[data-key="${activeKey}"] .teor-inner-box`); if (teorBox && focoOverlay.classList.contains('show')) safeSetInnerHTML(teorBox, novoHtml);; }
             showToast("Marcação apagada!", "🧹"); return;
         }
 
-        const btnOpcoes = e.target.closest('.btn-opcoes-card'); if (btnOpcoes) { e.preventDefault(); e.stopPropagation(); const container = btnOpcoes.closest('.card-menu-container'); if (!container) return; const dropdown = container.querySelector('.card-dropdown'); const isOpen = dropdown.classList.contains('show'); document.querySelectorAll('.card-dropdown.show').forEach(d => d.classList.remove('show')); if (!isOpen) { dropdown.classList.add('show'); } return; }
+        const btnOpcoes = e.target.closest('.btn-opcoes-card'); if (btnOpcoes) { e.preventDefault(); e.stopPropagation(); const container = btnOpcoes.closest('.card-menu-container'); if (!container) return; const dropdown = container.querySelector('.card-dropdown'); const isOpen = dropdown.classList.contains('show'); document.querySelectorAll('.card-dropdown.show').forEach(d => d.classList.remove('show')); document.querySelectorAll('.btn-opcoes-card.active').forEach(b => b.classList.remove('active')); if (!isOpen) { dropdown.classList.add('show'); btnOpcoes.classList.add('active'); } return; }
 
         const btnAcaoDropdown = e.target.closest('.card-dropdown button');
         if (btnAcaoDropdown && btnAcaoDropdown.closest('.intimacao-card')) {
@@ -2366,7 +2575,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const cafeBanner = e.target.closest('.footer-cafe-banner'); if (cafeBanner && !e.target.closest('.pix-copy-row') && !e.target.closest('.modal-qr-white')) { cafeBanner.classList.toggle('expanded'); if (cafeBanner.classList.contains('expanded')) { setTimeout(() => window.scrollBy({ top: 250, behavior: 'smooth' }), 200); } }
 
-        const copyPix = e.target.closest('.pix-btn-copy'); if (copyPix) { e.preventDefault(); e.stopPropagation(); navigator.clipboard.writeText(pixCodeText).then(() => { const originalHTML = copyPix.innerHTML; copyPix.innerHTML = `COPIADO`; copyPix.style.color = "#38A169"; setTimeout(() => { copyPix.innerHTML = originalHTML; copyPix.style.color = ""; }, 2000); }); return; }
+        const copyPix = e.target.closest('.pix-btn-copy'); if (copyPix) { e.preventDefault(); e.stopPropagation(); navigator.clipboard.writeText(pixCodeText).then(() => { const originalHTML = copyPix.innerHTML; safeSetInnerHTML(copyPix, `COPIADO`);; copyPix.style.color = "#38A169"; setTimeout(() => { safeSetInnerHTML(copyPix, originalHTML);; copyPix.style.color = ""; }, 2000); }); return; }
     });
 
     window.onscroll = function () { const btnTopo = document.getElementById("btnIrTopo"); if (!btnTopo) return; if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) { btnTopo.classList.add('show'); } else { btnTopo.classList.remove('show'); } };
@@ -2464,7 +2673,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-        if (data.djen_last_search) { const parsedData = safeJSONParse(data.djen_last_search, []); if (Array.isArray(parsedData) && parsedData.length > 0) { resultadosGlobais = parsedData; const tribs = [...new Set(resultadosGlobais.map(i => i.siglaTribunal))].sort(); const filtro = document.getElementById('filtroTribunal'); if (filtro) { filtro.innerHTML = '<option value="">Tribunal</option>'; tribs.forEach(t => { const opt = document.createElement("option"); opt.value = t; opt.textContent = t; filtro.appendChild(opt); }); } const ctFiltro = document.getElementById('containerFiltro'); if (ctFiltro) ctFiltro.style.display = 'none'; const welcome = document.getElementById('welcomeState'); if (welcome) welcome.style.display = 'flex'; } else { SafeStorage.set({ 'djen_last_search': '' }); } }
+        if (data.djen_last_search) { const parsedData = safeJSONParse(data.djen_last_search, []); if (Array.isArray(parsedData) && parsedData.length > 0) { resultadosGlobais = parsedData; const tribs = [...new Set(resultadosGlobais.map(i => i.siglaTribunal))].sort(); const filtro = document.getElementById('filtroTribunal'); if (filtro) { safeSetInnerHTML(filtro, '<option value="">Tribunal</option>');; tribs.forEach(t => { const opt = document.createElement("option"); opt.value = t; opt.textContent = t; filtro.appendChild(opt); }); } const ctFiltro = document.getElementById('containerFiltro'); if (ctFiltro) ctFiltro.style.display = 'none'; const welcome = document.getElementById('welcomeState'); if (welcome) welcome.style.display = 'flex'; } else { SafeStorage.set({ 'djen_last_search': '' }); } }
 
         SafeStorage.get(['djen_historico_buscas'], (d) => {
             if (d.djen_historico_buscas) {
@@ -2520,16 +2729,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function switchView(v) {
-        const vb = document.getElementById('viewBusca'); if (vb) vb.style.display = v === 'busca' ? 'block' : 'none';
-        const vs = document.getElementById('viewSalvos'); if (vs) vs.style.display = v === 'salvos' ? 'block' : 'none';
-        const vc = document.getElementById('viewCalendario'); if (vc) vc.style.display = v === 'calendario' ? 'block' : 'none';
+        const vb = document.getElementById('viewBusca');
+        const vs = document.getElementById('viewSalvos');
+        const vc = document.getElementById('viewCalendario');
+        
+        // Re-trigger animation
+        [vb, vs, vc].forEach(el => {
+            if (el && el.style.display !== 'none' && (
+                (v === 'busca' && el !== vb) || 
+                (v === 'salvos' && el !== vs) || 
+                (v === 'calendario' && el !== vc)
+            )) {
+                // If it was visible and now it's hiding, we could add exit animations here, but for now we'll just hide.
+            }
+        });
+
+        if (vb) { vb.style.display = v === 'busca' ? 'block' : 'none'; if(v === 'busca') { vb.classList.remove('tab-panel-animated'); void vb.offsetWidth; vb.classList.add('tab-panel-animated'); } }
+        if (vs) { vs.style.display = v === 'salvos' ? 'block' : 'none'; if(v === 'salvos') { vs.classList.remove('tab-panel-animated'); void vs.offsetWidth; vs.classList.add('tab-panel-animated'); } }
+        if (vc) { vc.style.display = v === 'calendario' ? 'block' : 'none'; if(v === 'calendario') { vc.classList.remove('tab-panel-animated'); void vc.offsetWidth; vc.classList.add('tab-panel-animated'); } }
+        
         const tabBusca = document.getElementById('tabBusca'); const tabSalvos = document.getElementById('tabSalvos'); const tabCalendario = document.getElementById('tabCalendario');
         if (tabBusca) { tabBusca.classList.toggle('active', v === 'busca'); tabBusca.setAttribute('aria-selected', v === 'busca'); }
         if (tabSalvos) { tabSalvos.classList.toggle('active', v === 'salvos'); tabSalvos.setAttribute('aria-selected', v === 'salvos'); }
         if (tabCalendario) { tabCalendario.classList.toggle('active', v === 'calendario'); tabCalendario.setAttribute('aria-selected', v === 'calendario'); }
+        
         if (v === 'salvos') { renderAgenda(); } if (v === 'calendario') { renderCalendar(); }
         if (typeof moverLinhaLiquida === 'function') moverLinhaLiquida();
     }
+    window.mudarParaAba = switchView;
 
     if (tabBuscaBtn) tabBuscaBtn.onclick = () => { switchView('busca'); updateProgressBar(); moverLinhaLiquida(); };
     const tsBtn = document.getElementById('tabSalvos');
@@ -2554,7 +2781,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. URGENCY SCANNER (Chips de Urgência contextualizados no topo)
         const urgencyBar = document.getElementById('focusUrgencyBar');
         if (urgencyBar) {
-            urgencyBar.innerHTML = '';
+            urgencyBar.replaceChildren();;
             urgencyBar.style.display = 'none';
 
             const marks = container.querySelectorAll('.radar-auto');
@@ -2573,13 +2800,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     const label = document.createElement('span');
                     label.style = 'font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-right: 6px; letter-spacing: 0.5px;';
-                    label.innerHTML = '⚠️ Urgências:';
+                    safeSetInnerHTML(label, '⚠️ Urgências:');;
                     urgencyBar.appendChild(label);
 
                     Object.entries(groups).forEach(([word, occurrences]) => {
                         const chip = document.createElement('button');
                         chip.className = 'urgency-chip';
-                        chip.innerHTML = `<span>${word}</span> <span style="background: rgba(255,255,255,0.25); padding: 1px 5px; border-radius: 50%; font-size: 9px;">${occurrences.length}</span>`;
+                        safeSetInnerHTML(chip, `<span>${word}</span> <span style="background: rgba(255,255,255,0.25); padding: 1px 5px; border-radius: 50%; font-size: 9px;">${occurrences.length}</span>`);;
                         
                         let clickCount = 0;
                         chip.onclick = (evt) => {
@@ -2621,10 +2848,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.getElementById('resumoBusca').style.display = 'none';
             document.getElementById('areaBusca').style.display = 'block';
-            document.getElementById('resultados').innerHTML = '';
+            document.getElementById('resultados').replaceChildren();;
 
             if (resultadosExibidos.length === 0) {
-                document.getElementById('resultados').innerHTML = `
+                safeSetInnerHTML(document.getElementById('resultados'), `
             <div class="empty-state">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"></circle>
@@ -2635,7 +2862,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h3>Nenhuma publicação encontrada</h3>
                 <p>A sua busca ou os filtros aplicados<br>não retornaram resultados.</p>
             </div>
-        `;
+        `);;
                 return;
             }
 
@@ -2788,9 +3015,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const hintEl = calcPanel.querySelector('.c-data-hint');
                     if (hintEl) {
                         if (r.value === 'dje') {
-                            hintEl.innerHTML = "A data acima é a <b>Disponibilização</b>.<br>A Publicação ocorre no dia útil seguinte (D+1).";
+                            safeSetInnerHTML(hintEl, "A data acima é a <b>Disponibilização</b>.<br>A Publicação ocorre no dia útil seguinte (D+1).");;
                         } else {
-                            hintEl.innerHTML = "A data acima é a <b>Leitura / Intimação</b>.<br>A Publicação é considerada no mesmo dia.";
+                            safeSetInnerHTML(hintEl, "A data acima é a <b>Leitura / Intimação</b>.<br>A Publicação é considerada no mesmo dia.");;
                         }
                     }
                     
@@ -2969,7 +3196,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     const textoOriginal = btnExec.innerHTML;
-                    btnExec.innerHTML = "Calculando...";
+                    safeSetInnerHTML(btnExec, "Calculando...");;
                     btnExec.disabled = true;
 
                     try {
@@ -3012,13 +3239,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         if (containerAlertas) {
                             containerAlertas.style.display = 'block';
-                            containerAlertas.innerHTML = "";
+                            containerAlertas.replaceChildren();;
                             let badgesHtml = "";
                             if (lastResult.feriados > 0) badgesHtml += `<span class="badge bg-gray">${lastResult.feriados} Feriados/Suspensões</span>`;
                             if (lastResult.prorrogado) badgesHtml += `<span class="badge bg-orange">Prorrogado</span>`;
-                            if (badgesHtml !== "") { containerAlertas.innerHTML += `<div style="display:flex; gap:4px; justify-content:center; width: 100%; margin-bottom: 12px;">${badgesHtml}</div>`; }
-                            if (lastResult.temFeriadoMunicipal) { containerAlertas.innerHTML += `<div style="width: 100%; box-sizing: border-box; background: rgba(212, 76, 71, 0.08); color: #d44c47; padding: 12px; border-radius: 6px; font-size: 11px; text-align: left; border: 1px solid rgba(212, 76, 71, 0.2); line-height: 1.4; margin-bottom: 12px;"><div style="display:flex; align-items:center; gap:4px; margin-bottom: 4px; font-weight: 700; font-size: 12px;">🚨 Alerta de Jurisprudência (STJ)</div>Prazo coincide com <b>Feriado Local, Forense ou Suspensão</b>. Anexe a norma ou certidão do Tribunal para comprovar a tempestividade (art. 1.003, § 6º, CPC).</div>`; }
-                            containerAlertas.innerHTML += `<div style="width: 100%; text-align: center; margin-top: 8px; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--primary); cursor: pointer;">🖱️ Clique aqui para abrir a auditoria dia a dia</div><div style="width: 100%; text-align: center; margin-bottom: 4px; font-size: 11px; color: var(--text-muted); opacity: 0.85;">Aviso: Esta contagem é uma previsão. Confirme sempre as suspensões e feriados oficiais.</div>`;
+                            if (badgesHtml !== "") { safeAppendHTML(containerAlertas, `<div style="display:flex; gap:4px; justify-content:center; width: 100%; margin-bottom: 12px;">${badgesHtml}</div>`);; }
+                            if (lastResult.temFeriadoMunicipal) { safeAppendHTML(containerAlertas, `<div style="width: 100%; box-sizing: border-box; background: rgba(212, 76, 71, 0.08); color: #d44c47; padding: 12px; border-radius: 6px; font-size: 11px; text-align: left; border: 1px solid rgba(212, 76, 71, 0.2); line-height: 1.4; margin-bottom: 12px;"><div style="display:flex; align-items:center; gap:4px; margin-bottom: 4px; font-weight: 700; font-size: 12px;">🚨 Alerta de Jurisprudência (STJ)</div>Prazo coincide com <b>Feriado Local, Forense ou Suspensão</b>. Anexe a norma ou certidão do Tribunal para comprovar a tempestividade (art. 1.003, § 6º, CPC).</div>`);; }
+                            safeAppendHTML(containerAlertas, `<div style="width: 100%; text-align: center; margin-top: 8px; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--primary); cursor: pointer;">🖱️ Clique aqui para abrir a auditoria dia a dia</div><div style="width: 100%; text-align: center; margin-bottom: 4px; font-size: 11px; color: var(--text-muted); opacity: 0.85;">Aviso: Esta contagem é uma previsão. Confirme sempre as suspensões e feriados oficiais.</div>`);;
                         }
 
                         if (previewContainer) {
@@ -3036,7 +3263,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (bSalvar) bSalvar.style.display = 'block';
                             const bVoltar = divFinais.querySelector('.btn-voltar-calc');
                             if (bVoltar) {
-                                bVoltar.innerHTML = 'Editar';
+                                safeSetInnerHTML(bVoltar, 'Editar');;
                                 bVoltar.style.flex = '1';
                             }
                         }
@@ -3045,7 +3272,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         console.error("Erro na Calculadora:", err);
                         if (typeof showToast === 'function') showToast("Não foi possível concluir o cálculo: " + err.message, "❌");
                     } finally {
-                        btnExec.innerHTML = textoOriginal;
+                        safeSetInnerHTML(btnExec, textoOriginal);;
                         btnExec.disabled = false;
                     }
                 };
@@ -3097,6 +3324,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (isBuscaContext) { i.prazoCalculado = novoPrazoCalculado; prazosSalvos[itemKey] = i.prazoCalculado; }
                 else { prazosSalvos[itemKey] = novoPrazoCalculado; Object.assign(i, novoPrazoCalculado); }
 
+                adicionarEventoHistorico(itemKey, 'calculo', `Prazo fatal calculado: ${lastResult.fatal}`);
                 savePrazosSalvos();
                 setGlobalApelido(numeroFormatado, apelidoAtual);
 
@@ -3147,7 +3375,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 areaDireita.appendChild(badgeSalvo);
                             }
                         }
-                        badgeSalvo.innerHTML = txtStatus;
+                        safeSetInnerHTML(badgeSalvo, txtStatus);;
                     }
 
                     const btnRemoverTarget = cardTarget.querySelector('.btn-remover-busca');
@@ -3164,7 +3392,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     divPosSalvo.style.display = 'flex';
                     const bsg = calcPanel.querySelector('.btn-salvar-gcal-pos');
                     if (bsg) {
-                        bsg.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; margin-bottom: -3px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Exportar para Google Agenda`;
+                        safeSetInnerHTML(bsg, `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; margin-bottom: -3px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Exportar para Google Agenda`);;
                         bsg.classList.remove('c-blue');
                         bsg.classList.add('c-green');
                     }
@@ -3227,7 +3455,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 blindarBotao('.btn-fechar-calc', () => {
                     const containerCalcAvulsa = document.getElementById('containerCalcAvulsa');
                     if (containerCalcAvulsa) {
-                        containerCalcAvulsa.innerHTML = '';
+                        containerCalcAvulsa.replaceChildren();;
                         const calcNode = window.montarCalculadoraForm({ processo: 'Avulso', siglaTribunal: 'MANUAL' }, null, 'avulsa_' + Date.now(), '', '', 15, false, '', null);
                         if (calcNode) {
                             containerCalcAvulsa.appendChild(calcNode);
@@ -3327,7 +3555,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (prazoParaAgenda && txtArea) prazoParaAgenda.anotacao = txtArea.innerHTML;
                     window.open(gerarLinkGCal(prazoParaAgenda), '_blank');
                     if (btnSalvarGcalPos) {
-                        btnSalvarGcalPos.innerHTML = "✅ Exportado!";
+                        safeSetInnerHTML(btnSalvarGcalPos, "✅ Exportado!");;
                         btnSalvarGcalPos.classList.remove('c-blue');
                         btnSalvarGcalPos.classList.add('c-green');
                     }
@@ -3381,13 +3609,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const res = document.getElementById('resultados');
         if (!res) return;
-        res.innerHTML = "";
+        res.replaceChildren();;
 
         const abl = document.getElementById('acoesBuscaLote');
         if (abl) abl.style.display = items.length ? 'flex' : 'none';
 
         if (!items.length) {
-            res.innerHTML = '';
+            res.replaceChildren();;
             res.appendChild(document.getElementById('tpl-empty-busca').content.cloneNode(true));
             return;
         }
@@ -3464,14 +3692,18 @@ document.addEventListener('DOMContentLoaded', () => {
             let iconeLido = publicacoesLidas.has(itemKey) ? `<span class="badge-lido">Lido</span>` : '';
             let statusDireitaHtml = seloSalvo ? seloSalvo : iconeLido;
 
+            const grupoCount = (typeof gruposProcessos !== 'undefined' && gruposProcessos[proc]) ? gruposProcessos[proc].length : 1;
+            const badgeDuplicadoHTML = grupoCount > 1 ? `<span class="badge-duplicado tooltip-bottom" data-tooltip="Este processo possui ${grupoCount} publicações nesta busca">📑 ${grupoCount} pub.</span>` : '';
+
             // 2. Montagem do HTML com a nova barra (Origem na Esquerda / Status na Direita)
-            header.innerHTML = `
+            safeSetInnerHTML(header, `
                 <div class="card-click-area" tabindex="0" aria-expanded="false" aria-label="Expandir Processo ${proc}">
                     <div class="card-top-info" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 8px; margin-bottom: 12px; font-size: 12px;">
                         <div class="status-origem" style="font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
     <span class="badge-trib">${i.siglaTribunal || 'TJ'}</span>
     ${badgeSTJBusca}
     ${(i.prazoCalculado && i.prazoCalculado.espera) ? '<span class="icon-status tooltip-bottom" data-tooltip="Aguardando Terceiros">⏳</span>' : ''}
+    ${badgeDuplicadoHTML}
 </div>
                         <div class="status-urgencia" style="font-weight: 600; display: flex; align-items: center; gap: 6px;">
                             <span class="badge-tarefas" style="display: none; margin-right: 4px;"></span>
@@ -3480,7 +3712,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     ${tituloDinamicoHTML}
                 </div>
-            `;
+            `);;
 
             const teorWrapper = document.createElement("div");
             teorWrapper.className = "teor-wrapper";
@@ -3513,7 +3745,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             } else {
-                teorInnerBox.innerHTML = conteudoExibicao;
+                safeSetInnerHTML(teorInnerBox, conteudoExibicao);;
             }
 
             teorBoxContainer.appendChild(teorInnerBox);
@@ -3522,7 +3754,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const btnFocoMini = document.createElement("button");
             btnFocoMini.className = "btn-foco-mini tooltip-left";
             btnFocoMini.setAttribute('data-tooltip', 'Abrir no Modo Foco');
-            btnFocoMini.innerHTML = iconesSVG.foco;
+            safeSetInnerHTML(btnFocoMini, iconesSVG.foco);;
             teorBoxContainer.appendChild(btnFocoMini);
 
             const notionWrapperBusca = document.createElement("div");
@@ -3530,15 +3762,18 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const toolbarBusca = document.createElement("div");
             toolbarBusca.className = "wysiwyg-toolbar";
-            toolbarBusca.innerHTML = `
-                <div class="wysiwyg-label" style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-right: auto; padding-left: 4px;">Anotações (Texto Livre)</div>
+            safeSetInnerHTML(toolbarBusca, `
+                <div class="wysiwyg-label" style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-right: auto; padding-left: 4px; display: flex; flex-direction: column; gap: 2px;">
+                    <span>Anotações (Texto Livre)</span>
+                    <span style="font-size: 9px; font-weight: 500; color: var(--text-placeholder); text-transform: none; letter-spacing: 0;">Texto normal é anotação; escrever com <b>#</b> gera tags.</span>
+                </div>
                 <div style="display:flex; gap:4px;">
                     <button type="button" data-cmd="bold" title="Negrito"><b>B</b></button>
                     <button type="button" data-cmd="italic" title="Itálico"><i>I</i></button>
                     <button type="button" class="btn-add-link" title="Inserir Link">🔗</button>
                     <button type="button" data-cmd="insertUnorderedList" title="Lista de Marcadores">•</button>
                 </div>
-            `;
+            `);;
 
             const txtAreaBusca = document.createElement("div");
             txtAreaBusca.className = "nota-input mini-notion";
@@ -3546,7 +3781,7 @@ document.addEventListener('DOMContentLoaded', () => {
             txtAreaBusca.setAttribute("placeholder", "Escreva anotações livres...");
             
             let val = notaBuscaSalva || "";
-            txtAreaBusca.innerHTML = val;
+            safeSetInnerHTML(txtAreaBusca, val);;
             txtAreaBusca.setAttribute("aria-label", "Anotações do Processo");
 
             toolbarBusca.querySelectorAll('button').forEach(btn => {
@@ -3586,7 +3821,7 @@ document.addEventListener('DOMContentLoaded', () => {
             txtAreaBusca.onclick = e => e.stopPropagation();
             txtAreaBusca.onkeydown = e => e.stopPropagation();
             txtAreaBusca.oninput = e => {
-                header.querySelector(".proc-header").innerHTML = getHeaderHTML(proc, getGlobalApelido(proc), e.target.innerHTML, txt);
+                safeSetInnerHTML(header.querySelector(".proc-header"), getHeaderHTML(proc, getGlobalApelido(proc), e.target.innerHTML, txt));;
             };
 
             const markAsRead = () => {
@@ -3599,7 +3834,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const seloSalvoEl = headerInfo.querySelector('.badge-salvo');
                         const spanLido = document.createElement('span');
                         spanLido.className = 'badge-lido';
-                        spanLido.innerHTML = `Lido`;
+                        safeSetInnerHTML(spanLido, `Lido`);;
                         if (seloSalvoEl) {
                             headerInfo.insertBefore(spanLido, seloSalvoEl);
                         } else {
@@ -3642,19 +3877,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const tooltipTextoRender = (i.prazoCalculado && i.prazoCalculado.fatal) ? "🔬 Auditoria Completa (Recalcular)" : "🧮 Calcular Prazo Fatal";
             btnCalc.setAttribute('aria-label', tooltipTextoRender);
             btnCalc.setAttribute('data-tooltip', tooltipTextoRender);
-            btnCalc.innerHTML = iconesSVG.calendario;
+            safeSetInnerHTML(btnCalc, iconesSVG.calendario);;
 
             const btnCopiar = document.createElement("button");
             btnCopiar.className = "btn-acao-square h-blue btn-copy tooltip-right";
             btnCopiar.setAttribute('aria-label', 'Copiar com notas');
             btnCopiar.setAttribute('data-tooltip', 'Copiar');
-            btnCopiar.innerHTML = iconesSVG.copiar;
+            safeSetInnerHTML(btnCopiar, iconesSVG.copiar);;
 
             const btnShare = document.createElement("button");
             btnShare.className = "btn-acao-square h-blue btn-share-ind tooltip-right";
             btnShare.setAttribute('aria-label', 'Compartilhar');
             btnShare.setAttribute('data-tooltip', 'Compartilhar');
-            btnShare.innerHTML = iconesSVG.share;
+            safeSetInnerHTML(btnShare, iconesSVG.share);;
 
             btnShare.onclick = (e) => {
                 e.stopPropagation();
@@ -3674,7 +3909,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const menuContainerBusca = document.createElement("div");
             menuContainerBusca.className = "card-menu-container";
-            menuContainerBusca.innerHTML = `<button class="btn-acao-square h-blue btn-opcoes-card tooltip-left" aria-label="Mais opções" data-tooltip="Mais opções">${iconesSVG.maisOpcoes}</button><div class="card-dropdown"><button class="btn-editar-apelido" aria-label="Editar identificação">${iconesSVG.lapis} Editar identificação</button><hr><button class="btn-marcar-naolido" aria-label="Marcar como não lido">${iconesSVG.eyeOff} Marcar como não lido</button><button class="btn-remover-prazo" style="color: var(--zen-orange); display: ${isSalvo ? 'flex' : 'none'};" aria-label="Limpar contagem">${iconesSVG.remover} Limpar contagem</button></div>`;
+            safeSetInnerHTML(menuContainerBusca, `<button class="btn-acao-square h-blue btn-opcoes-card tooltip-left" aria-label="Mais opções" data-tooltip="Mais opções">${iconesSVG.maisOpcoes}</button><div class="card-dropdown"><button class="btn-editar-apelido" aria-label="Editar identificação">${iconesSVG.lapis} Editar identificação</button><hr><button class="btn-marcar-naolido" aria-label="Marcar como não lido">${iconesSVG.eyeOff} Marcar como não lido</button><button class="btn-remover-prazo" style="color: var(--zen-orange); display: ${isSalvo ? 'flex' : 'none'};" aria-label="Limpar contagem">${iconesSVG.remover} Limpar contagem</button></div>`);;
             rightActionsBusca.appendChild(menuContainerBusca);
             acoesPills.append(btnCalc, btnCopiar, btnShare, rightActionsBusca);
 
@@ -3698,10 +3933,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     openTimer = setTimeout(() => { markAsRead(); }, 13000);
                 } else {
                     clearTimeout(openTimer);
+                    if (window.historicoNavegacaoStack && window.historicoNavegacaoStack.length > 0) {
+                        const prev = window.historicoNavegacaoStack.pop();
+                        if (prev.aba === 'busca') {
+                            if (window.mudarParaAba) window.mudarParaAba('busca');
+                        } else {
+                            if (window.restaurarFiltroStack) window.restaurarFiltroStack(prev.filtro);
+                            if (window.mudarParaAba) window.mudarParaAba('salvos');
+                        }
+                        setTimeout(() => {
+                            window.focarCardProcesso(prev.key, prev.aba === 'busca', true);
+                        }, 300);
+                    }
                 }
             };
 
             clickArea.onclick = (e) => {
+                if (card.classList.contains('so-historico')) {
+                    card.classList.remove('so-historico');
+                    return;
+                }
                 if (e.target.closest('.hint-apelido')) {
                     e.stopPropagation();
                     abrirModalApelido(proc, apelidoSalvo, (novoApelido) => {
@@ -3737,12 +3988,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     ov.setAttribute('data-active-key', itemKey);
                     document.getElementById('focusTribunal').textContent = i.siglaTribunal || 'TJ';
                     document.getElementById('focusProcesso').textContent = proc;
-                    document.getElementById('focusApelido').innerHTML = apelidoSalvo;
+                    safeSetInnerHTML(document.getElementById('focusApelido'), apelidoSalvo);;
                     const savedHtml = prazosSalvos[itemKey] && prazosSalvos[itemKey].textoHtml;
                     if (savedHtml) {
-                        document.getElementById('focusTeorContent').innerHTML = savedHtml;
+                        safeSetInnerHTML(document.getElementById('focusTeorContent'), savedHtml);;
                     } else {
-                        document.getElementById('focusTeorContent').innerHTML = aplicarHighlighterRadar(txt);
+                        safeSetInnerHTML(document.getElementById('focusTeorContent'), aplicarHighlighterRadar(txt));;
                     }
                     ov.classList.add('show');
                     if (typeof inicializarNovosRecursosFoco === 'function') inicializarNovosRecursosFoco();
@@ -3780,7 +4031,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (prazo.prorrogado) badgesHtml += `<span class="badge bg-orange">Prorrogado</span>`;
                             let htmlAlertas = badgesHtml ? `<div style="display:flex; gap:4px; justify-content:center; width: 100%; margin-bottom: 12px;">${badgesHtml}</div>` : "";
                             htmlAlertas += `<div style="width: 100%; text-align: center; margin-top: 8px; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--primary); cursor: pointer;">🖱️ Clique aqui para ocultar/mostrar a auditoria</div>`;
-                            containerAlertas.innerHTML = htmlAlertas;
+                            safeSetInnerHTML(containerAlertas, htmlAlertas);;
                         }
 
                         const prev = calcPanel.querySelector('.calc-preview');
@@ -3795,7 +4046,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (dFin) {
                             dFin.style.display = 'flex';
                             const bSalvar = dFin.querySelector('.btn-salvar'); if (bSalvar) bSalvar.style.display = 'none';
-                            const bVoltar = dFin.querySelector('.btn-voltar-calc'); if (bVoltar) { bVoltar.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; margin-bottom: -3px;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Recalcular prazo`; bVoltar.style.flex = '1'; }
+                            const bVoltar = dFin.querySelector('.btn-voltar-calc'); if (bVoltar) { safeSetInnerHTML(bVoltar, `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; margin-bottom: -3px;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Recalcular prazo`);; bVoltar.style.flex = '1'; }
                         }
                         calcPanel.classList.add('ativa');
                     } else {
@@ -3810,7 +4061,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
 
-            teorInnerOverflow.append(teorBoxContainer, notionWrapperBusca, acoesPills, calcPanel);
+            const timelineWrapper = document.createElement("div");
+            timelineWrapper.className = "timeline-wrapper";
+
+            const btnHistoricoHeader = header.querySelector('.btn-historico-header');
+            if (btnHistoricoHeader) {
+                btnHistoricoHeader.onclick = (e) => {
+                    e.stopPropagation();
+                    const isOpening = timelineWrapper.style.display !== 'block';
+                    
+                    if (isOpening) {
+                        if (!card.classList.contains('aberto')) {
+                            card.classList.add('so-historico');
+                            toggleCard();
+                        }
+                        timelineWrapper.style.display = 'block';
+                        btnHistoricoHeader.classList.add('active');
+                        renderTimeline(i.prazoCalculado || i, timelineWrapper, itemKey).then(() => {
+                            setTimeout(() => {
+                                timelineWrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }, 150);
+                        });
+                    } else {
+                        timelineWrapper.style.display = 'none';
+                        btnHistoricoHeader.classList.remove('active');
+                        if (card.classList.contains('so-historico')) {
+                            toggleCard();
+                            setTimeout(() => { card.classList.remove('so-historico'); }, 300);
+                        }
+                    }
+                };
+            }
+
+            teorInnerOverflow.append(teorBoxContainer, notionWrapperBusca, acoesPills, timelineWrapper, calcPanel);
             teorWrapper.appendChild(teorInnerOverflow);
             card.append(header, teorWrapper);
             return card;
@@ -3846,13 +4129,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const threadBtn = document.createElement('button');
                 threadBtn.className = 'thread-toggle-pill';
-                threadBtn.innerHTML = `<span style="display: flex; align-items: center; gap: 4px;">Histórico (${grupo.length - 1}) <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>`;
+                threadBtn.setAttribute('data-tooltip', 'Ver outras publicações deste processo');
+                safeSetInnerHTML(threadBtn, `<span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin-right:4px; vertical-align: middle;"><polyline points="6 9 12 15 18 9"></polyline></svg> Outras publicações (${grupo.length - 1})</span>`);;
                 
-                const statusOrigem = cardPrincipal.querySelector('.status-origem');
-                if (statusOrigem) {
-                    statusOrigem.appendChild(threadBtn);
-                }
-
                 const threadContainer = document.createElement('div');
                 threadContainer.className = 'thread-container';
                 threadContainer.style.display = 'none';
@@ -3871,6 +4150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     threadContainer.appendChild(filhoCard);
                 }
 
+                cardPrincipal.appendChild(threadBtn);
                 cardPrincipal.appendChild(threadContainer);
             }
 
@@ -3885,8 +4165,363 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function obterDataDisponibilizacaoISO(obj) {
+        if (!obj) return null;
+        if (obj.data_disponibilizacao) {
+            return obj.data_disponibilizacao.substring(0, 10);
+        }
+        if (obj.pubOrig) {
+            return obj.pubOrig.substring(0, 10);
+        }
+        if (obj.disp) {
+            const parts = obj.disp.split('/');
+            if (parts.length === 3) {
+                return `${parts[2]}-${parts[1]}-${parts[0]}`;
+            }
+        }
+        if (obj.pub) {
+            const parts = obj.pub.split('/');
+            if (parts.length === 3) {
+                return `${parts[2]}-${parts[1]}-${parts[0]}`;
+            }
+        }
+        return null;
+    }
+
+    function encontrarPrazoSalvo(dataDisp, processo) {
+        if (!processo || !dataDisp) return null;
+        const normalizedProc = processo.replace(/\D/g, '');
+        const d1 = dataDisp.substring(0, 10);
+        for (let k in prazosSalvos) {
+            const outro = prazosSalvos[k];
+            if (!outro) continue;
+            const outroProc = (outro.processo || '').replace(/\D/g, '');
+            if (outroProc === normalizedProc) {
+                const d2 = obterDataDisponibilizacaoISO(outro);
+                if (d2 && d1 === d2) {
+                    return { key: k, item: outro };
+                }
+            }
+        }
+        return null;
+    }
+
+    function obterStatusIntimacaoHTML(savedItem, djenItem, savedKey, preferBusca = false) {
+        let trib = '';
+        let tipo = 'Intimação';
+        let orgao = '';
+        let destinatario = '';
+
+        if (savedItem) {
+            trib = String(savedItem.siglaTribunal || 'TJ').toUpperCase();
+            tipo = savedItem.tipoComunicacao || 'Intimação';
+            orgao = savedItem.nomeOrgao || '';
+            if (savedItem.destinatarios && savedItem.destinatarios.length > 0) {
+                destinatario = savedItem.destinatarios[0].nome || '';
+            }
+        } else if (djenItem) {
+            trib = String(djenItem.siglaTribunal || 'TJ').toUpperCase();
+            tipo = djenItem.tipoComunicacao || 'Intimação';
+            orgao = djenItem.nomeOrgao || '';
+            if (djenItem.destinatarios && djenItem.destinatarios.length > 0) {
+                destinatario = djenItem.destinatarios[0].nome || '';
+            }
+        }
+
+        // Header info
+        let headerHTML = `<div class="timeline-card-header">`;
+        headerHTML += `<span class="timeline-card-trib">${trib}</span>`;
+        headerHTML += `<span class="timeline-card-tipo">${tipo}</span>`;
+        if (orgao) {
+            headerHTML += `<span class="timeline-card-orgao" title="${orgao}">🏛️ ${orgao.length > 25 ? orgao.substring(0, 22) + '...' : orgao}</span>`;
+        }
+        headerHTML += `</div>`;
+
+        // Status badge and details
+        let statusHTML = '';
+        if (savedItem) {
+            if (savedItem.fatal) {
+                const hoje = new Date(); hoje.setHours(12, 0, 0, 0);
+                const dataFatal = parseDateBR(savedItem.fatal);
+                const diffDias = Math.ceil((dataFatal - hoje) / (1000 * 3600 * 24));
+                let iconStr = savedItem.direcao === 'retroativo' ? '↩️ ' : '';
+
+                if (savedItem.cumprido) {
+                    let dataCumpFmt = '';
+                    if (savedItem.dataCumprimento) {
+                        const dtC = new Date(savedItem.dataCumprimento);
+                        dataCumpFmt = ' em ' + dtC.toLocaleDateString('pt-BR');
+                    }
+                    statusHTML = `<span class="timeline-badge-status s-gray">✅ Cumprido${dataCumpFmt} • Fatal: ${savedItem.fatal}</span>`;
+                } else if (savedItem.espera) {
+                    statusHTML = `<span class="timeline-badge-status s-purple">⏳ Outra Parte/Juiz • ${savedItem.fatal}</span>`;
+                } else if (diffDias < 0) {
+                    statusHTML = `<span class="timeline-badge-status s-red">${iconStr}🔴 Atrasado ${Math.abs(diffDias)}d • ${savedItem.fatal}</span>`;
+                } else if (diffDias === 0) {
+                    statusHTML = `<span class="timeline-badge-status s-hoje">${iconStr}🔥 Hoje • ${savedItem.fatal}</span>`;
+                } else if (diffDias === 1) {
+                    statusHTML = `<span class="timeline-badge-status s-orange">${iconStr}⏳ Amanhã • ${savedItem.fatal}</span>`;
+                } else {
+                    const cor = diffDias <= 5 ? "s-orange" : "s-green";
+                    statusHTML = `<span class="timeline-badge-status ${cor}">${iconStr}📅 ${diffDias} dias • ${savedItem.fatal}</span>`;
+                }
+            } else {
+                statusHTML = `<span class="timeline-badge-status s-orange">⚠️ Calcular prazo</span>`;
+            }
+        } else {
+            // Not saved, just a historical communication
+            let destLabel = destinatario ? ` • Para: ${destinatario.split(' ')[0]}` : '';
+            statusHTML = `<span class="timeline-badge-status s-light">⚖️ Histórico DJEN${destLabel}</span>`;
+        }
+
+        let dataAttr = '';
+        let hoverClass = '';
+        let extraContent = '';
+        
+        let textoPreterito = null;
+        if (djenItem) textoPreterito = djenItem.texto || djenItem.conteudo || djenItem.teor;
+        if (savedItem) textoPreterito = savedItem.textoCompleto || savedItem.texto || savedItem.conteudo || savedItem.teor || textoPreterito;
+
+        // Padrão Aba Busca: Sempre expandir inline (preferência do usuário)
+        if (textoPreterito || djenItem || savedItem) {
+            dataAttr = `data-nav-toggle-conteudo="true"`;
+            hoverClass = 'clickable-timeline-item';
+            let txt = textoPreterito || "Texto indisponível para esta comunicação.";
+            
+            let limitConteudo = (savedItem && savedItem.textoHtml) ? savedItem.textoHtml : txt;
+            if (!savedItem || !savedItem.textoHtml) {
+                limitConteudo = typeof aplicarHighlighterRadar === 'function' ? aplicarHighlighterRadar(limitConteudo) : (typeof cleanText === 'function' ? cleanText(limitConteudo) : limitConteudo);
+            }
+
+            let anexosHTML = '';
+            if (savedItem) {
+                if (savedItem.anotacao) {
+                    let anot = savedItem.anotacao;
+                    anot = anot.replace(/#([\w\u00C0-\u00FF_]+)/g, '<span class="tag-badge">#$1</span>');
+                    if (anot.trim().length > 0) {
+                        anexosHTML += `<div style="margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(0,0,0,0.1);"><span style="font-weight: 600; color: var(--zen-purple);">📝 Notas do Prazo:</span><div style="color: var(--text-color); margin-top: 4px;">${anot}</div></div>`;
+                    }
+                }
+                if (savedItem.tarefas && savedItem.tarefas.length > 0) {
+                    anexosHTML += `<div style="margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(0,0,0,0.1);"><span style="font-weight: 600; color: var(--zen-purple);">🛠️ Tarefas do Prazo:</span><div style="margin-top: 4px;">`;
+                    savedItem.tarefas.forEach(t => {
+                        anexosHTML += `<div style="display: flex; gap: 4px; align-items: flex-start; margin-top: 4px; color: var(--text-color);"><span style="color: ${t.feita ? 'var(--zen-green)' : 'var(--text-muted)'};">${t.feita ? '☑' : '☐'}</span><span style="${t.feita ? 'text-decoration: line-through; opacity: 0.6;' : ''}">${t.texto}</span></div>`;
+                    });
+                    anexosHTML += `</div></div>`;
+                }
+            }
+
+            extraContent = `<div class="timeline-conteudo-wrapper"><div class="timeline-conteudo" style="margin-top: 8px; padding: 8px; background: var(--bg-card-hover, rgba(0,0,0,0.03)); border-left: 2px solid var(--zen-purple); font-size: 11px; white-space: pre-wrap; color: var(--text-color); overflow-y: auto; border-radius: 4px;">${limitConteudo}${anexosHTML}</div></div>`;
+        }
+
+        let indicadoresHTML = '';
+        if (savedItem) {
+            let indicacoes = [];
+            if (savedItem.anotacao) {
+                const tags = savedItem.anotacao.match(/#[\w\u00C0-\u00FF_]+/g);
+                if (tags) indicacoes.push('🏷️ Tags');
+                const temTexto = savedItem.anotacao.replace(/#[\w\u00C0-\u00FF_]+/g, '').trim().length > 0;
+                if (temTexto) indicacoes.push('📝 Notas');
+            }
+            if (savedItem.tarefas && savedItem.tarefas.length > 0) {
+                const pendentes = savedItem.tarefas.filter(t => !t.feita).length;
+                indicacoes.push(`🛠️ ${pendentes > 0 ? pendentes + ' ' : ''}Tarefas`);
+            }
+            
+            if (indicacoes.length > 0) {
+                indicadoresHTML = `<span style="font-size: 10px; color: var(--text-muted); background: var(--bg-card-hover, rgba(0,0,0,0.05)); padding: 2px 6px; border-radius: 12px;">${indicacoes.join(' • ')}</span>`;
+            }
+        }
+
+        return `
+            <div class="timeline-card-content ${hoverClass}" ${dataAttr}>
+                ${headerHTML}
+                <div style="margin-top: 6px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                    ${statusHTML}
+                    ${indicadoresHTML}
+                </div>
+                ${extraContent}
+            </div>
+        `;
+    }
+
+    async function renderTimeline(item, wrapper, itemKey) {
+        let eventos = [];
+        if (item.historicoAcoes) {
+            eventos = [...item.historicoAcoes];
+        } else {
+            const dtOrigem = obterDataDisponibilizacaoISO(item) || item.data_disponibilizacao || item.pubOrig || new Date().toISOString();
+            eventos.push({ data: dtOrigem, tipo: 'criacao', descricao: 'Processo adicionado ao Controle' });
+        }
+        
+        const iconeLinhaTempo = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
+            <path d="M 4 12 h 16" />
+            <path d="M 2 2 h 4 a 1 1 0 0 1 1 1 v 4 a 1 1 0 0 1 -1 1 H 5.2 L 4 10 L 2.8 8 H 2 a 1 1 0 0 1 -1 -1 V 3 a 1 1 0 0 1 1 -1 Z" />
+            <path d="M 3.5 4.5 h 1.5" stroke-width="1.2" />
+            <path d="M 3.5 6 h 1" stroke-width="1.2" />
+            <circle cx="4" cy="12" r="1.5" fill="var(--bg-card, #fff)" stroke="currentColor" stroke-width="1.8" />
+            <path d="M 10 16 h 1.2 L 12 14 L 12.8 16 H 14 a 1 1 0 0 1 1 1 v 4 a 1 1 0 0 1 -1 1 H 10 a 1 1 0 0 1 -1 -1 v -4 a 1 1 0 0 1 1 -1 Z" />
+            <path d="M 11.5 18.5 h 1.5" stroke-width="1.2" />
+            <path d="M 11.5 20 h 1" stroke-width="1.2" />
+            <circle cx="12" cy="12" r="1.5" fill="var(--bg-card, #fff)" stroke="currentColor" stroke-width="1.8" />
+            <path d="M 18 2 h 4 a 1 1 0 0 1 1 1 v 4 a 1 1 0 0 1 -1 1 H 21.2 L 20 10 L 18.8 8 H 18 a 1 1 0 0 1 -1 -1 V 3 a 1 1 0 0 1 1 -1 Z" />
+            <path d="M 19.5 4.5 h 1.5" stroke-width="1.2" />
+            <path d="M 19.5 6 h 1" stroke-width="1.2" />
+            <circle cx="20" cy="12" r="1.5" fill="var(--bg-card, #fff)" stroke="currentColor" stroke-width="1.8" />
+        </svg>`;
+        let htmlHeader = `<div class="timeline-header">${iconeLinhaTempo} Histórico do Processo</div><div class="timeline-container">`;
+        
+        // Estado de carregamento inicial
+        safeSetInnerHTML(wrapper, htmlHeader + `
+            <div class="timeline-skeleton" style="display: flex; flex-direction: column; gap: 16px; padding: 4px 0 12px 0;">
+                <div style="font-size: 11px; color: var(--text-muted); font-weight: 500; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                    <span class="spinner-mini"></span> Buscando intimações pretéritas no DJEN...
+                </div>
+                <div class="timeline-item skeleton" style="display: flex; gap: 12px; margin-bottom: 0; opacity: 0.7;">
+                    <div class="timeline-badge skeleton-shimmer-circle"></div>
+                    <div class="timeline-content" style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+                        <div class="skeleton-shimmer-bar short"></div>
+                        <div class="skeleton-shimmer-bar long"></div>
+                    </div>
+                </div>
+                <div class="timeline-item skeleton" style="display: flex; gap: 12px; margin-bottom: 0; opacity: 0.4;">
+                    <div class="timeline-badge skeleton-shimmer-circle"></div>
+                    <div class="timeline-content" style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+                        <div class="skeleton-shimmer-bar short"></div>
+                        <div class="skeleton-shimmer-bar long"></div>
+                    </div>
+                </div>
+            </div>
+        </div>`);
+
+        const numProcStr = item.processo ? item.processo.replace(/\D/g, '') : '';
+        if (numProcStr && typeof fetchComRetry === 'function') {
+            try {
+                const dtFim = new Date().toISOString().split('T')[0];
+                const urlDjen = `https://comunicaapi.pje.jus.br/api/v1/comunicacao?numeroProcesso=${numProcStr}&dataDisponibilizacaoInicio=2020-01-01&dataDisponibilizacaoFim=${dtFim}`;
+                const apiRes = await fetchComRetry(urlDjen, 2);
+                if (apiRes && apiRes.items && Array.isArray(apiRes.items)) {
+                    apiRes.items.forEach(djenItem => {
+                        eventos.push({
+                            data: djenItem.data_disponibilizacao,
+                            tipo: 'djen',
+                            djenItem: djenItem,
+                            descricao: `Intimação pretérita disponibilizada: ${djenItem.siglaTribunal || 'Tribunal'}`
+                        });
+                    });
+                }
+            } catch (e) {
+                console.warn('Falha ao buscar intimações pretéritas:', e);
+            }
+        }
+
+        // Adiciona publicações já em cache/salvas para garantir se a API falhar
+        for (let k in prazosSalvos) {
+            const outro = prazosSalvos[k];
+            if (outro && outro.processo === item.processo) {
+                const dataDispISO = obterDataDisponibilizacaoISO(outro);
+                if (dataDispISO) {
+                    eventos.push({
+                        data: dataDispISO,
+                        tipo: 'djen',
+                        savedItem: outro,
+                        savedKey: k,
+                        descricao: `Intimação salva/DJEN: ${outro.siglaTribunal || 'Tribunal'}`
+                    });
+                }
+            }
+        }
+        
+        // Remover duplicatas de DJEN por data — mesclar dados (priorizar savedItem)
+        const eventosPorData = new Map();
+        eventos = eventos.filter(ev => {
+            if (ev.tipo === 'djen') {
+                const dateKey = ev.data.substring(0, 10);
+                if (eventosPorData.has(dateKey)) {
+                    // Mesclar: se o existente não tem savedItem mas este tem, copiar
+                    const existente = eventosPorData.get(dateKey);
+                    if (!existente.savedItem && ev.savedItem) {
+                        existente.savedItem = ev.savedItem;
+                    }
+                    if (!existente.savedKey && ev.savedKey) {
+                        existente.savedKey = ev.savedKey;
+                    }
+                    if (!existente.djenItem && ev.djenItem) {
+                        existente.djenItem = ev.djenItem;
+                    }
+                    return false; // remove duplicata
+                }
+                eventosPorData.set(dateKey, ev);
+            }
+            return true;
+        });
+
+        eventos.sort((a, b) => new Date(b.data) - new Date(a.data));
+        
+        let html = htmlHeader;
+        if (eventos.length === 0) {
+            html += `<div style="font-size: 12px; color: var(--text-muted);">Nenhum histórico registrado.</div>`;
+        } else {
+            eventos.forEach(ev => {
+                let badgeClass = 't-gray'; let icon = '';
+                let descHTML = ev.descricao;
+
+                if (ev.tipo === 'criacao') { badgeClass = 't-blue'; icon = '📥'; }
+                else if (ev.tipo === 'calculo') { badgeClass = 't-purple'; icon = '🧮'; }
+                else if (ev.tipo === 'tarefa') { badgeClass = 't-gray'; icon = '🛠️'; }
+                else if (ev.tipo === 'nota') { badgeClass = 't-orange'; icon = '📝'; }
+                else if (ev.tipo === 'cumprimento') { badgeClass = 't-green'; icon = '✅'; }
+                else if (ev.tipo === 'djen') { 
+                    badgeClass = 't-purple'; 
+                    icon = '⚖️'; 
+                    let saved = ev.savedItem || null;
+                    let savedKey = ev.savedKey || null;
+                    if (!saved && !savedKey) {
+                        const match = encontrarPrazoSalvo(ev.data, item.processo);
+                        if (match) { saved = match.item; savedKey = match.key; }
+                    }
+                    const preferBusca = wrapper.closest('#viewBusca') !== null;
+                    descHTML = obterStatusIntimacaoHTML(saved, ev.djenItem, savedKey, preferBusca);
+                }
+                
+                const dt = new Date(ev.data);
+                const dataFmt = dt.toLocaleDateString('pt-BR') + ' às ' + dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                
+                html += `
+                    <div class="timeline-item">
+                        <div class="timeline-badge ${badgeClass}">${icon}</div>
+                        <div class="timeline-content">
+                            <div class="timeline-desc">${descHTML}</div>
+                            <div class="timeline-date">${dataFmt}</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        html += `</div>`;
+        safeSetInnerHTML(wrapper, html);;
+
+        // Bind click events programmatically (DOMParser strips inline onclick)
+        wrapper.querySelectorAll('.clickable-timeline-item[data-nav-key]').forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const navKey = el.getAttribute('data-nav-key');
+                const preferBusca = el.getAttribute('data-nav-busca') === 'true';
+                if (navKey) window.focarCardProcesso(navKey, preferBusca);
+            });
+        });
+        wrapper.querySelectorAll('.clickable-timeline-item[data-nav-toggle-conteudo]').forEach(el => {
+            el.addEventListener('click', (e) => {
+                if (e.target.closest('.timeline-conteudo')) return;
+                e.stopPropagation();
+                const wrapper = el.querySelector('.timeline-conteudo-wrapper');
+                if (wrapper) wrapper.classList.toggle('expanded');
+            });
+        });
+    }
+
     function appendCardsToList(chaves, listElement, openKey, emptyMessage) {
-        listElement.innerHTML = "";
+        listElement.replaceChildren();;
         if (chaves.length === 0) {
             const zenIcon = `
                 <style>
@@ -3897,12 +4532,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 </style>
                 <div style="font-size: 48px; margin-bottom: 16px; animation: floatZen 4s ease-in-out infinite;">☕</div>`;
             const tpl = document.getElementById('tpl-empty-agenda').content.cloneNode(true);
-            tpl.querySelector('.empty-icon-slot').innerHTML = zenIcon;
+            safeSetInnerHTML(tpl.querySelector('.empty-icon-slot'), zenIcon);;
             if (emptyMessage) {
                 tpl.querySelector('.empty-title').textContent = emptyMessage;
             }
             tpl.querySelector('.btn-empty-novo').onclick = () => document.getElementById('btnNovoPrazoManual')?.click();
-            listElement.innerHTML = '';
+            listElement.replaceChildren();;
             listElement.appendChild(tpl);
             return;
         }
@@ -3943,7 +4578,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const header = document.createElement("div");
             const badgeSTJ = item.temFeriadoMunicipal ? `<span class="icon-status tooltip-bottom" data-tooltip="Atenção STJ: Comprove Feriado Local (Art. 1.003, § 6º CPC)" style="filter: drop-shadow(0 2px 4px rgba(212, 76, 71, 0.4));">🚨</span>` : '';
-            header.innerHTML = `
+            safeSetInnerHTML(header, `
                 <div class="card-click-area" tabindex="0" aria-expanded="false" aria-label="Expandir Processo ${item.processo}">
                     <div class="card-top-info">
                         <div class="card-info-left" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
@@ -3958,33 +4593,36 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     ${tituloDinamicoHTML}
                 </div>
-            `;
+            `);;
 
             const teorWrapper = document.createElement("div"); teorWrapper.className = "teor-wrapper"; const teorInnerOverflow = document.createElement("div"); teorInnerOverflow.className = "teor-inner-overflow";
-            const btnToggleTeor = document.createElement("button"); btnToggleTeor.className = "btn-toggle-teor"; btnToggleTeor.innerHTML = `📄 Ler Teor Completo`;
+            const btnToggleTeor = document.createElement("button"); btnToggleTeor.className = "btn-toggle-teor"; safeSetInnerHTML(btnToggleTeor, `📄 Ler Teor Completo`);;
             const teorBoxContainer = document.createElement("div"); teorBoxContainer.className = "teor-box-container"; teorBoxContainer.style.display = 'none';
             const teorInnerBox = document.createElement("div"); teorInnerBox.className = "teor-inner-box"; const fadeOverlay = document.createElement("div"); fadeOverlay.className = "teor-fade-overlay";
 
-            if (item.textoHtml) { teorInnerBox.innerHTML = item.textoHtml; } else { teorInnerBox.innerHTML = aplicarHighlighterRadar(item.textoCompleto); }
+            if (item.textoHtml) { safeSetInnerHTML(teorInnerBox, item.textoHtml);; } else { safeSetInnerHTML(teorInnerBox, aplicarHighlighterRadar(item.textoCompleto));; }
             teorBoxContainer.appendChild(teorInnerBox); teorBoxContainer.appendChild(fadeOverlay);
-            btnToggleTeor.onclick = (e) => { e.stopPropagation(); if (teorBoxContainer.style.display === 'none') { teorBoxContainer.style.display = 'block'; btnToggleTeor.innerHTML = `📄 Ocultar Teor`; } else { teorBoxContainer.style.display = 'none'; btnToggleTeor.innerHTML = `📄 Ler Teor Completo`; } };
+            btnToggleTeor.onclick = (e) => { e.stopPropagation(); if (teorBoxContainer.style.display === 'none') { teorBoxContainer.style.display = 'block'; safeSetInnerHTML(btnToggleTeor, `📄 Ocultar Teor`);; } else { teorBoxContainer.style.display = 'none'; safeSetInnerHTML(btnToggleTeor, `📄 Ler Teor Completo`);; } };
 
-            const btnFocoMini = document.createElement("button"); btnFocoMini.className = "btn-foco-mini tooltip-left"; btnFocoMini.setAttribute('data-tooltip', 'Abrir no Modo Foco'); btnFocoMini.innerHTML = iconesSVG.foco; teorBoxContainer.appendChild(btnFocoMini);
+            const btnFocoMini = document.createElement("button"); btnFocoMini.className = "btn-foco-mini tooltip-left"; btnFocoMini.setAttribute('data-tooltip', 'Abrir no Modo Foco'); safeSetInnerHTML(btnFocoMini, iconesSVG.foco);; teorBoxContainer.appendChild(btnFocoMini);
 
             const notionWrapperAgenda = document.createElement("div");
             notionWrapperAgenda.className = "notion-wrapper";
             
             const toolbarAgenda = document.createElement("div");
             toolbarAgenda.className = "wysiwyg-toolbar";
-            toolbarAgenda.innerHTML = `
-                <div class="wysiwyg-label" style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-right: auto; padding-left: 4px;">Anotações (Texto Livre)</div>
+            safeSetInnerHTML(toolbarAgenda, `
+                <div class="wysiwyg-label" style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-right: auto; padding-left: 4px; display: flex; flex-direction: column; gap: 2px;">
+                    <span>Anotações (Texto Livre)</span>
+                    <span style="font-size: 9px; font-weight: 500; color: var(--text-placeholder); text-transform: none; letter-spacing: 0;">Texto normal é anotação; escrever com <b>#</b> gera tags.</span>
+                </div>
                 <div style="display:flex; gap:4px;">
                     <button type="button" data-cmd="bold" title="Negrito"><b>B</b></button>
                     <button type="button" data-cmd="italic" title="Itálico"><i>I</i></button>
                     <button type="button" class="btn-add-link" title="Inserir Link">🔗</button>
                     <button type="button" data-cmd="insertUnorderedList" title="Lista de Marcadores">•</button>
                 </div>
-            `;
+            `);;
 
             const txtAreaBusca = document.createElement("div"); 
             txtAreaBusca.className = "nota-input mini-notion"; 
@@ -3996,7 +4634,7 @@ document.addEventListener('DOMContentLoaded', () => {
             txtAreaBusca.setAttribute("placeholder", "Escreva anotações livres..."); 
             
             let val = anotacaoSalva || "";
-            txtAreaBusca.innerHTML = val;
+            safeSetInnerHTML(txtAreaBusca, val);;
             txtAreaBusca.setAttribute('aria-label', 'Anotações do Processo');
 
             toolbarAgenda.querySelectorAll('button').forEach(btn => {
@@ -4036,8 +4674,9 @@ document.addEventListener('DOMContentLoaded', () => {
             txtAreaBusca.onclick = e => { e.stopPropagation(); };
             txtAreaBusca.onkeydown = e => { e.stopPropagation(); };
             txtAreaBusca.oninput = e => { 
-                header.querySelector('.proc-header').innerHTML = getHeaderHTML(item.processo, getGlobalApelido(item.processo), e.target.innerHTML, item.textoCompleto); 
+                safeSetInnerHTML(header.querySelector('.proc-header'), getHeaderHTML(item.processo, getGlobalApelido(item.processo), e.target.innerHTML, item.textoCompleto));; 
                 item.anotacao = e.target.innerHTML; 
+                adicionarEventoHistorico(key, 'nota', 'Anotação atualizada');
                 savePrazosSalvos(); 
             };
 
@@ -4049,16 +4688,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const tooltipTextoAppend = item.fatal ? "🔬 Auditoria Completa (Recalcular)" : "🧮 Calcular Prazo Fatal";
             btnCalc.setAttribute('aria-label', tooltipTextoAppend);
             btnCalc.setAttribute('data-tooltip', tooltipTextoAppend);
-            btnCalc.innerHTML = iconesSVG.calendario;
+            safeSetInnerHTML(btnCalc, iconesSVG.calendario);;
 
-            const btnCopiar = document.createElement("button"); btnCopiar.className = "btn-acao-square h-blue btn-copy tooltip-right"; btnCopiar.setAttribute('aria-label', 'Copiar com notas'); btnCopiar.setAttribute('data-tooltip', 'Copiar'); btnCopiar.innerHTML = iconesSVG.copiar;
-            const btnShare = document.createElement("button"); btnShare.className = "btn-acao-square h-blue btn-share-ind tooltip-right"; btnShare.setAttribute('aria-label', 'Compartilhar'); btnShare.setAttribute('data-tooltip', 'Compartilhar'); btnShare.innerHTML = iconesSVG.share;
+            const btnCopiar = document.createElement("button"); btnCopiar.className = "btn-acao-square h-blue btn-copy tooltip-right"; btnCopiar.setAttribute('aria-label', 'Copiar com notas'); btnCopiar.setAttribute('data-tooltip', 'Copiar'); safeSetInnerHTML(btnCopiar, iconesSVG.copiar);;
+            const btnShare = document.createElement("button"); btnShare.className = "btn-acao-square h-blue btn-share-ind tooltip-right"; btnShare.setAttribute('aria-label', 'Compartilhar'); btnShare.setAttribute('data-tooltip', 'Compartilhar'); safeSetInnerHTML(btnShare, iconesSVG.share);;
 
             const rightActionsSalvos = document.createElement("div"); rightActionsSalvos.style.display = "flex"; rightActionsSalvos.style.alignItems = "center"; rightActionsSalvos.style.gap = "8px"; rightActionsSalvos.style.marginLeft = "auto";
 
             const btnCumprir = document.createElement("button");
-            if (item.cumprido) { btnCumprir.className = "btn-cumprir-quadrado is-cumprido tooltip-left"; btnCumprir.innerHTML = iconesSVG.retro; btnCumprir.setAttribute('aria-label', 'Reabrir Prazo'); btnCumprir.setAttribute('data-tooltip', 'Reabrir Prazo'); }
-            else { btnCumprir.className = "btn-cumprir-quadrado tooltip-left"; btnCumprir.innerHTML = iconesSVG.check; btnCumprir.setAttribute('aria-label', 'Marcar como Cumprido'); btnCumprir.setAttribute('data-tooltip', 'Marcar como Cumprido'); }
+            if (item.cumprido) { btnCumprir.className = "btn-cumprir-quadrado is-cumprido tooltip-left"; safeSetInnerHTML(btnCumprir, iconesSVG.retro);; btnCumprir.setAttribute('aria-label', 'Reabrir Prazo'); btnCumprir.setAttribute('data-tooltip', 'Reabrir Prazo'); }
+            else { btnCumprir.className = "btn-cumprir-quadrado tooltip-left"; safeSetInnerHTML(btnCumprir, iconesSVG.check);; btnCumprir.setAttribute('aria-label', 'Marcar como Cumprido'); btnCumprir.setAttribute('data-tooltip', 'Marcar como Cumprido'); }
 
             let htmlRemover = '';
             if (item.manual) {
@@ -4066,18 +4705,71 @@ document.addEventListener('DOMContentLoaded', () => {
                 else { htmlRemover = `<button class="btn-remover-card" style="color: var(--zen-red);">${iconesSVG.remover} Remover anotação</button>`; }
             } else { htmlRemover = `<button class="btn-remover-card" style="color: var(--zen-red);">${iconesSVG.remover} Excluir registro</button>`; }
 
-            const menuContainerSalvos = document.createElement("div"); menuContainerSalvos.className = "card-menu-container"; menuContainerSalvos.innerHTML = `<button class="btn-acao-square h-blue btn-opcoes-card tooltip-left" aria-label="Mais opções" data-tooltip="Mais opções">${iconesSVG.maisOpcoes}</button><div class="card-dropdown"><button class="btn-editar-apelido" aria-label="Editar identificação">${iconesSVG.lapis} Editar identificação</button><hr>${htmlRemover}</div>`;
+            const menuContainerSalvos = document.createElement("div"); menuContainerSalvos.className = "card-menu-container"; safeSetInnerHTML(menuContainerSalvos, `<button class="btn-acao-square h-blue btn-opcoes-card tooltip-left" aria-label="Mais opções" data-tooltip="Mais opções">${iconesSVG.maisOpcoes}</button><div class="card-dropdown"><button class="btn-editar-apelido" aria-label="Editar identificação">${iconesSVG.lapis} Editar identificação</button><hr>${htmlRemover}</div>`);;
             rightActionsSalvos.append(btnCumprir, menuContainerSalvos); acoesPills.append(btnCalc, btnCopiar, btnShare, rightActionsSalvos);
 
             const clickArea = header.querySelector('.card-click-area');
-            const toggleCard = () => { const isOpening = !card.classList.contains('aberto'); if (isOpening) { document.querySelectorAll('.intimacao-card.aberto').forEach(c => { if (c !== card) { c.classList.remove('aberto'); c.querySelector('.card-click-area').setAttribute('aria-expanded', 'false'); } }); } card.classList.toggle('aberto'); clickArea.setAttribute('aria-expanded', isOpening); if (isOpening) { setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150); } else { if (document.getElementById('viewSalvos')?.style.display !== 'none') setTimeout(renderAgenda, 350); if (document.getElementById('viewCalendario')?.style.display !== 'none') setTimeout(renderCalendar, 250); } };
+            const toggleCard = () => { 
+                const isOpening = !card.classList.contains('aberto'); 
+                if (isOpening) { 
+                    document.querySelectorAll('.intimacao-card.aberto').forEach(c => { 
+                        if (c !== card) { 
+                            c.classList.remove('aberto'); 
+                            c.querySelector('.card-click-area').setAttribute('aria-expanded', 'false'); 
+                        } 
+                    }); 
+                } 
+                card.classList.toggle('aberto'); 
+                clickArea.setAttribute('aria-expanded', isOpening); 
+                if (isOpening) { 
+                    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150); 
+                } else { 
+                    if (window.historicoNavegacaoStack && window.historicoNavegacaoStack.length > 0) {
+                        const prev = window.historicoNavegacaoStack.pop();
+                        if (prev.aba === 'busca') {
+                            if (window.mudarParaAba) window.mudarParaAba('busca');
+                        } else {
+                            if (window.restaurarFiltroStack) window.restaurarFiltroStack(prev.filtro);
+                            if (window.mudarParaAba) window.mudarParaAba('salvos');
+                        }
+                        setTimeout(() => {
+                            window.focarCardProcesso(prev.key, prev.aba === 'busca', true);
+                        }, 300);
+                        return;
+                    }
+                    if (document.getElementById('viewSalvos')?.style.display !== 'none') setTimeout(renderAgenda, 350); 
+                    if (document.getElementById('viewCalendario')?.style.display !== 'none') setTimeout(renderCalendar, 250); 
+                } 
+            };
 
-            clickArea.onclick = (e) => { if (e.target.closest('.hint-apelido')) { e.stopPropagation(); abrirModalApelido(item.processo, apelidoSalvo, (novoApelido) => { setGlobalApelido(item.processo, novoApelido.trim(), key); renderAgenda(); renderCalendar(); }); return; } toggleCard(); }; clickArea.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); toggleCard(); } };
+            clickArea.onclick = (e) => {
+                if (card.classList.contains('so-historico')) {
+                    card.classList.remove('so-historico');
+                    return;
+                }
+                if (e.target.closest('.hint-apelido')) {
+                    e.stopPropagation();
+                    abrirModalApelido(item.processo, apelidoSalvo, (novoApelido) => {
+                        setGlobalApelido(item.processo, novoApelido.trim(), key);
+                        renderAgenda();
+                        renderCalendar();
+                    });
+                    return;
+                }
+                toggleCard();
+            };
+
+            clickArea.onkeydown = (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    toggleCard();
+                }
+            };
 
             btnCumprir.onclick = (e) => { e.stopPropagation(); alternarCumprimento(key, card, false); };
             btnShare.onclick = (e) => { e.stopPropagation(); item.anotacao = txtAreaBusca.innerHTML; tituloParaCompartilhar = "Processo " + item.processo; textoParaCompartilhar = gerarTextoCompartilhamento([item], "Aviso de Prazo"); abrirModalCompartilhar('ind'); };
             btnCopiar.onclick = (e) => { e.stopPropagation(); if (item.prazoCalculado) item.prazoCalculado.anotacao = txtAreaBusca.innerHTML; const copyText = gerarTextoCompartilhamento([item], "Cópia do DJEN"); navigator.clipboard.writeText(copyText).then(() => showToast("Copiado com sucesso!", "📎")); };
-            btnFocoMini.onclick = (e) => { e.stopPropagation(); const ov = document.getElementById('focusModeOverlay'); if (ov) { ov.setAttribute('data-active-key', key); document.getElementById('focusTribunal').textContent = trib; document.getElementById('focusProcesso').textContent = item.processo; document.getElementById('focusApelido').innerHTML = getHeaderHTML(item.processo, apelidoSalvo, txtAreaBusca.innerHTML, item.textoCompleto); if (item.textoHtml) { document.getElementById('focusTeorContent').innerHTML = item.textoHtml; } else { document.getElementById('focusTeorContent').innerHTML = aplicarHighlighterRadar(item.textoCompleto); } ov.classList.add('show'); if (typeof inicializarNovosRecursosFoco === 'function') inicializarNovosRecursosFoco(); } };
+            btnFocoMini.onclick = (e) => { e.stopPropagation(); const ov = document.getElementById('focusModeOverlay'); if (ov) { ov.setAttribute('data-active-key', key); document.getElementById('focusTribunal').textContent = trib; document.getElementById('focusProcesso').textContent = item.processo; safeSetInnerHTML(document.getElementById('focusApelido'), getHeaderHTML(item.processo, apelidoSalvo, txtAreaBusca.innerHTML, item.textoCompleto));; if (item.textoHtml) { safeSetInnerHTML(document.getElementById('focusTeorContent'), item.textoHtml);; } else { safeSetInnerHTML(document.getElementById('focusTeorContent'), aplicarHighlighterRadar(item.textoCompleto));; } ov.classList.add('show'); if (typeof inicializarNovosRecursosFoco === 'function') inicializarNovosRecursosFoco(); } };
 
             const calcPanel = montarCalculadoraForm(item, btnCalc, key, item.pubOrig || item.pub || new Date().toISOString().split('T')[0], item.processo, item.dias, false, null, toggleCard);
 
@@ -4107,7 +4799,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (item.prorrogado) badgesHtml += `<span class="badge bg-orange">Prorrogado</span>`;
                             let htmlAlertas = badgesHtml ? `<div style="display:flex; gap:4px; justify-content:center; width: 100%; margin-bottom: 12px;">${badgesHtml}</div>` : "";
                             htmlAlertas += `<div style="width: 100%; text-align: center; margin-top: 8px; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--primary); cursor: pointer;">🖱️ Clique aqui para ocultar/mostrar a auditoria</div>`;
-                            containerAlertas.innerHTML = htmlAlertas;
+                            safeSetInnerHTML(containerAlertas, htmlAlertas);;
                         }
 
                         const prev = calcPanel.querySelector('.calc-preview');
@@ -4122,7 +4814,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (dFin) {
                             dFin.style.display = 'flex';
                             const bSalvar = dFin.querySelector('.btn-salvar'); if (bSalvar) bSalvar.style.display = 'none';
-                            const bVoltar = dFin.querySelector('.btn-voltar-calc'); if (bVoltar) { bVoltar.innerHTML = '⚙️ Recalcular Prazo'; bVoltar.style.flex = '1'; }
+                            const bVoltar = dFin.querySelector('.btn-voltar-calc'); if (bVoltar) { safeSetInnerHTML(bVoltar, '⚙️ Recalcular Prazo');; bVoltar.style.flex = '1'; }
                         }
                         calcPanel.classList.add('ativa');
                     } else {
@@ -4137,7 +4829,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
 
-            teorInnerOverflow.append(btnToggleTeor, teorBoxContainer, notionWrapperAgenda, acoesPills, calcPanel);
+            const timelineWrapper = document.createElement("div");
+            timelineWrapper.className = "timeline-wrapper";
+            
+            const btnHistoricoHeader = header.querySelector('.btn-historico-header');
+            if (btnHistoricoHeader) {
+                btnHistoricoHeader.onclick = (e) => {
+                    e.stopPropagation();
+                    const isOpening = timelineWrapper.style.display !== 'block';
+                    
+                    if (isOpening) {
+                        if (!card.classList.contains('aberto')) {
+                            card.classList.add('so-historico');
+                            toggleCard();
+                        }
+                        timelineWrapper.style.display = 'block';
+                        btnHistoricoHeader.classList.add('active');
+                        renderTimeline(item, timelineWrapper, key).then(() => {
+                            setTimeout(() => {
+                                timelineWrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }, 150);
+                        });
+                    } else {
+                        timelineWrapper.style.display = 'none';
+                        btnHistoricoHeader.classList.remove('active');
+                        if (card.classList.contains('so-historico')) {
+                            toggleCard();
+                            setTimeout(() => { card.classList.remove('so-historico'); }, 300);
+                        }
+                    }
+                };
+            }
+
+            teorInnerOverflow.append(btnToggleTeor, teorBoxContainer, notionWrapperAgenda, acoesPills, timelineWrapper, calcPanel);
             teorWrapper.appendChild(teorInnerOverflow); card.append(header, teorWrapper); fragment.appendChild(card);
 
             if (sessionStorage.getItem('djen_auto_open_calc') === key) {
@@ -4215,7 +4939,46 @@ document.addEventListener('DOMContentLoaded', () => {
         appendCardsToList(chaves, list, openKey, "Nenhum prazo localizado para este filtro");
     }
 
+    function renderCalendarListView() {
+        const container = document.getElementById('calDeadlinesListView');
+        if (!container) return;
+
+        const openCard = document.querySelector('#calDeadlinesListView .intimacao-card.aberto');
+        const openKey = openCard ? openCard.getAttribute('data-key') : null;
+
+        const year = currentCalDate.getFullYear();
+        const month = currentCalDate.getMonth(); // 0-indexed
+
+        // Filtrar chaves que possuem prazo fatal cadastrado E coincidem com o mês/ano selecionado
+        const chaves = Object.keys(prazosSalvos).filter(k => {
+            const p = prazosSalvos[k];
+            if (p && p.fatal) {
+                const parts = p.fatal.split('/');
+                if (parts.length === 3) {
+                    const pMonth = parseInt(parts[1], 10) - 1; // 0-indexed month
+                    const pYear = parseInt(parts[2], 10);
+                    return pMonth === month && pYear === year;
+                }
+            }
+            return false;
+        });
+
+        // Ordenar as chaves cronologicamente pelo prazo fatal
+        chaves.sort((a, b) => {
+            const dateA = parseDateBR(prazosSalvos[a].fatal);
+            const dateB = parseDateBR(prazosSalvos[b].fatal);
+            return dateA - dateB;
+        });
+
+        const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        appendCardsToList(chaves, container, openKey, `Nenhum prazo fatal cadastrado para o mês de ${monthNames[month]} de ${year}`);
+    }
+
     function renderCalendar() {
+        if (currentCalendarView === 'list') {
+            renderCalendarListView();
+            return;
+        }
         const monthYearEl = document.getElementById('calMonthYear'); const daysContainer = document.getElementById('calDaysContainer');
         if (!monthYearEl || !daysContainer) return;
 
@@ -4223,7 +4986,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
         monthYearEl.textContent = `${monthNames[month]} ${year}`;
 
-        daysContainer.innerHTML = '';
+        daysContainer.replaceChildren();;
 
         const firstDay = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
         const hojeRef = new Date(); hojeRef.setHours(0, 0, 0, 0);
@@ -4296,6 +5059,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const bCPrev = document.getElementById('btnCalPrev'); if (bCPrev) bCPrev.onclick = () => { currentCalDate.setMonth(currentCalDate.getMonth() - 1); renderCalendar(); };
     const bCNext = document.getElementById('btnCalNext'); if (bCNext) bCNext.onclick = () => { currentCalDate.setMonth(currentCalDate.getMonth() + 1); renderCalendar(); };
+
+    // Controle de Alternância de Visualização do Calendário (Mensal vs Lista)
+    const btnCalMonth = document.getElementById('btnCalViewMonth');
+    const btnCalList = document.getElementById('btnCalViewList');
+    if (btnCalMonth && btnCalList) {
+        btnCalMonth.onclick = () => {
+            currentCalendarView = 'month';
+            btnCalMonth.classList.add('active');
+            btnCalList.classList.remove('active');
+            
+            const grid = document.getElementById('calendarGrid');
+            const selectedItems = document.getElementById('calSelectedDateItems');
+            const listWrap = document.getElementById('calDeadlinesListView');
+            
+            if (grid) grid.style.display = 'grid';
+            if (selectedItems) selectedItems.style.display = 'block';
+            if (listWrap) listWrap.style.display = 'none';
+            
+            renderCalendar();
+        };
+        
+        btnCalList.onclick = () => {
+            currentCalendarView = 'list';
+            btnCalList.classList.add('active');
+            btnCalMonth.classList.remove('active');
+            
+            const grid = document.getElementById('calendarGrid');
+            const selectedItems = document.getElementById('calSelectedDateItems');
+            const listWrap = document.getElementById('calDeadlinesListView');
+            
+            if (grid) grid.style.display = 'none';
+            if (selectedItems) selectedItems.style.display = 'none';
+            if (listWrap) listWrap.style.display = 'flex';
+            
+            renderCalendarListView();
+        };
+    }
 
     const btnOnt = document.getElementById('btnOntem'); if (btnOnt) btnOnt.onclick = () => { const ontem = getLocalDate(1); const ini = document.getElementById('dataInicio'); if (ini) ini.value = ontem; const fim = document.getElementById('dataFim'); if (fim) fim.value = ontem; const bBuscar = document.getElementById('btnBuscar'); if (bBuscar) bBuscar.click(); };
     const btn7d = document.getElementById('btn7DiasBusca'); if (btn7d) btn7d.onclick = () => { setDate(7); const bBuscar = document.getElementById('btnBuscar'); if (bBuscar) bBuscar.click(); };
@@ -4392,7 +5192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.getElementById('btnBuscar').disabled = true; const sl = document.getElementById('skeletonLoader'); if (sl) sl.style.display = 'block';
             const welcome = document.getElementById('welcomeState'); if (welcome) welcome.style.display = 'none';
-            const resEl = document.getElementById('resultados'); if (resEl) resEl.innerHTML = ""; const cf = document.getElementById('containerFiltro'); if (cf) cf.style.display = 'none';
+            const resEl = document.getElementById('resultados'); if (resEl) resEl.replaceChildren();; const cf = document.getElementById('containerFiltro'); if (cf) cf.style.display = 'none';
 
             let buscaSucesso = false;
             try {
@@ -4428,13 +5228,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const tribs = [...new Set(resultadosGlobais.map(i => i.siglaTribunal))].sort();
-                const f = document.getElementById('filtroTribunal'); if (f) { f.innerHTML = '<option value="">Tribunal</option>'; tribs.forEach(t => { const o = document.createElement("option"); o.value = t; o.textContent = t; f.appendChild(o); }); }
+                const f = document.getElementById('filtroTribunal'); if (f) { safeSetInnerHTML(f, '<option value="">Tribunal</option>');; tribs.forEach(t => { const o = document.createElement("option"); o.value = t; o.textContent = t; f.appendChild(o); }); }
                 if (cf) cf.style.display = 'flex';
                 buscaSucesso = true;
             } catch (e) {
                 console.error("DJEN - Erro de Rede:", e);
                 if (resEl) {
-                    resEl.innerHTML = '';
+                    resEl.replaceChildren();;
                     resEl.appendChild(document.getElementById('tpl-error-cnj').content.cloneNode(true));
                 }
             } finally {
@@ -4483,7 +5283,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ).slice(0, 5);
 
             if (sugestoes.length > 0) {
-                dropdown.innerHTML = '';
+                dropdown.replaceChildren();;
                 sugestoes.forEach(s => {
                     const item = document.createElement('div');
                     item.className = 'autocomplete-item';
@@ -4578,13 +5378,39 @@ document.addEventListener('keydown', (e) => {
         }
         if (algoFechado) return;
 
-        const cardsAbertos = document.querySelectorAll('.intimacao-card.aberto');
+        const cardsAbertos = document.querySelectorAll('.intimacao-card.aberto, .intimacao-card.so-historico');
         if (cardsAbertos.length > 0) {
             cardsAbertos.forEach(card => {
-                card.classList.remove('aberto');
+                // If closing a so-historico card, make sure to remove the class and hide the wrapper
+                if (card.classList.contains('so-historico')) {
+                    card.classList.remove('so-historico');
+                    const tw = card.querySelector('.timeline-wrapper');
+                    if (tw) tw.style.display = 'none';
+                    const bh = card.querySelector('.btn-historico-header');
+                    if (bh) bh.classList.remove('active');
+                }
                 const clickArea = card.querySelector('.card-click-area');
-                if (clickArea) clickArea.setAttribute('aria-expanded', 'false');
+                if (clickArea) clickArea.click();
             });
+            
+            // Pop from history stack if we are navigating back
+            if (window.historicoNavegacaoStack && window.historicoNavegacaoStack.length > 0) {
+                const prev = window.historicoNavegacaoStack.pop();
+                if (prev) {
+                    if (prev.aba && typeof window.mudarParaAba === 'function') {
+                        window.mudarParaAba(prev.aba);
+                    }
+                    if (prev.filtro && typeof window.restaurarFiltroStack === 'function') {
+                        window.restaurarFiltroStack(prev.filtro);
+                    }
+                    setTimeout(() => {
+                        const preferBusca = prev.aba === 'busca';
+                        if (typeof window.focarCardProcesso === 'function') {
+                            window.focarCardProcesso(prev.key, preferBusca, true);
+                        }
+                    }, 50);
+                }
+            }
             algoFechado = true;
         }
         if (algoFechado) return;
@@ -4641,10 +5467,10 @@ function gerarBriefingDiario(items, radarPalavras, fnCleanText) {
     const cr = document.getElementById('contadorResultados');
     if (cr) {
         if (topTags.length === 0) {
-            cr.innerHTML = `${items.length} RESULTADOS <span style="font-size: 11px; color: var(--text-placeholder); margin-left: 8px; font-weight: 500; text-transform: none;">(Lote limpo: sem gatilhos do Radar)</span>`;
+            safeSetInnerHTML(cr, `${items.length} RESULTADOS <span style="font-size: 11px; color: var(--text-placeholder); margin-left: 8px; font-weight: 500; text-transform: none;">(Lote limpo: sem gatilhos do Radar)</span>`);;
             return;
         } else {
-            cr.innerHTML = `${items.length} RESULTADOS <span class="tooltip-right tooltip-bottom" data-tooltip="Mostrando os 3 termos mais urgentes detectados no lote" style="cursor:help; font-size: 11px; color: var(--zen-blue); margin-left: 8px; font-weight: 500; text-transform: none;">(Filtros: Top 3 do Radar)</span>`;
+            safeSetInnerHTML(cr, `${items.length} RESULTADOS <span class="tooltip-right tooltip-bottom" data-tooltip="Mostrando os 3 termos mais urgentes detectados no lote" style="cursor:help; font-size: 11px; color: var(--zen-blue); margin-left: 8px; font-weight: 500; text-transform: none;">(Filtros: Top 3 do Radar)</span>`);;
         }
     }
 
@@ -4664,7 +5490,7 @@ function gerarBriefingDiario(items, radarPalavras, fnCleanText) {
         let chip = document.createElement('div');
         chip.className = 'chip-filtro';
         chip.title = `Filtrar publicações contendo a palavra "${tag.palavra}"`;
-        chip.innerHTML = `🏷️ ${tag.palavra.charAt(0).toUpperCase() + tag.palavra.slice(1)} <span style="opacity: 0.6; font-size: 10px;">(${tag.total})</span>`;
+        safeSetInnerHTML(chip, `🏷️ ${tag.palavra.charAt(0).toUpperCase() + tag.palavra.slice(1)} <span style="opacity: 0.6; font-size: 10px;">(${tag.total})</span>`);;
 
         chip.onclick = () => {
             const termo = tag.palavra.toLowerCase();
@@ -4690,7 +5516,7 @@ function gerarBriefingDiario(items, radarPalavras, fnCleanText) {
         let chipEspera = document.createElement('div');
         chipEspera.className = 'chip-filtro';
         chipEspera.style.borderColor = 'var(--zen-orange)';
-        chipEspera.innerHTML = `⏳ Aguardando Terceiros <span style="opacity: 0.6; font-size: 10px;">(${esperaCount})</span>`;
+        safeSetInnerHTML(chipEspera, `⏳ Aguardando Terceiros <span style="opacity: 0.6; font-size: 10px;">(${esperaCount})</span>`);;
 
         chipEspera.onclick = () => {
             const todosChips = dashContainer.querySelectorAll('.chip-filtro');
@@ -5037,7 +5863,7 @@ if (!CanvasRenderingContext2D.prototype.roundRect) {
             ).slice(0, 5);
 
             if (sugestoes.length > 0) {
-                dropdown.innerHTML = ''; // Limpa a lista
+                dropdown.replaceChildren();; // Limpa a lista
                 sugestoes.forEach(s => {
                     const item = document.createElement('div');
                     item.className = 'autocomplete-item';

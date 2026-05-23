@@ -36,6 +36,7 @@
             --zen-orange: #b45309; --zen-orange-bg: rgba(217, 119, 6, 0.15);
             --zen-red: #b91c1c; --zen-red-bg: rgba(220, 38, 38, 0.15);
             --zen-blue: #0075de; --zen-blue-bg: rgba(0, 117, 222, 0.15);
+            --logo-blue: #0075de; --logo-blue-bg: rgba(0, 117, 222, 0.15);
             --zen-purple: #7c3aed; 
             --zen-purple-bg: rgba(124, 58, 237, 0.12);
 
@@ -234,6 +235,7 @@ html.tema-escuro span.badge-oab {
             --zen-red: #f87171; --zen-red-bg: rgba(248, 113, 113, 0.15);
             --zen-gray: #a09d96; --zen-gray-bg: rgba(250, 249, 245, 0.05);
             --zen-blue: #5db8a6; --zen-blue-bg: rgba(93, 184, 166, 0.15);
+            --logo-blue: #3b82f6; --logo-blue-bg: rgba(59, 130, 246, 0.2);
             --zen-purple: #a78bfa; 
             --zen-purple-bg: rgba(167, 139, 250, 0.15);
 
@@ -454,8 +456,9 @@ html.tema-escuro span.badge-oab {
         
         #toastNativo.show, #toastGenerico.show, #toastDesfazer.show { 
             opacity: 1; 
-            transform: translate(-50%, 0); 
+            transform: translate(-50%, 0) scale(1); 
             pointer-events: auto; 
+            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         
         #toastNativo .toast-title { 
@@ -828,6 +831,27 @@ html.tema-escuro .badge-salvo.s-purple { border-color: rgba(167, 139, 250, 0.4) 
         .btn-acao-square.h-orange:hover { color: var(--zen-orange); background-color: var(--zen-orange-bg); }
         .btn-acao-square.h-green:hover { color: var(--zen-green); background-color: var(--zen-green-bg); }
         .btn-acao-square.h-blue:hover { color: var(--text-primary-contrast); background-color: var(--primary-light); }
+        
+        /* Estilo premium para o botão de opções (três pontos) */
+        .btn-opcoes-card {
+            background-color: var(--bg-body) !important;
+            border: 1px solid var(--border-light) !important;
+            color: var(--text-muted) !important;
+            width: 28px !important;
+            height: 28px !important;
+            border-radius: var(--radius-sm) !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all var(--trans-micro) !important;
+            cursor: pointer !important;
+        }
+        .btn-opcoes-card:hover,
+        .btn-opcoes-card.active {
+            background-color: var(--zen-blue-bg) !important;
+            color: var(--zen-blue) !important;
+            border-color: var(--zen-blue) !important;
+        }
         
         .btn-cumprir-quadrado { background: var(--primary); color: var(--primary-text); border: none; width: auto; padding: 0 12px; height: 32px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; gap: 6px; transition: var(--trans-micro); cursor: pointer; flex-shrink: 0; font-weight: 500; font-size: 14px; box-shadow: var(--shadow-sm); }
         .btn-cumprir-quadrado:hover { background: var(--primary-hover); }
@@ -1320,6 +1344,26 @@ html.tema-escuro .modal-premium {
     opacity: 0.6; /* Deixa o ícone de olho mais suave que o texto */
 }
 
+/* Badge para indicar múltiplos resultados do mesmo processo */
+.badge-duplicado {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--zen-purple) !important;
+    background-color: var(--zen-purple-bg) !important;
+    border: 1px solid rgba(124, 58, 237, 0.2) !important;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+html.tema-escuro .badge-duplicado {
+    border-color: rgba(167, 139, 250, 0.3) !important;
+}
+
 /* Estilo da tela de Zero Resultados (Empty State) */
     .empty-state {
         display: flex;
@@ -1751,7 +1795,10 @@ html.tema-escuro .modal-premium {
     background-color: var(--bg-body);
     border: 1px solid var(--border-light);
     border-radius: 4px;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.custom-checkbox:active .checkmark {
+    transform: scale(0.85);
 }
 .badge-tarefas {
     padding: 2px 6px;
@@ -1775,10 +1822,13 @@ html.tema-escuro .modal-premium {
 .checkmark:after {
     content: "";
     position: absolute;
-    display: none;
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
 }
 .custom-checkbox input:checked ~ .checkmark:after {
-    display: block;
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
 }
 .custom-checkbox .checkmark:after {
     left: 5px;
@@ -1787,7 +1837,6 @@ html.tema-escuro .modal-premium {
     height: 9px;
     border: solid white;
     border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
 }
 .task-text {
     flex: 1;
@@ -1836,4 +1885,393 @@ html.tema-escuro .modal-premium {
 }
 .task-add-row input::placeholder {
     color: var(--text-placeholder);
+}
+
+/* --- HISTÓRICO DE AÇÕES (TIMELINE) --- */
+.timeline-wrapper {
+    margin-top: 12px;
+    padding: 16px;
+    background: var(--bg-body);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.timeline-header {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.timeline-container {
+    position: relative;
+    padding-left: 12px;
+}
+
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 8px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border-light);
+    border-radius: 2px;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-badge {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    flex-shrink: 0;
+    border: 2px solid var(--bg-body);
+    margin-top: 2px;
+    box-shadow: 0 0 0 1px var(--border-light);
+}
+
+.timeline-badge.t-blue { background: var(--logo-blue); color: #fff; border-color: var(--logo-blue-bg); }
+.timeline-badge.t-purple { background: var(--logo-blue); color: #fff; border-color: var(--logo-blue-bg); }
+.timeline-badge.t-orange { background: var(--logo-blue); color: #fff; border-color: var(--logo-blue-bg); }
+.timeline-badge.t-green { background: var(--logo-blue); color: #fff; border-color: var(--logo-blue-bg); }
+.timeline-badge.t-red { background: var(--logo-blue); color: #fff; border-color: var(--logo-blue-bg); }
+.timeline-badge.t-gray { background: var(--logo-blue); color: #fff; border-color: var(--logo-blue-bg); }
+
+.timeline-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.timeline-desc {
+    font-size: 13px;
+    color: var(--text-main);
+    line-height: 1.4;
+}
+
+.timeline-date {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+/* --- ESTILOS ENRIQUECIDOS DA TIMELINE --- */
+.timeline-card-content {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    margin-top: 6px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.timeline-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.timeline-card-trib {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--zen-blue);
+    background-color: var(--zen-blue-bg);
+    padding: 2px 5px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+}
+
+.timeline-card-tipo {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.timeline-card-orgao {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+}
+
+.timeline-badge-status {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.timeline-badge-status.s-green { color: var(--zen-green); background-color: var(--zen-green-bg); }
+.timeline-badge-status.s-orange { color: var(--zen-orange); background-color: var(--zen-orange-bg); }
+.timeline-badge-status.s-red { border: 1px solid rgba(212, 76, 71, 0.3); background-color: rgba(212, 76, 71, 0.05); color: var(--zen-red); }
+.timeline-badge-status.s-purple { border: 1px solid rgba(124, 58, 237, 0.2); background-color: rgba(124, 58, 237, 0.05); color: var(--zen-purple); }
+.timeline-badge-status.s-hoje { animation: pulseAlert 1.5s infinite; border: 1px solid rgba(212, 76, 71, 0.3); background-color: rgba(212, 76, 71, 0.05); color: var(--zen-red); }
+.timeline-badge-status.s-gray { color: var(--text-muted); background-color: var(--bg-hover); }
+.timeline-badge-status.s-light { color: var(--text-muted); background-color: rgba(0, 0, 0, 0.03); border: 1px solid var(--border-light); }
+
+html.tema-escuro .timeline-badge-status.s-light {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.btn-historico-header {
+    background: transparent;
+    border: none;
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--trans-micro);
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    margin-left: 8px;
+}
+.btn-historico-header:hover {
+    background: var(--bg-hover) !important;
+    color: var(--zen-blue) !important;
+}
+.btn-historico-header.active {
+    background: var(--zen-blue-bg) !important;
+    color: var(--zen-blue) !important;
+}
+
+.clickable-timeline-item {
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.clickable-timeline-item:hover {
+    transform: translateY(-1px);
+    border-color: var(--zen-blue) !important;
+    box-shadow: var(--shadow-sm), 0 2px 4px rgba(0, 117, 222, 0.05);
+}
+
+/* --- SÓ HISTÓRICO (EXCLUSIVIDADE DA TIMELINE NO CARD FECHADO) --- */
+.intimacao-card.so-historico .teor-box-container,
+.intimacao-card.so-historico .btn-toggle-teor,
+.intimacao-card.so-historico .notion-wrapper,
+.intimacao-card.so-historico .card-acoes-pills,
+.intimacao-card.so-historico .calc-panel {
+    display: none !important;
+}
+
+/* --- ANIMAÇÕES E MICRO-INTERAÇÕES PREMIUM (v50.4) --- */
+
+/* 1. Transição de Abas */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+        filter: blur(2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+.tab-panel-animated {
+    animation: fadeInUp 0.24s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 2. Dropdowns Orgânicos */
+@keyframes dropdownScaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-4px);
+        filter: blur(2px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+}
+.dropdown-menu.show, .card-dropdown.show {
+    display: flex !important;
+    animation: dropdownScaleIn 0.16s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 3. Modais Amortecidos */
+@keyframes modalOverlayFadeIn {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0);
+        -webkit-backdrop-filter: blur(0);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: var(--blur-fx);
+        -webkit-backdrop-filter: var(--blur-fx);
+    }
+}
+@keyframes modalContentZoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.94) translateY(12px);
+        filter: blur(4px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+}
+.modal-overlay.show {
+    display: flex !important;
+    animation: modalOverlayFadeIn 0.2s ease forwards;
+}
+.modal-overlay.show .modal-content {
+    animation: modalContentZoomIn 0.28s cubic-bezier(0.34, 1.3, 0.64, 1) forwards !important;
+    transition: none !important;
+}
+
+/* 4. Expansão Inline Suave */
+.timeline-conteudo-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+    width: 100%;
+}
+.timeline-conteudo-wrapper.expanded {
+    grid-template-rows: 1fr;
+}
+.timeline-conteudo {
+    min-height: 0;
+    opacity: 0;
+    transform: translateY(4px);
+    filter: blur(1.5px);
+    transition: opacity 0.22s ease, transform 0.22s ease, filter 0.22s ease;
+}
+.timeline-conteudo-wrapper.expanded .timeline-conteudo {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+/* 5. Pilha de Ícones de Tema Transmutável */
+.theme-icon-stack {
+    position: relative;
+    display: inline-flex;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+.theme-icon {
+    position: absolute;
+    inset: 0;
+    width: 14px;
+    height: 14px;
+    transform-origin: center;
+    transition: opacity 0.26s cubic-bezier(0.25, 1, 0.5, 1), 
+                transform 0.26s cubic-bezier(0.25, 1, 0.5, 1), 
+                filter 0.26s cubic-bezier(0.25, 1, 0.5, 1);
+}
+/* Lua por padrão (Modo Claro) */
+.theme-icon-sun {
+    opacity: 0;
+    transform: scale(0.5) rotate(-45deg);
+    filter: blur(2px);
+}
+.theme-icon-moon {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+    filter: blur(0);
+}
+/* Sol no Modo Escuro */
+html.tema-escuro .theme-icon-sun {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+    filter: blur(0);
+}
+html.tema-escuro .theme-icon-moon {
+    opacity: 0;
+    transform: scale(0.5) rotate(45deg);
+    filter: blur(2px);
+}
+
+
+/* Micro-interacoes extras para botoes */
+.btn-pill:active, .btn-acao-square:active {
+    transform: scale(0.94);
+    transition: transform 0.1s;
+}
+
+/* --- SKELETON SHIMMER LOADERS (Estilo Transitions.dev) --- */
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+.spinner-mini {
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--border-light);
+    border-top-color: var(--logo-blue);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+}
+.skeleton-shimmer-circle,
+.skeleton-shimmer-bar {
+    background: linear-gradient(90deg, var(--bg-hover) 25%, var(--border-light) 37%, var(--bg-hover) 63%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite linear;
+}
+.skeleton-shimmer-circle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--bg-body);
+}
+.skeleton-shimmer-bar {
+    height: 12px;
+    border-radius: 4px;
+}
+.skeleton-shimmer-bar.short {
+    width: 45%;
+}
+.skeleton-shimmer-bar.long {
+    width: 90%;
 }
