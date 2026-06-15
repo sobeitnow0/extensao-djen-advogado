@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="djen-128.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -392,7 +392,20 @@
 
             <div class="wiki-hero">
                 <h1>Wiki & Documentação</h1>
-                <p>Guia completo do Buscador DJEN v50.3. Todas as funcionalidades documentadas diretamente a partir do código-fonte da extensão.</p>
+                <p>Guia completo do Buscador DJEN v50.62. Todas as funcionalidades documentadas diretamente a partir do código-fonte da extensão.</p>
+
+                <div class="wiki-callout info" style="margin-top: 24px; display: flex; gap: 14px;">
+                    <span class="callout-icon" style="font-size: 18px; margin-top: 1px;">✨</span>
+                    <div>
+                        <strong style="color: var(--zen-blue); font-weight: 700;">Novidades da Versão 50.62:</strong>
+                        <ul style="margin: 8px 0 0 16px; padding: 0; font-size: 14px; line-height: 1.6; color: inherit;">
+                            <li><strong>Calculadora Instantânea:</strong> Otimização extrema eliminando a lentidão de consultas automáticas ao CNJ na contagem de prazos.</li>
+                            <li><strong>Apresentação Limpa:</strong> Layout dos cartões de intimação reestruturado com metadados e tags na base dos cards.</li>
+                            <li><strong>Hover de Regras Legais:</strong> Informações de contagem do CPC/CLT/CPP movidas para tooltips flutuantes nos seletores.</li>
+                            <li><strong>Limpeza de Lido:</strong> O status de "Lido" é limpo automaticamente ao salvar ou calcular um prazo.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <div class="wiki-quick-links">
