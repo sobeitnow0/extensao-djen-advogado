@@ -112,7 +112,7 @@
                         <span class="store-title">Web App Oficial</span>
                         <span class="store-version version-webapp">
                             <span class="pulse-dot dot-webapp"></span> 
-                            <span id="webapp-version">Versão 50.3</span>
+                            <span id="webapp-version">Versão 51.0</span>
                         </span>
                     </div>
                 </a>
@@ -237,6 +237,18 @@
         // Changelog JSON Data
         const changelogData = [
             {
+                version: "v51.0",
+                date: "Junho de 2026",
+                title: "Novo Design dos Cartões e Performance Absoluta",
+                description: "Atualização focada na estética dos cartões de intimação e remoção de gargalos. A calculadora agora opera instantaneamente, e o layout está muito mais limpo.",
+                changes: [
+                    { type: "new", label: "Novo", text: "Design Limpo: Reorganização da data de disponibilização, tags e ícones na base do cartão." },
+                    { type: "improvement", label: "Melhoria", text: "Calculadora Instantânea: Cálculo de prazos agora ocorre em milissegundos, sem buscar dados no CNJ durante a contagem." },
+                    { type: "new", label: "Novo", text: "Referências Legais: A base legal (CPC, CLT, CPP) agora é exibida ao passar o mouse sobre o seletor, liberando espaço visual na tela." },
+                    { type: "improvement", label: "Melhoria", text: "Foco Visual: O status de Lido agora é removido automaticamente do cartão assim que o prazo é calculado." }
+                ]
+            },
+            {
                 version: "v50.3",
                 date: "Maio de 2026",
                 title: "Histórico do Processo e Nova Visualização em Calendário",
@@ -307,7 +319,7 @@
         ];
 
         // Dynamic Interactive Timeline Renderer
-        function renderChangelog(activeVersion = 'v50.3') {
+        function renderChangelog(activeVersion = 'v51.0') {
             const container = document.getElementById('timelineContainer');
             if (!container) return;
 
@@ -390,8 +402,8 @@
 
         // Initial DOM Load Render & Setup
         document.addEventListener('DOMContentLoaded', () => { 
-            // Render timeline with default active v50.3 initially
-            renderChangelog('v50.3');
+            // Render timeline with default active v51.0 initially
+            renderChangelog('v51.0');
             initializeObserver();
         });
 
