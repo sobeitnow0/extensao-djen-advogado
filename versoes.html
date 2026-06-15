@@ -112,7 +112,7 @@
                         <span class="store-title">Web App Oficial</span>
                         <span class="store-version version-webapp">
                             <span class="pulse-dot dot-webapp"></span> 
-                            <span id="webapp-version">Versão 51.0</span>
+                            <span id="webapp-version">Versão 50.62</span>
                         </span>
                     </div>
                 </a>
@@ -237,7 +237,7 @@
         // Changelog JSON Data
         const changelogData = [
             {
-                version: "v51.0",
+                version: "v50.62",
                 date: "Junho de 2026",
                 title: "Novo Design dos Cartões e Performance Absoluta",
                 description: "Atualização focada na estética dos cartões de intimação e remoção de gargalos. A calculadora agora opera instantaneamente, e o layout está muito mais limpo.",
@@ -319,7 +319,7 @@
         ];
 
         // Dynamic Interactive Timeline Renderer
-        function renderChangelog(activeVersion = 'v51.0') {
+        function renderChangelog(activeVersion = 'v50.62') {
             const container = document.getElementById('timelineContainer');
             if (!container) return;
 
@@ -402,8 +402,8 @@
 
         // Initial DOM Load Render & Setup
         document.addEventListener('DOMContentLoaded', () => { 
-            // Render timeline with default active v51.0 initially
-            renderChangelog('v51.0');
+            // Render timeline with default active v50.62 initially
+            renderChangelog('v50.62');
             initializeObserver();
         });
 
