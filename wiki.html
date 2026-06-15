@@ -616,6 +616,15 @@
                     <span class="callout-icon"><i class="ph-light ph-trophy"></i></span>
                     <p>Ao atingir <strong>50 prazos cumpridos</strong>, a extensão exibe um convite para avaliar a ferramenta na loja.</p>
                 </div>
+
+                <h3>Sincronização CNJ & Dados Processuais</h3>
+                <p>O painel de controle permite sincronizar as informações do processo diretamente com a API pública do CNJ. Ao clicar em sincronizar, o sistema atualiza o status, classe processual, órgão julgador e andamentos recentes.</p>
+
+                <h3>Vinculação de Processos Relacionados</h3>
+                <p>Na visualização de detalhes de um prazo, é possível criar vínculos com outros processos relacionados (processos principais, incidentes ou recursos). Isso agrupa as intimações e tarefas sob a mesma pauta visual, simplificando o acompanhamento do caso completo.</p>
+
+                <h3>Marcação de Lido Automatizada</h3>
+                <p>Sempre que uma nova publicação é recebida, ela é exibida em destaque com o indicador visual de "Não Lido". Assim que você calcula o prazo ou clica em salvar, a tag "Lido" é aplicada automaticamente e o cartão assume o layout final, mantendo sua pauta de triagem limpa.</p>
             </section>
 
             <!-- CALCULADORA -->
@@ -879,12 +888,15 @@
                     </tbody>
                 </table>
 
-                <h3>Conteúdo do Relatório</h3>
+                <h3>Personalização & Conteúdo</h3>
+                <p>O cabeçalho do relatório pode ser personalizado com as informações do seu próprio escritório através das configurações:</p>
                 <ul style="padding-left: 20px; color: var(--text-muted); font-size: 15px; line-height: 2;">
-                    <li>Cabeçalho com logo DJEN, nome do advogado (OAB) e data/hora de extração</li>
-                    <li>Painel de KPIs com indicador visual de eficiência (verde/amarelo/vermelho)</li>
-                    <li>Tabela completa com: processo, tribunal, prazo fatal, status, anotações, tags do Radar, checklist de tarefas</li>
-                    <li>Rodapé com aviso legal de caráter referencial</li>
+                    <li><strong>Logotipo Personalizado:</strong> Envie o logotipo do seu escritório para exibição no cabeçalho do PDF.</li>
+                    <li><strong>Nome & Dados Profissionais:</strong> Personalize o nome do advogado/escritório, número de OAB e dados adicionais de contato.</li>
+                    <li>Cabeçalho com data/hora de extração e estatísticas do relatório.</li>
+                    <li>Painel de KPIs com indicador visual de eficiência (verde/amarelo/vermelho).</li>
+                    <li>Tabela completa com: processo, tribunal, prazo fatal, status, anotações, tags do Radar, checklist de tarefas.</li>
+                    <li>Rodapé profissional com aviso legal referencial.</li>
                 </ul>
 
                 <div class="wiki-callout tip">
@@ -1018,6 +1030,7 @@
                         <tr><td>OAB Padrão</td><td>Campo OAB na aba Busca</td><td>Salvo automaticamente para a próxima sessão</td></tr>
                         <tr><td>Termos do Radar</td><td>Menu ☰ → Gerenciar Termos do Radar</td><td>Palavras-chave de alerta automático</td></tr>
                         <tr><td>Google Agenda</td><td>Menu ☰ → Configurar Google Agenda</td><td>E-mail e horário dos eventos</td></tr>
+                        <tr><td>Personalização de Exportáveis</td><td>Menu ☰ → Personalizar Relatórios</td><td>Logotipo do escritório, nome do advogado e dados profissionais para os relatórios em PDF.</td></tr>
                         <tr><td>Dias de Controle Interno</td><td>Configurações avançadas</td><td>Quantos dias antes do fatal gerar o alerta de controle interno (padrão: 3)</td></tr>
                         <tr><td>Tamanho da Fonte (Foco)</td><td>Botões A– / A+ no Modo Foco</td><td>Ajuste de 12px a 26px, salvo persistentemente</td></tr>
                     </tbody>
