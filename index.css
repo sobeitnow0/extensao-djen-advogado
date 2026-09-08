@@ -1270,6 +1270,16 @@ footer {
     border-color: rgba(204, 120, 92, 0.4);
 }
 
+.card-badge-tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: var(--radius-pill);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
 .feature-icon {
     font-size: 2rem;
     margin-bottom: 24px;

@@ -11,7 +11,21 @@
     <link rel="apple-touch-icon" href="djen-128.png">
     
     <script src="djen_storage.js"></script>
+    <script src="js/state_manager.js"></script>
+    <script src="js/ai_checklist.js"></script>
+    <script src="js/search_engine.js"></script>
+    <script src="js/ui_cards.js"></script>
     <script src="djen_utils.js"></script>
+    <script src="dom_utils.js"></script>
+    <script src="js/storage_adapter.js"></script>
+    <script src="js/ui_manager.js"></script>
+    <script src="js/api_client.js"></script>
+    <script src="js/resumo_processo.js"></script>
+    <script src="js/motor_prazos.js"></script>
+    <script src="js/calculadora_manual.js"></script>
+    <script src="js/google_tasks_service.js"></script>
+    <script src="js/export_service.js"></script>
+    <script src="js/virtual_list.js"></script>
     <script src="sidebar.js"></script>
 
     <link rel="stylesheet" href="styles.css">
@@ -24,31 +38,38 @@
 
     <div id="focusModeOverlay">
         <div class="focus-header">
-    <div style="display: flex; align-items: flex-start; justify-content: space-between; width: 100%; gap: 16px;">
-        <div class="focus-title-group" style="flex: 1; min-width: 0;">
-            <div id="focusTribunal" style="font-size: 11px; font-weight: 600; color: var(--text-primary-contrast); text-transform: uppercase; letter-spacing: 0.5px; background: var(--primary-light); display: inline-block; padding: 4px 10px; border-radius: var(--radius-sm); width: fit-content;"></div>
-            <h2 id="focusProcesso" class="focus-proc" style="margin-top: 8px;"></h2>
-            <div id="focusApelido" style="font-size: 15px; font-weight: 500; color: var(--text-muted); margin-top: 4px;"></div>
+    <div class="focus-header-container">
+        <div class="focus-title-group">
+            <div id="focusTribunal"></div>
+            <h2 id="focusProcesso" class="focus-proc"></h2>
+            <div id="focusApelido"></div>
         </div>
-        <button class="btn-close-focus" id="btnCloseFocus" aria-label="Fechar Modo Foco" title="Fechar (Esc)" style="flex-shrink: 0; background: var(--bg-hover); border: 1px solid var(--border-light); color: var(--text-muted); width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 20px; font-weight: 300; transition: all 0.2s ease;">&times;</button>
+        <button class="btn-close-focus" id="btnCloseFocus" aria-label="Fechar Modo Foco" title="Fechar (Esc)">&times;</button>
     </div>
     
-    <div id="focusUrgencyBar" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border-light); width: 100%; display: none; align-items: center;"></div>
+    <div id="focusUrgencyBar"></div>
     
-    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; width: 100%; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border-light);">
-        <button id="btnMarcarTextoFoco" class="btn-pill" style="color: var(--zen-orange); border-color: transparent; background: var(--zen-orange-bg); font-size: 13px; padding: 7px 14px;">
+    <div class="focus-toolbar">
+        <button id="btnMarcarTextoFoco" class="btn-pill btn-marcar">
             🖌️ Marcar Texto
         </button>
-        <button id="btnCriarTagFoco" class="btn-pill" style="color: var(--text-primary-contrast); border-color: transparent; background: var(--primary-light); font-size: 13px; padding: 7px 14px;">
+        <button id="btnCriarTagFoco" class="btn-pill btn-tag">
             🏷️ Criar Tag
         </button>
-        <div style="display: flex; gap: 6px; margin-left: auto;">
-            <button id="btnFontMinus" class="btn-acao-square" style="border: 1px solid var(--border-light); background: var(--bg-body); width: 32px; height: 32px; border-radius: var(--radius-btn);">A-</button>
-            <button id="btnFontPlus" class="btn-acao-square" style="border: 1px solid var(--border-light); background: var(--bg-body); width: 32px; height: 32px; border-radius: var(--radius-btn);">A+</button>
+        <!-- Feature B v50.71: Resumo Inteligente via IA -->
+        <button id="btnResumirFoco" class="btn-resumir-ia" title="Gerar resumo jurídico desta publicação com IA" aria-label="Resumir com IA">
+            ✨ Resumir
+        </button>
+        <div class="focus-toolbar-right">
+            <button id="btnModoSereno" class="btn-acao-square tooltip-bottom" data-tooltip="Leitura Serena (fundo escuro)" title="Modo Leitura Serena" aria-label="Modo leitura serena">🌙</button>
+            <button id="btnFontMinus" class="btn-acao-square">A-</button>
+            <button id="btnFontPlus" class="btn-acao-square">A+</button>
         </div>
     </div>
 </div>
         <div id="focusTeorContent"></div>
+        <!-- Container para exibir o resumo IA abaixo do teor -->
+        <div id="focusResumoIAContainer" style="padding: 0 16px 16px;"></div>
     </div>
 
     <button id="btnIrTopo" aria-label="Ir para o topo" title="Ir para o topo"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
@@ -66,71 +87,133 @@
                     <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.5"></circle><circle cx="12" cy="5" r="1.5"></circle><circle cx="12" cy="19" r="1.5"></circle></svg>
                 </button>
             <div class="dropdown-menu" id="headerDropdown">
-    <button id="btnExportarCSV" aria-label="Exportar visão atual (CSV)">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-        Exportar Visão Atual (CSV)
-    </button>
-    <button id="btnExportarPDFBase" aria-label="Relatório tático (PDF)">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-        Relatório Tático (PDF)
-    </button>
-    <button id="btnExportarJurimetria" aria-label="Base de jurimetria (CSV Completo)">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
-        Base de Jurimetria (CSV Completo)
-    </button>
-    <hr>
-    <button id="btnVerNivel" aria-label="Estatísticas de uso">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-        Estatísticas de uso
-    </button>
-    <hr>
-    <button id="btnGerenciarTermos" aria-label="Configurar radar">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
-        Configurar radar
-    </button>
-    <button id="btnAbrirTutorial" aria-label="Central de ajuda">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-        Central de ajuda
-    </button>
-    <hr>
-    <button id="btnToggleTheme" aria-label="Alternar tema" style="display: flex; align-items: center; gap: 8px;">
-        <span class="theme-icon-stack">
-            <svg class="theme-icon theme-icon-moon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-            <svg class="theme-icon theme-icon-sun" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-        </span>
-        <span id="themeBtnText">Tema: Automático</span>
-    </button>
-    <hr>
-    <button id="btnConfigurarAgenda" aria-label="Vincular agenda do Google">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        Vincular agenda do Google
-    </button>
-    <hr>
-    <button id="btnSalvarBackupMenu" aria-label="Fazer backup">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-        Fazer backup
-    </button>
-    <button id="btnRestaurarBackupMenu" aria-label="Restaurar backup">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-        Restaurar backup
-    </button>
-    <hr>
-    <button id="btnIndicarColega" aria-label="Indicar extensão">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-        Indicar extensão
-    </button>
-</div>
-                <input type="file" id="inputRestaurar" accept=".json" style="display: none;" aria-hidden="true">
+                <div class="menu-search-wrapper">
+                    <svg class="search-icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="menuSearchInput" placeholder="Buscar opção..." autocomplete="off">
+                </div>
+
+                <div class="menu-group">
+                    <div class="menu-group-title">Exportações e Relatórios</div>
+                    <button id="btnExportarCSV" aria-label="Exportar visão atual (CSV)" title="Gera uma planilha (CSV) com as publicações listadas atualmente na tela para uso no Excel.">
+                        <svg class="icon-green" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                        Exportar Visão Atual (CSV)
+                    </button>
+                    <button id="btnExportarPDFBase" aria-label="Relatório tático (PDF)" title="Cria um relatório gerencial completo em formato PDF com métricas e o resumo tático das suas publicações.">
+                        <svg class="icon-red" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Relatório Tático (PDF)
+                    </button>
+                    <button id="btnExportarRelatorioExecutivo" aria-label="Relatório Executivo Avançado" title="Cria um Relatório Executivo Avançado em PDF, agrupando publicações por tribunal e destacando urgências do radar.">
+                        <svg class="icon-red" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                        Relatório Executivo Avançado
+                    </button>
+                    <button id="btnExportarJurimetria" aria-label="Base de jurimetria (CSV Completo)">
+                        <svg class="icon-emerald" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                        Base de Jurimetria (CSV Completo)
+                    </button>
+                    <button id="btnExportarTarefasLote" aria-label="Exportar todos os prazos como tarefas (To-Do)">
+                        <svg class="icon-teal" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                        Exportar Prazos como Tarefas (Lote)
+                    </button>
+                    <button id="btnExportarIcsLote" aria-label="Exportar Prazos Salvos (ICS/iCal)" title="Gera um arquivo de calendário (.ics) com todos os prazos salvos para importar no Google Agenda, Outlook ou Apple Calendar.">
+                        <svg class="icon-purple" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        Exportar Calendário (Lote ICS)
+                    </button>
+                </div>
+
+                <div class="menu-group">
+                    <div class="menu-group-title">Configurações de Fluxo</div>
+                    <button id="btnGerenciarTermos" aria-label="Configurar radar">
+                        <svg class="icon-purple" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                        Configurar radar
+                    </button>
+                    <button id="btnGerenciarSuspensoes" aria-label="Gerenciar suspensões de prazos" title="Adicione greves, feriados locais ou indisponibilidades de sistema para recalcular automaticamente seus prazos ativos.">
+                        <svg class="icon-orange" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><path d="m9 16 2 2 4-4"></path></svg>
+                        Suspensões de Prazos
+                    </button>
+                    <button id="btnConfigurarAlertas" aria-label="Alertas em segundo plano">
+                        <svg class="icon-pink" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        Alertas em segundo plano
+                    </button>
+                    <button id="btnConfigurarBranding" aria-label="Identidade do Escritório" title="Personalize os relatórios PDF com o logotipo e nome do seu escritório de advocacia.">
+                        <svg class="icon-emerald" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><path d="M12 18h.01"></path><path d="M8 21h8"></path><path d="M12 17v4"></path><path d="M9 6h6"></path><path d="M9 10h6"></path><path d="M9 14h6"></path></svg>
+                        Identidade do Escritório
+                    </button>
+                </div>
+
+                <div class="menu-group">
+                    <div class="menu-group-title">Integrações e Inteligência</div>
+                    <button id="btnConfigurarAgenda" aria-label="Vincular agenda do Google">
+                        <svg class="icon-blue" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        Vincular agenda do Google
+                    </button>
+                    <button id="btnConfigurarDataJud" aria-label="Integração CNJ (DataJud)">
+                        <svg class="icon-cyan" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        Integração CNJ (DataJud)
+                    </button>
+                    <button id="btnConfigurarIA" aria-label="Configurar Resumo por IA">
+                        <svg class="icon-violet" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275z"/></svg>
+                        Configurar Resumo por IA
+                    </button>
+                    <button id="btnConfigurarJurisflow" aria-label="Integração Jurisflow">
+                        <img src="jurisflow-icon.png" width="14" height="14" style="object-fit: contain; margin-right: 6px; border-radius: 2px;" alt="" aria-hidden="true">
+                        Integração Jurisflow
+                    </button>
+                </div>
+
+                <div class="menu-group">
+                    <div class="menu-group-title">Segurança e Backup</div>
+                    <button id="btnSalvarBackupMenu" aria-label="Fazer backup">
+                        <svg class="icon-yellow" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Fazer backup
+                    </button>
+                    <button id="btnRestaurarBackupMenu" aria-label="Restaurar backup">
+                        <svg class="icon-orange" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        Restaurar backup
+                    </button>
+                    <button id="btnImportarCSVMenu" aria-label="Importar via CSV" title="Importe processos em lote através de uma planilha CSV.">
+                        <svg class="icon-emerald" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="12" y2="12"></line><line x1="15" y1="15" x2="12" y2="12"></line></svg>
+                        Importar planilhas (CSV)
+                    </button>
+                    <input type="file" id="inputImportarCSVFile" accept=".csv" style="display: none;">
+                    <button id="btnConfigurarBackupAuto" aria-label="Configurar backup automático">
+                        <svg class="icon-teal" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        Configurar backup automático
+                    </button>
+                </div>
+
+                <div class="menu-group">
+                    <div class="menu-group-title">Geral e Suporte</div>
+                    <button id="btnToggleTheme" aria-label="Alternar tema" style="display: flex; align-items: center; gap: 8px;">
+                        <span class="theme-icon-stack">
+                            <svg class="theme-icon theme-icon-moon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                            <svg class="theme-icon theme-icon-sun" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                        </span>
+                        <span id="themeBtnText">Tema: Automático</span>
+                    </button>
+                    <button id="btnVerNivel" aria-label="Estatísticas de uso">
+                        <svg class="icon-blue" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                        Estatísticas de uso
+                    </button>
+                    <button id="btnAbrirTutorial" aria-label="Central de ajuda">
+                        <svg class="icon-emerald" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                        Central de ajuda
+                    </button>
+                    <button id="btnIndicarColega" aria-label="Indicar extensão">
+                        <svg class="icon-pink" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Indicar extensão
+                    </button>
+                </div>
+            </div>
+                <input type="file" id="inputRestaurar" accept=".json" style="visibility: hidden; position: absolute;" aria-hidden="true">
             </div>
         </div>
 
         <div class="view-switcher" role="tablist">
             <button id="tabBusca" class="active" role="tab" aria-selected="true" aria-controls="viewBusca">Buscar</button>
             <button id="tabSalvos" role="tab" aria-selected="false" aria-controls="viewSalvos">Prazos</button>
-            <button id="tabCalendario" role="tab" aria-selected="false" aria-controls="viewCalendario">Calendário</button>
+            <button id="tabControle" role="tab" aria-selected="false" aria-controls="viewControle">Controle</button>
             <button id="tabCalculadora" role="tab" aria-selected="false" aria-controls="viewCalculadora">Calculadora</button>
-            <div class="linha-liquida"></div>
-</div>
+        </div>
     </div>
 
     <div id="viewBusca" class="tab-panel-animated" role="tabpanel">
@@ -178,18 +261,25 @@
 </button>
         </div>
 
+        
+
         <div id="resumoBusca" style="display: none; width: 100%; box-sizing: border-box; align-items: center; justify-content: space-between; padding: 6px 8px; margin-bottom: 12px; transition: 0.2s; margin-top: 4px; background-color: transparent; border: none; border-radius: 6px;">
             <div style="display: flex; align-items: center; cursor: pointer; flex: 1; opacity: 0.8;" id="btnEditarResumo" aria-label="Editar Busca">
                 <div class="resumo-icone" style="color: var(--zen-purple); margin-right: 8px; display: flex;"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                 <div class="resumo-texto" id="textoResumoBusca" style="font-weight: 600; font-size: 12px; color: var(--text-main); letter-spacing: 0.1px;">Resumo da busca</div>
-                <div class="resumo-icone-edit" style="margin-left: auto; font-size: 10px; color: var(--text-placeholder); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Editar</div>
+                <div class="resumo-icone-edit" style="margin-left: auto; font-size: 10px; color: var(--text-placeholder);  font-weight: 700; letter-spacing: 0.5px;">Editar</div>
             </div>
         </div>
 
-        <div id="containerFiltro" style="display: none; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;">
-            <select id="filtroTribunal" style="flex: 1; min-width: 100px; background-color: #1a1918; border: 1px solid #3d3a38; color: #fff; padding: 10px 12px; border-radius: 6px; outline: none; font-size: 13px;" aria-label="Filtrar por Tribunal"><option value="">Tribunal</option></select>
-            <input type="text" id="filtroRapido" placeholder="Filtrar processos..." style="flex: 2; min-width: 140px; background-color: #1a1918; border: 1px solid #3d3a38; color: #fff; padding: 10px 12px; border-radius: 6px; outline: none; font-size: 13px;" aria-label="Filtro de Processos">
+        <div id="containerFiltro" style="display: none; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+            <select id="filtroTribunal" style="flex: 1; min-width: 100px; padding: 10px 12px; border-radius: 6px; font-size: 13px;" aria-label="Filtrar por Tribunal"><option value="">Tribunal</option></select>
+            <input type="text" id="filtroRapido" placeholder="Filtrar por processo ou texto..." style="flex: 2; min-width: 140px; padding: 10px 12px; border-radius: 6px; font-size: 13px;" aria-label="Filtro de Processos">
+            <button id="btnFiltroApenasNaoLidos" title="Exibir apenas não lidos" aria-label="Apenas não lidos" style="padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border-light); background: var(--bg-body); color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; display:flex; align-items:center; gap:5px; transition: all 0.2s;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                Não lidos
+            </button>
         </div>
+
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
             <span id="contadorResultados" style="font-size: 12px; font-weight: 500; color: var(--text-muted);"></span>
@@ -203,18 +293,32 @@
                           </div>
         </div>
 
-        <div id="skeletonLoader" style="display:none" aria-hidden="true"><div class="skeleton-card"></div><div class="skeleton-card"></div></div>
+        <div id="skeletonLoader" style="display:none" aria-hidden="true">
+            <div class="skeleton-card"><div class="skeleton-line medium"></div><div class="skeleton-line long"></div><div class="skeleton-line short"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line long"></div><div class="skeleton-line medium"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line long"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line long"></div></div>
+        </div>
 
-        <div id="welcomeState" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0; text-align: center;">
-    <div style="font-size: 28px; margin-bottom: 8px; opacity: 0.8;">🔍</div>
-    <div style="font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 12px;">Pronto para iniciar</div>
-    
-    <div style="text-align: left; font-size: 12.5px; color: var(--text-muted); margin-bottom: 16px; background: var(--bg-body); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--border-light); width: 100%; box-sizing: border-box; box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);">
-        <div style="margin-bottom: 6px;"><b>1.</b> Informe a OAB ou número do processo.</div>
-        <div style="margin-bottom: 6px;"><b>2.</b> Revise as publicações localizadas.</div>
-        <div><b>3.</b> Calcule o prazo e salve na agenda.</div>
-    </div>
-</div> 
+        <div id="welcomeState" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 0; text-align: center;">
+            <div style="margin-bottom: 16px;">
+                <svg id="welcomeLupa" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.9; animation: welcomeLupaFloat 3s ease-in-out infinite;">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+            <div style="font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; letter-spacing: -0.3px;">Pronto para buscar</div>
+            <div id="welcomeTipText" style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px; min-height: 32px; max-width: 280px; line-height: 1.5; transition: opacity 0.4s;"></div>
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <div id="btnWelcomeUltimaBusca" style="display:none; width:100%;">
+                    <button onclick="document.getElementById('btnBuscar')?.click()" style="width:100%; padding: 9px 12px; border-radius: var(--radius-btn); border: 1px dashed var(--border-light); background: var(--bg-body); color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-5"></path></svg>
+                        Repetir última busca
+                    </button>
+                </div>
+            </div>
+        </div>
+
 
     <div id="resultados" aria-live="polite"></div>
 
@@ -242,21 +346,31 @@
             </div>
         </div>
 
+
         <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 16px; width: 100%; position: relative; z-index: 20;">
             <div style="flex: 1;">
                 <input type="text" id="filtroPrazos" placeholder="Filtrar processos..." aria-label="Filtro de prazos salvos" style="margin-bottom: 0; width: 100%;">
             </div>
                            
+            <button id="btnToggleFiltrosAvancados" class="btn-exportar-todos tooltip-left icon-only" aria-label="Filtros avançados" data-tooltip="Filtros avançados" title="Filtros avançados">
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+            </button>
             <button id="btnNovoPrazoManual" class="btn-exportar-todos tooltip-left icon-only" aria-label="Novo prazo manual" data-tooltip="Adicionar prazo">
                 <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             </button>
 
             <div style="display: flex; gap: 4px; align-items: center; flex-shrink: 0;">
+                <button id="btnSincronizarTodosJurisflow" class="btn-exportar-todos tooltip-left icon-only" aria-label="Sincronizar pendentes com Jurisflow" data-tooltip="Sync Jurisflow">
+                    <img src="jurisflow-icon.png" width="16" height="16" style="object-fit: contain; border-radius: 2px;" alt="" aria-hidden="true">
+                </button>
                 <button id="btnCopiarSalvosLote" class="btn-exportar-todos tooltip-left icon-only" aria-label="Copiar tudo" data-tooltip="Copiar tudo">
                     <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> 
                 </button>
                 <button id="btnShareSalvosLote" class="btn-exportar-todos tooltip-left icon-only" aria-label="Exportar" data-tooltip="Exportar">
                     <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                </button>
+                <button id="btnCSVSalvosLote" class="btn-exportar-todos tooltip-left icon-only" aria-label="Exportar Excel (CSV)" data-tooltip="Exportar Excel (CSV)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"></path><path d="M21 9H3M21 15H3M12 3v18"></path></svg>
                 </button>
                 <button id="btnPDFSalvosLote" class="btn-exportar-todos tooltip-left icon-only" aria-label="Gerar PDF" data-tooltip="Gerar PDF">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -264,52 +378,48 @@
             </div>
         </div>
 
-        <div id="listaSalvos" aria-live="polite"></div>
-    </div>
-
-    <div id="viewCalendario" class="tab-panel-animated" role="tabpanel">
-        <!-- Alternador de Visualização (Mensal vs Lista) -->
-        <div class="segmented-control" style="margin-bottom: 16px; width: 100%;">
-            <button id="btnCalViewMonth" class="active" aria-label="Visualização Mensal" style="flex: 1;">Mensal</button>
-            <button id="btnCalViewList" aria-label="Visualização em Lista" style="flex: 1;">Lista de Prazos</button>
-        </div>
-
-        <div class="calendar-wrapper">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <button id="btnCalPrev" class="btn-acao-square tooltip-right" aria-label="Mês Anterior" data-tooltip="Mês anterior" style="border: 1px solid var(--border-light);">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                </button>
-                
-                <h2 id="calMonthYear" style="font-size: 15px; margin: 0; font-weight: 600;">--</h2>
-                
-                <div style="display: flex; gap: 8px;">
-                    <button id="btnNovoPrazoCal" class="btn-acao-square tooltip-left" aria-label="Novo prazo" data-tooltip="Adicionar prazo" style="border: 1px solid var(--border-light); background: var(--bg-body);">
-                        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    </button>
-                    <button id="btnPDFCalendario" class="btn-acao-square h-blue tooltip-left" aria-label="Imprimir PDF" data-tooltip="Imprimir calendário" style="border: 1px solid var(--border-light); background: var(--bg-body);">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                    </button>
-                    <button id="btnCalNext" class="btn-acao-square tooltip-left" aria-label="Próximo Mês" data-tooltip="Próximo mês" style="border: 1px solid var(--border-light);">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </button>
+        <div id="painelFiltrosAvancados" style="display:none; background:var(--bg-body); border:1px solid var(--border-light); border-radius:var(--radius-md); padding:12px; margin-bottom:12px; animation:fadeSlideUp 0.2s both;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                <div>
+                    <label style="font-size:11px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Status</label>
+                    <select id="filtroAvancadoStatus" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border-light); background:var(--bg-card); color:var(--text-main); font-size:12px;">
+                        <option value="">Todos</option>
+                        <option value="pendente">Pendentes</option>
+                        <option value="hoje">Vence hoje</option>
+                        <option value="atrasado">Atrasados</option>
+                        <option value="espera">Em espera</option>
+                        <option value="cumprido">Cumpridos</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:11px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Tribunal</label>
+                    <input type="text" id="filtroAvancadoTribunal" placeholder="Ex: TJSP, TRF3..." style="width:100%; box-sizing:border-box; padding:7px 10px; border-radius:6px; border:1px solid var(--border-light); background:var(--bg-card); color:var(--text-main); font-size:12px;">
+                </div>
+                <div>
+                    <label style="font-size:11px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Ordenar por</label>
+                    <select id="filtroAvancadoOrdem" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border-light); background:var(--bg-card); color:var(--text-main); font-size:12px;">
+                        <option value="fatal_asc">Data fatal (mais urgente)</option>
+                        <option value="fatal_desc">Data fatal (mais distante)</option>
+                        <option value="proc_asc">Processo (A-Z)</option>
+                        <option value="trib_asc">Tribunal (A-Z)</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:11px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">UF</label>
+                    <input type="text" id="filtroAvancadoUF" placeholder="Ex: SP, RJ..." maxlength="2" style="width:100%; box-sizing:border-box; padding:7px 10px; border-radius:6px; border:1px solid var(--border-light); background:var(--bg-card); color:var(--text-main); font-size:12px; text-transform:uppercase;">
                 </div>
             </div>
-            
-            <div class="calendar-grid" id="calendarGrid">
-                <div class="cal-day-header">Dom</div>
-                <div class="cal-day-header">Seg</div>
-                <div class="cal-day-header">Ter</div>
-                <div class="cal-day-header">Qua</div>
-                <div class="cal-day-header">Qui</div>
-                <div class="cal-day-header">Sex</div>
-                <div class="cal-day-header">Sáb</div>
-                <div id="calDaysContainer" style="display: contents;"></div>
+            <div style="display:flex; justify-content:flex-end; margin-top:10px;">
+                <button id="btnLimparFiltrosAvancados" style="font-size:11px; color:var(--text-muted); background:none; border:none; cursor:pointer; padding:4px 8px; border-radius:4px;">✕ Limpar filtros</button>
             </div>
         </div>
 
-        <div id="calSelectedDateItems" aria-live="polite"></div>
-        <!-- Visualização em Lista de Prazos -->
-        <div id="calDeadlinesListView" style="display: none; flex-direction: column; gap: 12px;" aria-live="polite"></div>
+        <div id="listaSalvos" aria-live="polite"></div>
+
+    </div>
+
+    <div id="viewControle" class="tab-panel-animated" role="tabpanel">
+        <!-- Renderizado dinamicamente via renderControle() em sidebar.js -->
     </div>
 
     <div id="viewCalculadora" class="tab-panel-animated" role="tabpanel">
@@ -361,12 +471,12 @@
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
                     <div style="background: var(--bg-body); border-radius: var(--radius-md); padding: 20px; text-align: center; border: 1px solid transparent;">
-                        <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Tempo Poupado Estimado</div>
+                        <div style="font-size: 11px; font-weight: 600; color: var(--text-muted);  letter-spacing: 0.5px;">Tempo Poupado Estimado</div>
                         <div id="modalTempoGasto" style="font-size: 28px; font-weight: 800; color: var(--text-primary-contrast); margin: 8px 0; line-height: 1;">0h 0m</div>
                         <div style="font-size: 10px; color: var(--text-placeholder);">Horas de trabalho manual convertidas em tempo livre.</div>
                     </div>
                     <div style="background: var(--bg-body); border-radius: var(--radius-md); padding: 20px; text-align: center; border: 1px solid transparent;">
-                        <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Velocidade de Resposta</div>
+                        <div style="font-size: 11px; font-weight: 600; color: var(--text-muted);  letter-spacing: 0.5px;">Velocidade de Resposta</div>
                         <div id="modalVelocidadeMedia" style="font-size: 28px; font-weight: 800; color: var(--zen-green); margin: 8px 0; line-height: 1;">--</div>
                         <div style="font-size: 10px; color: var(--text-placeholder);">Dias médios após a disponibilização para cumprir.</div>
                     </div>
@@ -374,14 +484,14 @@
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
                     <div style="background: var(--bg-body); border-radius: var(--radius-md); padding: 16px; display: flex; flex-direction: column; justify-content: center; border: 1px solid transparent;">
-                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 4px;">Publicações Triadas</div>
+                        <div style="font-size: 11px; color: var(--text-muted);  font-weight: 600; margin-bottom: 4px;">Publicações Triadas</div>
                         <div style="display: flex; align-items: baseline; gap: 8px;">
                             <div id="statLidos" style="font-size: 24px; font-weight: 700; color: var(--text-main); line-height: 1;">0</div>
                             <div style="font-size: 12px; color: var(--text-placeholder);">lidas</div>
                         </div>
                     </div>
                     <div style="background: var(--bg-body); border-radius: var(--radius-md); padding: 16px; display: flex; flex-direction: column; justify-content: center; border: 1px solid transparent;">
-                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 4px;">Prazos Cumpridos</div>
+                        <div style="font-size: 11px; color: var(--text-muted);  font-weight: 600; margin-bottom: 4px;">Prazos Cumpridos</div>
                         <div style="display: flex; align-items: baseline; gap: 8px;">
                             <div id="statCumpridos" style="font-size: 24px; font-weight: 700; color: var(--zen-green); line-height: 1;">0</div>
                             <div style="font-size: 12px; color: var(--text-placeholder);">concluídos</div>
@@ -391,16 +501,18 @@
 
                 <!-- Gráficos -->
                 <div style="background: var(--bg-body); border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;">
-                    <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; text-align: center;">Status da Carteira</div>
+                    <div style="font-size: 12px; font-weight: 600; color: var(--text-muted);  letter-spacing: 0.5px; margin-bottom: 12px; text-align: center;">Status da Carteira</div>
                     <canvas id="chartStatus" style="max-height: 200px;"></canvas>
                 </div>
 
                 <div style="background: var(--bg-body); border-radius: var(--radius-md); padding: 16px;">
-                    <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; text-align: center;">Processos por Tribunal</div>
+                    <div style="font-size: 12px; font-weight: 600; color: var(--text-muted);  letter-spacing: 0.5px; margin-bottom: 12px; text-align: center;">Processos por Tribunal</div>
                     <canvas id="chartTribunais" style="max-height: 200px;"></canvas>
                 </div>
             </div>
-            </div> </div> </div> <div id="novoPrazoModal" class="modal-overlay">
+        </div>
+    </div>
+    <div id="novoPrazoModal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" id="btnFecharModalNovoPrazo" aria-label="Fechar Modal">&times;</button>
             <h2 style="font-size: 18px; margin-bottom: 24px; margin-top:0;">Adicionar Prazo</h2>
@@ -416,7 +528,7 @@
                 </div>
                 <div class="notion-wrapper" style="border: 1px solid var(--border-light); border-radius: var(--radius-md); overflow: hidden; background: var(--bg-body);">
                     <div class="wysiwyg-toolbar" style="display: flex; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--border-light); background: var(--bg-panel);">
-                        <div class="wysiwyg-label" style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-right: auto; padding-left: 4px;">Anotações (Texto Livre)</div>
+                        <div class="wysiwyg-label" style="font-size: 11px; font-weight: 600; color: var(--text-muted);  letter-spacing: 0.5px; margin-right: auto; padding-left: 4px;">Anotações (Texto Livre)</div>
                         <div style="display:flex; gap:4px;">
                             <button type="button" data-cmd="bold" title="Negrito" style="background: transparent; border: none; cursor: pointer; color: var(--text-muted); font-size: 13px;"><b>B</b></button>
                             <button type="button" data-cmd="italic" title="Itálico" style="background: transparent; border: none; cursor: pointer; color: var(--text-muted); font-size: 13px;"><i>I</i></button>
@@ -440,11 +552,33 @@
         <div class="modal-content" style="max-width: 320px;">
             <button class="modal-close" id="btnFecharModalApelido" aria-label="Fechar Modal">&times;</button>
             <h2 style="font-size: 18px; margin-bottom: 16px; margin-top:0;">Identificação</h2>
-            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; margin-top:0;">Adicione um nome ao caso.</p>
-            <input type="text" id="inputApelidoModal" placeholder="Ex: João x Empresa" style="margin-bottom: 20px;">
-            <div style="display: flex; gap: 8px; width: 100%;">
-                <button id="btnCancelarApelido" class="btn-pill" style="flex:1;">Cancelar</button>
-                <button id="btnSalvarApelido" class="btn-main" style="flex:1;">Salvar identificação</button>
+            <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                <div class="input-group" style="flex: 2;">
+                    <label style="font-size: 12px; font-weight: 500; color: var(--text-muted); display: block; margin-bottom: 4px;">Apelido do Caso</label>
+                    <input type="text" id="inputApelidoModal" placeholder="Ex: Ação Indenizatória" style="width: 100%; box-sizing: border-box; padding: 10px; border-radius: 6px; border: 1px solid var(--border-light);">
+                </div>
+                <div class="input-group" style="flex: 1;">
+                    <label style="font-size: 12px; font-weight: 500; color: var(--text-muted); display: block; margin-bottom: 4px;">Sistema</label>
+                    <input type="text" id="inputSistemaModal" placeholder="Projudi..." style="width: 100%; box-sizing: border-box; padding: 10px; border-radius: 6px; border: 1px solid var(--border-light);">
+                </div>
+            </div>
+            <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                <div class="input-group" style="flex: 1;">
+                    <label style="font-size: 12px; font-weight: 500; color: var(--text-muted); display: block; margin-bottom: 4px;">Polo Ativo (Reqte)</label>
+                    <input type="text" id="inputRequerenteModal" placeholder="Ex: João da Silva" style="width: 100%; box-sizing: border-box; padding: 10px; border-radius: 6px; border: 1px solid var(--border-light);">
+                </div>
+                <div class="input-group" style="flex: 1;">
+                    <label style="font-size: 12px; font-weight: 500; color: var(--text-muted); display: block; margin-bottom: 4px;">Polo Passivo (Réu)</label>
+                    <input type="text" id="inputRequeridoModal" placeholder="Ex: Empresa X" style="width: 100%; box-sizing: border-box; padding: 10px; border-radius: 6px; border: 1px solid var(--border-light);">
+                </div>
+            </div>
+            <div class="input-group" style="margin-bottom: 20px;">
+                <label style="font-size: 12px; font-weight: 500; color: var(--text-muted); display: block; margin-bottom: 4px;">Classe / Procedimento</label>
+                <input type="text" id="inputClasseModal" placeholder="Ex: Procedimento do Juizado Especial Cível" style="width: 100%; box-sizing: border-box; padding: 10px; border-radius: 6px; border: 1px solid var(--border-light);">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                <button id="btnSalvarApelido" class="btn-main" style="width: 100%; display: flex; align-items: center; justify-content: center;">Salvar identificação</button>
+                <button id="btnCancelarApelido" class="btn-pill" style="width: 100%; display: flex; align-items: center; justify-content: center;">Cancelar</button>
             </div>
         </div>
     </div>
@@ -461,17 +595,174 @@
     </div>
 
     <div id="agendaModal" class="modal-overlay">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 440px;">
             <button class="modal-close" aria-label="Fechar modal">&times;</button>
-            <h2 style="font-size: 18px; margin-bottom: 12px; margin-top: 0; color: var(--text-main);">Conta do Google Agenda</h2>
+            <h2 style="font-size: 18px; margin-bottom: 8px; margin-top: 0; color: var(--text-main);">Integrações Google (Agenda & Tasks)</h2>
+            <p style="font-size: 12px; color: var(--text-muted); margin: 0 0 16px 0; line-height: 1.4;">Configure sua conta para sincronizar prazos fatais e criar tarefas automáticas.</p>
             
-            <div class="input-group" style="margin-bottom: 20px;">
-                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">E-mail da conta padrão</label>
-                <p style="font-size: 12px; color: var(--text-muted); margin: 0 0 12px 0; line-height: 1.4;">Defina a conta principal para o salvamento de prazos. Isso evita que os eventos caiam no perfil errado quando houver mais de um e-mail logado no navegador.</p>
-                <input type="email" id="inputEmailGcal" placeholder="Ex: seu.email@gmail.com" style="width: 100%; box-sizing: border-box; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main);">
+            <div style="border-bottom: 1px solid var(--border-light); padding-bottom: 16px; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                    <div style="font-weight: 600; font-size: 13px; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+                        <span>📅</span> Google Agenda
+                    </div>
+                </div>
+                <div class="input-group" style="margin-bottom: 8px;">
+                    <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">E-mail da conta padrão</label>
+                    <input type="email" id="inputEmailGcal" placeholder="Ex: seu.email@gmail.com" style="width: 100%; box-sizing: border-box; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main);">
+                </div>
+                <button id="btnSalvarEmailAgenda" class="btn-pill c-blue" style="width: 100%;">Salvar e-mail da Agenda</button>
             </div>
 
-            <button id="btnSalvarEmailAgenda" class="btn-main" style="width: 100%;">Salvar conta</button>
+            <div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                    <div style="font-weight: 600; font-size: 13px; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+                        <span>☑️</span> Google Tasks <span style="font-size: 9px; background: var(--zen-green); color: white; padding: 2px 5px; border-radius: 4px; font-weight: 700; letter-spacing: 0.5px;">NOVO</span>
+                    </div>
+                </div>
+                <p style="font-size: 11.5px; color: var(--text-muted); margin: 0 0 12px 0; line-height: 1.4;">
+                    Permite enviar prazos processuais diretamente para a sua lista de tarefas do Google com lembrete e data fatal calculada.
+                </p>
+
+                <div class="input-group" style="margin-bottom: 10px;">
+                    <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">URL do Apps Script (Web App)</label>
+                    <input type="text" id="inputGtasksWebhookUrl" placeholder="Cole a URL gerada no Google Apps Script" style="width: 100%; box-sizing: border-box; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main);">
+                    
+                    <button id="btnSalvarGtasks" class="btn-pill c-blue" style="width: 100%; margin-top: 10px;">Salvar Webhook (Google Tasks)</button>
+                    
+                    <details style="margin-top: 8px; font-size: 11px; color: var(--text-muted); background: rgba(0,0,0,0.02); padding: 8px; border-radius: 4px;">
+                        <summary style="cursor: pointer; font-weight: 600; color: var(--zen-green);">▶ Como configurar o Google Apps Script? (Passo a Passo)</summary>
+                        <ol style="margin-top: 8px; margin-bottom: 4px; padding-left: 20px; line-height: 1.7;">
+                            <li>Acesse <a href="https://script.new" target="_blank" style="color: var(--zen-blue); text-decoration: underline;">script.new</a> e faça login com sua conta Google.</li>
+                            <li><strong>Cole o código:</strong> Apague todo o código padrão e cole este:
+                                <pre style="background: var(--bg-body); padding: 6px; border-radius: 4px; font-family: monospace; font-size: 9px; overflow-x: auto; margin-top: 4px; border: 1px solid var(--border-light); user-select: all;">function doPost(e) {
+  try {
+    var dados = JSON.parse(e.postData.contents);
+    var novaTarefa = { title: dados.title || 'Tarefa', notes: dados.notes || '' };
+    if (dados.due) novaTarefa.due = dados.due;
+    var tarefa = Tasks.Tasks.insert(novaTarefa, '@default');
+    return ContentService.createTextOutput(JSON.stringify({ status: 'sucesso', id: tarefa.id }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (erro) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'erro', mensagem: erro.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}</pre>
+                            </li>
+                            <li><strong>Ativar a API do Tasks:</strong> No menu lateral esquerdo, clique em <b>Serviços (+)</b>, encontre <b>Google Tasks API</b> e clique em <b>Adicionar</b>.</li>
+                            <li><strong>⚠️ Autorizar (passo obrigatório):</strong> Na barra superior, clique em <b>Executar</b>. O Google vai pedir permissão — clique em <b>Revisar permissões</b> e autorize. Sem este passo, a integração não funciona.</li>
+                            <li><strong>Implantar:</strong> Clique em <b>Implantar → Nova implantação</b>. Clique no ícone ⚙️ e escolha <b>App da Web</b>.</li>
+                            <li><strong>⚠️ Em "Quem pode acessar":</strong> Selecione <b>Qualquer pessoa</b> (sem restrição de login — a opção com "com login do Google" NÃO funciona).</li>
+                            <li>Clique em <b>Implantar</b>, copie a <b>URL do App da Web</b> e cole no campo acima. Clique em <b>Salvar Webhook</b>.</li>
+                        </ol>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Novidades / Onboarding Google Tasks -->
+    <div id="gtasksOnboardingModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 400px; text-align: center; padding: 22px;">
+            <button class="modal-close" id="btnFecharGtasksOnboarding" aria-label="Fechar modal">&times;</button>
+            
+            <div style="font-size: 38px; margin-bottom: 6px;">📋✨</div>
+            <h2 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin: 0 0 8px 0;">Nova Integração: Google Tasks!</h2>
+            
+            <p style="font-size: 12px; color: var(--text-muted); margin: 0 0 16px 0; line-height: 1.5;">
+                Agora você pode exportar seus prazos processuais diretamente para a sua lista de tarefas do <b>Google Tasks</b> com 1 clique!
+            </p>
+            
+            <div style="background: var(--card-inner); border: 1px solid var(--border-light); border-radius: 10px; padding: 12px 14px; margin-bottom: 18px; text-align: left; font-size: 11.5px; line-height: 1.6; color: var(--text-main);">
+                <div style="font-weight: 700; margin-bottom: 6px; color: var(--zen-blue); display: flex; align-items: center; gap: 6px;">
+                    <span>⚡</span> Como funciona:
+                </div>
+                <div style="margin-bottom: 3px;">1. Acesse o menu <b>Integrações</b> (ícone 📅 no topo).</div>
+                <div style="margin-bottom: 3px;">2. Insira a URL do seu Web App no bloco <b>Google Tasks</b>.</div>
+                <div>3. Clique no botão <b>☑️ Tasks</b> em qualquer card de prazo!</div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <button id="btnConfigurarGtasksAgora" class="btn-pill c-blue" style="width: 100%; padding: 10px; font-size: 13px; font-weight: 600;">⚙️ Configurar Google Tasks Agora</button>
+                <button id="btnEntendiGtasksOnboarding" style="background: transparent; border: none; color: var(--text-muted); font-size: 11.5px; cursor: pointer; padding: 4px; text-decoration: underline;">Entendi, configurar depois</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="dataJudModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Fechar modal">&times;</button>
+            <h2 style="font-size: 18px; margin-bottom: 12px; margin-top: 0; color: var(--text-main);">Integração CNJ (DataJud)</h2>
+            
+            <div class="input-group" style="margin-bottom: 20px;">
+                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Chave Pública da API (API Key)</label>
+                <p style="font-size: 12px; color: var(--text-muted); margin: 0 0 12px 0; line-height: 1.4;">Cole aqui a chave pública fornecida pelo Departamento de Pesquisas Judiciárias do CNJ para buscar os dados oficiais dos processos. A chave padrão já vem preenchida.</p>
+                <input type="text" id="inputApiKeyDataJud" placeholder="Ex: APIKey cDZHYzl..." style="width: 100%; box-sizing: border-box; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main);">
+            </div>
+
+            <button id="btnSalvarApiKey" class="btn-main" style="width: 100%;">Salvar Chave</button>
+        </div>
+    </div>
+
+    <div id="iaModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 380px;">
+            <button class="modal-close" aria-label="Fechar modal">&times;</button>
+            <h2 style="font-size: 18px; margin-bottom: 12px; margin-top: 0; color: var(--text-main);">Configurar Resumo por IA</h2>
+            
+            <div class="input-group" style="margin-bottom: 12px;">
+                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Provedor de IA</label>
+                <select id="selectIaProvider" style="width: 100%; box-sizing: border-box; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main);">
+                    <option value="chrome_ai">✨ Chrome AI (Embutido / Offline)</option>
+                    <option value="gemini">Google Gemini</option>
+                    <option value="openai">OpenAI (ChatGPT)</option>
+                    <option value="ollama">IA Local (Ollama - Offline)</option>
+                    <option value="custom">Personalizado (Compatível com OpenAI)</option>
+                </select>
+            </div>
+
+            <div class="input-group" id="groupIaApiKey" style="margin-bottom: 12px;">
+                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Chave de API (API Key)</label>
+                <input type="password" id="inputIaApiKey" placeholder="Chave da API..." style="width: 100%; box-sizing: border-box; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main);">
+            </div>
+
+            <div class="input-group" style="margin-bottom: 12px;">
+                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Modelo de IA</label>
+                <input type="text" id="inputIaModel" placeholder="Ex: gemini-1.5-flash, gpt-4o-mini" style="width: 100%; box-sizing: border-box; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main);">
+            </div>
+
+            <div class="input-group" id="groupIaEndpoint" style="margin-bottom: 20px; display: none;">
+                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Endpoint Personalizado</label>
+                <input type="text" id="inputIaEndpoint" placeholder="Ex: https://api.openai.com/v1" style="width: 100%; box-sizing: border-box; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main);">
+            </div>
+
+            <button id="btnSalvarConfigIA" class="btn-main" style="width: 100%;">Salvar Configurações</button>
+        </div>
+    </div>
+
+    <div id="jurisflowModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 380px;">
+            <button class="modal-close" aria-label="Fechar modal">&times;</button>
+            <h2 style="font-size: 18px; margin-bottom: 12px; margin-top: 0; color: var(--text-main);">Integração Jurisflow</h2>
+            
+            <div class="input-group" style="margin-bottom: 12px;">
+                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Ativar Sincronização?</label>
+                <label style="display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="checkJurisflowAtivo" style="width: 16px; height: 16px; cursor: pointer;">
+                    <span style="font-size: 14px; color: var(--text-main); cursor: pointer;">Enviar prazos para o aplicativo Jurisflow</span>
+                </label>
+            </div>
+
+            <div class="input-group" id="groupJurisflowToken" style="margin-bottom: 12px;">
+                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Token de Segurança (API Key)</label>
+                <input type="text" id="inputJurisflowToken" value="jf_djen_secret" placeholder="jf_djen_secret" style="width: 100%; box-sizing: border-box; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main);">
+            </div>
+
+            <div class="input-group" id="groupJurisflowPorta" style="margin-bottom: 20px;">
+                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px;">Porta da API Local</label>
+                <input type="number" id="inputJurisflowPorta" value="18080" placeholder="Ex: 18080" style="width: 100%; box-sizing: border-box; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main);">
+                <p style="font-size: 12px; color: var(--text-muted); margin: 6px 0 0 0;">A porta padrão é 18080.</p>
+            </div>
+
+            <button id="btnSalvarJurisflow" class="btn-main" style="width: 100%;">Salvar Configurações</button>
         </div>
     </div>
 
@@ -487,9 +778,132 @@
             <button id="btnCancelarBackup" class="btn-pill" style="flex:1;">Cancelar</button>
             <button id="btnConfirmarBackup" class="btn-main" style="flex:2;">Confirmar</button>
         </div>
+        </div>
     </div>
-</div>
 
+    <div id="backupAutoModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Fechar modal">&times;</button>
+            <h2 style="font-size: 18px; margin-bottom: 16px; margin-top: 0; color: var(--text-main);">Backup Automático</h2>
+            
+            <div class="input-group" style="margin-bottom: 20px; flex-direction: row; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--border-light);">
+                <div style="flex: 1; padding-right: 16px;">
+                    <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px; font-size: 14px;">Ativar em 2º plano</label>
+                    <p style="font-size: 12px; color: var(--text-muted); margin: 0; line-height: 1.4;">Salva silenciosamente um arquivo de segurança no seu computador.</p>
+                </div>
+                <label class="djen-toggle">
+                    <input type="checkbox" id="toggleBackupAuto">
+                    <span class="djen-toggle-slider"></span>
+                </label>
+            </div>
+            
+            <div class="input-group" style="margin-bottom: 24px;">
+                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 6px;">Frequência do Download</label>
+                <select id="selectBackupAutoFreq" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main); font-size: 13px; cursor: pointer;">
+                    <option value="12">A cada 12 horas</option>
+                    <option value="24" selected>A cada 24 horas</option>
+                    <option value="48">A cada 48 horas</option>
+                    <option value="168">Semanalmente (A cada 7 dias)</option>
+                </select>
+            </div>
+
+            <button id="btnSalvarBackupAuto" class="btn-main" style="width: 100%;">Salvar configuração</button>
+        </div>
+    </div>
+
+    <!-- Modal de Gerenciamento de Suspensões Customizadas -->
+    <div id="suspensoesModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 420px; width: 90%;">
+            <button class="modal-close" aria-label="Fechar modal">&times;</button>
+            <h2 style="font-size: 18px; margin-bottom: 6px; margin-top: 0; color: var(--text-main);">Suspensões Forenses</h2>
+            <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 16px 0; line-height: 1.4;">Cadastre recessos, greves ou indisponibilidades do tribunal para recalcular os prazos automaticamente.</p>
+            
+            <div style="background: var(--card-inner); border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+                <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                    <div style="flex: 1;">
+                        <label style="font-size: 11px; font-weight: 600; display: block; margin-bottom: 2px; color: var(--text-main);">Início</label>
+                        <input type="date" id="inputSuspHoraInicio" style="width: 100%; box-sizing: border-box; padding: 6px; border: 1px solid var(--border-light); border-radius: 6px; background: var(--bg-body); color: var(--text-main); font-size: 12px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 11px; font-weight: 600; display: block; margin-bottom: 2px; color: var(--text-main);">Fim (Inclusive)</label>
+                        <input type="date" id="inputSuspHoraFim" style="width: 100%; box-sizing: border-box; padding: 6px; border: 1px solid var(--border-light); border-radius: 6px; background: var(--bg-body); color: var(--text-main); font-size: 12px;">
+                    </div>
+                </div>
+                <div style="margin-bottom: 8px;">
+                    <label style="font-size: 11px; font-weight: 600; display: block; margin-bottom: 2px; color: var(--text-main);">Descrição / Motivo</label>
+                    <input type="text" id="inputSuspDesc" placeholder="Ex: Greve PJe, Feriado Local" style="width: 100%; box-sizing: border-box; padding: 6px 8px; border: 1px solid var(--border-light); border-radius: 6px; background: var(--bg-body); color: var(--text-main); font-size: 12px;">
+                </div>
+                <button id="btnAdicionarSusp" class="btn-main" style="width: 100%; padding: 8px; font-size: 12px;">Adicionar Suspensão</button>
+            </div>
+            
+            <label style="font-weight: 600; font-size: 12px; display: block; margin-bottom: 6px; color: var(--text-main);">Cadastradas</label>
+            <div id="listaSuspensoes" style="max-height: 180px; overflow-y: auto; border: 1px solid var(--border-light); border-radius: 8px; padding: 8px; background: var(--bg-body); font-size: 12px; margin-bottom: 16px;">
+                <!-- Preenchido dinamicamente via JS -->
+            </div>
+            
+            <div style="display: flex; gap: 8px;">
+                <button id="btnFecharSuspensoes" class="btn-pill" style="flex: 1; padding: 8px;">Fechar</button>
+                <button id="btnRecalcularPrazos" class="btn-main" style="flex: 2; padding: 8px;">Recalcular Prazos Salvos</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Configuração de Alertas em 2º Plano -->
+    <div id="notificacoesModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 360px;">
+            <button class="modal-close" aria-label="Fechar modal">&times;</button>
+            <h2 style="font-size: 18px; margin-bottom: 12px; margin-top: 0; color: var(--text-main);">Alertas em Segundo Plano</h2>
+            
+            <div class="input-group" style="margin-bottom: 20px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--border-light);">
+                <div style="flex: 1; padding-right: 16px;">
+                    <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px; font-size: 14px;">Varredura Automática</label>
+                    <p style="font-size: 12px; color: var(--text-muted); margin: 0; line-height: 1.4;">Busca novas publicações diariamente de forma silenciosa e avisa se houver intimações para a sua OAB.</p>
+                </div>
+                <label class="djen-toggle">
+                    <input type="checkbox" id="toggleNotificarBackground">
+                    <span class="djen-toggle-slider"></span>
+                </label>
+            </div>
+
+            <button id="btnSalvarAlertas" class="btn-main" style="width: 100%;">Salvar Configurações</button>
+        </div>
+    </div>
+
+    <!-- Modal de Configuração de Identidade do Escritório (Branding) -->
+    <div id="brandingModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 360px;">
+            <button class="modal-close" aria-label="Fechar modal">&times;</button>
+            <h2 style="font-size: 18px; margin-bottom: 4px; margin-top: 0; color: var(--text-main);">Identidade do Escritório</h2>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 0; margin-bottom: 16px; line-height: 1.4;">Personalize as exportações de PDF com o branding da sua banca de advocacia.</p>
+            
+            <div class="input-group" style="margin-bottom: 12px; width: 100%;">
+                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px; font-size: 13px;">Nome do Escritório / Advogado</label>
+                <input type="text" id="inputBrandingNome" placeholder="Ex: Marques & Associados Advocacia" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main); font-size: 13px;">
+            </div>
+
+            <div class="input-group" style="margin-bottom: 12px; width: 100%;">
+                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px; font-size: 13px;">Slogan / Subtítulo</label>
+                <input type="text" id="inputBrandingSlogan" placeholder="Ex: Excelência em Assessoria Jurídica" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main); font-size: 13px;">
+            </div>
+
+            <div class="input-group" style="margin-bottom: 12px; width: 100%;">
+                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px; font-size: 13px;">Informações de Contato</label>
+                <input type="text" id="inputBrandingContato" placeholder="Ex: contato@marques.adv.br | (11) 99999-9999" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main); font-size: 13px;">
+            </div>
+
+            <div class="input-group" style="margin-bottom: 12px; width: 100%;">
+                <label style="font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px; font-size: 13px;">Link do Logotipo (URL da Imagem)</label>
+                <input type="url" id="inputBrandingLogo" placeholder="Ex: https://site.com/logo.png" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--border-light); border-radius: 8px; background: var(--bg-body); color: var(--text-main); font-size: 13px;">
+            </div>
+
+            <div class="input-group" style="margin-bottom: 16px; width: 100%; display: flex; align-items: center; justify-content: space-between;">
+                <label style="font-weight: 600; color: var(--text-main); font-size: 13px; margin: 0;">Cor de Destaque do Relatório</label>
+                <input type="color" id="inputBrandingCor" value="#2e2c2a" style="width: 44px; height: 32px; cursor: pointer; border: 1px solid var(--border-light); border-radius: 4px;">
+            </div>
+
+            <button id="btnSalvarBranding" class="btn-main" style="width: 100%;">Salvar Configurações</button>
+        </div>
+    </div>
 
     <div id="reviewModal" class="modal-overlay">
         <div class="modal-content" style="max-width: 340px; text-align: center; align-items: center;">
@@ -522,6 +936,18 @@
     Guia rápido para configuração e uso otimizado do Buscador DJEN na sua rotina.
 </div>
 
+                <details class="wiki-section" name="wiki-accordion" open>
+                    <summary>✨ Novidades da Versão</summary>
+                    <div class="wiki-content">
+                        <ul>
+                            <li><b>Layout Mais Limpo:</b> Cards de intimação totalmente redesenhados. A data de disponibilização, tags e ícones de tarefas agora ficam organizados na base do cartão.</li>
+                            <li><b>Marcação Inteligente:</b> O estilo de "Lido" (transparente) é removido automaticamente assim que você calcula e salva um prazo.</li>
+                            <li><b>Calculadora Instantânea:</b> Removemos a dependência de buscas automáticas lentas no CNJ durante o cálculo. Agora a calculadora responde em milissegundos.</li>
+                            <li><b>Referências Legais em Hover:</b> As informações sobre contagem (CPC, CLT, CPP) não poluem mais a tela. Basta passar o mouse sobre o tipo de matéria para ler as regras.</li>
+                        </ul>
+                    </div>
+                </details>
+
                 <details class="wiki-section" name="wiki-accordion">
                     <summary>🚀 Primeiros Passos & Buscas</summary>
                     <div class="wiki-content">
@@ -537,7 +963,7 @@
                     <summary>⏱️ Calculadora & Auditoria Avançada</summary>
                     <div class="wiki-content">
                         <ul>
-                            <li><b>Motor Híbrido:</b> Selecione "Cível" para contagem em dias úteis (CPC) ou "Criminal" para dias corridos (CPP).</li>
+                            <li><b>Motor Híbrido:</b> Selecione "Cível" ou "Trabalhista" para contagem em dias úteis (CPC/CLT) ou "Criminal" para dias corridos (CPP). Passe o mouse sobre a seleção para ler a regra completa.</li>
                             <li><b>Integração IBGE e GitHub:</b> A calculadora detecta feriados nacionais, estaduais e <b>municipais</b> automaticamente, bastando informar a comarca.</li>
                             <li><b>Prova de Tempestividade:</b> Ao calcular um prazo, clique no resultado para expandir a "Grelha de Dias". Exporte a auditoria em PNG para anexar nas suas petições.</li>
                         </ul>
@@ -588,7 +1014,7 @@
             </div>
             
             <div class="calc-inputs-container" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px;">
-                <button type="button" class="btn-pill btn-colar-magico tooltip-bottom" data-tooltip="Copie o texto inteiro de uma intimação (WhatsApp, e-mail) e clique aqui. O DJEN vai extrair o Processo, Tribunal e Dias automaticamente." style="width: 100%; border: 1px dashed #3182ce; background: rgba(49, 130, 206, 0.05); color: #2b6cb0; font-weight: 600; padding: 10px;">📋 Extrair dados de texto copiado</button>
+                <button type="button" class="btn-colar-magico tooltip-bottom" data-tooltip="Copie o texto inteiro de uma intimação (WhatsApp, e-mail) e clique aqui. O DJEN vai extrair o Processo, Tribunal e Dias automaticamente.">📋 Extrair dados de texto copiado</button>
                 <input type="hidden" class="c-dir" value="futuro">
 <div class="input-group"><label>Tribunal (Sigla)</label><input type="text" class="c-trib" list="listaTribunais" placeholder="Digite para buscar (Ex: TJSP)" autocomplete="off"></div>                <div style="display: flex; gap: 8px; width: 100%;">
                     <div class="input-group" style="flex: 0 0 70px;">
@@ -651,10 +1077,23 @@
                 <div class="calc-preview audit-flow" style="display:none; margin-top: 16px;"></div>
                 
                 <div class="container-btn-png" style="display:none; margin-top: 16px;">
-                    <button class="btn-pill c-blue btn-exportar-png" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; font-weight: 600;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> 
-                        Baixar Imagem da Auditoria
-                    </button>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-pill c-blue btn-exportar-png" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; font-weight: 600; font-size: 11px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> 
+                            Imagem (PNG)
+                        </button>
+                        <button class="btn-pill c-orange btn-exportar-pdf-audit" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; font-weight: 600; font-size: 11px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> 
+                            Relatório (PDF)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="cross-audit-container" style="margin-top: 14px; border-top: 1px dashed var(--border-light); padding-top: 12px; display: none;">
+                    <div style="font-size: 11px; font-weight: 700; color: var(--zen-teal);  letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;">
+                        <span>🔄 Auditoria de Prazos Espelhados</span>
+                    </div>
+                    <div class="cross-audit-list" style="display: flex; flex-direction: column; gap: 6px;"></div>
                 </div>
             </div>
             
@@ -664,7 +1103,7 @@
             </div>
             
             <div class="calc-acoes-finais" style="display: none; gap: 8px;">
-                <button class="btn-pill c-gray btn-voltar-calc" style="flex: 1;">Editar</button>
+                <button class="btn-pill c-gray btn-voltar-calc" style="flex: 1;">Recalcular</button>
                 <button class="btn-main btn-salvar" style="flex:2;">Registrar na agenda</button>
                             </div>
             
@@ -691,8 +1130,11 @@
             
             <div class="calc-acoes-pos-salvo" style="display: none; flex-direction: column; gap: 8px; margin-top: 12px;">
                 <div style="color: var(--zen-green-txt); font-size: 13px; font-weight: 500; text-align: center;">✅ Guardado!</div>
-                <button class="btn-pill c-blue solid btn-salvar-gcal-pos" style="width: 100%;">📅 Exportar google agenda</button>
-                <!-- removed btn-fechar-calc -->
+                <div style="display: flex; gap: 8px; flex-direction: column;">
+                    <button class="btn-pill btn-salvar-gcal-pos" style="width: 100%;">📅 Exportar Google Agenda</button>
+                    <button class="btn-pill btn-salvar-gtasks-pos" style="width: 100%;">☑️ Exportar Google Tasks</button>
+                </div>
+            </div>
         </div>
     </template>
 
@@ -704,15 +1146,45 @@
     </datalist>
 
     <div id="shareModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 320px;">
+        <div class="modal-content modal-premium" style="max-width: 330px;">
             <button class="modal-close" aria-label="Fechar Modal">&times;</button>
-            <h2 id="shareModalTitle" style="font-size: 18px; margin-bottom: 20px; margin-top:0;">Compartilhar</h2>
-            <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
-                <button id="shareWpp" class="btn-share-option">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--zen-green)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.446-.272.371-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp
+            <h2 id="shareModalTitle" style="font-size: 16px; margin-bottom: 4px; margin-top:0; font-weight: 700; color: var(--text-main); letter-spacing: -0.4px;">Exportar & Compartilhar</h2>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 0; margin-bottom: 16px; line-height: 1.4;">Selecione o formato ideal para enviar ou armazenar suas publicações.</p>
+            
+            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.8px; margin-bottom: 6px;">Compartilhar Rápido</div>
+            <div style="display: flex; gap: 8px; width: 100%; margin-bottom: 16px;">
+                <button id="shareWpp" class="btn-share-option" style="flex: 1; justify-content: center; padding: 10px; font-size: 13px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--zen-green)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.446-.272.371-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> WhatsApp
                 </button>
-                <button id="shareEmail" class="btn-share-option">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--zen-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> E-mail
+                <button id="shareEmail" class="btn-share-option" style="flex: 1; justify-content: center; padding: 10px; font-size: 13px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--zen-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> E-mail
+                </button>
+            </div>
+            
+            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.8px; margin-bottom: 6px;">Copiar p/ Área de Trabalho</div>
+            <div style="display: flex; flex-direction: column; gap: 6px; width: 100%; margin-bottom: 16px;">
+                <button id="copyWppFormat" class="btn-share-option" style="padding: 10px 12px; font-size: 13px; gap: 10px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--zen-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copiar Formatado (WhatsApp)
+                </button>
+                <button id="copyCleanFormat" class="btn-share-option" style="padding: 10px 12px; font-size: 13px; gap: 10px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--zen-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Copiar Texto Limpo (Word/Docs)
+                </button>
+            </div>
+
+            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.8px; margin-bottom: 6px;">Exportar Arquivos</div>
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <button id="downloadTxt" class="btn-share-option" style="flex: 1; justify-content: center; padding: 10px; font-size: 13px; gap: 6px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-main)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Relatório TXT
+                </button>
+                <button id="downloadCsv" class="btn-share-option" style="flex: 1; justify-content: center; padding: 10px; font-size: 13px; gap: 6px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--zen-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"></path><path d="M21 9H3M21 15H3M12 3v18"></path></svg> Planilha CSV
+                </button>
+            </div>
+
+            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.8px; margin-bottom: 6px; margin-top: 16px;">Integrações</div>
+            <div style="display: flex; gap: 8px; width: 100%; margin-bottom: 8px;">
+                <button id="exportGTasksLote" class="btn-share-option tooltip-top" data-tooltip="Exporta os prazos pendentes (não cumpridos)" style="flex: 1; justify-content: center; padding: 10px; font-size: 13px; gap: 6px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4285F4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> Google Tasks (Lote)
                 </button>
             </div>
         </div>
@@ -755,7 +1227,6 @@
         <div style="text-align:center; padding:20px; color: var(--text-muted);">
             <b>Sem conexão com o CNJ.</b><br>Verifique sua internet ou tente novamente em instantes.
         </div>
-    </template>
     </template>
 
     <!-- Adicionando Chart.js para o Dashboard -->
