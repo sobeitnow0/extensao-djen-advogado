@@ -1,0 +1,5 @@
+*.zip
+*.bak
+*Cópia*
+.DS_Store
+dist_temp

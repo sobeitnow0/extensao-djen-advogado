@@ -237,6 +237,18 @@
         // Changelog JSON Data
         const changelogData = [
             {
+                version: "v50.74",
+                date: "Setembro de 2026",
+                title: "Integração Google Tasks e Exportação Direta de Prazos",
+                description: "Exportação direta de prazos processuais para o Google Tasks com cálculo automático de data fatal e lembretes, sincronização Webhook com Google Apps Script e onboarding intuitivo.",
+                changes: [
+                    { type: "new", label: "Novo", text: "Google Tasks: Exporte prazos com 1 clique para sua lista de tarefas do Google com a data fatal calculada." },
+                    { type: "new", label: "Novo", text: "Integrador Apps Script: Conexão via Webhook para criação automática de tarefas no ecossistema Google." },
+                    { type: "improvement", label: "Melhoria", text: "Padronização Tipográfica: Design system unificado com fontes Inter e Monospace para máxima legibilidade." },
+                    { type: "improvement", label: "Melhoria", text: "Onboarding da Versão: Apresentação automática dos novos recursos no primeiro acesso à versão 50.74." }
+                ]
+            },
+            {
                 version: "v50.62",
                 date: "Junho de 2026",
                 title: "Novo Design dos Cartões e Performance Absoluta",
@@ -319,7 +331,7 @@
         ];
 
         // Dynamic Interactive Timeline Renderer
-        function renderChangelog(activeVersion = 'v50.62') {
+        function renderChangelog(activeVersion = 'v50.74') {
             const container = document.getElementById('timelineContainer');
             if (!container) return;
 
@@ -402,8 +414,8 @@
 
         // Initial DOM Load Render & Setup
         document.addEventListener('DOMContentLoaded', () => { 
-            // Render timeline with default active v50.62 initially
-            renderChangelog('v50.62');
+            // Render timeline with default active v50.74 initially
+            renderChangelog('v50.74');
             initializeObserver();
         });
 
